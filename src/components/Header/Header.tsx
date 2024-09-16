@@ -1,4 +1,5 @@
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+import * as Avatar from '@radix-ui/react-avatar';
 import * as NavigationMenu from '@radix-ui/react-navigation-menu';
 import ModeToggle from '../ModeToggle/ModeToggle';
 import { CaretDownIcon } from '@radix-ui/react-icons';
@@ -7,22 +8,22 @@ import classNames from 'classnames';
 export const Header = (props: any) => {
   return (
     <>
-      <header className="bg-[#E0FFFA] text-white p-6 shadow-md">
+      <header className="bg-[#51a7bf] text-white p-6 shadow-md rounded-md">
         <div className="container mx-auto flex justify-between items-center">
           <div className="text-xl font-bold">
             <a href="/" className="hover:text-gray-300">
-              My Website
+              WSB
             </a>
           </div>
           <ModeToggle
             className="absolute right-9 top-9 md:right-8 md:top-9
         "
           />
-          <NavigationMenu.Root className="relative z-[1] flex w-screen justify-center ">
+          <NavigationMenu.Root className="relative z-[1] flex w-screen justify-center">
             <NavigationMenu.List className="center shadow-blackA4 m-0 flex list-none p-1">
               <NavigationMenu.Item>
                 <NavigationMenu.Trigger className="text-white hover:text-violet11 hover:bg-violet3 focus:shadow-violet7 group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none focus:shadow-[0_0_0_2px]">
-                  Learn{' '}
+                  Địa điểm{' '}
                   <CaretDownIcon
                     className="text-violet10 relative top-[1px] transition-transform duration-[250] ease-in group-data-[state=open]:-rotate-180"
                     aria-hidden
@@ -67,7 +68,7 @@ export const Header = (props: any) => {
                   className="text-white hover:text-violet11 hover:bg-violet3 focus:shadow-violet7 block select-none rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none no-underline outline-none focus:shadow-[0_0_0_2px]"
                   href=""
                 >
-                  Contact
+                  Liên hệ
                 </NavigationMenu.Link>
               </NavigationMenu.Item>
 
@@ -80,18 +81,30 @@ export const Header = (props: any) => {
               <NavigationMenu.Viewport className="data-[state=open]:animate-scaleIn data-[state=closed]:animate-scaleOut relative mt-[10px] h-[var(--radix-navigation-menu-viewport-height)] w-full origin-[top_center] overflow-hidden rounded-[6px] bg-white transition-[width,_height] duration-300 sm:w-[var(--radix-navigation-menu-viewport-width)]" />
             </div>
           </NavigationMenu.Root>
-          <NavigationMenu.Root className="relative z-[1] w-80 flex justify-end">
+          <NavigationMenu.Root className="relative z-[1] w-auto flex justify-end">
             <NavigationMenu.List className="center shadow-blackA4 m-0 flex list-none p-1">
               <NavigationMenu.Item>
-                <NavigationMenu.Trigger className="text-white hover:text-violet11 hover:bg-violet3 focus:shadow-violet7 group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none focus:shadow-[0_0_0_2px]">
-                  User{' '}
+                <NavigationMenu.Trigger className="text-white hover:text-violet11 focus:shadow-violet7 group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none focus:shadow-[0_0_0_2px]">
+                  <Avatar.Root className="bg-blackA1 inline-flex h-[45px] w-[45px] select-none items-center justify-center overflow-hidden rounded-full align-middle">
+                    <Avatar.Image
+                      className="h-full w-full rounded-[inherit] object-cover"
+                      src="https://images.unsplash.com/photo-1492633423870-43d1cd2775eb?&w=128&h=128&dpr=2&q=80"
+                      alt="Colm Tuite"
+                    />
+                    <Avatar.Fallback
+                      className="text-violet11 leading-1 flex h-full w-full items-center bg-white justify-center text-[15px] font-medium"
+                      delayMs={200}
+                    >
+                      CT
+                    </Avatar.Fallback>
+                  </Avatar.Root>{' '}
                   <CaretDownIcon
                     className="text-violet10 relative top-[1px] transition-transform duration-[250] ease-in group-data-[state=open]:-rotate-180"
                     aria-hidden
                   />
                 </NavigationMenu.Trigger>
                 <NavigationMenu.Content className="data-[motion=from-start]:animate-enterFromLeft data-[motion=from-end]:animate-enterFromRight data-[motion=to-start]:animate-exitToLeft data-[motion=to-end]:animate-exitToRight absolute top-0 left-0 w-full sm:w-auto">
-                  <ul className="m-0 grid list-none gap-x-[10px] p-[22px] sm:w-[300px] sm:grid-flow-col sm:grid-rows-3">
+                  <ul className="m-0 mr-10 grid list-none gap-x-[10px] pl-[10px] p-[22px] sm:w-[200px] sm:grid-flow-col sm:grid-rows-3">
                     <ListItem
                       className="row-span-1"
                       href=""
@@ -112,7 +125,7 @@ export const Header = (props: any) => {
                 <div className="relative top-[70%] h-[10px] w-[10px] rotate-[45deg] rounded-tl-[2px] bg-white" />
               </NavigationMenu.Indicator>
             </NavigationMenu.List>
-            <div className="perspective-[2000px] absolute top-full left-0 flex w-full justify-evenly">
+            <div className="perspective-[2000px] absolute top-full left-0 flex w-[152%] justify-evenly">
               <NavigationMenu.Viewport className="data-[state=open]:animate-scaleIn data-[state=closed]:animate-scaleOut relative mt-[5px] h-[var(--radix-navigation-menu-viewport-height)] w-full origin-[top_center] overflow-hidden rounded-[6px] bg-white transition-[width,_height] duration-300 sm:w-[var(--radix-navigation-menu-viewport-width)]" />
             </div>
           </NavigationMenu.Root>
