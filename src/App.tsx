@@ -26,8 +26,6 @@ function App() {
       <div className="main-content">
         <HomePage autoSlide={true} autoSlideInterval={5000} />
       </div>
-
-      {/* <HomePage /> */}
     </ThemeProvider>
   );
 }
