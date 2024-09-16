@@ -8,7 +8,7 @@ import classNames from 'classnames';
 export const Header = (props: any) => {
   return (
     <>
-      <header className="bg-[#51a7bf] text-white p-6 shadow-md rounded-md">
+      <header className="bg-[#51a7bf] text-white p-6 shadow-md rounded-md sticky top-0 z-10">
         <div className="container mx-auto flex justify-between items-center">
           <div className="text-xl font-bold">
             <a href="/" className="hover:text-gray-300">
