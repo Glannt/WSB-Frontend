@@ -2,7 +2,7 @@ import React from 'react';
 import * as Form from '@radix-ui/react-form';
 import * as Checkbox from '@radix-ui/react-checkbox';
 import { CheckIcon } from '@radix-ui/react-icons';
-import './SignUp.css';
+import './SignUp.scss';
 import { Em, Heading, Link, Strong, Text } from '@radix-ui/themes';
 import * as AspectRatio from '@radix-ui/react-aspect-ratio';
 
