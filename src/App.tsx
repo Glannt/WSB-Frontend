@@ -16,15 +16,20 @@ import viteLogo from '/vite.svg';
 import { Header } from './components/Header/Header';
 import ModeToggle from './components/ModeToggle/ModeToggle';
 import { HomePage } from './components/Content/HomePage';
+import { Footer } from './components/Header/Footer';
 
 function App() {
   return (
     <ThemeProvider defaultTheme="light" storageKey="ui-theme">
-      <div className="header-container sticky top-0 z-10">
+      <div className="header-container sticky top-0 z-10 hover:bg-[#51a7bf]">
         <Header />
       </div>
       <div className="main-content">
         <HomePage autoSlide={true} autoSlideInterval={5000} />
+      </div>
+      <div>
+        {/* Footer */}
+        <Footer />
       </div>
     </ThemeProvider>
   );

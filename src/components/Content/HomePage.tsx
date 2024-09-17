@@ -1,6 +1,10 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
-import { Flex, Box, Card, Text, Avatar, Inset, Strong } from '@radix-ui/themes';
+import { Button } from '../ui/button';
+import { SubcriptionCard } from '../HomepageContent/SubcriptionCard';
+import { TypeRoomCard } from '../HomepageContent/TypeRoomCard';
+import { DescriptionHomePage } from '../HomepageContent/DescriptionHomePage';
+
 export interface CarouselPropsSlider {
   autoSlide?: boolean;
   autoSlideInterval?: number;
@@ -57,12 +61,13 @@ export const HomePage: React.FC<CarouselPropsSlider> = ({
 
     return () => clearInterval(slideInterval);
   }, [autoSlide, autoSlideInterval, currentIndex, isInteracting]);
+
   return (
-    <>
-      <div className="max-w-[1400px] h-[780px] w-full m-auto py-16 px-4 relative group z[-5]">
+    <div>
+      <div className="max-w-[1800px] h-[780px] w-screen m-auto gap-10 py-16  relative group z[-5]">
         <div
           style={{ backgroundImage: `url(${slides[currentIndex].url})` }}
-          className="w-full h-full rounded-2xl bg-center bg-cover duration-500 my-0"
+          className="w-full h-full rounded-2xl bg-center bg-cover duration-500 my-0 mx-0"
         ></div>
         {/* Left Arrow */}
         <div className="hidden group-hover:block absolute top-[50%] -translate-x-0 translate-y-[-50%] left-5 text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer">
@@ -85,111 +90,91 @@ export const HomePage: React.FC<CarouselPropsSlider> = ({
         </div>
       </div>
       {/* Type room */}
-      <div className="max-w-[1400px] h-[1000px] w-full m-auto relative py-16 px-4">
-        <h1 className="font-bold text-black">Các loại phòng</h1>
-        <div className="flex flex-row gap-4 w-full h-auto justify-center">
-          <div className="rounded-lg border-solid border-2 border-sky-500 w-82">
-            <Box maxWidth="700px">
-              <Card size="3">
-                <Inset clip="padding-box" side="top" pb="current">
-                  <img
-                    src="https://images.unsplash.com/photo-1617050318658-a9a3175e34cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
-                    alt="Bold typography"
-                    style={{
-                      display: 'block',
-                      objectFit: 'cover',
-                      width: '100%',
-                      height: 140,
-                      backgroundColor: 'var(--gray-5)',
-                    }}
-                  />
-                </Inset>
-                <Text asChild>
-                  <h2 className="font-bold text-lg">Quick Start</h2>
-                </Text>
-                <Text as="div" color="gray" size="2">
-                  Start building your next project in minutes
-                </Text>
-              </Card>
-            </Box>
+      <div className="max-w-[1800px] h-[650px] w-full m-auto py-16 px-4">
+        <h1 className="font-bold text-4xl mb-14">Các loại phòng</h1>
+        <div className="flex flex-row gap-4 w-full h-[400px] justify-evenly">
+          <TypeRoomCard />
+          <TypeRoomCard />
+          <TypeRoomCard />
+          <TypeRoomCard />
+        </div>
+        <div className="pt-10 flex justify-end mx-auto ">
+          <Button className="bg-sky-500 p-7 md:text-base lg:text-base xl:text-base 2xl:text-base hover:bg-sky-600">
+            Xem thêm
+          </Button>
+        </div>
+      </div>
+      {/* Utilities */}
+      <div className="max-w-[1800px] h-[750px] w-full m-auto relative py-32 px-4">
+        <DescriptionHomePage />
+      </div>
+      <div className="max-w-[1800px] h-[750px] w-full m-auto relative py-32 px-4">
+        <DescriptionHomePage />
+      </div>
+      <div className="max-w-[1800px] h-[750px] w-full m-auto relative py-32 px-4">
+        <DescriptionHomePage />
+      </div>
+      {/* Subcription */}
+      <div className="max-w-[1800px] h-[500px] w-full m-auto relative py-16 px-4">
+        <h1 className="font-bold  text-4xl mt-12 mb-4">Gói thành viên</h1>
+        <div className="flex flex-row gap-4 w-full h-[400px] justify-evenly rounded-lg border-solid border-2 border-sky-500 py-5">
+          <SubcriptionCard />
+          <SubcriptionCard />
+          <SubcriptionCard />
+        </div>
+      </div>
+      {/* Feedback */}
+      <div className="max-w-[1400px] h-[300px] w-full m-auto relative py-16 px-4">
+        <h1 className="font-bold text-4xl mb-4 mt-8">Feedback</h1>
+        <div className="flex flex-row gap-4 w-full h-auto justify-evenly">
+          {/* Card 1 */}
+          <div className="rounded-lg border-solid border-2 border-sky-500 p-4 max-w-[240px]">
+            <div className="flex items-center gap-3">
+              <img
+                className="w-16 h-16 rounded-full"
+                src="https://images.unsplash.com/photo-1607346256330-dee7af15f7c5?&w=64&h=64&dpr=2&q=70&crop=focalpoint&fp-x=0.67&fp-y=0.5&fp-z=1.4&fit=crop"
+                alt="Teodros Girmay"
+              />
+              <div>
+                <h3 className="font-bold">Teodros Girmay</h3>
+                <p className="text-gray-600">Engineering</p>
+              </div>
+            </div>
           </div>
-          <div className="rounded-lg border-solid border-2 border-sky-500 w-82">
-            <Box maxWidth="700px">
-              <Card size="3">
-                <Inset clip="padding-box" side="top" pb="current">
-                  <img
-                    src="https://images.unsplash.com/photo-1617050318658-a9a3175e34cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
-                    alt="Bold typography"
-                    style={{
-                      display: 'block',
-                      objectFit: 'cover',
-                      width: '100%',
-                      height: 140,
-                      backgroundColor: 'var(--gray-5)',
-                    }}
-                  />
-                </Inset>
-                <Text asChild>
-                  <h2 className="font-bold text-lg">Quick Start</h2>
-                </Text>
-                <Text as="div" color="gray" size="2">
-                  Start building your next project in minutes
-                </Text>
-              </Card>
-            </Box>
+
+          {/* Card 2 */}
+          <div className="rounded-lg border-solid border-2 border-sky-500 p-4 max-w-[240px]">
+            <div className="flex items-center gap-3">
+              <img
+                className="w-16 h-16 rounded-full"
+                src="https://images.unsplash.com/photo-1607346256330-dee7af15f7c5?&w=64&h=64&dpr=2&q=70&crop=focalpoint&fp-x=0.67&fp-y=0.5&fp-z=1.4&fit=crop"
+                alt="Teodros Girmay"
+              />
+              <div>
+                <h3 className="font-bold">Teodros Girmay</h3>
+                <p className="text-gray-600">Engineering</p>
+              </div>
+            </div>
           </div>
-          <div className="rounded-lg border-solid border-2 border-sky-500 w-82">
-            <Box maxWidth="700px">
-              <Card size="3">
-                <Inset clip="padding-box" side="top" pb="current">
-                  <img
-                    src="https://images.unsplash.com/photo-1617050318658-a9a3175e34cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
-                    alt="Bold typography"
-                    style={{
-                      display: 'block',
-                      objectFit: 'cover',
-                      width: '100%',
-                      height: 140,
-                      backgroundColor: 'var(--gray-5)',
-                    }}
-                  />
-                </Inset>
-                <Text asChild>
-                  <h2 className="font-bold text-lg">Quick Start</h2>
-                </Text>
-                <Text as="div" color="gray" size="2">
-                  Start building your next project in minutes
-                </Text>
-              </Card>
-            </Box>
-          </div>
-          <div className="rounded-lg border-solid border-2 border-sky-500 w-82">
-            <Box maxWidth="500px">
-              <Card size="3">
-                <Inset clip="padding-box" side="top" pb="current">
-                  <img
-                    src="https://images.unsplash.com/photo-1617050318658-a9a3175e34cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
-                    alt="Bold typography"
-                    style={{
-                      display: 'block',
-                      objectFit: 'cover',
-                      width: '100%',
-                      height: 140,
-                      backgroundColor: 'var(--gray-5)',
-                    }}
-                  />
-                </Inset>
-                <Text asChild>
-                  <h2 className="font-bold text-lg">Quick Start</h2>
-                </Text>
-                <Text as="div" color="gray" size="2">
-                  Start building your next project in minutes
-                </Text>
-              </Card>
-            </Box>
+
+          {/* Card 3 */}
+          <div className="rounded-lg border-solid border-2 border-sky-500 p-4 max-w-[240px]">
+            <div className="flex items-center gap-3">
+              <img
+                className="w-16 h-16 rounded-full"
+                src="https://images.unsplash.com/photo-1607346256330-dee7af15f7c5?&w=64&h=64&dpr=2&q=70&crop=focalpoint&fp-x=0.67&fp-y=0.5&fp-z=1.4&fit=crop"
+                alt="Teodros Girmay"
+              />
+              <div>
+                <h3 className="font-bold">Teodros Girmay</h3>
+                <p className="text-gray-600">Engineering</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </>
+
+      {/* test */}
+    </div>
   );
 };

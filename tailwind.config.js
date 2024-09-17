@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 const plugin = require('tailwindcss/plugin');
 const { blackA, mauve, violet, indigo, purple } = require('@radix-ui/colors');
-
+const flowbite = require('flowbite-react/tailwind');
 module.exports = {
   darkMode: ['class'],
   content: [
@@ -11,6 +11,7 @@ module.exports = {
     './src/**/*.{ts,tsx}',
     './src/components/Header/Header.tsx',
     './App.jsx', // Added from the second config
+    flowbite.content(),
   ],
   theme: {
     container: {
@@ -124,6 +125,7 @@ module.exports = {
   },
   plugins: [
     require('tailwindcss-animate'),
+    require('daisyui'),
     plugin(({ matchUtilities }) => {
       matchUtilities({
         perspective: (value) => ({
@@ -131,5 +133,6 @@ module.exports = {
         }),
       });
     }),
+    flowbite.plugin(),
   ],
 };
