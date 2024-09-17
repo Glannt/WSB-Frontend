@@ -3,12 +3,31 @@ import * as Avatar from '@radix-ui/react-avatar';
 import * as NavigationMenu from '@radix-ui/react-navigation-menu';
 import ModeToggle from '../ModeToggle/ModeToggle';
 import { CaretDownIcon } from '@radix-ui/react-icons';
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useEffect, useState } from 'react';
 import classNames from 'classnames';
 export const Header = (props: any) => {
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
   return (
     <>
-      <header className="bg-[#51a7bf] text-white p-6 shadow-md rounded-md sticky top-0 z-10">
+      <header
+        className={`bg-[#51a7bf] text-white p-6 shadow-md rounded-md ${isScrolled ? 'bg-opacity-80 backdrop-blur-sm shadow-md' : 'bg-[#51a7bf]'}`}
+      >
         <div className="container mx-auto flex justify-between items-center">
           <div className="text-xl font-bold">
             <a href="/" className="hover:text-gray-300">
