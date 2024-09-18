@@ -30,7 +30,11 @@ const SignUp = () => {
             </AspectRatio.Root>
           </image>
         </div>
-        <div>
+        <div
+          style={{
+            marginLeft: '40px',
+          }}
+        >
           <div className="SignUp">Sign Up</div>
           <div className="">
             <Form.Root className="FormRoot">
@@ -51,7 +55,12 @@ const SignUp = () => {
                   </Form.Message>
                 </div>
                 <Form.Control asChild>
-                  <input className="Input" type="text" required />
+                  <input
+                    className="Input placeholder-gray-500 border shadow-inner"
+                    placeholder="090123xxx"
+                    type="text"
+                    required
+                  />
                 </Form.Control>
               </Form.Field>
 
@@ -72,7 +81,12 @@ const SignUp = () => {
                   </Form.Message>
                 </div>
                 <Form.Control asChild>
-                  <input className="Input" type="email" required />
+                  <input
+                    className="Input placeholder-gray-500 border shadow-inner"
+                    placeholder="jane@example.com"
+                    type="email"
+                    required
+                  />
                 </Form.Control>
               </Form.Field>
 
@@ -93,7 +107,12 @@ const SignUp = () => {
                   </Form.Message>
                 </div>
                 <Form.Control asChild>
-                  <input className="Input" type="text" required />
+                  <input
+                    className="Input placeholder-gray-500 border shadow-inner"
+                    placeholder="Nguyen Van A"
+                    type="text"
+                    required
+                  />
                 </Form.Control>
               </Form.Field>
 
@@ -114,7 +133,12 @@ const SignUp = () => {
                   </Form.Message>
                 </div>
                 <Form.Control asChild>
-                  <input className="Input" type="password" required />
+                  <input
+                    className="Input placeholder-gray-500 border shadow-inner"
+                    placeholder="***********"
+                    type="password"
+                    required
+                  />
                 </Form.Control>
               </Form.Field>
 
@@ -137,7 +161,12 @@ const SignUp = () => {
                   </Form.Message>
                 </div>
                 <Form.Control asChild>
-                  <input className="Input" type="password" required />
+                  <input
+                    className="Input placeholder-gray-500 border shadow-inner"
+                    placeholder="***********"
+                    type="password"
+                    required
+                  />
                 </Form.Control>
               </Form.Field>
 
@@ -158,7 +187,7 @@ const SignUp = () => {
                   </Form.Message>
                 </div>
                 <Form.Control asChild>
-                  <input className="Input" type="date" required />
+                  <input className="Input shadow-inner" type="date" required />
                 </Form.Control>
               </Form.Field>
 
@@ -191,7 +220,10 @@ const SignUp = () => {
             <textarea className="Textarea" required />
           </Form.Control>
         </Form.Field> */}
-              <button className="Button" style={{ marginTop: 10 }}>
+              <button
+                className="Button transition duration-500 ease-in-out hover:#51a7bf transform hover:-translate-y-0 hover:scale-105"
+                style={{ marginTop: 10 }}
+              >
                 Sign Up
               </button>
               <div className="vanh1">

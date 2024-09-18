@@ -19,7 +19,7 @@ const Login = () => {
             />
           </image> */}
         {/* </div> */}
-        <div className="Container">
+        <div className="Container ">
           <image>
             <AspectRatio.Root ratio={1000 / 666}>
               <img
@@ -30,7 +30,11 @@ const Login = () => {
             </AspectRatio.Root>
           </image>
         </div>
-        <div>
+        <div
+          style={{
+            marginLeft: '40px',
+          }}
+        >
           <div className="Login">Login</div>
           <div className="">
             <Form.Root className="FormRoot">
@@ -51,7 +55,12 @@ const Login = () => {
                   </Form.Message>
                 </div>
                 <Form.Control asChild>
-                  <input className="Input" type="text" required />
+                  <input
+                    className="Input placeholder-gray-500 border shadow-inner"
+                    placeholder="0909123xxx"
+                    type="text"
+                    required
+                  />
                 </Form.Control>
               </Form.Field>
 
@@ -72,7 +81,12 @@ const Login = () => {
                   </Form.Message>
                 </div>
                 <Form.Control asChild>
-                  <input className="Input" type="password" required />
+                  <input
+                    className="Input placeholder-gray-500 border shadow-inner"
+                    placeholder="***********"
+                    type="password"
+                    required
+                  />
                 </Form.Control>
               </Form.Field>
 
@@ -196,12 +210,15 @@ const Login = () => {
               <Link className="Link" href="#">
                 Forgot Password?
               </Link>
-              <button className="Button" style={{ marginTop: 10 }}>
+              <button
+                className="Button transition duration-500 ease-in-out hover:#51a7bf transform hover:-translate-y-0 hover:scale-105"
+                style={{ marginTop: 10 }}
+              >
                 Login
               </button>
               <Link
                 href="#"
-                className="Button Google"
+                className="Button Google transition duration-500 ease-in-out hover:#51a7bf transform hover:-translate-y-0 hover:scale-105"
                 style={{ marginTop: 10 }}
               >
                 <img
