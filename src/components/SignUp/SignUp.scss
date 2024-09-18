@@ -10,25 +10,25 @@ button {
   box-sizing: border-box;
 }
 
+input[type='text'],
+input[type='password'],
+input[type='date'],
+input[type='email'] {
+  border-radius: 5px;
+}
+
 .Container {
   width: 1000px;
-  height: 666px;
+  height: 0%;
   border-radius: 6px;
   overflow: hidden;
   box-shadow: 0 2px 10px var(--black-a7);
-  margin-top: 70px;
-  margin-right: 200px;
-
+  margin: 70px;
   .Image {
     width: 100%;
     height: 100%;
+    object-fit: cover;
   }
-}
-
-.Image {
-  object-fit: cover;
-  width: 100%;
-  height: 100%;
 }
 
 .SignUp {
@@ -122,7 +122,7 @@ button {
   box-shadow: 0 2px 10px var(--black-a4);
 
   &:hover {
-    background-color: var(--mauve-3);
+    background-color: #00697f;
   }
 
   &:focus {
