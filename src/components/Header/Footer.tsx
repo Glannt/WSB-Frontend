@@ -1,6 +1,6 @@
 export const Footer = () => {
   return (
-    <footer className="max-w-screen footer bg-neutral text-neutral-content p-10">
+    <footer className="max-w-screen footer bg-neutral text-neutral-content p-7">
       <aside>
         <svg
           width="50"

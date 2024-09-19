@@ -1,4 +1,4 @@
-export const DescriptionHomePage = () => {
+export const DescriptionUtil = () => {
   return (
     <div className="grid grid-cols-2 gap-36 ">
       {/* Column for Image */}

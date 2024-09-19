@@ -17,6 +17,7 @@ import { Header } from './components/Header/Header';
 import ModeToggle from './components/ModeToggle/ModeToggle';
 import { HomePage } from './components/Content/HomePage';
 import { Footer } from './components/Header/Footer';
+import { Outlet } from 'react-router';
 
 function App() {
   return (
@@ -25,7 +26,7 @@ function App() {
         <Header />
       </div>
       <div className="main-content">
-        <HomePage autoSlide={true} autoSlideInterval={5000} />
+        <Outlet />
       </div>
       <div>
         {/* Footer */}
