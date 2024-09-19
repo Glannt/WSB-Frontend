@@ -17,6 +17,8 @@
     "build-storybook-docs": "storybook build --docs --output-dir storybook-docs-static"
   },
   "dependencies": {
+    "@headlessui/react": "^2.1.8",
+    "@nextui-org/react": "^2.4.8",
     "@radix-ui/colors": "^3.0.0",
     "@radix-ui/react-dialog": "^1.1.1",
     "@radix-ui/react-dropdown-menu": "^2.1.1",
@@ -42,7 +44,7 @@
     "redux": "^5.0.1",
     "sass": "^1.78.0",
     "swiper": "^11.1.14",
-    "tailwind-merge": "^2",
+    "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1",
     "yup": "^1.4.0"
   },

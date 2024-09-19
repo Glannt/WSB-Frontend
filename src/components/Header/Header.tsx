@@ -26,7 +26,7 @@ export const Header = (props: any) => {
   return (
     <>
       <header
-        className={`bg-[#51a7bf] text-white p-6 shadow-md rounded-md ${isScrolled ? 'bg-opacity-80 backdrop-blur-sm shadow-md' : 'bg-[#51a7bf]'}`}
+        className={`bg-[#51a7bf] text-white p-2 shadow-md rounded-md ${isScrolled ? 'bg-opacity-80 backdrop-blur-sm shadow-md' : 'bg-[#51a7bf]'}`}
       >
         <div className="container mx-auto flex justify-between items-center">
           <div className="text-xl font-bold">
@@ -70,11 +70,11 @@ export const Header = (props: any) => {
                 </NavigationMenu.Trigger>
                 <NavigationMenu.Content className="absolute top-0 left-0 w-full sm:w-auto">
                   <ul className="m-0 grid list-none gap-x-[10px] p-[22px] sm:w-[600px] sm:grid-flow-col sm:grid-rows-3">
-                    <ListItem title="Phòng làm việc" href="">
+                    <ListItem title="Phòng làm việc" href="list-room">
                       Build high-quality, accessible design systems and web
                       apps.
                     </ListItem>
-                    <ListItem title="Đồ ăn " href="">
+                    <ListItem title="Đồ ăn " href="list-food">
                       A quick tutorial to get you up and running with Radix
                       Primitives.
                     </ListItem>
