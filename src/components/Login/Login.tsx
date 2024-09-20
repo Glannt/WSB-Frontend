@@ -35,7 +35,7 @@ const Login = () => {
             marginLeft: '40px',
           }}
         >
-          <div className="Login">Login</div>
+          <div className="Login">Sign In</div>
           <div className="">
             <Form.Root className="FormRoot">
               <Form.Field className="FormField" name="phone">
@@ -46,7 +46,7 @@ const Login = () => {
                     justifyContent: 'space-between',
                   }}
                 >
-                  <Form.Label className="FormLabel">Phone Number</Form.Label>
+                  <Form.Label className="FormLabel">Username</Form.Label>
                   <Form.Message className="FormMessage" match="valueMissing">
                     Please enter your phone number
                   </Form.Message>
@@ -57,7 +57,7 @@ const Login = () => {
                 <Form.Control asChild>
                   <input
                     className="Input placeholder-gray-500 border shadow-inner"
-                    placeholder="0909123xxx"
+                    placeholder="Enter your username"
                     type="text"
                     required
                   />
