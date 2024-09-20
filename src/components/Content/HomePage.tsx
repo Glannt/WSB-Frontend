@@ -65,8 +65,8 @@ export const HomePage: React.FC<CarouselPropsSlider> = ({
   }, [autoSlide, autoSlideInterval, currentIndex, isInteracting]);
 
   return (
-    <div>
-      <div className="max-w-[1800px] h-[780px] w-screen m-auto gap-10 py-16 relative group z[-5]">
+    <div className="container">
+      <div className="max-w-[1400px] h-[780px] w-screen m-auto gap-10 py-16 relative group z[-5]">
         <div
           style={{ backgroundImage: `url(${slides[currentIndex].url})` }}
           className="w-full h-full rounded-2xl bg-center bg-cover duration-500 my-0 mx-0"
