@@ -1,244 +1,145 @@
-import React from 'react';
-import * as Form from '@radix-ui/react-form';
-import * as Checkbox from '@radix-ui/react-checkbox';
-import { CheckIcon } from '@radix-ui/react-icons';
-import './Login.scss';
-import { Em, Heading, Kbd, Link, Strong, Text } from '@radix-ui/themes';
-import * as AspectRatio from '@radix-ui/react-aspect-ratio';
+import React, { FormEvent, useState } from 'react';
+import {
+  FaEnvelope,
+  FaLock,
+  FaEye,
+  FaEyeSlash,
+  FaGoogle,
+} from 'react-icons/fa';
+import { BiLoaderAlt } from 'react-icons/bi';
 
 const Login = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsLoading(true);
+    // Simulating API call
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    setIsLoading(false);
+    // Handle login logic here
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
-    <>
-      <div className="flex justify-end">
-        {/* <div className="img">
-          <image>
-            <img
-              src="https://www.hatcollective.com/wp-content/uploads/2022/08/360-workspace-kita-e2-open-office.jpg"
-              alt="logo"
-              className="Logo"
+    <div
+      className="min-h-screen flex items-center justify-center bg-cover bg-center"
+      style={{
+        backgroundImage:
+          "url('https://www.hatcollective.com/wp-content/uploads/2022/08/360-workspace-kita-e2-open-office.jpg')",
+      }}
+    >
+      <div className="bg-white bg-opacity-70 p-8 rounded-lg shadow-lg w-full max-w-md backdrop-blur-sm">
+        <h2 className="text-3xl font-bold text-black mb-6 text-center">
+          Welcome Back!
+        </h2>
+        <form onSubmit={handleLogin}>
+          <div className="mb-4 relative">
+            <input
+              type="email"
+              id="email"
+              className="w-full px-3 py-2 placeholder-gray-800 text-black rounded-md focus:outline-none focus:ring-2 focus:ring-blackA9 pl-10 bg-black bg-opacity-20"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
             />
-          </image> */}
-        {/* </div> */}
-        <div className="Container ">
-          <image>
-            <AspectRatio.Root ratio={1000 / 666}>
-              <img
-                className="Image"
-                src="https://www.hatcollective.com/wp-content/uploads/2022/08/360-workspace-kita-e2-open-office.jpg"
-                alt="Landscape photograph by Tobias Tullius"
-              />
-            </AspectRatio.Root>
-          </image>
-        </div>
-        <div
-          style={{
-            marginLeft: '40px',
-          }}
-        >
-          <div className="Login">Sign In</div>
-          <div className="">
-            <Form.Root className="FormRoot">
-              <Form.Field className="FormField" name="phone">
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'baseline',
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <Form.Label className="FormLabel">Username</Form.Label>
-                  <Form.Message className="FormMessage" match="valueMissing">
-                    Please enter your phone number
-                  </Form.Message>
-                  <Form.Message className="FormMessage" match="typeMismatch">
-                    Please provide a valid phone number
-                  </Form.Message>
-                </div>
-                <Form.Control asChild>
-                  <input
-                    className="Input placeholder-gray-500 border shadow-inner"
-                    placeholder="Enter your username"
-                    type="text"
-                    required
-                  />
-                </Form.Control>
-              </Form.Field>
-
-              <Form.Field className="FormField" name="pass">
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'baseline',
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <Form.Label className="FormLabel">Password</Form.Label>
-                  <Form.Message className="FormMessage" match="valueMissing">
-                    Please enter your password
-                  </Form.Message>
-                  <Form.Message className="FormMessage" match="typeMismatch">
-                    Please provide a valid password
-                  </Form.Message>
-                </div>
-                <Form.Control asChild>
-                  <input
-                    className="Input placeholder-gray-500 border shadow-inner"
-                    placeholder="***********"
-                    type="password"
-                    required
-                  />
-                </Form.Control>
-              </Form.Field>
-
-              {/* <Form.Field className="FormField" name="email">
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'baseline',
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <Form.Label className="FormLabel">Email</Form.Label>
-                  <Form.Message className="FormMessage" match="valueMissing">
-                    Please enter your email
-                  </Form.Message>
-                  <Form.Message className="FormMessage" match="typeMismatch">
-                    Please provide a valid email
-                  </Form.Message>
-                </div>
-                <Form.Control asChild>
-                  <input className="Input" type="email" required />
-                </Form.Control>
-              </Form.Field>
-
-              <Form.Field className="FormField" name="name">
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'baseline',
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <Form.Label className="FormLabel">Full Name</Form.Label>
-                  <Form.Message className="FormMessage" match="valueMissing">
-                    Please enter your full name
-                  </Form.Message>
-                  <Form.Message className="FormMessage" match="typeMismatch">
-                    Please provide a valid name
-                  </Form.Message>
-                </div>
-                <Form.Control asChild>
-                  <input className="Input" type="text" required />
-                </Form.Control>
-              </Form.Field>
-
-              
-
-              <Form.Field className="FormField" name="confirm">
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'baseline',
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <Form.Label className="FormLabel">
-                    Confirm Password
-                  </Form.Label>
-                  <Form.Message className="FormMessage" match="valueMissing">
-                    Please enter your confirm password
-                  </Form.Message>
-                  <Form.Message className="FormMessage" match="typeMismatch">
-                    Please provide a valid confirm password
-                  </Form.Message>
-                </div>
-                <Form.Control asChild>
-                  <input className="Input" type="password" required />
-                </Form.Control>
-              </Form.Field>
-
-              <Form.Field className="FormField" name="dob">
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'baseline',
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <Form.Label className="FormLabel">Date Of Birth</Form.Label>
-                  <Form.Message className="FormMessage" match="valueMissing">
-                    Please enter your date of birth
-                  </Form.Message>
-                  <Form.Message className="FormMessage" match="typeMismatch">
-                    Please provide a valid date of birth
-                  </Form.Message>
-                </div>
-                <Form.Control asChild>
-                  <input className="Input" type="date" required />
-                </Form.Control>
-              </Form.Field> */}
-              {/* 
-              <form>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <Checkbox.Root className="CheckboxRoot" id="c1">
-                    <Checkbox.Indicator className="CheckboxIndicator">
-                      <CheckIcon />
-                    </Checkbox.Indicator>
-                  </Checkbox.Root>
-                  <label className="Label" htmlFor="c1">
-                    Agree to Our terms and Conditions{' '}
-                  </label>
-                </div>
-              </form> */}
-              {/* <Form.Field className="FormField" name="question">
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'baseline',
-                justifyContent: 'space-between',
-              }}
-            >
-              <Form.Label className="FormLabel">Question</Form.Label>
-              <Form.Message className="FormMessage" match="valueMissing">
-                Please enter a question
-              </Form.Message>
-            </div>
-            <Form.Control asChild>
-              <textarea className="Textarea" required />
-            </Form.Control>
-          </Form.Field> */}
-              <Link className="Link" href="#">
-                Forgot Password?
-              </Link>
-              <button
-                className="Button transition duration-500 ease-in-out hover:#51a7bf transform hover:-translate-y-0 hover:scale-105"
-                style={{ marginTop: 10 }}
-              >
-                Login
-              </button>
-              <Link
-                href="#"
-                className="Button Google transition duration-500 ease-in-out hover:#51a7bf transform hover:-translate-y-0 hover:scale-105"
-                style={{ marginTop: 10 }}
-              >
-                <img
-                  src="https://img.icons8.com/color/48/000000/google-logo.png"
-                  alt="google"
-                  className="Google"
-                />
-                Login with Google
-              </Link>
-              <div className="vanh">
-                New User?ㅤ
-                <Link href="#">
-                  <Strong>Register</Strong>
-                </Link>
-              </div>
-            </Form.Root>
+            <FaEnvelope className="absolute left-3 top-3 text-black-400" />
           </div>
+          <div className="mb-4 relative">
+            <input
+              type={showPassword ? 'text' : 'password'}
+              id="password"
+              className="w-full px-3 py-2 text-black placeholder-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-blackA9 pl-10 bg-black bg-opacity-20"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <FaLock className="absolute left-3 top-3 text-black" />
+            <button
+              type="button"
+              onClick={togglePasswordVisibility}
+              className="absolute right-3 top-3 text-black"
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </button>
+          </div>
+          <div className="flex items-center justify-between mb-4">
+            {/* <label className="flex items-center text-white">
+              <input
+                type="checkbox"
+                className="mr-2"
+                checked={rememberMe}
+                onChange={() => setRememberMe(!rememberMe)}
+              />
+              Remember me
+            </label> */}
+            <a href="#" className="text-black hover:underline">
+              Forgot password?
+            </a>
+          </div>
+          {/* <button
+            type="submit"
+            className="w-full bg-white text-black py-2 rounded-md font-bold hover:bg-gray-200 transition duration-300 flex items-center justify-center"
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <svg className="animate-spin h-5 w-5 mr-3" viewBox="0 0 24 24">
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
+              </svg>
+            ) : null}
+            {isLoading ? 'Logging in...' : 'Login'}
+          </button> */}
+          <button
+            type="submit"
+            className={` w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-bold text-white bg-blackA11 hover:bg-blackA12 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
+              isLoading ? 'opacity-75 cursor-not-allowed' : ''
+            }`}
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <>
+                <BiLoaderAlt className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" />
+                Loading...
+              </>
+            ) : (
+              'Login'
+            )}
+          </button>
+        </form>
+        <div className="mt-4">
+          <button className="w-full bg-blackA11 text-white py-2 rounded-md font-bold hover:bg-blackA12 transition duration-300 flex items-center justify-center">
+            <FaGoogle className="mr-2" /> Login with Google
+          </button>
         </div>
+        <p className="text-center mt-4 text-black">
+          Don't have an account?{' '}
+          <a href="sign-up" className="text-black font-bold hover:underline">
+            Sign up
+          </a>
+        </p>
       </div>
-    </>
+    </div>
   );
 };
 
