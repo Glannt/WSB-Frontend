@@ -1,242 +1,204 @@
-import React from 'react';
-import * as Form from '@radix-ui/react-form';
-import * as Checkbox from '@radix-ui/react-checkbox';
-import { CheckIcon } from '@radix-ui/react-icons';
-import './SignUp.scss';
-import { Em, Heading, Link, Strong, Text } from '@radix-ui/themes';
-import * as AspectRatio from '@radix-ui/react-aspect-ratio';
+import React, { useState, ChangeEvent, FormEvent } from 'react';
+import {
+  FaUser,
+  FaEnvelope,
+  FaPhone,
+  FaLock,
+  FaCalendar,
+  FaEye,
+  FaEyeSlash,
+} from 'react-icons/fa';
 
-const SignUp = () => {
+interface FormData {
+  fullName: string;
+  email: string;
+  phoneNumber: string;
+  password: string;
+  confirmPassword: string;
+  dateOfBirth: string;
+  agreeTerms: boolean;
+}
+
+const SignUp: React.FC = () => {
+  const [formData, setFormData] = useState<FormData>({
+    fullName: '',
+    email: '',
+    phoneNumber: '',
+    password: '',
+    confirmPassword: '',
+    dateOfBirth: '',
+    agreeTerms: false,
+  });
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [passwordError, setPasswordError] = useState<string>('');
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value, type, checked } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: type === 'checkbox' ? checked : value,
+    }));
+
+    if (name === 'confirmPassword') {
+      if (value !== formData.password) {
+        setPasswordError('Passwords do not match');
+      } else {
+        setPasswordError('');
+      }
+    }
+  };
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    if (formData.password !== formData.confirmPassword) {
+      setPasswordError('Passwords do not match');
+      return;
+    }
+    // Handle form submission logic here
+    console.log('Form submitted:', formData);
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
+
   return (
-    <>
-      <div className="flex justify-end">
-        {/* <div className="img">
-          <image>
-            <img
-              src="https://www.hatcollective.com/wp-content/uploads/2022/08/360-workspace-kita-e2-open-office.jpg"
-              alt="logo"
-              className="Logo"
+    <div
+      className="min-h-screen flex items-center justify-center bg-cover bg-center"
+      style={{
+        backgroundImage:
+          "url('https://www.hatcollective.com/wp-content/uploads/2022/08/360-workspace-kita-e2-open-office.jpg')",
+        // "url('https://www.dgicommunications.com/wp-content/uploads/2022/08/Design_a_Flexible_Workspace.jpg')",
+      }}
+    >
+      <div className="bg-white bg-opacity-70 p-8 rounded-lg shadow-lg w-full max-w-md backdrop-blur-sm">
+        <h2 className="text-3xl font-bold text-black mb-6 text-center">
+          Create Your Account!
+        </h2>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="relative">
+            <FaUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-black" />
+            <input
+              type="text"
+              name="fullName"
+              value={formData.fullName}
+              onChange={handleChange}
+              placeholder="Full Name"
+              className="w-full bg-black bg-opacity-20 text-black placeholder-gray-800 pl-10 pr-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blackA9"
+              required
             />
-          </image>
-        </div> */}
-        <div className="Container">
-          <image>
-            <AspectRatio.Root ratio={1000 / 666}>
-              <img
-                className="Image"
-                src="https://www.hatcollective.com/wp-content/uploads/2022/08/360-workspace-kita-e2-open-office.jpg"
-                alt="Landscape photograph by Tobias Tullius"
-              />
-            </AspectRatio.Root>
-          </image>
-        </div>
-        <div
-          style={{
-            marginLeft: '40px',
-          }}
-        >
-          <div className="SignUp">Sign Up</div>
-          <div className="">
-            <Form.Root className="FormRoot">
-              <Form.Field className="FormField" name="phone">
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'baseline',
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <Form.Label className="FormLabel">Phone Number</Form.Label>
-                  <Form.Message className="FormMessage" match="valueMissing">
-                    Please enter your phone number
-                  </Form.Message>
-                  <Form.Message className="FormMessage" match="typeMismatch">
-                    Please provide a valid phone number
-                  </Form.Message>
-                </div>
-                <Form.Control asChild>
-                  <input
-                    className="Input placeholder-gray-500 border shadow-inner"
-                    placeholder="090123xxx"
-                    type="text"
-                    required
-                  />
-                </Form.Control>
-              </Form.Field>
-
-              <Form.Field className="FormField" name="email">
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'baseline',
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <Form.Label className="FormLabel">Email</Form.Label>
-                  <Form.Message className="FormMessage" match="valueMissing">
-                    Please enter your email
-                  </Form.Message>
-                  <Form.Message className="FormMessage" match="typeMismatch">
-                    Please provide a valid email
-                  </Form.Message>
-                </div>
-                <Form.Control asChild>
-                  <input
-                    className="Input placeholder-gray-500 border shadow-inner"
-                    placeholder="jane@example.com"
-                    type="email"
-                    required
-                  />
-                </Form.Control>
-              </Form.Field>
-
-              <Form.Field className="FormField" name="name">
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'baseline',
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <Form.Label className="FormLabel">Full Name</Form.Label>
-                  <Form.Message className="FormMessage" match="valueMissing">
-                    Please enter your full name
-                  </Form.Message>
-                  <Form.Message className="FormMessage" match="typeMismatch">
-                    Please provide a valid name
-                  </Form.Message>
-                </div>
-                <Form.Control asChild>
-                  <input
-                    className="Input placeholder-gray-500 border shadow-inner"
-                    placeholder="Nguyen Van A"
-                    type="text"
-                    required
-                  />
-                </Form.Control>
-              </Form.Field>
-
-              <Form.Field className="FormField" name="pass">
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'baseline',
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <Form.Label className="FormLabel">Password</Form.Label>
-                  <Form.Message className="FormMessage" match="valueMissing">
-                    Please enter your password
-                  </Form.Message>
-                  <Form.Message className="FormMessage" match="typeMismatch">
-                    Please provide a valid password
-                  </Form.Message>
-                </div>
-                <Form.Control asChild>
-                  <input
-                    className="Input placeholder-gray-500 border shadow-inner"
-                    placeholder="***********"
-                    type="password"
-                    required
-                  />
-                </Form.Control>
-              </Form.Field>
-
-              <Form.Field className="FormField" name="confirm">
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'baseline',
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <Form.Label className="FormLabel">
-                    Confirm Password
-                  </Form.Label>
-                  <Form.Message className="FormMessage" match="valueMissing">
-                    Please enter your confirm password
-                  </Form.Message>
-                  <Form.Message className="FormMessage" match="typeMismatch">
-                    Please provide a valid confirm password
-                  </Form.Message>
-                </div>
-                <Form.Control asChild>
-                  <input
-                    className="Input placeholder-gray-500 border shadow-inner"
-                    placeholder="***********"
-                    type="password"
-                    required
-                  />
-                </Form.Control>
-              </Form.Field>
-
-              <Form.Field className="FormField" name="dob">
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'baseline',
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <Form.Label className="FormLabel">Date Of Birth</Form.Label>
-                  <Form.Message className="FormMessage" match="valueMissing">
-                    Please enter your date of birth
-                  </Form.Message>
-                  <Form.Message className="FormMessage" match="typeMismatch">
-                    Please provide a valid date of birth
-                  </Form.Message>
-                </div>
-                <Form.Control asChild>
-                  <input className="Input shadow-inner" type="date" required />
-                </Form.Control>
-              </Form.Field>
-
-              <form>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <Checkbox.Root className="CheckboxRoot" id="c1">
-                    <Checkbox.Indicator className="CheckboxIndicator">
-                      <CheckIcon />
-                    </Checkbox.Indicator>
-                  </Checkbox.Root>
-                  <label className="Label" htmlFor="c1">
-                    Agree to Our terms and Conditions{' '}
-                  </label>
-                </div>
-              </form>
-              {/* <Form.Field className="FormField" name="question">
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'baseline',
-              justifyContent: 'space-between',
-            }}
+          </div>
+          <div className="relative">
+            <FaEnvelope className="absolute left-3 top-1/2 transform -translate-y-1/2 text-black" />
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="Email"
+              className="w-full bg-black bg-opacity-20 text-black placeholder-gray-800 pl-10 pr-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blackA9"
+              required
+            />
+          </div>
+          <div className="relative">
+            <FaPhone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-black" />
+            <input
+              type="tel"
+              name="phoneNumber"
+              value={formData.phoneNumber}
+              onChange={handleChange}
+              placeholder="Phone Number"
+              className="w-full bg-black bg-opacity-20 text-black placeholder-gray-800 pl-10 pr-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blackA9"
+              required
+            />
+          </div>
+          <div className="relative">
+            <FaLock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-black" />
+            <input
+              type={showPassword ? 'text' : 'password'}
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              placeholder="Password"
+              className="w-full bg-black bg-opacity-20 text-black placeholder-gray-800 pl-10 pr-10 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blackA9"
+              required
+            />
+            <button
+              type="button"
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-black"
+              onClick={togglePasswordVisibility}
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </button>
+          </div>
+          <div className="relative">
+            <FaLock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-black" />
+            <input
+              type={showConfirmPassword ? 'text' : 'password'}
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              placeholder="Confirm Password"
+              className="w-full bg-black bg-opacity-20 text-black placeholder-gray-800 pl-10 pr-10 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blackA9"
+              required
+            />
+            <button
+              type="button"
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-black"
+              onClick={toggleConfirmPasswordVisibility}
+            >
+              {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+            </button>
+          </div>
+          {passwordError && (
+            <p className="text-red-700 text-sm mt-1">{passwordError}</p>
+          )}
+          <div className="relative">
+            <FaCalendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-black" />
+            <input
+              type="date"
+              name="dateOfBirth"
+              value={formData.dateOfBirth}
+              onChange={handleChange}
+              className="w-full bg-black bg-opacity-20 text-black placeholder-gray-800 pl-10 pr-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blackA9"
+              required
+            />
+          </div>
+          <div className="flex items-center">
+            <input
+              type="checkbox"
+              name="agreeTerms"
+              checked={formData.agreeTerms}
+              onChange={handleChange}
+              className="mr-2 rounded-sm"
+              required
+            />
+            <label htmlFor="agreeTerms" className="text-black text-sm">
+              Agree to Our Terms and Conditions
+            </label>
+          </div>
+          <button
+            type="submit"
+            className="w-full bg-blackA11 text-white font-bold py-2 px-4 rounded-lg hover:bg-blackA12 transition duration-300"
+            disabled={passwordError !== ''}
           >
-            <Form.Label className="FormLabel">Question</Form.Label>
-            <Form.Message className="FormMessage" match="valueMissing">
-              Please enter a question
-            </Form.Message>
-          </div>
-          <Form.Control asChild>
-            <textarea className="Textarea" required />
-          </Form.Control>
-        </Form.Field> */}
-              <button
-                className="Button transition duration-500 ease-in-out hover:#51a7bf transform hover:-translate-y-0 hover:scale-105"
-                style={{ marginTop: 10 }}
-              >
-                Sign Up
-              </button>
-              <div className="vanh1">
-                Already registered?ㅤ
-                <Link href="#">
-                  <Strong>Login</Strong>
-                </Link>
-              </div>
-            </Form.Root>
-          </div>
-        </div>
+            Sign Up
+          </button>
+        </form>
+        <p className="text-black text-center mt-4">
+          Already registered?{' '}
+          <a href="sign-in" className="text-black hover:underline font-bold">
+            Login
+          </a>
+        </p>
       </div>
-    </>
+    </div>
   );
 };
 
