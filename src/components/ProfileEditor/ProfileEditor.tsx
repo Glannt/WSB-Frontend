@@ -40,6 +40,7 @@ const ProfileEditor: React.FC = () => {
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isModified, setIsModified] = useState<boolean>(false);
+  const [passwordError, setPasswordError] = useState<string>('');
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -65,6 +66,15 @@ const ProfileEditor: React.FC = () => {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+    // Check if new password and confirm new password match
+    if (formData.newPassword !== formData.confirmNewPassword) {
+      setPasswordError('Passwords do not match');
+      console.log(passwordError);
+
+      return;
+    }
+
+    setPasswordError(''); // Clear any previous errors
     setIsLoading(true);
     // Simulate API call
     setTimeout(() => {
@@ -87,6 +97,7 @@ const ProfileEditor: React.FC = () => {
       confirmNewPassword: '',
     });
     setIsModified(false);
+    setPasswordError('');
   };
 
   return (
@@ -217,7 +228,7 @@ const ProfileEditor: React.FC = () => {
             <button
               type="button"
               onClick={() => handlePasswordToggle('current')}
-              className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
+              className="absolute inset-y-0 right-0 pr-3 mt-6 flex items-center text-sm leading-5"
             >
               {showPassword.current ? <FaEyeSlash /> : <FaEye />}
             </button>
@@ -240,7 +251,7 @@ const ProfileEditor: React.FC = () => {
             <button
               type="button"
               onClick={() => handlePasswordToggle('new')}
-              className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
+              className="absolute inset-y-0 right-0 pr-3 mt-6 flex items-center text-sm leading-5"
             >
               {showPassword.new ? <FaEyeSlash /> : <FaEye />}
             </button>
@@ -260,10 +271,11 @@ const ProfileEditor: React.FC = () => {
               onChange={handleInputChange}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-black focus:border-black"
             />
+            <p className="text-red-500 text-xs mt-1">{passwordError}</p>
             <button
               type="button"
               onClick={() => handlePasswordToggle('confirm')}
-              className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
+              className="absolute inset-y-0 right-0 pr-3 mt-6 flex items-center text-sm leading-5"
             >
               {showPassword.confirm ? <FaEyeSlash /> : <FaEye />}
             </button>
