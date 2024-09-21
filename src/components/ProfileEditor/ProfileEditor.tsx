@@ -1,5 +1,5 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
-import { FaEye, FaEyeSlash, FaUpload } from 'react-icons/fa';
+import { FaEye, FaEyeSlash, FaUpload, FaLock } from 'react-icons/fa';
 import { MdSave, MdRefresh } from 'react-icons/md';
 
 interface FormData {
@@ -184,31 +184,45 @@ const ProfileEditor: React.FC = () => {
             </div>
           </div>
           <div className="w-full md:w-1/3 mt-6 md:mt-0">
-            <div className="text-center">
-              <img
-                src={formData.avatar}
-                alt="User Avatar"
-                className="w-32 h-32 mx-auto rounded-full object-cover"
-              />
-              <label
-                htmlFor="avatar"
-                className="mt-2 cursor-pointer inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black"
-              >
-                <FaUpload className="mr-2" />
-                Change Avatar
-              </label>
-              <input
-                type="file"
-                id="avatar"
-                name="avatar"
-                onChange={handleAvatarChange}
-                className="hidden"
-                accept="image/*"
-              />
+            <div>
+              <div className="text-center">
+                <img
+                  src={formData.avatar}
+                  alt="User Avatar"
+                  className="w-32 h-32 mx-auto rounded-full object-cover"
+                />
+                <label
+                  htmlFor="avatar"
+                  className="mt-2 cursor-pointer inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black"
+                >
+                  <FaUpload className="mr-2" />
+                  Change Avatar
+                </label>
+                <input
+                  type="file"
+                  id="avatar"
+                  name="avatar"
+                  onChange={handleAvatarChange}
+                  className="hidden"
+                  accept="image/*"
+                />
+              </div>
+            </div>
+            <div className="px-3 py-5 block text-sm text-gray-700 font-bold">
+              Security
+            </div>
+            <div className="px-8 flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <FaLock className="text-black text-sm" />
+                <span className="text-sm text-gray-700">Password</span>
+              </div>
+              <a className="cursor-pointer px-4 py-2 border border-gray-300 rounded-sm shadow-sm text-sm font-medium scale-75 text-black bg-white hover:bg-gray-50  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black">
+                Update
+              </a>
             </div>
           </div>
         </div>
-        <div className="space-y-6">
+        {/* <div className="space-y-6">
           <div className="relative">
             <label
               htmlFor="currentPassword"
@@ -280,7 +294,7 @@ const ProfileEditor: React.FC = () => {
               {showPassword.confirm ? <FaEyeSlash /> : <FaEye />}
             </button>
           </div>
-        </div>
+        </div> */}
         <div className="flex justify-end space-x-4">
           <button
             type="button"
