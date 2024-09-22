@@ -3,7 +3,7 @@ import { FaArrowRight } from 'react-icons/fa';
 
 const HeroSection = () => {
   return (
-    <div className=" px-4 py-16 w-screen">
+    <div className=" px-4 py-16">
       <div className="flex flex-col md:flex-row items-center gap-x-32 w-full">
         <div className="md:w-1/2 mb-8 md:mb-0">
           <img
