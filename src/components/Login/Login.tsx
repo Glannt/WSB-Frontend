@@ -7,13 +7,69 @@ import {
   FaGoogle,
 } from 'react-icons/fa';
 import { BiLoaderAlt } from 'react-icons/bi';
-
+import { GoogleLogin } from '@react-oauth/google';
+import { schemaLogin, SchemaLogin } from '@/utils/rules';
+// import { postLogin } from '@/service/UserService';
+import { useNavigate } from 'react-router';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useMutation } from '@tanstack/react-query';
+import { loginAccount } from '@/service/auth.api';
+import { ResponseApi } from '@/types/utils.type';
+import { isAxiosUnprocessableEntityError } from '@/utils/utils';
 const Login = () => {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    getValues,
+    setError,
+  } = useForm<SchemaLogin>({
+    resolver: yupResolver(schemaLogin),
+  });
+  const loginAccountMutation = useMutation({
+    mutationFn: (body: SchemaLogin) => loginAccount(body),
+  });
+
+  const onSubmit = handleSubmit(async (data) => {
+    setIsLoading(true);
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      loginAccountMutation.mutate(data, {
+        onSuccess: (data) => {
+          console.log(data);
+        },
+        onError: (error) => {
+          if (
+            isAxiosUnprocessableEntityError<ResponseApi<SchemaLogin>>(error)
+          ) {
+            const formError = error.response?.data.data;
+            if (formError) {
+              Object.keys(formError).forEach((key) => {
+                if (key in data) {
+                  setError(key as keyof SchemaLogin, {
+                    message: formError[key as keyof SchemaLogin],
+                    type: 'Server',
+                  });
+                }
+              });
+            }
+          }
+        },
+      });
+    } catch (err) {
+      console.error('Error during submission:', err);
+    } finally {
+      // Set loading to false after the process is done
+      setIsLoading(false);
+    }
+  });
 
   const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -40,17 +96,22 @@ const Login = () => {
         <h2 className="text-3xl font-bold text-black mb-6 text-center">
           Welcome Back!
         </h2>
-        <form onSubmit={handleLogin}>
+        <form onSubmit={onSubmit}>
           <div className="mb-4 relative">
             <input
-              type="email"
-              id="email"
+              type="text"
+              id="username"
               className="w-full px-3 py-2 placeholder-gray-800 text-black rounded-md focus:outline-none focus:ring-2 focus:ring-blackA9 pl-10 bg-black bg-opacity-20"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
+              placeholder="username"
+              // value={username}
+              // onChange={(e) => setUsername(e.target.value)}
+              {...register('username')}
             />
+            {errors.username && (
+              <p className="text-red-700 text-sm mt-1">
+                {errors.username?.message}
+              </p>
+            )}
             <FaEnvelope className="absolute left-3 top-3 text-black-400" />
           </div>
           <div className="mb-4 relative">
@@ -59,9 +120,10 @@ const Login = () => {
               id="password"
               className="w-full px-3 py-2 text-black placeholder-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-blackA9 pl-10 bg-black bg-opacity-20"
               placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
+              autoComplete="on"
+              // value={password}
+              // onChange={(e) => setPassword(e.target.value)}
+              {...register('password')}
             />
             <FaLock className="absolute left-3 top-3 text-black" />
             <button
@@ -71,6 +133,11 @@ const Login = () => {
             >
               {showPassword ? <FaEyeSlash /> : <FaEye />}
             </button>
+            {errors.password && (
+              <p className="text-red-700 text-sm mt-1">
+                {errors.password?.message}
+              </p>
+            )}
           </div>
           <div className="flex items-center justify-between mb-4">
             {/* <label className="flex items-center text-white">
@@ -131,6 +198,14 @@ const Login = () => {
           <button className="w-full bg-blackA11 text-white py-2 rounded-md font-bold hover:bg-blackA12 transition duration-300 flex items-center justify-center">
             <FaGoogle className="mr-2" /> Login with Google
           </button>
+          {/* <GoogleLogin
+            onSuccess={(credentialResponse) => {
+              console.log(credentialResponse);
+            }}
+            onError={() => {
+              console.log('Login Failed');
+            }}
+          /> */}
         </div>
         <p className="text-center mt-4 text-black">
           Don't have an account?{' '}

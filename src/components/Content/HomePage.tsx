@@ -65,7 +65,7 @@ export const HomePage: React.FC<CarouselPropsSlider> = ({
   }, [autoSlide, autoSlideInterval, currentIndex, isInteracting]);
 
   return (
-    <div className="container">
+    <div>
       <div className="max-w-[1400px] h-[780px] w-screen m-auto gap-10 py-16 relative group z[-5]">
         <div
           style={{ backgroundImage: `url(${slides[currentIndex].url})` }}
@@ -92,7 +92,7 @@ export const HomePage: React.FC<CarouselPropsSlider> = ({
         </div>
       </div>
       {/* Type room */}
-      <div className="max-w-[1800px] h-auto w-full m-auto py-16 px-4">
+      <div className="max-w-[1400px] h-auto w-full m-auto py-16 px-4">
         <h1 className="font-bold text-4xl mb-14">Các loại phòng</h1>
         <div className="flex flex-row gap-4 w-full h-auto justify-evenly">
           <TypeRoomCard />

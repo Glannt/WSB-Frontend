@@ -12,50 +12,28 @@ import {
   Route,
   Link,
   createRoutesFromElements,
+  BrowserRouter,
 } from 'react-router-dom';
-import { HomePage } from './components/Content/HomePage';
-import { ListRoom } from './components/Content/ListRoom';
-import { ListFood } from './components/Content/ListFood';
-import Login from './components/Login/Login.tsx';
-import SignUp from './components/SignUp/SignUp.tsx';
-import { BookingRoomDetail } from './components/Content/BookingRoomDetail.tsx';
-
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <App />,
-    children: [
-      { index: true, element: <HomePage /> },
-      {
-        path: 'list-room',
-        element: <ListRoom />,
-      },
-      {
-        path: 'contact',
-        element: 'Contact',
-      },
-      {
-        path: 'sign-in',
-        element: <Login />,
-      },
-      {
-        path: 'list-food',
-        element: <ListFood />,
-      },
-      {
-        path: 'sign-up',
-        element: <SignUp />,
-      },
-      {
-        path: 'room-detail',
-        element: <BookingRoomDetail />,
-      },
-    ],
+import { router } from './router/Router.tsx';
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import { AuthProvider } from './context/AuthProvider.tsx';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
   },
-]);
-
+});
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    {/* <AuthProvider> */}
+    <QueryClientProvider client={queryClient}>
+      <App />
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
+
+    {/* </AuthProvider> */}
   </React.StrictMode>
 );

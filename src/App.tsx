@@ -17,21 +17,15 @@ import { Header } from './components/Header/Header';
 import ModeToggle from './components/ModeToggle/ModeToggle';
 import { HomePage } from './components/Content/HomePage';
 import { Footer } from './components/Header/Footer';
-import { Outlet } from 'react-router';
-
+import { Outlet, RouterProvider } from 'react-router';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { router } from './router/Router';
 function App() {
   return (
     <ThemeProvider defaultTheme="light" storageKey="ui-theme">
-      <div className="header-container sticky top-0 z-10 hover:bg-[#51a7bf]">
-        <Header />
-      </div>
-      <div className="main-content">
-        <Outlet />
-      </div>
-      <div>
-        {/* Footer */}
-        <Footer />
-      </div>
+      <RouterProvider router={router} />
+      <ToastContainer />
     </ThemeProvider>
   );
 }
