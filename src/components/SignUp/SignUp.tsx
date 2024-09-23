@@ -8,57 +8,82 @@ import {
   FaEye,
   FaEyeSlash,
 } from 'react-icons/fa';
-
-interface FormData {
-  fullName: string;
-  email: string;
-  phoneNumber: string;
-  password: string;
-  confirmPassword: string;
-  dateOfBirth: string;
-  agreeTerms: boolean;
-}
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { schema, Schema } from '@/utils/rules';
+import { useMutation } from '@tanstack/react-query';
+import { registerAccount } from '@/service/auth.api';
+import { omit } from 'lodash';
+import { ResponseApi } from '@/types/utils.type';
+import { isAxiosUnprocessableEntityError } from '@/utils/utils';
+// import { getRules } from '@/utils/rules';
 
 const SignUp: React.FC = () => {
-  const [formData, setFormData] = useState<FormData>({
-    fullName: '',
-    email: '',
-    phoneNumber: '',
-    password: '',
-    confirmPassword: '',
-    dateOfBirth: '',
-    agreeTerms: false,
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    getValues,
+    setError,
+  } = useForm<Schema>({
+    resolver: yupResolver(schema),
   });
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [passwordError, setPasswordError] = useState<string>('');
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: type === 'checkbox' ? checked : value,
-    }));
+  const registerAccountMutation = useMutation({
+    mutationFn: (body: Omit<Schema, 'confirm_password'>) =>
+      registerAccount(body),
+  });
+  const onSubmit = handleSubmit((data) => {
+    const body = omit(data, ['confirm_password']);
+    registerAccountMutation.mutate(body, {
+      onSuccess: (data) => {
+        console.log(data);
+      },
+      onError: (error) => {
+        if (
+          isAxiosUnprocessableEntityError<
+            ResponseApi<Omit<Schema, 'confirm_password'>>
+          >(error)
+        ) {
+          const formError = error.response?.data.data;
+          if (formError) {
+            Object.keys(formError).forEach((key) => {
+              if (key in body) {
+                // Extract the error value for the current key
+                const errorValue = formError[key as keyof typeof formError];
 
-    if (name === 'confirmPassword') {
-      if (value !== formData.password) {
-        setPasswordError('Passwords do not match');
-      } else {
-        setPasswordError('');
-      }
-    }
-  };
+                // Determine the appropriate error message type based on the value type
+                let errorMessage: string;
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    if (formData.password !== formData.confirmPassword) {
-      setPasswordError('Passwords do not match');
-      return;
-    }
-    // Handle form submission logic here
-    console.log('Form submitted:', formData);
-  };
+                // If the error value is a string, use it as the error message
+                if (typeof errorValue === 'string') {
+                  errorMessage = errorValue;
+                }
+                // If the error value is a Date, convert it to a string in ISO format
+                else if (errorValue instanceof Date) {
+                  errorMessage = errorValue.toISOString();
+                }
+                // For other types (boolean, number, etc.), convert to a string
+                else {
+                  errorMessage = String(errorValue);
+                }
+
+                // Use setError to set the error for the corresponding field
+                setError(key as keyof Omit<Schema, 'confirm_password'>, {
+                  message: errorMessage,
+                  type: 'Server',
+                });
+              }
+            });
+          }
+        }
+      },
+    });
+  });
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -77,84 +102,140 @@ const SignUp: React.FC = () => {
         // "url('https://www.dgicommunications.com/wp-content/uploads/2022/08/Design_a_Flexible_Workspace.jpg')",
       }}
     >
-      <div className="bg-white bg-opacity-70 p-8 rounded-lg shadow-lg w-full max-w-md backdrop-blur-sm">
+      <div className="bg-white bg-opacity-70 p-8 rounded-lg shadow-lg h-full w-full max-w-md backdrop-blur-sm">
         <h2 className="text-3xl font-bold text-black mb-6 text-center">
           Create Your Account!
         </h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={onSubmit} className="space-y-7">
           <div className="relative">
-            <FaUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-black" />
+            <FaUser
+              className={`absolute left-3 transform -translate-y-1/2 text-black ${errors ? `top-8` : `top-1/2`}`}
+            />
             <input
               type="text"
-              name="fullName"
-              value={formData.fullName}
-              onChange={handleChange}
-              placeholder="Full Name"
-              className="w-full bg-black bg-opacity-20 text-black placeholder-gray-800 pl-10 pr-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blackA9"
-              required
+              // name="fullName"
+              // value={formData.fullName}
+              // onChange={handleChange}
+              placeholder="Username"
+              className="w-full bg-black bg-opacity-20 text-black placeholder-gray-800 pl-10 my-2 pr-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blackA9"
+              {...register('username')}
             />
+            {errors.username && (
+              <p className="text-red-700 text-sm mt-1">
+                {errors.username?.message}
+              </p>
+            )}
           </div>
           <div className="relative">
-            <FaEnvelope className="absolute left-3 top-1/2 transform -translate-y-1/2 text-black" />
+            <FaUser
+              className={`absolute left-3 transform -translate-y-1/2 text-black ${errors ? `top-8` : `top-1/2`}`}
+            />
+            <input
+              type="text"
+              // name="fullName"
+              // value={formData.fullName}
+              // onChange={handleChange}
+              placeholder="Full Name"
+              className="w-full bg-black bg-opacity-20 text-black placeholder-gray-800 pl-10 my-2 pr-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blackA9"
+              {...register('fullName')}
+            />
+            {errors.fullName && (
+              <p className="text-red-700 text-sm mt-1">
+                {errors.fullName?.message}
+              </p>
+            )}
+          </div>
+          <div className="relative">
+            <FaEnvelope
+              className={`absolute left-3 transform -translate-y-1/2 text-black ${errors ? `top-6` : `top-1/2`}`}
+            />
             <input
               type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
+              // name="email"
+              // value={formData.email}
+              // onChange={handleChange}
               placeholder="Email"
               className="w-full bg-black bg-opacity-20 text-black placeholder-gray-800 pl-10 pr-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blackA9"
-              required
+              {...register('email')}
             />
+            {errors.email && (
+              <p className="text-red-700 text-sm mt-1">
+                {errors.email?.message}
+              </p>
+            )}
           </div>
           <div className="relative">
-            <FaPhone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-black" />
+            <FaPhone
+              className={`absolute left-3 transform -translate-y-1/2 text-black ${errors ? `top-6` : `top-1/2`}`}
+            />
             <input
               type="tel"
-              name="phoneNumber"
-              value={formData.phoneNumber}
-              onChange={handleChange}
+              // name="phoneNumber"
+              // value={formData.phoneNumber}
+              // onChange={handleChange}
               placeholder="Phone Number"
               className="w-full bg-black bg-opacity-20 text-black placeholder-gray-800 pl-10 pr-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blackA9"
-              required
+              {...register('phoneNumber')}
             />
+            {errors.phoneNumber && (
+              <p className="text-red-700 text-sm mt-1">
+                {errors.phoneNumber?.message}
+              </p>
+            )}
           </div>
           <div className="relative">
-            <FaLock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-black" />
+            <FaLock
+              className={`absolute left-3 transform -translate-y-1/2 text-black ${errors ? `top-6` : `top-1/2`}`}
+            />
             <input
               type={showPassword ? 'text' : 'password'}
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
+              // name="password"
+              // value={formData.password}
+              // onChange={handleChange}
               placeholder="Password"
+              autoComplete="on"
               className="w-full bg-black bg-opacity-20 text-black placeholder-gray-800 pl-10 pr-10 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blackA9"
-              required
+              {...register('password')}
             />
             <button
               type="button"
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-black"
+              className={`absolute right-3 transform -translate-y-1/2 text-black ${errors ? `top-6` : `top-1/2`}`}
               onClick={togglePasswordVisibility}
             >
               {showPassword ? <FaEyeSlash /> : <FaEye />}
             </button>
+            {errors.password && (
+              <p className="text-red-700 text-sm mt-1">
+                {errors.password?.message}
+              </p>
+            )}
           </div>
           <div className="relative">
-            <FaLock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-black" />
+            <FaLock
+              className={`absolute left-3 transform -translate-y-1/2 text-black ${errors ? `top-6` : `top-1/2`}`}
+            />
             <input
               type={showConfirmPassword ? 'text' : 'password'}
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
+              // name="confirmPassword"
+              // value={formData.confirmPassword}
+              // onChange={handleChange}
               placeholder="Confirm Password"
+              autoComplete="on"
               className="w-full bg-black bg-opacity-20 text-black placeholder-gray-800 pl-10 pr-10 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blackA9"
-              required
+              {...register('confirm_password')}
             />
             <button
               type="button"
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-black"
+              className={`absolute right-3 transform -translate-y-1/2 text-black ${errors ? `top-6` : `top-1/2`}`}
               onClick={toggleConfirmPasswordVisibility}
             >
               {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
             </button>
+            {errors.confirm_password && (
+              <p className="text-red-700 text-sm mt-1">
+                {errors.confirm_password?.message}
+              </p>
+            )}
           </div>
           {passwordError && (
             <p className="text-red-700 text-sm mt-1">{passwordError}</p>
@@ -163,26 +244,36 @@ const SignUp: React.FC = () => {
             <FaCalendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-black" />
             <input
               type="date"
-              name="dateOfBirth"
-              value={formData.dateOfBirth}
-              onChange={handleChange}
+              // name="dateOfBirth"
+              // value={formData.dateOfBirth}
+              // onChange={handleChange}
               className="w-full bg-black bg-opacity-20 text-black placeholder-gray-800 pl-10 pr-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blackA9"
-              required
+              {...register('dateOfBirth')}
             />
+            {errors.dateOfBirth && (
+              <p className="text-red-700 text-sm mt-1">
+                {errors.dateOfBirth.message}
+              </p>
+            )}
           </div>
           <div className="flex items-center">
             <input
               type="checkbox"
-              name="agreeTerms"
-              checked={formData.agreeTerms}
-              onChange={handleChange}
+              // name="agreeTerms"
+              // checked={formData.agreeTerms}
+              // onChange={handleChange}
               className="mr-2 rounded-sm"
-              required
+              {...register('agreeTerms')}
             />
             <label htmlFor="agreeTerms" className="text-black text-sm">
               Agree to Our Terms and Conditions
             </label>
           </div>
+          {errors.agreeTerms && (
+            <p className="text-red-700 text-sm mt-1">
+              {errors.agreeTerms.message}
+            </p>
+          )}
           <button
             type="submit"
             className="w-full bg-blackA11 text-white font-bold py-2 px-4 rounded-lg hover:bg-blackA12 transition duration-300"

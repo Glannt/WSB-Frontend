@@ -25,4 +25,14 @@ export default defineConfig({
   optimizeDeps: {
     include: ['tailwind-merge'],
   },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8080', // Your Spring Boot backend URL
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/api/, ''), // If necessary, adjust path
+      },
+    },
+  },
 });

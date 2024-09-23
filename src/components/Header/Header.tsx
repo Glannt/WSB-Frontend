@@ -26,22 +26,18 @@ export const Header = (props: any) => {
   return (
     <>
       <header
-        className={`bg-[#51a7bf] text-white p-2 shadow-md rounded-b-lg ${isScrolled ? 'bg-opacity-80 backdrop-blur-sm shadow-md' : 'bg-[#51a7bf]'}`}
+        className={`bg-white text-white p-2 rounded-b-lg ${isScrolled ? 'shadow-md transition-shadow' : 'bg-white'}`}
       >
         <div className="container mx-auto flex justify-between items-center max-w-[1800px]">
-          <div className="text-xl font-bold">
-            <a href="/" className="hover:text-gray-300">
+          <div className="text-4xl font-bold text-black">
+            <a href="/" className="hover:text-violet11">
               WSB
             </a>
           </div>
-          <ModeToggle
-            className="absolute origin-[top-center] md:right-8 md:origin-[top-center]
-        "
-          />
           <NavigationMenu.Root className="relative z-[1] flex w-screen justify-center">
             <NavigationMenu.List className="center shadow-blackA4 m-0 flex list-none p-1">
               <NavigationMenu.Item>
-                <NavigationMenu.Trigger className="text-white hover:text-violet11 hover:bg-violet3 focus:shadow-violet7 group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none focus:shadow-[0_0_0_2px]">
+                <NavigationMenu.Trigger className="text-black hover:text-violet11 hover:bg-violet3 focus:shadow-violet7 group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none focus:shadow-[0_0_0_2px]">
                   Địa điểm{' '}
                   <CaretDownIcon
                     className="text-violet10 relative top-[1px] transition-transform duration-[250] ease-in group-data-[state=open]:-rotate-180"
@@ -61,7 +57,7 @@ export const Header = (props: any) => {
               </NavigationMenu.Item>
 
               <NavigationMenu.Item>
-                <NavigationMenu.Trigger className="text-white hover:text-violet11 hover:bg-violet3 focus:shadow-violet7 group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none focus:shadow-[0_0_0_2px]">
+                <NavigationMenu.Trigger className="text-black hover:text-violet11 hover:bg-violet3 focus:shadow-violet7 group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none focus:shadow-[0_0_0_2px]">
                   Dịch vụ{' '}
                   <CaretDownIcon
                     className="text-violet10 relative top-[1px] transition-transform duration-[250] ease-in group-data-[state=open]:-rotate-180"
@@ -84,7 +80,7 @@ export const Header = (props: any) => {
 
               <NavigationMenu.Item className="">
                 <NavigationMenu.Link
-                  className="text-white hover:text-violet11 hover:bg-violet3 focus:shadow-violet7 block select-none rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none no-underline outline-none focus:shadow-[0_0_0_2px]"
+                  className="text-black hover:text-violet11 hover:bg-violet3 focus:shadow-violet7 block select-none rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none no-underline outline-none focus:shadow-[0_0_0_2px]"
                   href=""
                 >
                   Liên hệ
