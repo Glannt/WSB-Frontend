@@ -27,7 +27,14 @@ function RejectedRoute() {
 // };
 
 export const router = createBrowserRouter([
-  { path: '/', element: <HomePage /> },
+  {
+    path: '/',
+    element: (
+      <MainLayout>
+        <HomePage />
+      </MainLayout>
+    ),
+  },
   {
     path: 'list-room',
     element: (
