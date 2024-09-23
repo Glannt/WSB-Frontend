@@ -26,16 +26,16 @@ export const Header = (props: any) => {
   return (
     <>
       <header
-        className={`bg-[#51a7bf] text-white p-2 shadow-md rounded-md ${isScrolled ? 'bg-opacity-80 backdrop-blur-sm shadow-md' : 'bg-[#51a7bf]'}`}
+        className={`bg-[#51a7bf] text-white p-2 shadow-md rounded-b-lg ${isScrolled ? 'bg-opacity-80 backdrop-blur-sm shadow-md' : 'bg-[#51a7bf]'}`}
       >
-        <div className="container mx-auto flex justify-between items-center">
+        <div className="container mx-auto flex justify-between items-center max-w-[1800px]">
           <div className="text-xl font-bold">
             <a href="/" className="hover:text-gray-300">
               WSB
             </a>
           </div>
           <ModeToggle
-            className="absolute right-9 top-9 md:right-8 md:top-9
+            className="absolute origin-[top-center] md:right-8 md:origin-[top-center]
         "
           />
           <NavigationMenu.Root className="relative z-[1] flex w-screen justify-center">
@@ -103,7 +103,7 @@ export const Header = (props: any) => {
           <NavigationMenu.Root className="relative z-[1] w-auto flex justify-end">
             <NavigationMenu.List className="center shadow-blackA4 m-0 flex list-none p-1">
               <NavigationMenu.Item>
-                <NavigationMenu.Trigger className="text-white hover:text-violet11 focus:shadow-violet7 group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none focus:shadow-[0_0_0_2px]">
+                <NavigationMenu.Trigger className="text-white hover:text-violet11 focus:shadow-violet7 group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none focus:shadow-[0_0_0_2px] mr-2">
                   <Avatar.Root className="bg-blackA1 inline-flex h-[45px] w-[45px] select-none items-center justify-center overflow-hidden rounded-full align-middle">
                     <Avatar.Image
                       className="h-full w-full rounded-[inherit] object-cover"
