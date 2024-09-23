@@ -5,15 +5,17 @@ import { ListFood } from '@/components/Content/ListFood';
 import { ListRoom } from '@/components/Content/ListRoom';
 import Login from '@/components/Login/Login';
 import SignUp from '@/components/SignUp/SignUp';
+import { AppContext } from '@/context/app.context';
 import { MainLayout } from '@/layouts/MainLayout';
+import { useContext } from 'react';
 import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
-const isAuthenticated = true;
+
 function ProtectedRoute() {
-  // const isAuthenticated = true;
+  const { isAuthenticated } = useContext(AppContext);
   return isAuthenticated ? <Outlet /> : <Navigate to="/sign-in" />;
 }
 function RejectedRoute() {
-  // const isAuthenticated = false;
+  const { isAuthenticated } = useContext(AppContext);
   return !isAuthenticated ? <Outlet /> : <Navigate to="/room-detail" />;
 }
 
@@ -27,7 +29,14 @@ function RejectedRoute() {
 // };
 
 export const router = createBrowserRouter([
-  { path: '/', element: <HomePage /> },
+  {
+    path: '/',
+    element: (
+      <MainLayout>
+        <HomePage />
+      </MainLayout>
+    ),
+  },
   {
     path: 'list-room',
     element: (
