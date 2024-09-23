@@ -1,10 +1,9 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
-import { Button } from '../ui/button';
+import { Button, Link } from '@nextui-org/react';
 import { SubcriptionCard } from '../HomepageContent/SubcriptionCard';
 import { TypeRoomCard } from '../HomepageContent/TypeRoomCard';
 import { DescriptionUtil } from '../HomepageContent/DescriptionHomePage';
-import { Link } from '@radix-ui/themes';
 import HeroSection from './heroSection';
 
 export interface CarouselPropsSlider {
@@ -102,10 +101,11 @@ export const HomePage: React.FC<CarouselPropsSlider> = ({
         </div>
         <div className="flex justify-end mx-auto mt-10">
           <Button
-            asChild
+            href="/list-room"
+            as={Link}
             className="bg-sky-500 p-7 md:text-base lg:text-base xl:text-base 2xl:text-base hover:bg-sky-600"
           >
-            <Link href="list-room">See more</Link>
+            See more
           </Button>
         </div>
       </div>

@@ -48,9 +48,14 @@ import * as Yup from 'yup';
 //         : undefined,
 //   },
 // });
-
+const today = new Date();
+const minDate = new Date(
+  today.getFullYear() - 13,
+  today.getMonth(),
+  today.getDate()
+);
 export const schema = Yup.object().shape({
-  username: Yup.string()
+  userName: Yup.string()
     .required('Username là bắt buộc')
     .min(5, 'Độ dài từ 5 đến 50 ký tự')
     .max(50, 'Độ dài từ 5 đến 50 ký tự'),
@@ -71,15 +76,17 @@ export const schema = Yup.object().shape({
       (value, originalValue) => (originalValue === '' ? null : value) // Nếu giá trị rỗng, chuyển thành null
     )
     .required('Ngày sinh là bắt buộc')
-    .max(new Date(), 'Ngày sinh không hợp lệ'),
+    .max(today, 'Ngày sinh không hợp lệ') // Max date must be today
+    .min(minDate, 'Bạn phải ít nhất 13 tuổi'),
   agreeTerms: Yup.boolean()
     .required('Bạn phải đồng ý với các điều khoản')
     .oneOf([true], 'Bạn phải đồng ý với các điều khoản'),
+  role: Yup.string().default('CUSTOMER'),
 });
 export type Schema = Yup.InferType<typeof schema>;
 
 export const schemaLogin = Yup.object().shape({
-  username: Yup.string()
+  userName: Yup.string()
     .required('Username là bắt buộc')
     .min(5, 'Độ dài từ 5 đến 50 ký tự')
     .max(50, 'Độ dài từ 5 đến 50 ký tự'),
