@@ -13,25 +13,25 @@ export interface CarouselPropsSlider {
   autoSlideInterval?: number;
 }
 export const HomePage: React.FC<CarouselPropsSlider> = ({
-  autoSlide = false,
+  autoSlide = true,
   autoSlideInterval = 3000,
 }) => {
   const slides = [
     {
-      url: 'https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2620&q=80',
+      url: 'https://images.inc.com/uploaded_files/image/1920x1080/getty_517610514_353435.jpg',
     },
     {
-      url: 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2670&q=80',
+      url: 'https://www.workdesign.com/wp-content/uploads/2021/04/shutterstock_682694722-scaled-e1619719883125.jpg',
     },
     {
-      url: 'https://images.unsplash.com/photo-1661961112951-f2bfd1f253ce?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2672&q=80',
+      url: 'https://stylishclub.pt/wp-content/uploads/2023/05/stylish-club-blog-post-the-future-of-worsapce-design-banner-1024x683.jpg',
     },
 
     {
-      url: 'https://images.unsplash.com/photo-1512756290469-ec264b7fbf87?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2253&q=80',
+      url: 'https://boweninteriors.com.au/wp-content/uploads/2022/06/Blog-5.jpg',
     },
     {
-      url: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2671&q=80',
+      url: 'https://media.licdn.com/dms/image/C5612AQHRyGh9-AEIUw/article-cover_image-shrink_720_1280/0/1599112577357?e=2147483647&v=beta&t=tD0C8R3gQm420877i0rssrYhdWZRSM5hVUUE4TOtYf8',
     },
   ];
 
@@ -96,31 +96,50 @@ export const HomePage: React.FC<CarouselPropsSlider> = ({
       <div className="max-auto h-auto w-full m-auto py-16 px-4">
         <h1 className="font-bold text-4xl ml-8 mb-14">Các loại phòng</h1>
         <div className="flex flex-row gap-4 w-full h-auto justify-evenly">
+          <TypeRoomCard
+            url="https://workflow.com.vn/wp-content/uploads/2024/07/b1f293e72e40e53c6d98a043c1cc3148.png"
+            name="Phòng đơn"
+            description="Giá cả phải chăng"
+          />
+          <TypeRoomCard
+            url="https://workflow.com.vn/wp-content/uploads/2024/07/72d7d94d35b0d6bce9ae803e5e5b8975.png"
+            name="Phòng đôi"
+            description="Rộng rãi thoải mái"
+          />
+          <TypeRoomCard
+            url="https://workflow.com.vn/wp-content/uploads/2024/07/675e66a2542d4618edc4802b0124c59e.jpg"
+            name="Phòng 7"
+            description="Thiết bị đầy đủ, tiện ích tốt"
+          />
+          <TypeRoomCard
+            url="https://workflow.com.vn/wp-content/uploads/2024/05/z5404832229897_c592108c054d4505476d97f2bbd6f86e-2.png"
+            name="Phòng 10"
+            description="Càng đông càng xịn"
+          />
+          {/* <TypeRoomCard />
           <TypeRoomCard />
-          <TypeRoomCard />
-          <TypeRoomCard />
-          <TypeRoomCard />
+          <TypeRoomCard /> */}
         </div>
         <div className="flex justify-end mx-auto mt-10">
           <Button
             asChild
-            className="bg-sky-500 p-7 md:text-base lg:text-base xl:text-base 2xl:text-base hover:bg-sky-600"
+            className="bg-black p-7 md:text-base lg:text-base xl:text-base 2xl:text-base hover:bg-white hover:text-black hover:shadow-2xl shadow-lg"
           >
-            <Link href="list-room">See more</Link>
+            <Link href="list-room">Xem thêm</Link>
           </Button>
         </div>
       </div>
       {/* Utilities */}
-      <div className="max-w-[1800px] h-[70rem] w-full m-auto relative py-16 px-4">
+      <div className="max-w-[1800px] h-[50rem] w-full m-auto relative py-16 px-4">
         <HeroSection />
       </div>
       <div className="max-w-[1800px] h-[50rem] w-full m-auto relative py-16 px-4">
         {/* <DescriptionUtil /> */}
         <RoomDecription />
       </div>
-      <div className="max-w-[1800px] h-[70rem] w-full m-auto relative py-16 px-4">
+      {/* <div className="max-w-[1800px] h-[70rem] w-full m-auto relative py-16 px-4">
         <HeroSection />
-      </div>
+      </div> */}
       {/* Subcription */}
       <div className="max-w-[1800px] h-[80rem] w-full m-auto relative py-16 px-4">
         <div className="flex flex-row gap-4 w-full h-auto justify-evenly rounded-lg border-solid border-2 border-x-blackA5 bg-slate-100 py-5">
