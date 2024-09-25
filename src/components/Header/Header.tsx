@@ -1,7 +1,5 @@
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import * as Avatar from '@radix-ui/react-avatar';
 import * as NavigationMenu from '@radix-ui/react-navigation-menu';
-import ModeToggle from '../ModeToggle/ModeToggle';
 import { CaretDownIcon } from '@radix-ui/react-icons';
 import React, { forwardRef, useContext, useEffect, useState } from 'react';
 import classNames from 'classnames';
@@ -10,6 +8,7 @@ import { logout } from '@/service/auth.api';
 import { AppContext } from '@/context/app.context';
 import { Button } from '@nextui-org/react';
 import { useNavigate } from 'react-router';
+import path from '@/constants/path';
 export const Header = (props: any) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate();
@@ -138,7 +137,11 @@ export const Header = (props: any) => {
                   </NavigationMenu.Trigger>
                   <NavigationMenu.Content className="data-[motion=from-start]:animate-enterFromLeft data-[motion=from-end]:animate-enterFromRight data-[motion=to-start]:animate-exitToLeft data-[motion=to-end]:animate-exitToRight absolute top-0 left-0 w-full sm:w-auto">
                     <ul className="m-0 grid list-none gap-x-[10px] pl-[5px] p-[10px] sm:w-[150px] sm:grid-flow-col sm:grid-rows-3">
-                      <ListItem className="row-span-1" href="" title=" Profile">
+                      <ListItem
+                        className="row-span-1"
+                        href={path.profile}
+                        title=" Profile"
+                      >
                         {' '}
                       </ListItem>
                       <ListItem className="row-span-1" href="" title="Cài đặt">
@@ -169,14 +172,14 @@ export const Header = (props: any) => {
               <Button
                 className="rounded-lg p-5 hover:scale-105 transition duration-100 shadow-lg"
                 color="primary"
-                onClick={() => navigate('/sign-in')}
+                onClick={() => navigate(path.login)}
               >
                 Sign in
               </Button>
               <Button
                 className="rounded-lg p-5 hover:scale-105 transition duration-100 shadow-lg"
                 color="primary"
-                onClick={() => navigate('/sign-up')}
+                onClick={() => navigate(path.register)}
               >
                 Sign up
               </Button>

@@ -18,6 +18,8 @@ import { loginAccount } from '@/service/auth.api';
 import { ErrorResponse } from '@/types/utils.type';
 import { isAxiosUnprocessableEntityError } from '@/utils/utils';
 import { AppContext } from '@/context/app.context';
+import path from '@/constants/path';
+import { getProfileFromLS } from '@/utils/auth';
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -25,7 +27,7 @@ const Login = () => {
   const [rememberMe, setRememberMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const { setIsAuthenticated } = useContext(AppContext);
+  const { setIsAuthenticated, setProfile, profile } = useContext(AppContext);
   const {
     register,
     handleSubmit,
@@ -46,8 +48,8 @@ const Login = () => {
       loginAccountMutation.mutate(data, {
         onSuccess: () => {
           setIsAuthenticated(true);
-          console.log(data);
-
+          // setProfile(getProfileFromLS());
+          // console.log(profile);
           navigate('/');
         },
         onError: (error) => {
@@ -214,7 +216,10 @@ const Login = () => {
         </div>
         <p className="text-center mt-4 text-black">
           Don't have an account?{' '}
-          <a href="sign-up" className="text-black font-bold hover:underline">
+          <a
+            href={path.register}
+            className="text-black font-bold hover:underline"
+          >
             Sign up
           </a>
         </p>

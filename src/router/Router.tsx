@@ -9,14 +9,19 @@ import { AppContext } from '@/context/app.context';
 import { MainLayout } from '@/layouts/MainLayout';
 import { useContext } from 'react';
 import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
-
+import path from '@/constants/path';
+import ProfileEditor from '@/components/ProfileEditor/ProfileEditor';
+import { Dashboard } from '@/components/Admin/Dashboard';
+import CreateRoom from '@/components/AdminService/CreateRoom';
+import TableAddRoom from '@/components/AdminService/TableAddRoom';
+import AddStaffToRoom from '@/components/AdminService/AddStaffToRoom';
 function ProtectedRoute() {
   const { isAuthenticated } = useContext(AppContext);
-  return isAuthenticated ? <Outlet /> : <Navigate to="/sign-in" />;
+  return isAuthenticated ? <Outlet /> : <Navigate to={path.login} />;
 }
 function RejectedRoute() {
   const { isAuthenticated } = useContext(AppContext);
-  return !isAuthenticated ? <Outlet /> : <Navigate to="/room-detail" />;
+  return !isAuthenticated ? <Outlet /> : <Navigate to="/profile" />;
 }
 
 // let isAuthenticated = false;
@@ -58,24 +63,49 @@ export const router = createBrowserRouter([
       </MainLayout>
     ),
   },
+  {
+    path: 'room-detail',
+    element: (
+      <MainLayout>
+        <BookingRoomDetail />
+      </MainLayout>
+    ),
+  },
 
   {
     path: '',
     element: <ProtectedRoute />,
     children: [
       {
-        path: 'room-detail',
-        element: <BookingRoomDetail />,
+        path: 'room-bill',
+        element: 'room-bill',
       },
     ],
   },
-
+  {
+    path: path.profile,
+    element: <ProfileEditor />,
+  },
+  {
+    path: '/dashboard',
+    element: <Dashboard />,
+    children: [
+      {
+        path: 'create-room',
+        element: <CreateRoom />,
+      },
+      {
+        path: 'update-staff-schedule',
+        element: <AddStaffToRoom />,
+      },
+    ],
+  },
   {
     path: '',
     element: <RejectedRoute />,
     children: [
       {
-        path: 'sign-up',
+        path: path.register,
         element: (
           <MainLayout>
             <SignUp />
@@ -83,7 +113,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'sign-in',
+        path: path.login,
         element: (
           <MainLayout>
             <Login />
