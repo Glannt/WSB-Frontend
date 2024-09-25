@@ -1,4 +1,5 @@
 import React, { useState, ChangeEvent, FormEvent, useContext } from 'react';
+import { BiLoaderAlt } from 'react-icons/bi';
 import {
   FaUser,
   FaEnvelope,
@@ -21,6 +22,7 @@ import { AppContext } from '@/context/app.context';
 // import { getRules } from '@/utils/rules';
 
 const SignUp: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -41,6 +43,7 @@ const SignUp: React.FC = () => {
       registerAccount(body),
   });
   const onSubmit = handleSubmit((data) => {
+    setIsLoading(true);
     const body = omit(data, ['confirm_password']);
     registerAccountMutation.mutate(body, {
       onSuccess: () => {
@@ -108,20 +111,20 @@ const SignUp: React.FC = () => {
     >
       <div className="bg-white bg-opacity-70 p-8 rounded-lg shadow-lg h-full w-full max-w-md backdrop-blur-sm">
         <h2 className="text-3xl font-bold text-black mb-6 text-center">
-          Create Your Account!
+          Tạo tài khoản!
         </h2>
-        <form onSubmit={onSubmit} className="space-y-7">
+        <form onSubmit={onSubmit} className="space-y-6">
           <div className="relative">
             <FaUser
-              className={`absolute left-3 transform -translate-y-1/2 text-black ${errors ? `top-8` : `top-1/2`}`}
+              className={`absolute left-3 transform -translate-y-1/2 text-black ${errors ? `top-6` : `top-1/2`}`}
             />
             <input
               type="text"
               // name="fullName"
               // value={formData.fullName}
               // onChange={handleChange}
-              placeholder="Username"
-              className="w-full bg-black bg-opacity-20 text-black placeholder-gray-800 pl-10 my-2 pr-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blackA9"
+              placeholder="Tên đăng nhập"
+              className="w-full bg-black bg-opacity-20 text-black placeholder-gray-800 pl-10 pr-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blackA9"
               {...register('userName')}
             />
             {errors.userName && (
@@ -132,15 +135,15 @@ const SignUp: React.FC = () => {
           </div>
           <div className="relative">
             <FaUser
-              className={`absolute left-3 transform -translate-y-1/2 text-black ${errors ? `top-8` : `top-1/2`}`}
+              className={`absolute left-3 transform -translate-y-1/2 text-black ${errors ? `top-6` : `top-1/2`}`}
             />
             <input
               type="text"
               // name="fullName"
               // value={formData.fullName}
               // onChange={handleChange}
-              placeholder="Full Name"
-              className="w-full bg-black bg-opacity-20 text-black placeholder-gray-800 pl-10 my-2 pr-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blackA9"
+              placeholder="Họ và tên"
+              className="w-full bg-black bg-opacity-20 text-black placeholder-gray-800 pl-10 pr-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blackA9"
               {...register('fullName')}
             />
             {errors.fullName && (
@@ -177,7 +180,7 @@ const SignUp: React.FC = () => {
               // name="phoneNumber"
               // value={formData.phoneNumber}
               // onChange={handleChange}
-              placeholder="Phone Number"
+              placeholder="Số điện thoại"
               className="w-full bg-black bg-opacity-20 text-black placeholder-gray-800 pl-10 pr-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blackA9"
               {...register('phoneNumber')}
             />
@@ -196,7 +199,7 @@ const SignUp: React.FC = () => {
               // name="password"
               // value={formData.password}
               // onChange={handleChange}
-              placeholder="Password"
+              placeholder="Mật khẩu"
               autoComplete="on"
               className="w-full bg-black bg-opacity-20 text-black placeholder-gray-800 pl-10 pr-10 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blackA9"
               {...register('password')}
@@ -223,7 +226,7 @@ const SignUp: React.FC = () => {
               // name="confirmPassword"
               // value={formData.confirmPassword}
               // onChange={handleChange}
-              placeholder="Confirm Password"
+              placeholder="Xác nhận mật khẩu"
               autoComplete="on"
               className="w-full bg-black bg-opacity-20 text-black placeholder-gray-800 pl-10 pr-10 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blackA9"
               {...register('confirm_password')}
@@ -245,7 +248,9 @@ const SignUp: React.FC = () => {
             <p className="text-red-700 text-sm mt-1">{passwordError}</p>
           )}
           <div className="relative">
-            <FaCalendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-black" />
+            <FaCalendar
+              className={`absolute left-3 transform -translate-y-1/2  text-black ${errors ? `top-6` : `top-1/2`}`}
+            />
             <input
               type="date"
               // name="dateOfBirth"
@@ -270,7 +275,9 @@ const SignUp: React.FC = () => {
               {...register('agreeTerms')}
             />
             <label htmlFor="agreeTerms" className="text-black text-sm">
-              Agree to Our Terms and Conditions
+              {/* Agree to Our Terms and Conditions */}
+              {/* vietnamse */}
+              Đồng ý với các điều khoản của chúng tôi
             </label>
           </div>
           {errors.agreeTerms && (
@@ -278,18 +285,28 @@ const SignUp: React.FC = () => {
               {errors.agreeTerms.message}
             </p>
           )}
+
           <button
             type="submit"
-            className="w-full bg-blackA11 text-white font-bold py-2 px-4 rounded-lg hover:bg-blackA12 transition duration-300"
-            disabled={passwordError !== ''}
+            className={` w-full flex justify-center py-2 px-4 hover:text-gray-300 border border-transparent rounded-md shadow-sm text-sm font-bold text-white bg-blackA11 hover:bg-blackA12 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
+              isLoading ? 'opacity-75 cursor-not-allowed' : ''
+            }`}
+            disabled={isLoading}
           >
-            Sign Up
+            {isLoading ? (
+              <>
+                <BiLoaderAlt className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" />
+                Đang xử lý
+              </>
+            ) : (
+              'Đăng ký'
+            )}
           </button>
         </form>
         <p className="text-black text-center mt-4">
-          Already registered?{' '}
+          Có tài khoản?{' '}
           <a href="sign-in" className="text-black hover:underline font-bold">
-            Login
+            Đăng nhập
           </a>
         </p>
       </div>

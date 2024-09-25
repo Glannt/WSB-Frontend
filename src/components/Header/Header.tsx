@@ -165,20 +165,20 @@ export const Header = (props: any) => {
             </NavigationMenu.Root>
           )}
           {!isAuthenticated && (
-            <div className="flex flex-row gap-10 mt-4 mb-4 items-center">
+            <div className="flex flex-row gap-5 mt-4 mb-4 items-center">
               <Button
-                className="rounded-lg p-5 hover:scale-105 transition duration-100 shadow-lg"
+                className="bg-white text-black py-3 rounded-lg font-semibold hover:bg-blackA12 hover:text-white hover:shadow-3xl ease-in-out flex items-center hover:scale-105 transition duration-100 shadow-lg"
                 color="primary"
                 onClick={() => navigate('/sign-in')}
               >
-                Sign in
+                Đăng nhập
               </Button>
               <Button
-                className="rounded-lg p-5 hover:scale-105 transition duration-100 shadow-lg"
+                className="bg-blackA12 text-white py-3 rounded-lg font-semibold hover:bg-white hover:text-black hover:shadow-3xl ease-in-out flex items-center hover:scale-105 transition duration-100 shadow-lg"
                 color="primary"
                 onClick={() => navigate('/sign-up')}
               >
-                Sign up
+                Đăng ký
               </Button>
             </div>
           )}
