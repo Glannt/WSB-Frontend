@@ -5,6 +5,7 @@ import { SubcriptionCard } from '../HomepageContent/SubcriptionCard';
 import { TypeRoomCard } from '../HomepageContent/TypeRoomCard';
 import { DescriptionUtil } from '../HomepageContent/DescriptionHomePage';
 import HeroSection from './heroSection';
+import RoomDecription from '../HomepageContent/RoomDecription';
 
 export interface CarouselPropsSlider {
   autoSlide?: boolean;
@@ -91,8 +92,8 @@ export const HomePage: React.FC<CarouselPropsSlider> = ({
         </div>
       </div>
       {/* Type room */}
-      <div className="max-w-[1400px] h-auto w-full m-auto py-16 px-4">
-        <h1 className="font-bold text-4xl mb-14">Các loại phòng</h1>
+      <div className="max-auto h-auto w-full m-auto py-16 px-4">
+        <h1 className="font-bold text-4xl ml-8 mb-14">Các loại phòng</h1>
         <div className="flex flex-row gap-4 w-full h-auto justify-evenly">
           <TypeRoomCard />
           <TypeRoomCard />
@@ -114,7 +115,8 @@ export const HomePage: React.FC<CarouselPropsSlider> = ({
         <HeroSection />
       </div>
       <div className="max-w-[1800px] h-[50rem] w-full m-auto relative py-16 px-4">
-        <DescriptionUtil />
+        {/* <DescriptionUtil /> */}
+        <RoomDecription />
       </div>
       <div className="max-w-[1800px] h-[70rem] w-full m-auto relative py-16 px-4">
         <HeroSection />
