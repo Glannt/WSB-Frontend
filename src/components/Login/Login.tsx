@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useContext, useState } from 'react';
 import {
   FaEnvelope,
   FaLock,
@@ -15,8 +15,9 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useMutation } from '@tanstack/react-query';
 import { loginAccount } from '@/service/auth.api';
-import { ResponseApi } from '@/types/utils.type';
+import { ErrorResponse } from '@/types/utils.type';
 import { isAxiosUnprocessableEntityError } from '@/utils/utils';
+import { AppContext } from '@/context/app.context';
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -24,6 +25,7 @@ const Login = () => {
   const [rememberMe, setRememberMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { setIsAuthenticated } = useContext(AppContext);
   const {
     register,
     handleSubmit,
@@ -42,12 +44,15 @@ const Login = () => {
     try {
       await new Promise((resolve) => setTimeout(resolve, 2000));
       loginAccountMutation.mutate(data, {
-        onSuccess: (data) => {
+        onSuccess: () => {
+          setIsAuthenticated(true);
           console.log(data);
+
+          navigate('/');
         },
         onError: (error) => {
           if (
-            isAxiosUnprocessableEntityError<ResponseApi<SchemaLogin>>(error)
+            isAxiosUnprocessableEntityError<ErrorResponse<SchemaLogin>>(error)
           ) {
             const formError = error.response?.data.data;
             if (formError) {
@@ -105,11 +110,11 @@ const Login = () => {
               placeholder="username"
               // value={username}
               // onChange={(e) => setUsername(e.target.value)}
-              {...register('username')}
+              {...register('userName')}
             />
-            {errors.username && (
+            {errors.userName && (
               <p className="text-red-700 text-sm mt-1">
-                {errors.username?.message}
+                {errors.userName?.message}
               </p>
             )}
             <FaEnvelope className="absolute left-3 top-3 text-black-400" />

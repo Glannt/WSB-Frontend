@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, FormEvent } from 'react';
+import React, { useState, ChangeEvent, FormEvent, useContext } from 'react';
 import {
   FaUser,
   FaEnvelope,
@@ -14,8 +14,10 @@ import { schema, Schema } from '@/utils/rules';
 import { useMutation } from '@tanstack/react-query';
 import { registerAccount } from '@/service/auth.api';
 import { omit } from 'lodash';
-import { ResponseApi } from '@/types/utils.type';
+import { ErrorResponse } from '@/types/utils.type';
 import { isAxiosUnprocessableEntityError } from '@/utils/utils';
+import { useNavigate } from 'react-router';
+import { AppContext } from '@/context/app.context';
 // import { getRules } from '@/utils/rules';
 
 const SignUp: React.FC = () => {
@@ -32,7 +34,8 @@ const SignUp: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [passwordError, setPasswordError] = useState<string>('');
-
+  const navigate = useNavigate();
+  const { setIsAuthenticated } = useContext(AppContext);
   const registerAccountMutation = useMutation({
     mutationFn: (body: Omit<Schema, 'confirm_password'>) =>
       registerAccount(body),
@@ -40,13 +43,14 @@ const SignUp: React.FC = () => {
   const onSubmit = handleSubmit((data) => {
     const body = omit(data, ['confirm_password']);
     registerAccountMutation.mutate(body, {
-      onSuccess: (data) => {
-        console.log(data);
+      onSuccess: () => {
+        setIsAuthenticated(true);
+        navigate('/');
       },
       onError: (error) => {
         if (
           isAxiosUnprocessableEntityError<
-            ResponseApi<Omit<Schema, 'confirm_password'>>
+            ErrorResponse<Omit<Schema, 'confirm_password'>>
           >(error)
         ) {
           const formError = error.response?.data.data;
@@ -118,11 +122,11 @@ const SignUp: React.FC = () => {
               // onChange={handleChange}
               placeholder="Username"
               className="w-full bg-black bg-opacity-20 text-black placeholder-gray-800 pl-10 my-2 pr-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blackA9"
-              {...register('username')}
+              {...register('userName')}
             />
-            {errors.username && (
+            {errors.userName && (
               <p className="text-red-700 text-sm mt-1">
-                {errors.username?.message}
+                {errors.userName?.message}
               </p>
             )}
           </div>
