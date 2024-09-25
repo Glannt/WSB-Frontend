@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router';
 export const ListRoom = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('single');
+  const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedTimeSlot, setSelectedTimeSlot] = useState('07:00');
   const [selectedDate, setSelectedDate] = useState('');
   const [rooms, setRooms] = useState([
@@ -130,7 +130,7 @@ export const ListRoom = () => {
         </div>
 
         {/* Time Slot Selection */}
-        <div className="mb-4">
+        {/* <div className="mb-4">
           <h3 className="text-lg font-semibold mb-2">Time Slot</h3>
           <div className="relative">
             <select
@@ -153,12 +153,12 @@ export const ListRoom = () => {
             </select>
             <FaClock className="absolute left-3 top-3 text-gray-400" />
           </div>
-        </div>
+        </div> */}
 
         {/* Date Selection */}
-        <div className="mb-4">
+        {/* <div className="mb-4">
           <h3 className="text-lg font-semibold mb-2">Date</h3>
-          {/* <Input
+          <Input
             type="date"
             fullWidth
             // contentLeft={<FaCalendarAlt />}
@@ -167,12 +167,12 @@ export const ListRoom = () => {
             onChange={handleDateChange}
             aria-label="Select date"
             // rounded
-          /> */}
+          />
           <DatePicker
             label="Birth date"
             className="max-w-full rounded-lg hover:shadow-lg"
           />
-        </div>
+        </div> */}
       </div>
 
       {/* Right Panel */}

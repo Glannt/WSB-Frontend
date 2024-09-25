@@ -1,22 +1,27 @@
 interface TypeRoomCardProps {
+  url: string;
+  name: string;
+  description: string;
   className?: string;
 }
-export const TypeRoomCard: React.FC<TypeRoomCardProps> = ({ className }) => {
+export const TypeRoomCard: React.FC<TypeRoomCardProps> = ({
+  className,
+  name,
+  url,
+  description,
+}) => {
   return (
     <div className={className}>
-      <div className="card bg-base-100 w-96 shadow-xl">
+      <div className="card bg-base-100 w-96 h-80 shadow-xl">
         <figure>
-          <img
-            src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-            alt="Shoes"
-          />
+          <img src={url} alt="Shoes" />
         </figure>
         <div className="card-body bg-white">
-          <h2 className="card-title">Shoes!</h2>
-          <p>If a dog chews shoes whose shoes does he choose?</p>
-          <div className="card-actions justify-end">
+          <h2 className="card-title">{name}</h2>
+          <p>&nbsp;&nbsp;{description}</p>
+          {/* <div className="card-actions justify-end">
             <button className="btn btn-primary">Buy Now</button>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
