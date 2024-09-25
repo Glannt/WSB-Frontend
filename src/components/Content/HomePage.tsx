@@ -17,20 +17,20 @@ export const HomePage: React.FC<CarouselPropsSlider> = ({
 }) => {
   const slides = [
     {
+      url: 'https://stylishclub.pt/wp-content/uploads/2023/05/stylish-club-blog-post-the-future-of-worsapce-design-banner-1024x683.jpg',
+    },
+    {
       url: 'https://images.inc.com/uploaded_files/image/1920x1080/getty_517610514_353435.jpg',
     },
     {
       url: 'https://www.workdesign.com/wp-content/uploads/2021/04/shutterstock_682694722-scaled-e1619719883125.jpg',
-    },
-    {
-      url: 'https://stylishclub.pt/wp-content/uploads/2023/05/stylish-club-blog-post-the-future-of-worsapce-design-banner-1024x683.jpg',
     },
 
     {
       url: 'https://boweninteriors.com.au/wp-content/uploads/2022/06/Blog-5.jpg',
     },
     {
-      url: 'https://media.licdn.com/dms/image/C5612AQHRyGh9-AEIUw/article-cover_image-shrink_720_1280/0/1599112577357?e=2147483647&v=beta&t=tD0C8R3gQm420877i0rssrYhdWZRSM5hVUUE4TOtYf8',
+      url: 'https://studioasa.in/wp-content/uploads/2024/02/Bringing-the-Greens-Inside-the-Workspace.jpg',
     },
   ];
 
