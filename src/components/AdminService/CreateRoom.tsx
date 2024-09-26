@@ -26,6 +26,7 @@ import {
   ModalFooter,
   Select,
   SelectItem,
+  Tooltip,
 } from '@nextui-org/react';
 import { PlusIcon } from '../Icons/PlusIcon';
 import { VerticalDotsIcon } from '../Icons/VerticalDotsIcon';
@@ -35,6 +36,9 @@ import { columns, users, statusOptions } from '../../data/data';
 import { capitalize } from './utils';
 import { roomStatuses } from '@/data/dataStatusRoom';
 import { roomTypes } from '../../data/dataRoomType';
+import { EyeIcon } from '../Icons/EyeIcon';
+import { EditIcon } from '../Icons/EditIcon';
+import { DeleteIcon } from '../Icons/DeleteIcon';
 
 const statusColorMap: Record<string, ChipProps['color']> = {
   active: 'success',
@@ -184,19 +188,22 @@ export default function CreateRoom() {
         );
       case 'actions':
         return (
-          <div className="relative flex justify-end items-center gap-2">
-            <Dropdown>
-              <DropdownTrigger>
-                <Button isIconOnly size="sm" variant="light">
-                  <VerticalDotsIcon className="text-default-300" />
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu>
-                <DropdownItem>View</DropdownItem>
-                <DropdownItem>Edit</DropdownItem>
-                <DropdownItem>Delete</DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
+          <div className="relative flex items-center gap-2">
+            <Tooltip content="Details">
+              <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
+                <EyeIcon />
+              </span>
+            </Tooltip>
+            <Tooltip content="Edit user">
+              <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
+                <EditIcon />
+              </span>
+            </Tooltip>
+            <Tooltip color="danger" content="Delete user">
+              <span className="text-lg text-danger cursor-pointer active:opacity-50">
+                <DeleteIcon />
+              </span>
+            </Tooltip>
           </div>
         );
       default:
