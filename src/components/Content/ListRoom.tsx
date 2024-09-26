@@ -202,7 +202,7 @@ export const ListRoom = () => {
               <Button
                 className="mt-8 bg-blackA12 text-white py-3 px-6 rounded-lg font-semibold hover:bg-white hover:text-black hover:shadow-2xl transition duration-300 ease-in-out flex items-center w-full"
                 color="primary"
-                onPress={() => navigate(`/room-detail`)}
+                onPress={() => navigate(`/room-detail/${room.id}`)}
               >
                 Book Now
               </Button>

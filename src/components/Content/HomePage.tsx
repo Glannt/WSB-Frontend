@@ -142,7 +142,7 @@ export const HomePage: React.FC<CarouselPropsSlider> = ({
         <HeroSection />
       </div> */}
       {/* Subcription */}
-      <div className="max-w-[1800px] h-[80rem] w-full m-auto relative py-16 px-4">
+      <div className="max-w-[1800px] h-[65rem] w-full m-auto relative py-16 px-4">
         <div className="flex flex-row gap-4 w-full h-auto justify-evenly rounded-lg border-solid border-2 border-x-blackA5 bg-slate-100 py-5">
           <SubcriptionCard />
         </div>

@@ -73,8 +73,13 @@ export const router = createBrowserRouter([
     element: <ProtectedRoute />,
     children: [
       {
-        path: 'room-detail',
-        element: <BookingRoomDetail />,
+        path: 'room-detail/:roomId',
+        element: (
+          <MainLayout>
+            <BookingRoomDetail />
+          </MainLayout>
+        ),
+        // <BookingRoomDetail />,
       },
     ],
   },
