@@ -10,10 +10,12 @@ export const MainLayout: React.FC<{ children?: JSX.Element }> = ({
 }) => {
   return (
     <ThemeProvider defaultTheme="light" storageKey="ui-theme">
-      <div className="header-container sticky top-0 z-10">
-        <Header />
+      <div className="min-h-screen ">
+        <div className="header-container sticky top-0 z-10">
+          <Header />
+        </div>
+        <div className="main-content">{children || <Outlet />}</div>
       </div>
-      <div className="main-content">{children || <Outlet />}</div>
       <div>
         {/* Footer */}
         <Footer />

@@ -6,6 +6,7 @@ import { TypeRoomCard } from '../HomepageContent/TypeRoomCard';
 import { DescriptionUtil } from '../HomepageContent/DescriptionHomePage';
 import HeroSection from './heroSection';
 import RoomDecription from '../HomepageContent/RoomDecription';
+import { useNavigate } from 'react-router';
 
 export interface CarouselPropsSlider {
   autoSlide?: boolean;
@@ -36,6 +37,7 @@ export const HomePage: React.FC<CarouselPropsSlider> = ({
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isInteracting, setIsInteracting] = useState(false);
+  const navigate = useNavigate();
 
   const prevSlide = () => {
     const isFirstSlide = currentIndex === 0;
@@ -121,8 +123,7 @@ export const HomePage: React.FC<CarouselPropsSlider> = ({
         </div>
         <div className="flex justify-end mx-auto mt-10">
           <Button
-            href="/list-room"
-            as={Link}
+            onClick={() => navigate('/list-room')}
             className="mt-8 bg-blackA12 text-white py-3 px-6 rounded-lg font-semibold hover:bg-white hover:text-black hover:shadow-2xl transition duration-300 ease-in-out flex items-center"
           >
             Xem thêm

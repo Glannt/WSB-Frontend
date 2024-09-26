@@ -4,6 +4,7 @@ import { HomePage } from '@/components/Content/HomePage';
 import { ListFood } from '@/components/Content/ListFood';
 import { ListRoom } from '@/components/Content/ListRoom';
 import Login from '@/components/Login/Login';
+import ProfileEditor from '@/components/ProfileEditor/ProfileEditor';
 import SignUp from '@/components/SignUp/SignUp';
 import { AppContext } from '@/context/app.context';
 import { MainLayout } from '@/layouts/MainLayout';
@@ -55,6 +56,14 @@ export const router = createBrowserRouter([
     element: (
       <MainLayout>
         <ListFood />
+      </MainLayout>
+    ),
+  },
+  {
+    path: 'profile',
+    element: (
+      <MainLayout>
+        <ProfileEditor />
       </MainLayout>
     ),
   },
