@@ -2,15 +2,20 @@ import { HttpStatusCode } from '@/constants/httpStatusCode.enum';
 import { AuthResponse } from '@/types/auth.type';
 import axios, { type AxiosInstance } from 'axios';
 import { toast } from 'react-toastify';
+import path from '@/constants/path';
+
 import {
-  clearAccessTokenFromLS,
+  clearLS,
   getAccessTokenFromLS,
   saveAccessTokenToLS,
+  setProfileToLS,
 } from './auth';
+import { omit } from 'lodash';
+import { User } from '@/types/user.type';
 
 class Http {
   instance: AxiosInstance;
-  private accessToken: string;
+  private accessToken;
   constructor() {
     this.accessToken = getAccessTokenFromLS();
     this.instance = axios.create({
@@ -25,8 +30,6 @@ class Http {
       (config) => {
         if (this.accessToken && config.headers) {
           config.headers.Authorization = `Bearer ${this.accessToken}`;
-          console.log(this.accessToken);
-
           return config;
         }
         return config;
@@ -38,14 +41,17 @@ class Http {
     this.instance.interceptors.response.use(
       (response) => {
         const { url } = response.config;
-        if (url === '/sign-in' || url === '/sign-up') {
-          this.accessToken = (response.data as AuthResponse).data.access_token;
-          console.log(response.data as AuthResponse);
-
+        if (url === path.authLogin || url === path.authRegister) {
+          // this.accessToken = (response.data as AuthResponse).data.access_token;
+          this.accessToken = response.data.access_token;
+          // console.log(response.data as AuthResponse);
+          // console.log(response.data.data);
+          const user = omit(response.data.data, ['password']);
+          // setProfileToLS(user);
           saveAccessTokenToLS(this.accessToken);
         } else if (url === '/logout') {
           this.accessToken = '';
-          clearAccessTokenFromLS();
+          clearLS();
         }
         return response;
       },

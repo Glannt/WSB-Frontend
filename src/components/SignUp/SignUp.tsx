@@ -19,7 +19,7 @@ import { isAxiosUnprocessableEntityError } from '@/utils/utils';
 import { useNavigate } from 'react-router';
 import { AppContext } from '@/context/app.context';
 // import { getRules } from '@/utils/rules';
-
+import path from '@/constants/path';
 const SignUp: React.FC = () => {
   const {
     register,
@@ -288,7 +288,7 @@ const SignUp: React.FC = () => {
         </form>
         <p className="text-black text-center mt-4">
           Already registered?{' '}
-          <a href="sign-in" className="text-black hover:underline font-bold">
+          <a href={path.login} className="text-black hover:underline font-bold">
             Login
           </a>
         </p>
