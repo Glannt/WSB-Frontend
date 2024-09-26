@@ -44,12 +44,12 @@ class Http {
         if (url === path.authLogin || url === path.authRegister) {
           // this.accessToken = (response.data as AuthResponse).data.access_token;
           this.accessToken = response.data.access_token;
-          // console.log(response.data as AuthResponse);
-          // console.log(response.data.data);
+          console.log(response.data as AuthResponse);
+          console.log(response.data.data);
           const user = omit(response.data.data, ['password']);
           // setProfileToLS(user);
           saveAccessTokenToLS(this.accessToken);
-        } else if (url === '/logout') {
+        } else if (url === path.logout) {
           this.accessToken = '';
           clearLS();
         }

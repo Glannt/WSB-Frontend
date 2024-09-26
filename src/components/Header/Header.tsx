@@ -14,13 +14,14 @@ export const Header = (props: any) => {
   const navigate = useNavigate();
   const { setIsAuthenticated, isAuthenticated } = useContext(AppContext);
   const logoutMutation = useMutation({
-    mutationFn: () => logout(),
+    mutationFn: logout,
     onSuccess: () => {
       setIsAuthenticated(false);
     },
   });
   const handleLogout = () => {
     logoutMutation.mutate();
+    // navigate('/');
   };
   useEffect(() => {
     const handleScroll = () => {
@@ -149,9 +150,9 @@ export const Header = (props: any) => {
                       </ListItem>
                       <ListItem
                         className="row-span-1"
-                        href="/logout"
+                        // href="/logout"
                         title="Đăng xuất"
-                        onClick={() => handleLogout}
+                        onClick={handleLogout}
                       >
                         {' '}
                       </ListItem>
