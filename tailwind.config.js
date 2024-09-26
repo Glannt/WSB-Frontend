@@ -3,15 +3,17 @@ const plugin = require('tailwindcss/plugin');
 const { blackA, mauve, violet, indigo, purple } = require('@radix-ui/colors');
 const flowbite = require('flowbite-react/tailwind');
 const { nextui } = require('@nextui-org/theme');
+
 module.exports = {
   darkMode: ['class'],
   content: [
+    './index.html',
+    './src/**/*.{js,ts,jsx,tsx}',
     './pages/**/*.{ts,tsx}',
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
     './src/components/Header/Header.tsx',
-    './App.jsx', // Added from the second config
+    './App.jsx', // Specific content from the second config
     flowbite.content(),
     './node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}',
     './node_modules/@nextui-org/theme/dist/components/button.js',
@@ -60,7 +62,7 @@ module.exports = {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
         },
-        ...blackA, // Merged colors from the second config
+        ...blackA,
         ...mauve,
         ...violet,
         ...indigo,
@@ -72,6 +74,53 @@ module.exports = {
         sm: 'calc(var(--radius) - 4px)',
       },
       keyframes: {
+        hide: {
+          from: { opacity: '1' },
+          to: { opacity: '0' },
+        },
+        slideDownAndFade: {
+          from: { opacity: '0', transform: 'translateY(-6px)' },
+          to: { opacity: '1', transform: 'translateY(0)' },
+        },
+        slideLeftAndFade: {
+          from: { opacity: '0', transform: 'translateX(6px)' },
+          to: { opacity: '1', transform: 'translateX(0)' },
+        },
+        slideUpAndFade: {
+          from: { opacity: '0', transform: 'translateY(6px)' },
+          to: { opacity: '1', transform: 'translateY(0)' },
+        },
+        slideRightAndFade: {
+          from: { opacity: '0', transform: 'translateX(-6px)' },
+          to: { opacity: '1', transform: 'translateX(0)' },
+        },
+        accordionOpen: {
+          from: { height: '0px' },
+          to: { height: 'var(--radix-accordion-content-height)' },
+        },
+        accordionClose: {
+          from: { height: 'var(--radix-accordion-content-height)' },
+          to: { height: '0px' },
+        },
+        dialogOverlayShow: {
+          from: { opacity: '0' },
+          to: { opacity: '1' },
+        },
+        dialogContentShow: {
+          from: {
+            opacity: '0',
+            transform: 'translate(-50%, -45%) scale(0.95)',
+          },
+          to: { opacity: '1', transform: 'translate(-50%, -50%) scale(1)' },
+        },
+        drawerSlideLeftAndFade: {
+          from: { opacity: '0', transform: 'translateX(100%)' },
+          to: { opacity: '1', transform: 'translateX(0)' },
+        },
+        drawerSlideRightAndFade: {
+          from: { opacity: '1', transform: 'translateX(0)' },
+          to: { opacity: '0', transform: 'translateX(100%)' },
+        },
         'accordion-down': {
           from: { height: '0' },
           to: { height: 'var(--radix-accordion-content-height)' },
@@ -114,6 +163,23 @@ module.exports = {
         },
       },
       animation: {
+        hide: 'hide 150ms cubic-bezier(0.16, 1, 0.3, 1)',
+        slideDownAndFade:
+          'slideDownAndFade 150ms cubic-bezier(0.16, 1, 0.3, 1)',
+        slideLeftAndFade:
+          'slideLeftAndFade 150ms cubic-bezier(0.16, 1, 0.3, 1)',
+        slideUpAndFade: 'slideUpAndFade 150ms cubic-bezier(0.16, 1, 0.3, 1)',
+        slideRightAndFade:
+          'slideRightAndFade 150ms cubic-bezier(0.16, 1, 0.3, 1)',
+        accordionOpen: 'accordionOpen 150ms cubic-bezier(0.87, 0, 0.13, 1)',
+        accordionClose: 'accordionClose 150ms cubic-bezier(0.87, 0, 0.13, 1)',
+        dialogOverlayShow:
+          'dialogOverlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1)',
+        dialogContentShow:
+          'dialogContentShow 150ms cubic-bezier(0.16, 1, 0.3, 1)',
+        drawerSlideLeftAndFade:
+          'drawerSlideLeftAndFade 150ms cubic-bezier(0.16, 1, 0.3, 1)',
+        drawerSlideRightAndFade: 'drawerSlideRightAndFade 150ms ease-in',
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         scaleIn: 'scaleIn 200ms ease',
@@ -137,68 +203,9 @@ module.exports = {
         }),
       });
     }),
-    flowbite.plugin(),
     nextui({
-      layout: {
-        dividerWeight: '1px', // h-divider the default height applied to the divider component
-        disabledOpacity: 0.5, // this value is applied as opacity-[value] when the component is disabled
-        fontSize: {
-          tiny: '0.75rem', // text-tiny
-          small: '0.875rem', // text-small
-          medium: '1rem', // text-medium
-          large: '1.125rem', // text-large
-        },
-        lineHeight: {
-          tiny: '1rem', // text-tiny
-          small: '1.25rem', // text-small
-          medium: '1.5rem', // text-medium
-          large: '1.75rem', // text-large
-        },
-        radius: {
-          small: '8px', // rounded-small
-          medium: '12px', // rounded-medium
-          large: '14px', // rounded-large
-        },
-        borderWidth: {
-          small: '1px', // border-small
-          medium: '2px', // border-medium (default)
-          large: '3px', // border-large
-        },
-      },
-      themes: {
-        light: {
-          layout: {
-            hoverOpacity: 0.8, //  this value is applied as opacity-[value] when the component is hovered
-            boxShadow: {
-              // shadow-small
-              small:
-                '0px 0px 5px 0px rgb(0 0 0 / 0.02), 0px 2px 10px 0px rgb(0 0 0 / 0.06), 0px 0px 1px 0px rgb(0 0 0 / 0.3)',
-              // shadow-medium
-              medium:
-                '0px 0px 15px 0px rgb(0 0 0 / 0.03), 0px 2px 30px 0px rgb(0 0 0 / 0.08), 0px 0px 1px 0px rgb(0 0 0 / 0.3)',
-              // shadow-large
-              large:
-                '0px 0px 30px 0px rgb(0 0 0 / 0.04), 0px 30px 60px 0px rgb(0 0 0 / 0.12), 0px 0px 1px 0px rgb(0 0 0 / 0.3)',
-            },
-          },
-        },
-        dark: {
-          layout: {
-            hoverOpacity: 0.9, //  this value is applied as opacity-[value] when the component is hovered
-            boxShadow: {
-              // shadow-small
-              small:
-                '0px 0px 5px 0px rgb(0 0 0 / 0.05), 0px 2px 10px 0px rgb(0 0 0 / 0.2), inset 0px 0px 1px 0px rgb(255 255 255 / 0.15)',
-              // shadow-medium
-              medium:
-                '0px 0px 15px 0px rgb(0 0 0 / 0.06), 0px 2px 30px 0px rgb(0 0 0 / 0.22), inset 0px 0px 1px 0px rgb(255 255 255 / 0.15)',
-              // shadow-large
-              large:
-                '0px 0px 30px 0px rgb(0 0 0 / 0.07), 0px 30px 60px 0px rgb(0 0 0 / 0.26), inset 0px 0px 1px 0px rgb(255 255 255 / 0.15)',
-            },
-          },
-        },
-      },
+      addCommonColors: true,
     }),
+    flowbite,
   ],
 };

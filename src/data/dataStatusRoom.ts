@@ -10,3 +10,8 @@ export const roomStatuses = [
   { key: 'scheduled', label: 'Scheduled' },
   { key: 'not_available', label: 'Not Available' },
 ];
+
+export const roomStatusManager = [
+  { key: 'available', label: 'Available' },
+  { key: 'maintenance', label: ' Maintenance' },
+];

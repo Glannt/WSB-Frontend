@@ -32,23 +32,31 @@ import { PlusIcon } from '../Icons/PlusIcon';
 import { VerticalDotsIcon } from '../Icons/VerticalDotsIcon';
 import { ChevronDownIcon } from '../Icons/ChevronDownIcon';
 import { SearchIcon } from '../Icons/SearchIcon';
-import { columns, users, statusOptions } from '../../data/data';
+import { columnsRoom, rooms, statusOptions } from '../../data/data';
 import { capitalize } from './utils';
-import { roomStatuses } from '@/data/dataStatusRoom';
+import { roomStatuses, roomStatusManager } from '@/data/dataStatusRoom';
 import { roomTypes } from '../../data/dataRoomType';
 import { EyeIcon } from '../Icons/EyeIcon';
 import { EditIcon } from '../Icons/EditIcon';
 import { DeleteIcon } from '../Icons/DeleteIcon';
+import AddRoomModal from './AddRoomModal';
+import { DetailModal } from './DetailModal';
+import { EditModalRoom } from './EditModalRoom';
 
 const statusColorMap: Record<string, ChipProps['color']> = {
-  active: 'success',
-  paused: 'danger',
-  vacation: 'warning',
+  available: 'success',
+  maintenance: 'danger',
+  // vacation: 'warning',
 };
 
-const INITIAL_VISIBLE_COLUMNS = ['name', 'role', 'status', 'actions'];
+const INITIAL_VISIBLE_COLUMNS = [
+  'roomName',
+  'roomType',
+  'roomStatus',
+  'actions',
+];
 
-type User = (typeof users)[0];
+type Room = (typeof rooms)[0];
 
 export default function CreateRoom() {
   //filter
@@ -75,33 +83,33 @@ export default function CreateRoom() {
     new Set(INITIAL_VISIBLE_COLUMNS)
   );
   const headerColumns = React.useMemo(() => {
-    if (visibleColumns === 'all') return columns;
+    if (visibleColumns === 'all') return columnsRoom;
 
-    return columns.filter((column) =>
+    return columnsRoom.filter((column) =>
       Array.from(visibleColumns).includes(column.uid)
     );
   }, [visibleColumns]);
   //statusFilter
   const [statusFilter, setStatusFilter] = React.useState<Selection>('all');
   const filteredItems = React.useMemo(() => {
-    let filteredUsers = [...users];
+    let filteredRooms = [...rooms];
 
     if (hasSearchFilter) {
-      filteredUsers = filteredUsers.filter((user) =>
-        user.name.toLowerCase().includes(filterValue.toLowerCase())
+      filteredRooms = filteredRooms.filter((room) =>
+        room.roomName.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
     if (
       statusFilter !== 'all' &&
       Array.from(statusFilter).length !== statusOptions.length
     ) {
-      filteredUsers = filteredUsers.filter((user) =>
-        Array.from(statusFilter).includes(user.status)
+      filteredRooms = filteredRooms.filter((room) =>
+        Array.from(statusFilter).includes(room.roomStatus)
       );
     }
 
-    return filteredUsers;
-  }, [users, filterValue, statusFilter]);
+    return filteredRooms;
+  }, [rooms, filterValue, statusFilter]);
   //rowsPerPage
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [page, setPage] = React.useState(1);
@@ -140,46 +148,63 @@ export default function CreateRoom() {
     direction: 'ascending',
   });
   const sortedItems = React.useMemo(() => {
-    return [...items].sort((a: User, b: User) => {
-      const first = a[sortDescriptor.column as keyof User] as number;
-      const second = b[sortDescriptor.column as keyof User] as number;
+    return [...items].sort((a: Room, b: Room) => {
+      const first = a[sortDescriptor.column as keyof Room] as number;
+      const second = b[sortDescriptor.column as keyof Room] as number;
       const cmp = first < second ? -1 : first > second ? 1 : 0;
-      console.log(1, first, second, cmp);
-
       return sortDescriptor.direction === 'descending' ? -cmp : cmp;
     });
   }, [sortDescriptor, items]);
 
   const [valueStatus, setValueStatus] = React.useState(new Set(['available']));
   const [valueRoomType, setValueRoomType] = React.useState(new Set(['single']));
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [isDetails, setIsDetails] = useState<boolean>(false);
+  const [selectedRoom, setSelectedRoom] = React.useState<Room | null>(null);
+  const openDetail = (room: Room) => {
+    setIsDetails(true);
+    setSelectedRoom(room);
+  };
+  const closeDetail = () => {
+    setIsDetails(false);
+  };
 
-  const renderCell = React.useCallback((user: User, columnKey: React.Key) => {
-    const cellValue = user[columnKey as keyof User];
+  const [isOpenEdit, setIsOpenEdit] = useState<boolean>(false);
+  const openEdit = (room: Room) => {
+    setIsOpenEdit(true);
+    setSelectedRoom(room);
+  };
+  const closeEdit = () => {
+    setIsOpenEdit(false);
+  };
+
+  const renderCell = React.useCallback((room: Room, columnKey: React.Key) => {
+    const cellValue = room[columnKey as keyof Room];
     switch (columnKey) {
       case 'name':
         return (
           <User
-            avatarProps={{ radius: 'lg', src: user.avatar }}
-            description={user.email}
+            // avatarProps={{ radius: 'lg', src: room.avatar }}
+            // description={room.email}
             name={cellValue}
           >
-            {user.email}
+            {room.roomName}
           </User>
         );
-      case 'role':
+      case 'roomType':
         return (
           <div className="flex flex-col">
             <p className="text-bold text-small capitalize">{cellValue}</p>
             <p className="text-bold text-tiny capitalize text-default-400">
-              {user.team}
+              {room.roomType}
             </p>
           </div>
         );
-      case 'status':
+      case 'roomStatus':
         return (
           <Chip
             className="capitalize"
-            color={statusColorMap[user.status]}
+            color={statusColorMap[room.roomStatus]}
             size="sm"
             variant="flat"
           >
@@ -188,14 +213,20 @@ export default function CreateRoom() {
         );
       case 'actions':
         return (
-          <div className="relative flex items-center gap-2">
+          <div className="relative flex items-center gap-10 left-20">
             <Tooltip content="Details">
-              <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
+              <span
+                onClick={() => openDetail(room)}
+                className="text-lg text-default-400 cursor-pointer active:opacity-50"
+              >
                 <EyeIcon />
               </span>
             </Tooltip>
             <Tooltip content="Edit user">
-              <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
+              <span
+                onClick={() => openEdit(room)}
+                className="text-lg text-default-400 cursor-pointer active:opacity-50"
+              >
                 <EditIcon />
               </span>
             </Tooltip>
@@ -211,7 +242,6 @@ export default function CreateRoom() {
     }
   }, []);
 
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const topContent = React.useMemo(() => {
     return (
       <div className="flex flex-col gap-4 h-full max-h-screen">
@@ -272,7 +302,7 @@ export default function CreateRoom() {
                 selectionMode="multiple"
                 onSelectionChange={setVisibleColumns}
               >
-                {columns.map((column) => (
+                {columnsRoom.map((column) => (
                   <DropdownItem key={column.uid} className="capitalize">
                     {capitalize(column.name)}
                   </DropdownItem>
@@ -291,7 +321,7 @@ export default function CreateRoom() {
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">
-            Total {users.length} users
+            Total {rooms.length} users
           </span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
@@ -313,7 +343,7 @@ export default function CreateRoom() {
     visibleColumns,
     onSearchChange,
     onRowsPerPageChange,
-    users.length,
+    rooms.length,
     hasSearchFilter,
   ]);
 
@@ -368,7 +398,7 @@ export default function CreateRoom() {
           wrapper: 'max-h-[470px]',
         }}
         selectedKeys={selectedKeys}
-        selectionMode="multiple"
+        // selectionMode="multiple"
         sortDescriptor={sortDescriptor}
         topContent={topContent}
         topContentPlacement="outside"
@@ -390,115 +420,37 @@ export default function CreateRoom() {
           {(item) => (
             <TableRow key={item.id}>
               {(columnKey) => (
-                <TableCell>{renderCell(item, columnKey)}</TableCell>
+                <TableCell>{renderCell(item, columnKey)} </TableCell>
               )}
             </TableRow>
           )}
         </TableBody>
       </Table>
-      <Modal
-        backdrop="opaque"
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-        placement="top-center"
-        classNames={{
-          backdrop:
-            'bg-gradient-to-t from-zinc-900 to-zinc-900/10 backdrop-opacity-20',
-          base: 'max-w-[1000px] h-[300px]',
-        }}
-        motionProps={{
-          variants: {
-            enter: {
-              y: 0,
-              opacity: 1,
-              transition: {
-                duration: 0.3,
-                ease: 'easeOut',
-              },
-            },
-            exit: {
-              y: -20,
-              opacity: 0,
-              transition: {
-                duration: 0.2,
-                ease: 'easeIn',
-              },
-            },
-          },
-        }}
-      >
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className="flex flex-col gap-1">
-                Thêm phòng mới
-              </ModalHeader>
-              <ModalBody>
-                <div className="flex py-2 px-3 justify-evenly flex-wrap md:flex-nowrap gap-4 outline-none border-0">
-                  {' '}
-                  <Input
-                    isClearable
-                    autoFocus
-                    label="Tên phòng"
-                    placeholder="Nhập tên phòng"
-                    variant="bordered"
-                    classNames={{
-                      label: 'text-black/50 dark:text-white/90 pb-2',
-                      input: 'border-0 focus:outline-none focus:border-none',
-                      clearButton: 'pb-4',
-                    }}
-                  />
-                  <Input
-                    label="Giá"
-                    placeholder="Nhập giá phòng"
-                    type="number"
-                    variant="bordered"
-                    classNames={{
-                      label: 'text-black/50 dark:text-white/90 pb-2',
-                      input: 'border-0',
-                    }}
-                  />
-                </div>
-                <div className="flex flex-wrap py-2 px-3 md:flex-nowrap gap-4 w-[960px] justify-evenly">
-                  <Select
-                    label="Trạng thái phòng"
-                    className="max-w-xl"
-                    selectedKeys={valueStatus}
-                    onSelectionChange={() => setValueStatus(valueStatus)}
-                  >
-                    {roomStatuses.map((roomStatuses) => (
-                      <SelectItem key={roomStatuses.key}>
-                        {roomStatuses.label}
-                      </SelectItem>
-                    ))}
-                  </Select>
-                  <Select
-                    label="Loại phòng"
-                    placeholder="Chọn loại phòng"
-                    className="max-w-xl"
-                    selectedKeys={valueRoomType}
-                    onSelectionChange={() => setValueRoomType(valueRoomType)}
-                  >
-                    {roomTypes.map((roomTypes) => (
-                      <SelectItem key={roomTypes.key}>
-                        {roomTypes.label}
-                      </SelectItem>
-                    ))}
-                  </Select>
-                </div>
-              </ModalBody>
-              <ModalFooter>
-                <Button color="danger" variant="flat" onPress={onClose}>
-                  Đóng
-                </Button>
-                <Button color="primary" onPress={onClose}>
-                  Tạo
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
+      {isOpen && !isDetails && (
+        <AddRoomModal
+          isOpen={isOpen}
+          onOpenChange={onOpenChange}
+          valueStatus={valueStatus}
+          setValueStatus={setValueStatus}
+          setValueRoomType={setValueRoomType}
+          valueRoomType={valueRoomType}
+        />
+      )}
+      {isDetails && (
+        <DetailModal
+          isOpen={isDetails}
+          onClose={closeDetail}
+          selectedRoom={selectedRoom}
+        />
+      )}
+      {isOpenEdit && (
+        <EditModalRoom
+          isOpen={isOpenEdit}
+          onClose={closeEdit}
+          selectedRoom={selectedRoom}
+          setSelectedRoom={setSelectedRoom}
+        />
+      )}
     </div>
   );
 }
