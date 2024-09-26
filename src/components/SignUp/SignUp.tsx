@@ -317,9 +317,12 @@ const SignUp: React.FC = () => {
 
         <p className="text-black text-center mt-4">
           Có tài khoản?{' '}
-          <a href="sign-in" className="text-black hover:underline font-bold">
+          <span
+            onClick={() => navigate('/sign-in')}
+            className="text-black hover:underline font-bold cursor-pointer"
+          >
             Đăng nhập
-          </a>
+          </span>
         </p>
       </div>
       {showPolicyModal && (
