@@ -12,9 +12,11 @@ import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
 import path from '@/constants/path';
 import ProfileEditor from '@/components/ProfileEditor/ProfileEditor';
 import { Dashboard } from '@/components/Admin/Dashboard';
-import CreateRoom from '@/components/AdminService/CreateRoom';
+import CreateRoom from '@/components/AdminService/ManageRoom';
 import TableAddRoom from '@/components/AdminService/TableAddRoom';
 import AddStaffToRoom from '@/components/AdminService/AddStaffToRoom';
+import { ComboChart } from '@/components/Admin/ContentDashboard';
+import { ComboChartSingleAxisExample } from '@/components/Admin/TestChart';
 function ProtectedRoute() {
   const { isAuthenticated } = useContext(AppContext);
   return isAuthenticated ? <Outlet /> : <Navigate to={path.login} />;
@@ -33,6 +35,21 @@ function RejectedRoute() {
 //   return (isAuthenticated = true);
 // };
 
+// Assuming this is your ChartSeries type
+type ChartSeries = {
+  name: string;
+  data: number[]; // or whatever type is appropriate
+  categories: string[]; // add the categories property
+  type?: 'default' | 'stacked'; // optional type property
+};
+
+// Example of creating a bar series with the required categories
+const barSeries: ChartSeries = {
+  name: 'Sample Series',
+  data: [10, 20, 30, 40], // example data points
+  categories: ['Category 1', 'Category 2', 'Category 3', 'Category 4'], // required categories
+  type: 'default', // set type appropriately
+};
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -98,8 +115,13 @@ export const router = createBrowserRouter([
         path: 'update-staff-schedule',
         element: <AddStaffToRoom />,
       },
+      {
+        path: '',
+        element: <ComboChartSingleAxisExample />,
+      },
     ],
   },
+
   {
     path: '',
     element: <RejectedRoute />,
