@@ -14,4 +14,4 @@ export const registerAccount = (body: {
 export const loginAccount = (body: { userName: string; password: string }) =>
   http.post<AuthResponse>('/api/auth/login', body);
 
-export const logout = () => http.post('/logout');
+export const logout = () => http.post('/api/auth/log-out');
