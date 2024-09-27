@@ -47,9 +47,12 @@ export const Header = (props: any) => {
           <div
             className={`text-4xl font-bold text-black ${!isAuthenticated ? `mr-12` : ``} `}
           >
-            <a href="/" className="hover:text-violet11">
+            <Button
+              onClick={() => navigate('/')}
+              className="hover:text-violet11 font-bold"
+            >
               WSB
-            </a>
+            </Button>
           </div>
           <NavigationMenu.Root className="relative z-[1] flex w-screen justify-center">
             <NavigationMenu.List className="center shadow-blackA4 m-0 flex list-none p-1">
@@ -64,10 +67,10 @@ export const Header = (props: any) => {
                 <NavigationMenu.Content className="data-[motion=from-start]:animate-enterFromLeft data-[motion=from-end]:animate-enterFromRight data-[motion=to-start]:animate-exitToLeft data-[motion=to-end]:animate-exitToRight absolute top-0 left-0 w-full sm:w-auto">
                   <ul className="m-0 grid list-none gap-x-[10px] p-[22px] sm:w-[300px] sm:grid-flow-col sm:grid-rows-2">
                     <ListItem className="row-span-1" href="" title="Cơ sở 1">
-                      {' '}
+                      Thủ Đức, TP.HCM{' '}
                     </ListItem>
                     <ListItem className="row-span-1" href="" title="Cơ sở 2">
-                      {' '}
+                      Bình Thạnh, TP.HCM{' '}
                     </ListItem>
                   </ul>
                 </NavigationMenu.Content>
@@ -82,12 +85,20 @@ export const Header = (props: any) => {
                   />
                 </NavigationMenu.Trigger>
                 <NavigationMenu.Content className="absolute top-0 left-0 w-full sm:w-auto">
-                  <ul className="m-0 grid list-none gap-x-[10px] p-[22px] sm:w-[600px] sm:grid-flow-col sm:grid-rows-3">
-                    <ListItem title="Phòng làm việc" href="list-room">
+                  <ul className=" m-0 grid list-none gap-x-[10px] p-[22px] sm:w-[600px] sm:grid-flow-col sm:grid-rows-2">
+                    <ListItem
+                      className="cursor-pointer"
+                      title="Phòng làm việc"
+                      onClick={() => navigate('/list-room')}
+                    >
                       Build high-quality, accessible design systems and web
                       apps.
                     </ListItem>
-                    <ListItem title="Đồ ăn " href="list-food">
+                    <ListItem
+                      className="cursor-pointer"
+                      title="Đồ ăn"
+                      onClick={() => navigate('/list-food')}
+                    >
                       A quick tutorial to get you up and running with Radix
                       Primitives.
                     </ListItem>
@@ -140,7 +151,11 @@ export const Header = (props: any) => {
                     <ul className="m-0 grid list-none gap-x-[10px] pl-[5px] p-[10px] sm:w-[150px] sm:grid-flow-col sm:grid-rows-3">
                       <ListItem
                         className="row-span-1"
+
+                        onClick={() => navigate('/profile')}
+=======
                         href={path.profile}
+
                         title=" Profile"
                       >
                         {' '}
@@ -169,20 +184,20 @@ export const Header = (props: any) => {
             </NavigationMenu.Root>
           )}
           {!isAuthenticated && (
-            <div className="flex flex-row gap-10 mt-4 mb-4 items-center">
+            <div className="flex flex-row gap-5 mt-4 mb-4 items-center">
               <Button
-                className="rounded-lg p-5 hover:scale-105 transition duration-100 shadow-lg"
+                className="bg-white text-black py-3 rounded-lg font-semibold hover:bg-blackA12 hover:text-white hover:shadow-3xl ease-in-out flex items-center hover:scale-105 transition duration-100 shadow-lg"
                 color="primary"
                 onClick={() => navigate(path.login)}
               >
-                Sign in
+                Đăng nhập
               </Button>
               <Button
-                className="rounded-lg p-5 hover:scale-105 transition duration-100 shadow-lg"
+                className="bg-blackA12 text-white py-3 rounded-lg font-semibold hover:bg-white hover:text-black hover:shadow-3xl ease-in-out flex items-center hover:scale-105 transition duration-100 shadow-lg"
                 color="primary"
                 onClick={() => navigate(path.register)}
               >
-                Sign up
+                Đăng ký
               </Button>
             </div>
           )}

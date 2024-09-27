@@ -4,6 +4,7 @@ import { HomePage } from '@/components/Content/HomePage';
 import { ListFood } from '@/components/Content/ListFood';
 import { ListRoom } from '@/components/Content/ListRoom';
 import Login from '@/components/Login/Login';
+import ProfileEditor from '@/components/ProfileEditor/ProfileEditor';
 import SignUp from '@/components/SignUp/SignUp';
 import { AppContext } from '@/context/app.context';
 import { MainLayout } from '@/layouts/MainLayout';
@@ -81,10 +82,11 @@ export const router = createBrowserRouter([
     ),
   },
   {
-    path: 'room-detail',
+
+    path: 'profile',
     element: (
       <MainLayout>
-        <BookingRoomDetail />
+        <ProfileEditor />
       </MainLayout>
     ),
   },
@@ -94,14 +96,20 @@ export const router = createBrowserRouter([
     element: <ProtectedRoute />,
     children: [
       {
+
+        path: 'room-detail/:roomId',
+        element: (
+          <MainLayout>
+            <BookingRoomDetail />
+          </MainLayout>
+        ),
+        // <BookingRoomDetail />,
+      },
+        {
         path: 'room-bill',
         element: 'room-bill',
       },
     ],
-  },
-  {
-    path: path.profile,
-    element: <ProfileEditor />,
   },
   {
     path: '/dashboard',
@@ -118,6 +126,7 @@ export const router = createBrowserRouter([
       {
         path: '',
         element: <ComboChartSingleAxisExample />,
+
       },
     ],
   },

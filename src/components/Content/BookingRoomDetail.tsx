@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { FaCalendarAlt, FaClock, FaPlus, FaCheck } from 'react-icons/fa';
 import { format } from 'date-fns';
+import { useParams } from 'react-router-dom';
+import { s } from 'vite/dist/node/types.d-aGj9QkWt';
 interface Service {
   id: number;
   name: string;
@@ -14,7 +16,8 @@ export const BookingRoomDetail = () => {
   const [selectedServices, setSelectedServices] = useState<number[]>([]);
   const [showPolicyModal, setShowPolicyModal] = useState<boolean>(false);
   const [policyAgreed, setPolicyAgreed] = useState<boolean>(false);
-  const roomPrice = 100;
+  const [selectedBase, setSelectedBase] = useState<string>('');
+
   const foodServices = [
     {
       id: 1,
@@ -46,6 +49,12 @@ export const BookingRoomDetail = () => {
     '19:00 - 22:00',
   ];
 
+  const building = ['Cơ sở 1', 'Cơ sở 2'];
+
+  const handleBaseChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedBase(e.target.value);
+  };
+
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedDate(new Date(e.target.value));
   };
@@ -69,6 +78,21 @@ export const BookingRoomDetail = () => {
         : [...prevServices, serviceId]
     );
   };
+  const [rooms, setRooms] = useState([
+    { id: 1, name: 'Cozy Single', category: 'single', basePrice: 50 },
+    { id: 2, name: 'Spacious Double', category: 'double', basePrice: 80 },
+    { id: 3, name: 'Meeting Room (7)', category: 'meeting7', basePrice: 120 },
+    { id: 4, name: 'Meeting Room (10)', category: 'meeting10', basePrice: 150 },
+  ]);
+
+  const { roomId } = useParams<{ roomId: string }>();
+  // console.log(roomId);
+  const room = rooms.find((room) => room.id === Number(roomId));
+  if (!room) {
+    return <div>Phòng không tồn tại</div>;
+  }
+  // console.log(room);
+  const roomPrice = room.basePrice;
 
   const calculateTotalPrice = () => {
     const servicesTotal = selectedServices.reduce((total, serviceId) => {
@@ -81,9 +105,15 @@ export const BookingRoomDetail = () => {
     return roomPrice + servicesTotal;
   };
 
+  // console.log(selectedTimeSlot);
+  // console.log(selectedBase);
+  // console.log(selectedDate);
+
+  // selectedBase !== '' && selectedTimeSlot !== '' && setPolicyAgreed(true);
+
   return (
     <div className="max-w-7xl mx-auto h-[700px] p-8 flex items-center justify-center">
-      <div className="bg-white rounded-lg shadow-lg overflow-hidden max-w-6xl w-full h-[600px] flex">
+      <div className="bg-white rounded-lg shadow-lg overflow-hidden max-w-6xl w-full h-[700px] flex">
         <div className="w-1/2 bg-gray-200">
           <img
             src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
@@ -92,21 +122,21 @@ export const BookingRoomDetail = () => {
           />
         </div>
         <div className="w-1/2 p-8 overflow-y-auto">
-          <h2 className="text-3xl font-bold mb-6">Deluxe Suite</h2>
+          <h2 className="text-3xl font-bold mb-6">{room?.name}</h2>
           <div className="mb-6">
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Cơ sở
             </label>
             <div className="relative">
               <select
-                value={selectedTimeSlot}
-                onChange={handleTimeSlotChange}
+                value={selectedBase}
+                onChange={handleBaseChange}
                 className="w-full p-2 border rounded-md pl-10 appearance-none"
               >
                 <option value="">Chọn cơ sở...</option>
-                {timeSlots.map((slot) => (
-                  <option key={slot} value={slot}>
-                    {slot}
+                {building.map((base) => (
+                  <option key={base} value={base}>
+                    {base}
                   </option>
                 ))}
               </select>
@@ -152,7 +182,7 @@ export const BookingRoomDetail = () => {
           </div>
           <button
             onClick={toggleServiceModal}
-            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300 flex items-center mb-6"
+            className="bg-orange-500 shadow-lg font-bold text-black px-4 py-2 rounded-md hover:bg-orange-600 hover:text-blackA12 transition duration-300 flex items-center mb-6"
           >
             <FaPlus className="mr-2" /> Dịch vụ đồ ăn
           </button>
@@ -186,7 +216,7 @@ export const BookingRoomDetail = () => {
                 </div>
                 <button
                   onClick={toggleServiceModal}
-                  className="mt-6 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300"
+                  className="mt-6 bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600 transition duration-300"
                 >
                   Close
                 </button>
@@ -195,7 +225,7 @@ export const BookingRoomDetail = () => {
           )}
           <div className="mb-6">
             <p className="text-2xl font-bold">
-              Total Price: ${calculateTotalPrice()}
+              Tổng đơn: ${calculateTotalPrice()}
             </p>
           </div>
           <div className="mb-6 flex items-center">
@@ -204,7 +234,7 @@ export const BookingRoomDetail = () => {
               id="policy"
               checked={policyAgreed}
               onChange={() => setPolicyAgreed(!policyAgreed)}
-              className="mr-2"
+              className="mr-2 rounded-sm"
             />
             <label htmlFor="policy" className="text-sm text-gray-700">
               Tôi đồng ý với{' '}
@@ -311,12 +341,13 @@ export const BookingRoomDetail = () => {
             </div>
           )}
           <button
-            className={`w-full bg-black text-white px-6 py-3 rounded-md text-lg font-semibold hover:bg-gray-800 transition duration-300 ${
-              !policyAgreed && 'opacity-50 cursor-not-allowed text-center'
+            className={`w-full bg-blackA10 text-white px-6 py-3 rounded-md text-lg font-semibold hover:bg-blackA12 hover:scale-105 transition duration-300 ${
+              (!policyAgreed || !selectedBase || !selectedTimeSlot) &&
+              'opacity-50 cursor-not-allowed text-center'
             }`}
             disabled={!policyAgreed}
           >
-            <FaCheck className="inline-block mr-2" /> Confirm Booking
+            <FaCheck className="inline-block mr-2 mb-1" /> Xác nhận
           </button>
         </div>
       </div>

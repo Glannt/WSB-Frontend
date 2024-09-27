@@ -6,6 +6,7 @@ import { TypeRoomCard } from '../HomepageContent/TypeRoomCard';
 import { DescriptionUtil } from '../HomepageContent/DescriptionHomePage';
 import HeroSection from './heroSection';
 import RoomDecription from '../HomepageContent/RoomDecription';
+import { useNavigate } from 'react-router';
 
 export interface CarouselPropsSlider {
   autoSlide?: boolean;
@@ -17,25 +18,26 @@ export const HomePage: React.FC<CarouselPropsSlider> = ({
 }) => {
   const slides = [
     {
+      url: 'https://stylishclub.pt/wp-content/uploads/2023/05/stylish-club-blog-post-the-future-of-worsapce-design-banner-1024x683.jpg',
+    },
+    {
       url: 'https://images.inc.com/uploaded_files/image/1920x1080/getty_517610514_353435.jpg',
     },
     {
       url: 'https://www.workdesign.com/wp-content/uploads/2021/04/shutterstock_682694722-scaled-e1619719883125.jpg',
-    },
-    {
-      url: 'https://stylishclub.pt/wp-content/uploads/2023/05/stylish-club-blog-post-the-future-of-worsapce-design-banner-1024x683.jpg',
     },
 
     {
       url: 'https://boweninteriors.com.au/wp-content/uploads/2022/06/Blog-5.jpg',
     },
     {
-      url: 'https://media.licdn.com/dms/image/C5612AQHRyGh9-AEIUw/article-cover_image-shrink_720_1280/0/1599112577357?e=2147483647&v=beta&t=tD0C8R3gQm420877i0rssrYhdWZRSM5hVUUE4TOtYf8',
+      url: 'https://studioasa.in/wp-content/uploads/2024/02/Bringing-the-Greens-Inside-the-Workspace.jpg',
     },
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isInteracting, setIsInteracting] = useState(false);
+  const navigate = useNavigate();
 
   const prevSlide = () => {
     const isFirstSlide = currentIndex === 0;
@@ -121,8 +123,7 @@ export const HomePage: React.FC<CarouselPropsSlider> = ({
         </div>
         <div className="flex justify-end mx-auto mt-10">
           <Button
-            href="/list-room"
-            as={Link}
+            onClick={() => navigate('/list-room')}
             className="mt-8 bg-blackA12 text-white py-3 px-6 rounded-lg font-semibold hover:bg-white hover:text-black hover:shadow-2xl transition duration-300 ease-in-out flex items-center"
           >
             Xem thêm
@@ -141,7 +142,7 @@ export const HomePage: React.FC<CarouselPropsSlider> = ({
         <HeroSection />
       </div> */}
       {/* Subcription */}
-      <div className="max-w-[1800px] h-[80rem] w-full m-auto relative py-16 px-4">
+      <div className="max-w-[1800px] h-[65rem] w-full m-auto relative py-16 px-4">
         <div className="flex flex-row gap-4 w-full h-auto justify-evenly rounded-lg border-solid border-2 border-x-blackA5 bg-slate-100 py-5">
           <SubcriptionCard />
         </div>

@@ -73,8 +73,10 @@ export const schema = Yup.object().shape({
       (value, originalValue) => (originalValue === '' ? null : value) // Nếu giá trị rỗng, chuyển thành null
     )
     .required('Ngày sinh là bắt buộc')
-    .max(today, 'Ngày sinh không hợp lệ'), // Max date must be today
-  // .min(minDate, 'Bạn phải ít nhất 13 tuổi'),
+
+    .max(today, 'Ngày sinh không hợp lệ') // Max date must be today
+    .max(minDate, 'Bạn phải ít nhất 13 tuổi'),
+
   agreeTerms: Yup.boolean()
     .required('Bạn phải đồng ý với các điều khoản')
     .oneOf([true], 'Bạn phải đồng ý với các điều khoản'),
