@@ -21,7 +21,8 @@ import { useNavigate } from 'react-router';
 import { AppContext } from '@/context/app.context';
 // import { getRules } from '@/utils/rules';
 
-// };
+import path from '@/constants/path';
+
 const SignUp: React.FC = () => {
   const [showPolicyModal, setShowPolicyModal] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -316,13 +317,16 @@ const SignUp: React.FC = () => {
         </form>
 
         <p className="text-black text-center mt-4">
+
           Có tài khoản?{' '}
           <span
+            href={path.login}
             onClick={() => navigate('/sign-in')}
             className="text-black hover:underline font-bold cursor-pointer"
           >
             Đăng nhập
           </span>
+
         </p>
       </div>
       {showPolicyModal && (

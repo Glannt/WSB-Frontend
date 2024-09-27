@@ -4,12 +4,13 @@ import { Outlet, RouterProvider } from 'react-router';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { router } from './router/Router';
+import { NextUIProvider } from '@nextui-org/system';
 function App() {
   return (
-    <ThemeProvider defaultTheme="light" storageKey="ui-theme">
+    <NextUIProvider>
       <RouterProvider router={router} />
       <ToastContainer />
-    </ThemeProvider>
+    </NextUIProvider>
   );
 }
 

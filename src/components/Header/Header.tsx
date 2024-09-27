@@ -1,7 +1,5 @@
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import * as Avatar from '@radix-ui/react-avatar';
 import * as NavigationMenu from '@radix-ui/react-navigation-menu';
-import ModeToggle from '../ModeToggle/ModeToggle';
 import { CaretDownIcon } from '@radix-ui/react-icons';
 import React, { forwardRef, useContext, useEffect, useState } from 'react';
 import classNames from 'classnames';
@@ -10,18 +8,20 @@ import { logout } from '@/service/auth.api';
 import { AppContext } from '@/context/app.context';
 import { Button } from '@nextui-org/react';
 import { useNavigate } from 'react-router';
+import path from '@/constants/path';
 export const Header = (props: any) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate();
   const { setIsAuthenticated, isAuthenticated } = useContext(AppContext);
   const logoutMutation = useMutation({
-    mutationFn: () => logout(),
+    mutationFn: logout,
     onSuccess: () => {
       setIsAuthenticated(false);
     },
   });
   const handleLogout = () => {
     logoutMutation.mutate();
+    // navigate('/');
   };
   useEffect(() => {
     const handleScroll = () => {
@@ -151,7 +151,11 @@ export const Header = (props: any) => {
                     <ul className="m-0 grid list-none gap-x-[10px] pl-[5px] p-[10px] sm:w-[150px] sm:grid-flow-col sm:grid-rows-3">
                       <ListItem
                         className="row-span-1"
+
                         onClick={() => navigate('/profile')}
+=======
+                        href={path.profile}
+
                         title=" Profile"
                       >
                         {' '}
@@ -161,9 +165,9 @@ export const Header = (props: any) => {
                       </ListItem>
                       <ListItem
                         className="row-span-1"
-                        href="/logout"
+                        // href="/logout"
                         title="Đăng xuất"
-                        onClick={() => handleLogout}
+                        onClick={handleLogout}
                       >
                         {' '}
                       </ListItem>
@@ -184,14 +188,14 @@ export const Header = (props: any) => {
               <Button
                 className="bg-white text-black py-3 rounded-lg font-semibold hover:bg-blackA12 hover:text-white hover:shadow-3xl ease-in-out flex items-center hover:scale-105 transition duration-100 shadow-lg"
                 color="primary"
-                onClick={() => navigate('/sign-in')}
+                onClick={() => navigate(path.login)}
               >
                 Đăng nhập
               </Button>
               <Button
                 className="bg-blackA12 text-white py-3 rounded-lg font-semibold hover:bg-white hover:text-black hover:shadow-3xl ease-in-out flex items-center hover:scale-105 transition duration-100 shadow-lg"
                 color="primary"
-                onClick={() => navigate('/sign-up')}
+                onClick={() => navigate(path.register)}
               >
                 Đăng ký
               </Button>
