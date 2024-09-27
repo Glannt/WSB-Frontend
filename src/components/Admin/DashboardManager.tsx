@@ -5,7 +5,7 @@ import { ChevronLeftCircle, ChevronRightCircle } from 'lucide-react';
 import { MenuIconManager } from './MenuIconManager';
 import { Outlet } from 'react-router';
 
-export const Dashboard = () => {
+export const DashboardManager = () => {
   const [collapse, setCollapse] = useState<boolean>(true);
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const toggleSidebar = () => {
@@ -27,7 +27,7 @@ export const Dashboard = () => {
         className={`relative transition-all duration-300 ease-in-out ${collapse || isHovered ? 'w[20%] p-0 m-0' : 'w-16'}`}
       >
         <div
-          className={`h-full text-white p-4 transition-all duration-300 ease-in-out ${
+          className={`h-[1200px] text-white p-4 transition-all duration-300 ease-in-out ${
             collapse || isHovered ? 'translate-x-0' : '-translate-x-full'
           }`}
           //   onMouseEnter={handleMouseEnter}
@@ -64,7 +64,7 @@ export const Dashboard = () => {
           )}
         </div>
       </div>
-      <div className="mainContent flex-auto w-full max-h-screen h-vh items-stretch justify-center m-9 border-spacing-2 border-2 ">
+      <div className="mainContent flex-auto w-full max-h-screen items-stretch justify-center m-9 border-spacing-2 ">
         {' '}
         <Outlet />
       </div>

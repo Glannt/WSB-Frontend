@@ -1,4 +1,5 @@
 import { Sidebar } from 'flowbite-react';
+import { useState } from 'react';
 import {
   HiArrowSmRight,
   HiChartPie,
@@ -8,14 +9,27 @@ import {
   HiUser,
   HiViewBoards,
 } from 'react-icons/hi';
+import { useNavigate } from 'react-router';
 
 interface SidebarProps {
   children?: React.ReactNode;
   collapse: boolean;
   hover: boolean;
+  className?: string;
 }
 
-export function SidebarAdmin({ children, collapse, hover }: SidebarProps) {
+export function SidebarAdmin({
+  children,
+  collapse,
+  hover,
+  className,
+}: SidebarProps) {
+  const [activeItem, setActiveItem] = useState<string>('');
+  const handleItemClick = (item: string, path: string) => {
+    setActiveItem(item); // Cập nhật item đang active
+    navigate(path); // Điều hướng đến trang tương ứng
+  };
+  const navigate = useNavigate();
   return (
     <>
       {collapse && !hover && (
@@ -25,18 +39,38 @@ export function SidebarAdmin({ children, collapse, hover }: SidebarProps) {
           </Sidebar.Logo>
           <Sidebar.Items>
             <Sidebar.ItemGroup>
-              <Sidebar.Item href="/dashboard" icon={HiChartPie}>
+              <Sidebar.Item
+                className={`${activeItem === 'dashboard' ? 'bg-slate-600 text-white' : ''} hover:text-gray-900 hover:bg-gray-100`}
+                onClick={() => handleItemClick('dashboard', '/manager')}
+                icon={HiChartPie}
+              >
                 Dashboard
               </Sidebar.Item>
-              <Sidebar.Item href="/dashboard/update-staff-schedule">
+
+              <Sidebar.Item
+                className={`${activeItem === 'manage-staff' ? 'bg-slate-600 text-white' : ''} hover:text-gray-900 hover:bg-gray-100`}
+                onClick={() =>
+                  handleItemClick('manage-staff', '/manager/manage-staff')
+                }
+              >
                 Manage Staff
               </Sidebar.Item>
 
-              <Sidebar.Item href="/dashboard/create-room">
+              <Sidebar.Item
+                className={`${activeItem === 'manage-room' ? 'bg-slate-600 text-white' : ''} hover:text-gray-900 hover:bg-gray-100`}
+                onClick={() =>
+                  handleItemClick('manage-room', '/manager/manage-room')
+                }
+              >
                 Manage Room
               </Sidebar.Item>
 
-              <Sidebar.Item href="#" icon={HiInbox} label="3">
+              <Sidebar.Item
+                className="target: active:bg-slate-600"
+                href="#"
+                icon={HiInbox}
+                label="3"
+              >
                 Inbox
               </Sidebar.Item>
             </Sidebar.ItemGroup>

@@ -11,12 +11,11 @@ import { MainLayout } from '@/layouts/MainLayout';
 import { useContext } from 'react';
 import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
 import path from '@/constants/path';
-import { Dashboard } from '@/components/Admin/Dashboard';
-import CreateRoom from '@/components/AdminService/ManageRoom';
-import TableAddRoom from '@/components/AdminService/TableAddRoom';
-import AddStaffToRoom from '@/components/AdminService/AddStaffToRoom';
-import { ComboChart } from '@/components/Admin/ContentDashboard';
-import { ComboChartSingleAxisExample } from '@/components/Admin/TestChart';
+import { DashboardManager } from '@/components/Admin/DashboardManager';
+import ManageRoom from '@/components/AdminService/ManageRoom';
+import ManageStaff from '@/components/AdminService/ManageStaff';
+import CardDataStats from '@/components/Admin/CardDataStats';
+import { AdminDashboard } from '@/components/Admin/AdminDashboard';
 function ProtectedRoute() {
   const { isAuthenticated } = useContext(AppContext);
   return isAuthenticated ? <Outlet /> : <Navigate to={path.login} />;
@@ -107,20 +106,21 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: '/dashboard',
-        element: <Dashboard />,
+        path: '/manager',
+        element: <DashboardManager />,
         children: [
           {
-            path: 'create-room',
-            element: <CreateRoom />,
+            path: 'manage-room',
+            element: <ManageRoom />,
           },
           {
-            path: 'update-staff-schedule',
-            element: <AddStaffToRoom />,
+            path: 'manage-staff',
+            element: <ManageStaff />,
           },
           {
             path: '',
-            element: <ComboChartSingleAxisExample />,
+            element: <AdminDashboard />,
+            // element: <ComboChartSingleAxisExample />,
           },
         ],
       },

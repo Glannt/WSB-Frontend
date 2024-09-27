@@ -11,15 +11,25 @@ import {
   ModalHeader,
   Select,
   SelectItem,
+  Selection,
 } from '@nextui-org/react';
-import React, { EventHandler } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
+import { UploadImage } from '../../AdminService/UploadImage';
 
-interface EditModalProps {
+interface RoomModalProps {
   isOpen: boolean;
   onClose: () => void;
-  selectedRoom: any;
-  setSelectedRoom: React.Dispatch<
-    React.SetStateAction<{
+  mode: 'add' | 'edit'; // Mode to differentiate between adding and editing
+  selectedRoom?: {
+    id: number;
+    roomName: string;
+    roomPrice: number;
+    roomStatus: string;
+    roomType: string;
+    employees: string[];
+  } | null; // Selected room data for edit mode
+  setSelectedRoom?: Dispatch<
+    SetStateAction<{
       id: number;
       roomName: string;
       roomPrice: number;
@@ -27,26 +37,45 @@ interface EditModalProps {
       roomType: string;
       employees: string[];
     } | null>
-  >;
+  >; // Setter for selected room in edit mode
 }
 
-export const EditModalRoom: React.FC<EditModalProps> = ({
+const AdminRoomModal: React.FC<RoomModalProps> = ({
   isOpen,
   onClose,
+  mode,
   selectedRoom,
   setSelectedRoom,
 }) => {
+  const [employees, setEmployees] = useState<Selection>(
+    mode === 'edit' && selectedRoom
+      ? new Set(selectedRoom.employees)
+      : new Set([])
+  );
+
+  const isEditMode = mode === 'edit';
+  const [valueStatus, setValueStatus] = React.useState(new Set(['available']));
+  const [valueRoomType, setValueRoomType] = React.useState(new Set(['single']));
+
+  const handleFieldChange = (field: string, value: any) => {
+    if (isEditMode && selectedRoom && setSelectedRoom) {
+      setSelectedRoom({
+        ...selectedRoom,
+        [field]: value,
+      });
+    }
+  };
+
   return (
     <Modal
       backdrop="opaque"
       isOpen={isOpen}
       onClose={onClose}
-      // onOpenChange={onOpenChange}
       placement="top-center"
       classNames={{
         backdrop:
           'bg-gradient-to-t from-zinc-900 to-zinc-900/10 backdrop-opacity-20',
-        base: 'max-w-[1000px] h-[500px]',
+        base: 'max-w-[1000px] h-[600px]',
       }}
       motionProps={{
         variants: {
@@ -73,11 +102,10 @@ export const EditModalRoom: React.FC<EditModalProps> = ({
         {(onClose) => (
           <>
             <ModalHeader className="flex flex-col gap-1">
-              Chỉnh sửa phòng
+              {isEditMode ? 'Chỉnh sửa phòng' : 'Thêm phòng mới'}
             </ModalHeader>
             <ModalBody>
               <div className="flex py-2 px-3 justify-evenly flex-wrap md:flex-nowrap gap-4 outline-none border-0">
-                {' '}
                 <Input
                   isClearable
                   autoFocus
@@ -89,7 +117,10 @@ export const EditModalRoom: React.FC<EditModalProps> = ({
                     input: 'border-0 focus:outline-none focus:border-none',
                     clearButton: 'pb-4',
                   }}
-                  defaultValue={selectedRoom?.roomName}
+                  defaultValue={isEditMode ? selectedRoom?.roomName : ''}
+                  onChange={(e) =>
+                    handleFieldChange('roomName', e.target.value)
+                  }
                 />
                 <Input
                   label="Giá"
@@ -100,7 +131,12 @@ export const EditModalRoom: React.FC<EditModalProps> = ({
                     label: 'text-black/50 dark:text-white/90 pb-2',
                     input: 'border-0',
                   }}
-                  defaultValue={selectedRoom?.roomPrice.toString()}
+                  defaultValue={
+                    isEditMode ? selectedRoom?.roomPrice.toString() : ''
+                  }
+                  onChange={(e) =>
+                    handleFieldChange('roomPrice', e.target.value)
+                  }
                 />
               </div>
               <div className="flex flex-wrap py-2 px-3 md:flex-nowrap gap-4 w-[960px] justify-evenly">
@@ -108,18 +144,13 @@ export const EditModalRoom: React.FC<EditModalProps> = ({
                   label="Trạng thái phòng"
                   className="max-w-xl"
                   onSelectionChange={(keys) => {
-                    const newStatus = Array.from(keys).join(''); // Convert Set to string
-                    if (selectedRoom) {
-                      setSelectedRoom({
-                        ...selectedRoom,
-                        roomStatus: newStatus, // Update the room status based on selection
-                      });
-                    }
+                    const newStatus = Array.from(keys).join('');
+                    handleFieldChange('roomStatus', newStatus);
                   }}
                   defaultSelectedKeys={
-                    selectedRoom
-                      ? new Set([selectedRoom.roomStatus])
-                      : undefined
+                    isEditMode && selectedRoom?.roomStatus
+                      ? new Set([selectedRoom?.roomStatus])
+                      : valueStatus
                   }
                 >
                   {roomStatusManager.map((roomStatuses) => (
@@ -133,22 +164,17 @@ export const EditModalRoom: React.FC<EditModalProps> = ({
                   placeholder="Chọn loại phòng"
                   className="max-w-xl"
                   onSelectionChange={(keys) => {
-                    const newRoomType = Array.from(keys); // Convert Set to string
-                    if (selectedRoom) {
-                      setSelectedRoom({
-                        ...selectedRoom,
-                        roomType: newRoomType, // Update the room status based on selection
-                      });
-                    }
+                    const newRoomType = Array.from(keys).join('');
+                    handleFieldChange('roomType', newRoomType);
                   }}
                   defaultSelectedKeys={
-                    selectedRoom ? new Set(selectedRoom.roomType) : undefined
+                    isEditMode && selectedRoom?.roomType
+                      ? new Set([selectedRoom.roomType])
+                      : valueRoomType
                   }
                 >
-                  {roomTypes.map((roomTypes) => (
-                    <SelectItem key={roomTypes.key}>
-                      {roomTypes.label}
-                    </SelectItem>
+                  {roomTypes.map((roomType) => (
+                    <SelectItem key={roomType.key}>{roomType.label}</SelectItem>
                   ))}
                 </Select>
               </div>
@@ -157,24 +183,23 @@ export const EditModalRoom: React.FC<EditModalProps> = ({
                   label="Nhân viên"
                   placeholder="Chọn nhân viên phụ trách"
                   className="max-w-xl"
+                  selectionMode="multiple"
                   onSelectionChange={(keys) => {
-                    const addEmployees = Array.from(keys);
-                    if (selectedRoom) {
-                      setSelectedRoom({
-                        ...selectedRoom,
-                        employees: addEmployees,
-                      });
-                    }
+                    const selectedEmployees = Array.from(keys);
+                    handleFieldChange('employees', selectedEmployees);
+                    setEmployees(new Set(keys));
                   }}
                   defaultSelectedKeys={
-                    selectedRoom ? new Set(selectedRoom.employees) : undefined
+                    isEditMode ? new Set(selectedRoom?.employees) : undefined
                   }
-                  selectionMode="multiple"
                 >
                   {users.map((user) => (
                     <SelectItem key={user.id}>{user.name}</SelectItem>
                   ))}
                 </Select>
+              </div>
+              <div className="py-2 px-3">
+                <UploadImage />
               </div>
             </ModalBody>
             <ModalFooter>
@@ -182,7 +207,7 @@ export const EditModalRoom: React.FC<EditModalProps> = ({
                 Đóng
               </Button>
               <Button color="primary" onPress={onClose}>
-                Hoàn thành
+                {isEditMode ? 'Hoàn thành' : 'Tạo'}
               </Button>
             </ModalFooter>
           </>
@@ -191,3 +216,5 @@ export const EditModalRoom: React.FC<EditModalProps> = ({
     </Modal>
   );
 };
+
+export default AdminRoomModal;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Table,
   TableHeader,
@@ -26,27 +26,44 @@ import {
   ModalFooter,
   Select,
   SelectItem,
+  Tooltip,
 } from '@nextui-org/react';
 import { PlusIcon } from '../Icons/PlusIcon';
 import { VerticalDotsIcon } from '../Icons/VerticalDotsIcon';
 import { ChevronDownIcon } from '../Icons/ChevronDownIcon';
 import { SearchIcon } from '../Icons/SearchIcon';
-import { columns, users, statusOptions } from '../../data/data';
+import {
+  statusOptions,
+  staffs,
+  staffColumns,
+  statusOptionsStaff,
+} from '../../data/data';
 import { capitalize } from './utils';
 import { roomStatuses } from '@/data/dataStatusRoom';
 import { roomTypes } from '../../data/dataRoomType';
+import { EyeIcon } from '../Icons/EyeIcon';
+import { EditIcon } from '../Icons/EditIcon';
+import { DeleteIcon } from '../Icons/DeleteIcon';
+import AdminStaffModal from '../Modal/Admin/AdminStaffModal';
 
 const statusColorMap: Record<string, ChipProps['color']> = {
   active: 'success',
-  paused: 'danger',
+  inactive: 'danger',
   vacation: 'warning',
 };
 
-const INITIAL_VISIBLE_COLUMNS = ['name', 'role', 'status', 'actions'];
+const INITIAL_VISIBLE_COLUMNS = [
+  'fullName',
+  'workShift',
+  'roomInCharge',
+  'workDays',
+  'status',
+  'actions',
+];
 
-type User = (typeof users)[0];
+type Staff = (typeof staffs)[0];
 
-export default function AddStaffToRoom() {
+export default function ManageStaff() {
   const [filterValue, setFilterValue] = React.useState('');
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
     new Set([])
@@ -57,41 +74,58 @@ export default function AddStaffToRoom() {
   const [statusFilter, setStatusFilter] = React.useState<Selection>('all');
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
-    column: 'age',
+    column: 'fullName',
     direction: 'ascending',
   });
   const [value, setValue] = React.useState(new Set([]));
   const [page, setPage] = React.useState(1);
+  const [selectedStaff, setSelectedStaff] = React.useState<Staff | null>(null);
+  const [isOpenAdd, setIsOpenAdd] = useState<boolean>(false);
+  const openAdd = () => {
+    setIsOpenEdit(true);
+  };
+  const closeAdd = () => {
+    setIsOpenAdd(false);
+  };
+
+  const [isOpenEdit, setIsOpenEdit] = useState<boolean>(false);
+  const openEdit = (staff: Staff) => {
+    setIsOpenEdit(true);
+    setSelectedStaff(staff);
+  };
+  const closeEdit = () => {
+    setIsOpenEdit(false);
+  };
 
   const hasSearchFilter = Boolean(filterValue);
 
   const headerColumns = React.useMemo(() => {
-    if (visibleColumns === 'all') return columns;
+    if (visibleColumns === 'all') return staffColumns;
 
-    return columns.filter((column) =>
+    return staffColumns.filter((column) =>
       Array.from(visibleColumns).includes(column.uid)
     );
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
-    let filteredUsers = [...users];
+    let filteredStaffs = [...staffs];
 
     if (hasSearchFilter) {
-      filteredUsers = filteredUsers.filter((user) =>
-        user.name.toLowerCase().includes(filterValue.toLowerCase())
+      filteredStaffs = filteredStaffs.filter((staff) =>
+        staff.fullName.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
     if (
       statusFilter !== 'all' &&
-      Array.from(statusFilter).length !== statusOptions.length
+      Array.from(statusFilter).length !== statusOptionsStaff.length
     ) {
-      filteredUsers = filteredUsers.filter((user) =>
-        Array.from(statusFilter).includes(user.status)
+      filteredStaffs = filteredStaffs.filter((staff) =>
+        Array.from(statusFilter).includes(staff.status)
       );
     }
 
-    return filteredUsers;
-  }, [users, filterValue, statusFilter]);
+    return filteredStaffs;
+  }, [staffs, filterValue, statusFilter]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -102,45 +136,78 @@ export default function AddStaffToRoom() {
     return filteredItems.slice(start, end);
   }, [page, filteredItems, rowsPerPage]);
 
+  // const sortedItems = React.useMemo(() => {
+  //   return [...items].sort((a: Staff, b: Staff) => {
+  //     const first = a[sortDescriptor.column as keyof Staff] as number;
+  //     const second = b[sortDescriptor.column as keyof Staff] as number;
+  //     const cmp = first < second ? -1 : first > second ? 1 : 0;
+  //     console.log(1, first, second, cmp);
+
+  //     return sortDescriptor.direction === 'descending' ? -cmp : cmp;
+  //   });
+  // }, [sortDescriptor, items]);
   const sortedItems = React.useMemo(() => {
-    return [...items].sort((a: User, b: User) => {
-      const first = a[sortDescriptor.column as keyof User] as number;
-      const second = b[sortDescriptor.column as keyof User] as number;
-      const cmp = first < second ? -1 : first > second ? 1 : 0;
-      console.log(1, first, second, cmp);
+    return [...items].sort((a: Staff, b: Staff) => {
+      const first = a[sortDescriptor.column as keyof Staff];
+      const second = b[sortDescriptor.column as keyof Staff];
+
+      let cmp = 0;
+
+      if (typeof first === 'string' && typeof second === 'string') {
+        cmp = first.localeCompare(second); // Compare strings
+      } else if (Array.isArray(first) && Array.isArray(second)) {
+        cmp = first.join(',').localeCompare(second.join(',')); // Compare arrays by joining them
+      } else if (typeof first === 'number' && typeof second === 'number') {
+        cmp = first - second; // Compare numbers
+      }
 
       return sortDescriptor.direction === 'descending' ? -cmp : cmp;
     });
   }, [sortDescriptor, items]);
 
-  const renderCell = React.useCallback((user: User, columnKey: React.Key) => {
-    const cellValue = user[columnKey as keyof User];
-
+  const renderCell = React.useCallback((staff: Staff, columnKey: React.Key) => {
+    const cellValue = staff[columnKey as keyof Staff];
+    if (Array.isArray(cellValue)) {
+      return cellValue.join(', ');
+    }
     switch (columnKey) {
-      case 'name':
+      case 'fullName':
         return (
           <User
-            avatarProps={{ radius: 'lg', src: user.avatar }}
-            description={user.email}
+            // avatarProps={{ radius: 'lg', src: staff.avatar }}
+            // description={staff.email}
             name={cellValue}
           >
-            {user.email}
+            {staff.email}
           </User>
         );
-      case 'role':
+      case 'workShift':
+        return (
+          <div className="flex flex-col">
+            <p className="text-bold text-small capitalize">{cellValue}</p>
+          </div>
+        );
+      case 'roomInCharge':
+        return (
+          <div className="flex flex-col">
+            <p className="text-bold text-small capitalize">{cellValue}</p>
+          </div>
+        );
+      case 'workDays':
         return (
           <div className="flex flex-col">
             <p className="text-bold text-small capitalize">{cellValue}</p>
             <p className="text-bold text-tiny capitalize text-default-400">
-              {user.team}
+              {staff.workDays}
             </p>
           </div>
         );
       case 'status':
         return (
           <Chip
+            content="Details"
             className="capitalize"
-            color={statusColorMap[user.status]}
+            color={statusColorMap[staff.status]}
             size="sm"
             variant="flat"
           >
@@ -149,19 +216,28 @@ export default function AddStaffToRoom() {
         );
       case 'actions':
         return (
-          <div className="relative flex justify-end items-center gap-2">
-            <Dropdown>
-              <DropdownTrigger>
-                <Button isIconOnly size="sm" variant="light">
-                  <VerticalDotsIcon className="text-default-300" />
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu>
-                <DropdownItem>View</DropdownItem>
-                <DropdownItem>Edit</DropdownItem>
-                <DropdownItem>Delete</DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
+          <div className="relative flex justify-center gap-5">
+            <Tooltip content="Chi tiết">
+              <span
+                // onClick={() => openDetail(room)}
+                className="text-lg text-default-400 cursor-pointer active:opacity-50"
+              >
+                <EyeIcon />
+              </span>
+            </Tooltip>
+            <Tooltip content="Chỉnh sửa nhân viên">
+              <span
+                onClick={() => openEdit(staff)}
+                className="text-lg text-default-400 cursor-pointer active:opacity-50"
+              >
+                <EditIcon />
+              </span>
+            </Tooltip>
+            <Tooltip color="danger" content="Xóa nhân viên">
+              <span className="text-lg text-danger cursor-pointer active:opacity-50">
+                <DeleteIcon />
+              </span>
+            </Tooltip>
           </div>
         );
       default:
@@ -210,7 +286,7 @@ export default function AddStaffToRoom() {
           <Input
             isClearable
             className="w-full sm:max-w-[50%] focus:outline-none bg-blackA2 rounded-xl"
-            placeholder="Search by name..."
+            placeholder="Tìm kiếm bằng tên..."
             variant="bordered"
             startContent={<SearchIcon />}
             labelPlacement="outside"
@@ -228,7 +304,7 @@ export default function AddStaffToRoom() {
                   endContent={<ChevronDownIcon className="text-small" />}
                   variant="flat"
                 >
-                  Status
+                  Trạng thái
                 </Button>
               </DropdownTrigger>
               <DropdownMenu
@@ -239,7 +315,7 @@ export default function AddStaffToRoom() {
                 selectionMode="multiple"
                 onSelectionChange={setStatusFilter}
               >
-                {statusOptions.map((status) => (
+                {statusOptionsStaff.map((status) => (
                   <DropdownItem key={status.uid} className="capitalize">
                     {capitalize(status.name)}
                   </DropdownItem>
@@ -252,7 +328,7 @@ export default function AddStaffToRoom() {
                   endContent={<ChevronDownIcon className="text-small" />}
                   variant="flat"
                 >
-                  Columns
+                  Cột
                 </Button>
               </DropdownTrigger>
               <DropdownMenu
@@ -263,7 +339,7 @@ export default function AddStaffToRoom() {
                 selectionMode="multiple"
                 onSelectionChange={setVisibleColumns}
               >
-                {columns.map((column) => (
+                {staffColumns.map((column) => (
                   <DropdownItem key={column.uid} className="capitalize">
                     {capitalize(column.name)}
                   </DropdownItem>
@@ -274,18 +350,18 @@ export default function AddStaffToRoom() {
               className="rounded-lg hover:scale-105 hover:shadow-xl"
               color="primary"
               endContent={<PlusIcon />}
-              onPress={onOpen}
+              onPress={openAdd}
             >
-              Assign Staff
+              Thêm nhân viên
             </Button>
           </div>
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">
-            Total {users.length} users
+            Tổng {staffs.length} nhân viên
           </span>
           <label className="flex items-center text-default-400 text-small">
-            Rows per page:
+            Số hàng
             <select
               className="bg-transparent outline-none text-default-400 text-small rounded-md ml-3"
               onChange={onRowsPerPageChange}
@@ -304,18 +380,13 @@ export default function AddStaffToRoom() {
     visibleColumns,
     onSearchChange,
     onRowsPerPageChange,
-    users.length,
+    staffs.length,
     hasSearchFilter,
   ]);
 
   const bottomContent = React.useMemo(() => {
     return (
       <div className="py-2 px-2 flex justify-between items-center">
-        <span className="w-[30%] text-small text-default-400">
-          {selectedKeys === 'all'
-            ? 'All items selected'
-            : `${selectedKeys.size} of ${filteredItems.length} selected`}
-        </span>
         <Pagination
           isCompact
           showControls
@@ -332,7 +403,7 @@ export default function AddStaffToRoom() {
             variant="flat"
             onPress={onPreviousPage}
           >
-            Previous
+            Trước
           </Button>
           <Button
             isDisabled={pages === 1}
@@ -340,7 +411,7 @@ export default function AddStaffToRoom() {
             variant="flat"
             onPress={onNextPage}
           >
-            Next
+            Sau
           </Button>
         </div>
       </div>
@@ -359,7 +430,6 @@ export default function AddStaffToRoom() {
           wrapper: 'max-h-[382px]',
         }}
         selectedKeys={selectedKeys}
-        selectionMode="multiple"
         sortDescriptor={sortDescriptor}
         topContent={topContent}
         topContentPlacement="outside"
@@ -377,9 +447,9 @@ export default function AddStaffToRoom() {
             </TableColumn>
           )}
         </TableHeader>
-        <TableBody emptyContent={'No users found'} items={sortedItems}>
+        <TableBody emptyContent={'No staff found'} items={sortedItems}>
           {(item) => (
-            <TableRow key={item.id}>
+            <TableRow key={item.staffId}>
               {(columnKey) => (
                 <TableCell>{renderCell(item, columnKey)}</TableCell>
               )}
@@ -387,97 +457,24 @@ export default function AddStaffToRoom() {
           )}
         </TableBody>
       </Table>
-      <Modal
-        // backdrop="opaque"
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-        placement="top-center"
-        // classNames={{
-        //   backdrop:
-        //     'bg-gradient-to-t from-zinc-900 to-zinc-900/10 backdrop-opacity-20',
-        // }}
-        classNames={{
-          base: 'max-w-[1000px] h-[300px]',
-        }}
-        motionProps={{
-          variants: {
-            enter: {
-              y: 0,
-              opacity: 1,
-              transition: {
-                duration: 0.3,
-                ease: 'easeOut',
-              },
-            },
-            exit: {
-              y: -20,
-              opacity: 0,
-              transition: {
-                duration: 0.2,
-                ease: 'easeIn',
-              },
-            },
-          },
-        }}
-      >
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className="flex flex-col gap-1">
-                Thêm phòng mới
-              </ModalHeader>
-              <ModalBody>
-                <div className="flex py-2 px-3 justify-evenly flex-wrap md:flex-nowrap gap-4">
-                  {' '}
-                  <Input
-                    autoFocus
-                    label="Tên phòng"
-                    placeholder="Nhập tên phòng"
-                    variant="bordered"
-                  />
-                  <Input
-                    label="Giá"
-                    placeholder="Nhập giá phòng"
-                    type="number"
-                    variant="bordered"
-                  />
-                </div>
-                <div className="flex flex-wrap py-2 px-3 md:flex-nowrap gap-4 w-[960px] justify-evenly">
-                  <Select
-                    label="Trạng thái phòng"
-                    className="max-w-xl"
-                    selectedKeys={value}
-                    onSelectionChange={() => setValue(value)}
-                  >
-                    {users.map((user) => (
-                      <SelectItem key={user.id}>{user.name}</SelectItem>
-                    ))}
-                  </Select>
-                  <Select
-                    label="Loại phòng"
-                    placeholder="Chọn loại phòng"
-                    className="max-w-xl"
-                  >
-                    {roomTypes.map((roomTypes) => (
-                      <SelectItem key={roomTypes.key}>
-                        {roomTypes.label}
-                      </SelectItem>
-                    ))}
-                  </Select>
-                </div>
-              </ModalBody>
-              <ModalFooter>
-                <Button color="danger" variant="flat" onPress={onClose}>
-                  Đóng
-                </Button>
-                <Button color="primary" onPress={onClose}>
-                  Tạo
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
+      {isOpenAdd && (
+        <AdminStaffModal
+          isOpen={isOpenAdd}
+          onClose={closeAdd}
+          mode="add"
+          selectedStaff={null} // Pass null since we are adding a new staff member
+          setSelectedStaff={() => setSelectedStaff} // Function to handle changes to the new staff
+        />
+      )}
+      {isOpenEdit && (
+        <AdminStaffModal
+          mode="edit"
+          isOpen={isOpenEdit}
+          onClose={closeEdit}
+          selectedStaff={selectedStaff} // Pass the currently selected staff for editing
+          setSelectedStaff={() => setSelectedStaff} // Function to handle changes to the selected staff
+        />
+      )}
     </div>
   );
 }

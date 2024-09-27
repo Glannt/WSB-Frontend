@@ -39,9 +39,8 @@ import { roomTypes } from '../../data/dataRoomType';
 import { EyeIcon } from '../Icons/EyeIcon';
 import { EditIcon } from '../Icons/EditIcon';
 import { DeleteIcon } from '../Icons/DeleteIcon';
-import AddRoomModal from './AddRoomModal';
 import { DetailModal } from './DetailModal';
-import { EditModalRoom } from './EditModalRoom';
+import AdminRoomModal from '../Modal/Admin/AdminRoomModal';
 
 const statusColorMap: Record<string, ChipProps['color']> = {
   available: 'success',
@@ -58,7 +57,7 @@ const INITIAL_VISIBLE_COLUMNS = [
 
 type Room = (typeof rooms)[0];
 
-export default function CreateRoom() {
+export default function ManageRoom() {
   //filter
   const [filterValue, setFilterValue] = React.useState('');
   const hasSearchFilter = Boolean(filterValue);
@@ -158,7 +157,7 @@ export default function CreateRoom() {
 
   const [valueStatus, setValueStatus] = React.useState(new Set(['available']));
   const [valueRoomType, setValueRoomType] = React.useState(new Set(['single']));
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
   const [isDetails, setIsDetails] = useState<boolean>(false);
   const [selectedRoom, setSelectedRoom] = React.useState<Room | null>(null);
   const openDetail = (room: Room) => {
@@ -167,6 +166,14 @@ export default function CreateRoom() {
   };
   const closeDetail = () => {
     setIsDetails(false);
+  };
+
+  const [isOpenAdd, setIsOpenAdd] = useState<boolean>(false);
+  const openAdd = () => {
+    setIsOpenEdit(true);
+  };
+  const closeAdd = () => {
+    setIsOpenAdd(false);
   };
 
   const [isOpenEdit, setIsOpenEdit] = useState<boolean>(false);
@@ -213,8 +220,8 @@ export default function CreateRoom() {
         );
       case 'actions':
         return (
-          <div className="relative flex items-center gap-10 left-20">
-            <Tooltip content="Details">
+          <div className="relative flex justify-center gap-5">
+            <Tooltip content="Chi tiết">
               <span
                 onClick={() => openDetail(room)}
                 className="text-lg text-default-400 cursor-pointer active:opacity-50"
@@ -222,7 +229,7 @@ export default function CreateRoom() {
                 <EyeIcon />
               </span>
             </Tooltip>
-            <Tooltip content="Edit user">
+            <Tooltip content="Chỉnh sửa">
               <span
                 onClick={() => openEdit(room)}
                 className="text-lg text-default-400 cursor-pointer active:opacity-50"
@@ -230,7 +237,7 @@ export default function CreateRoom() {
                 <EditIcon />
               </span>
             </Tooltip>
-            <Tooltip color="danger" content="Delete user">
+            <Tooltip color="danger" content="Xóa">
               <span className="text-lg text-danger cursor-pointer active:opacity-50">
                 <DeleteIcon />
               </span>
@@ -249,7 +256,7 @@ export default function CreateRoom() {
           <Input
             isClearable
             className="w-full sm:max-w-[50%] focus:outline-none bg-blackA2 rounded-xl"
-            placeholder="Search by name..."
+            placeholder="Tìm kiếm bằng tên..."
             variant="bordered"
             startContent={<SearchIcon />}
             labelPlacement="outside"
@@ -267,7 +274,7 @@ export default function CreateRoom() {
                   endContent={<ChevronDownIcon className="text-small" />}
                   variant="flat"
                 >
-                  Status
+                  Trạng thái
                 </Button>
               </DropdownTrigger>
               <DropdownMenu
@@ -291,7 +298,7 @@ export default function CreateRoom() {
                   endContent={<ChevronDownIcon className="text-small" />}
                   variant="flat"
                 >
-                  Columns
+                  Cột
                 </Button>
               </DropdownTrigger>
               <DropdownMenu
@@ -313,18 +320,18 @@ export default function CreateRoom() {
               className="rounded-lg hover:scale-105 hover:shadow-xl"
               color="primary"
               endContent={<PlusIcon />}
-              onPress={onOpen}
+              onPress={openAdd}
             >
-              Add New
+              Thêm phòng
             </Button>
           </div>
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">
-            Total {rooms.length} users
+            Tổng {rooms.length} phòng
           </span>
           <label className="flex items-center text-default-400 text-small">
-            Rows per page:
+            Số hàng
             <select
               className="bg-transparent outline-none text-default-400 text-small rounded-md ml-3"
               onChange={onRowsPerPageChange}
@@ -350,11 +357,11 @@ export default function CreateRoom() {
   const bottomContent = React.useMemo(() => {
     return (
       <div className="py-2 px-2 flex justify-between items-center">
-        <span className="w-[30%] text-small text-default-400">
+        {/* <span className="w-[30%] text-small text-default-400">
           {selectedKeys === 'all'
             ? 'All items selected'
             : `${selectedKeys.size} of ${filteredItems.length} selected`}
-        </span>
+        </span> */}
         <Pagination
           isCompact
           showControls
@@ -371,7 +378,7 @@ export default function CreateRoom() {
             variant="flat"
             onPress={onPreviousPage}
           >
-            Previous
+            Trước
           </Button>
           <Button
             isDisabled={pages === 1}
@@ -379,7 +386,7 @@ export default function CreateRoom() {
             variant="flat"
             onPress={onNextPage}
           >
-            Next
+            Sau
           </Button>
         </div>
       </div>
@@ -426,15 +433,8 @@ export default function CreateRoom() {
           )}
         </TableBody>
       </Table>
-      {isOpen && !isDetails && (
-        <AddRoomModal
-          isOpen={isOpen}
-          onOpenChange={onOpenChange}
-          valueStatus={valueStatus}
-          setValueStatus={setValueStatus}
-          setValueRoomType={setValueRoomType}
-          valueRoomType={valueRoomType}
-        />
+      {isOpenAdd && !isDetails && (
+        <AdminRoomModal isOpen={isOpenAdd} onClose={closeAdd} mode="add" />
       )}
       {isDetails && (
         <DetailModal
@@ -444,7 +444,8 @@ export default function CreateRoom() {
         />
       )}
       {isOpenEdit && (
-        <EditModalRoom
+        <AdminRoomModal
+          mode="edit"
           isOpen={isOpenEdit}
           onClose={closeEdit}
           selectedRoom={selectedRoom}
