@@ -11,7 +11,6 @@ import { MainLayout } from '@/layouts/MainLayout';
 import { useContext } from 'react';
 import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
 import path from '@/constants/path';
-import ProfileEditor from '@/components/ProfileEditor/ProfileEditor';
 import { Dashboard } from '@/components/Admin/Dashboard';
 import CreateRoom from '@/components/AdminService/ManageRoom';
 import TableAddRoom from '@/components/AdminService/TableAddRoom';
@@ -81,22 +80,12 @@ export const router = createBrowserRouter([
       </MainLayout>
     ),
   },
-  {
-
-    path: 'profile',
-    element: (
-      <MainLayout>
-        <ProfileEditor />
-      </MainLayout>
-    ),
-  },
 
   {
     path: '',
     element: <ProtectedRoute />,
     children: [
       {
-
         path: 'room-detail/:roomId',
         element: (
           <MainLayout>
@@ -105,28 +94,35 @@ export const router = createBrowserRouter([
         ),
         // <BookingRoomDetail />,
       },
-        {
+      {
         path: 'room-bill',
         element: 'room-bill',
       },
-    ],
-  },
-  {
-    path: '/dashboard',
-    element: <Dashboard />,
-    children: [
       {
-        path: 'create-room',
-        element: <CreateRoom />,
+        path: path.profile,
+        element: (
+          <MainLayout>
+            <ProfileEditor />
+          </MainLayout>
+        ),
       },
       {
-        path: 'update-staff-schedule',
-        element: <AddStaffToRoom />,
-      },
-      {
-        path: '',
-        element: <ComboChartSingleAxisExample />,
-
+        path: '/dashboard',
+        element: <Dashboard />,
+        children: [
+          {
+            path: 'create-room',
+            element: <CreateRoom />,
+          },
+          {
+            path: 'update-staff-schedule',
+            element: <AddStaffToRoom />,
+          },
+          {
+            path: '',
+            element: <ComboChartSingleAxisExample />,
+          },
+        ],
       },
     ],
   },

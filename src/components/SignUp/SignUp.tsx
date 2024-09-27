@@ -317,16 +317,13 @@ const SignUp: React.FC = () => {
         </form>
 
         <p className="text-black text-center mt-4">
-
           Có tài khoản?{' '}
           <span
-            href={path.login}
-            onClick={() => navigate('/sign-in')}
+            onClick={() => navigate(path.login)}
             className="text-black hover:underline font-bold cursor-pointer"
           >
             Đăng nhập
           </span>
-
         </p>
       </div>
       {showPolicyModal && (

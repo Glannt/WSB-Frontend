@@ -215,11 +215,10 @@ const Login = () => {
           /> */}
         </div>
         <p className="text-center mt-4 text-black">
-
-          Chưa có tải khoản?{' '}  
+          Chưa có tải khoản?{' '}
           <a
-            href={path.register}
-            className="text-black font-bold hover:underline"
+            onClick={() => navigate(path.register)}
+            className="text-black font-bold hover:underline cursor-pointer"
           >
             Đăng ký
           </a>

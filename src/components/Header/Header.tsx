@@ -151,11 +151,8 @@ export const Header = (props: any) => {
                     <ul className="m-0 grid list-none gap-x-[10px] pl-[5px] p-[10px] sm:w-[150px] sm:grid-flow-col sm:grid-rows-3">
                       <ListItem
                         className="row-span-1"
-
                         onClick={() => navigate('/profile')}
-=======
                         href={path.profile}
-
                         title=" Profile"
                       >
                         {' '}
@@ -164,7 +161,7 @@ export const Header = (props: any) => {
                         {' '}
                       </ListItem>
                       <ListItem
-                        className="row-span-1"
+                        className="row-span-1 cursor-pointer"
                         // href="/logout"
                         title="Đăng xuất"
                         onClick={handleLogout}
