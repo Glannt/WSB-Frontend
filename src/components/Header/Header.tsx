@@ -47,12 +47,16 @@ export const Header = (props: any) => {
           <div
             className={`text-4xl font-bold text-black ${!isAuthenticated ? `mr-12` : ``} `}
           >
-            <Button
+            <span
+              // fullWidth={true}
+              // size="lg"
+              // color="primary"
+              // variant="light"
               onClick={() => navigate('/')}
-              className="hover:text-violet11 font-bold"
+              className="hover:text-violet11 font-bold cursor-pointer"
             >
               WSB
-            </Button>
+            </span>
           </div>
           <NavigationMenu.Root className="relative z-[1] flex w-screen justify-center">
             <NavigationMenu.List className="center shadow-blackA4 m-0 flex list-none p-1">
@@ -124,7 +128,7 @@ export const Header = (props: any) => {
               <NavigationMenu.Viewport className="data-[state=open]:animate-scaleIn data-[state=closed]:animate-scaleOut relative mt-[10px] h-[var(--radix-navigation-menu-viewport-height)] w-full origin-[top_center] overflow-hidden rounded-[6px] bg-white transition-[width,_height] duration-300 sm:w-[var(--radix-navigation-menu-viewport-width)]" />
             </div>
           </NavigationMenu.Root>
-          {isAuthenticated && (
+          {!isAuthenticated && (
             <NavigationMenu.Root className="relative z-[1] w-auto flex justify-end">
               <NavigationMenu.List className="center shadow-blackA4 m-0 flex list-none p-1">
                 <NavigationMenu.Item>
