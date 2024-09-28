@@ -154,9 +154,10 @@ export const Header = (props: any) => {
                   <NavigationMenu.Content className="data-[motion=from-start]:animate-enterFromLeft data-[motion=from-end]:animate-enterFromRight data-[motion=to-start]:animate-exitToLeft data-[motion=to-end]:animate-exitToRight absolute top-0 left-0 w-full sm:w-auto">
                     <ul className="m-0 grid list-none gap-x-[10px] pl-[5px] p-[10px] sm:w-[150px] sm:grid-flow-col sm:grid-rows-3">
                       <ListItem
-                        className="row-span-1"
-                        onClick={() => navigate('/profile')}
-                        href={path.profile}
+                        className="row-span-1 cursor-pointer"
+                        onClick={() =>
+                          navigate(path.settings + '/edit-profile')
+                        }
                         title=" Profile"
                       >
                         {' '}

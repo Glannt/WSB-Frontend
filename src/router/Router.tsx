@@ -17,9 +17,12 @@ import TableAddRoom from '@/components/AdminService/TableAddRoom';
 import AddStaffToRoom from '@/components/AdminService/AddStaffToRoom';
 import { ComboChart } from '@/components/Admin/ContentDashboard';
 import { ComboChartSingleAxisExample } from '@/components/Admin/TestChart';
+import { Settings } from '@/components/Customer/Settings';
+import BookingHistory from '@/components/Customer/BookingHistory';
+import TransactionHistory from '@/components/Customer/TransactionHistory';
 function ProtectedRoute() {
   const { isAuthenticated } = useContext(AppContext);
-  return isAuthenticated ? <Outlet /> : <Navigate to={path.login} />;
+  return !isAuthenticated ? <Outlet /> : <Navigate to={path.login} />;
 }
 function RejectedRoute() {
   const { isAuthenticated } = useContext(AppContext);
@@ -99,12 +102,30 @@ export const router = createBrowserRouter([
         element: 'room-bill',
       },
       {
-        path: path.profile,
+        path: path.settings,
         element: (
           <MainLayout>
-            <ProfileEditor />
+            <Settings />
           </MainLayout>
         ),
+        children: [
+          {
+            path: 'edit-profile',
+            element: (
+              // <MainLayout>
+              <ProfileEditor />
+              // </MainLayout>
+            ),
+          },
+          {
+            path: 'booking-history',
+            element: <BookingHistory />,
+          },
+          {
+            path: 'transaction-history',
+            element: <TransactionHistory />,
+          },
+        ],
       },
       {
         path: '/dashboard',
