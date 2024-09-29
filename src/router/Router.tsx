@@ -20,6 +20,8 @@ import { ComboChartSingleAxisExample } from '@/components/Admin/TestChart';
 import { Settings } from '@/components/Customer/Settings';
 import BookingHistory from '@/components/Customer/BookingHistory';
 import TransactionHistory from '@/components/Customer/TransactionHistory';
+import MyWallet from '@/components/Customer/MyWallet';
+import PackageMembership from '@/components/Customer/PackageMembership';
 function ProtectedRoute() {
   const { isAuthenticated } = useContext(AppContext);
   return !isAuthenticated ? <Outlet /> : <Navigate to={path.login} />;
@@ -123,7 +125,11 @@ export const router = createBrowserRouter([
           },
           {
             path: 'transaction-history',
-            element: <TransactionHistory />,
+            element: <MyWallet />,
+          },
+          {
+            path: 'package-membership',
+            element: <PackageMembership />,
           },
         ],
       },

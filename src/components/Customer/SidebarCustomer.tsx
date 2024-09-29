@@ -81,14 +81,18 @@ export function SidebarAdmin({ children, collapse, hover }: SidebarProps) {
                 className="cursor-pointer"
                 onClick={() => navigate(path.settings + '/transaction-history')}
               >
-                Lịch sử giao dịch
+                Ví của tôi
               </Sidebar.Item>
-              <Sidebar.Item href="#" icon={HiUser}>
-                Ví điện tử
-              </Sidebar.Item>
-              <Sidebar.Item href="#" icon={HiInbox}>
+              <Sidebar.Item
+                className="cursor-pointer"
+                onClick={() => navigate(path.settings + '/package-membership')}
+                icon={HiUser}
+              >
                 Gói thành viên
               </Sidebar.Item>
+              {/* <Sidebar.Item href="#" icon={HiInbox}>
+                Gói thành viên
+              </Sidebar.Item> */}
 
               {/* <Sidebar.Item href="#" icon={HiShoppingBag}>
                 Products

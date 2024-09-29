@@ -387,10 +387,10 @@ export default function TransactionHistory() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const topContent = React.useMemo(() => {
     return (
-      <div className="flex flex-col gap-4 h-full max-h-screen">
-        <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
+      <div className="flex flex-col gap-1 h-full max-h-screen">
+        <h4 className=" text-xl font-bold mb-0 text-center text-gray-800">
           Transaction History
-        </h2>
+        </h4>
         <div className="flex justify-end gap-3">
           {/* <Input
             isClearable
