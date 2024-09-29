@@ -36,9 +36,9 @@ import { roomStatuses } from '@/data/dataStatusRoom';
 import { roomTypes } from '../../data/dataRoomType';
 
 const statusOptions = [
-  { name: 'Using', uid: 'using' },
-  { name: 'Finished', uid: 'finished' },
-  { name: 'Upcoming', uid: 'upcoming' },
+  { name: 'Đang sử dụng', uid: 'using' },
+  { name: 'Hoàn thành', uid: 'finished' },
+  { name: 'Sắp tới', uid: 'upcoming' },
 ];
 
 const bookings = [
@@ -116,13 +116,13 @@ const bookings = [
 
 const columns = [
   { name: 'ID', uid: 'id', sortable: true },
-  { name: 'DATE', uid: 'date', sortable: true },
+  { name: 'Thời gian', uid: 'date', sortable: true },
   { name: 'Địa điểm', uid: 'address' },
-  { name: 'AMOUNT', uid: 'amount', sortable: true },
+  { name: 'Đơn giá', uid: 'amount', sortable: true },
   //   { name: 'STATUS', uid: 'role', sortable: true },
   //   { name: 'EMAIL', uid: 'email' },
-  { name: 'STATUS', uid: 'status' },
-  { name: 'THÊM DỊCH VỤ', uid: 'actions' },
+  { name: 'Tình trạng', uid: 'status' },
+  { name: 'Thêm dịch vụ', uid: 'actions' },
 ];
 
 const statusColorMap: Record<string, ChipProps['color']> = {
@@ -243,7 +243,9 @@ export default function BookingHistory() {
               size="sm"
               variant="flat"
             >
-              {user.status}
+              {user.status === 'finished' && 'Hoàn thành'}
+              {user.status === 'upcoming' && 'Sắp tới'}
+              {user.status === 'using' && 'Đang sử dụng'}
             </Chip>
           );
         case 'actions':
@@ -314,7 +316,7 @@ export default function BookingHistory() {
     return (
       <div className="flex flex-col gap-4 h-full max-h-screen">
         <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
-          Booking History
+          Lịch Sử Đặt Phòng
         </h2>
         <div className="flex justify-end gap-3">
           {/* <Input
@@ -338,7 +340,7 @@ export default function BookingHistory() {
                   endContent={<ChevronDownIcon className="text-small" />}
                   variant="flat"
                 >
-                  Status
+                  Trạng thái
                 </Button>
               </DropdownTrigger>
               <DropdownMenu
@@ -362,7 +364,7 @@ export default function BookingHistory() {
                   endContent={<ChevronDownIcon className="text-small" />}
                   variant="flat"
                 >
-                  Columns
+                  Cột hiển thị
                 </Button>
               </DropdownTrigger>
               <DropdownMenu
@@ -392,7 +394,7 @@ export default function BookingHistory() {
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">
-            Total {bookings.length} bookings
+            Tổng {bookings.length} đơn
           </span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
@@ -442,7 +444,7 @@ export default function BookingHistory() {
             variant="flat"
             onPress={onPreviousPage}
           >
-            Previous
+            Trước
           </Button>
           <Button
             isDisabled={pages === 1}
@@ -450,7 +452,7 @@ export default function BookingHistory() {
             variant="flat"
             onPress={onNextPage}
           >
-            Next
+            Sau
           </Button>
         </div>
       </div>

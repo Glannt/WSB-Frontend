@@ -24,25 +24,25 @@ const PackageMembership: React.FC = () => {
   const renderTabContent = (): JSX.Element => {
     return (
       <div className="space-y-4">
-        <h3 className="text-xl font-semibold">Membership Information</h3>
+        <h3 className="text-xl font-semibold">Thông tin gói</h3>
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <p className="font-bold">Package:</p>
+            <p className="font-bold">Gói:</p>
             <p className="font-medium">{membershipData.packageName}</p>
           </div>
           <div>
-            <p className="font-bold">Status:</p>
+            <p className="font-bold">Trạng thái:</p>
             <p className="text-green-400 font-medium">
-              {membershipData.status}
+              {membershipData.status === 'Active' && 'Hoạt động'}
             </p>
           </div>
           <div>
-            <p className="font-bold">Expiration Date:</p>
+            <p className="font-bold">Ngày hết hạn:</p>
             <p className="font-medium">{membershipData.expirationDate}</p>
           </div>
           <div>
-            <p className="font-bold">Price:</p>
+            <p className="font-bold">Giá:</p>
             <p className="font-medium">{membershipData.price}</p>
           </div>
         </div>
@@ -67,7 +67,7 @@ const PackageMembership: React.FC = () => {
   return (
     <>
       <h2 className="text-3xl font-bold mb-10 mt-5 text-center text-gray-800">
-        Package Membership
+        Gói Thành Viên
       </h2>
       <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 shadow-lg">
         {/* <div className="flex items-center justify-center"> */}
@@ -80,8 +80,8 @@ const PackageMembership: React.FC = () => {
             <div className="flex items-center">
               <FaBell className="text-yellow-500 mr-2" />
               <p className="font-medium">
-                Your membership will expire in 30 days. Renew now to avoid
-                interruption.
+                Quyền thành viên của bạn sẽ hết hạn sau 30 ngày. Hãy gia hạn
+                ngay để tránh bị gián đoạn.
               </p>
             </div>
             <button

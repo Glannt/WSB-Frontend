@@ -103,7 +103,7 @@ const ProfileEditor: React.FC = () => {
   return (
     <>
       <h2 className="text-3xl font-bold mb-10 mt-5 text-center text-gray-800">
-        Edit Profile
+        Chỉnh sửa thông tin
       </h2>
       <div className="flex flex-col gap-4 h-auto max-h-screen mx-auto p-6 bg-white shadow-lg rounded-lg w-382px">
         {/* <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
@@ -117,7 +117,7 @@ const ProfileEditor: React.FC = () => {
                   htmlFor="fullName"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Full Name
+                  Họ và tên
                 </label>
                 <input
                   type="text"
@@ -157,7 +157,7 @@ const ProfileEditor: React.FC = () => {
                   htmlFor="phoneNumber"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Phone Number
+                  Số điện thoại
                 </label>
                 <input
                   type="tel"
@@ -174,7 +174,7 @@ const ProfileEditor: React.FC = () => {
                   htmlFor="dateOfBirth"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Date of Birth
+                  Ngày sinh
                 </label>
                 <input
                   type="date"
@@ -200,7 +200,7 @@ const ProfileEditor: React.FC = () => {
                     className="mt-2 cursor-pointer inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black"
                   >
                     <FaUpload className="mr-2" />
-                    Change Avatar
+                    Thay ảnh đại diện
                   </label>
                   <input
                     type="file"
@@ -213,15 +213,15 @@ const ProfileEditor: React.FC = () => {
                 </div>
               </div>
               <div className="px-3 py-5 block text-sm text-gray-700 font-bold">
-                Security
+                Bảo mật
               </div>
               <div className="px-8 flex items-center justify-between">
                 <div className="flex items-center space-x-2">
                   <FaLock className="text-black text-sm" />
-                  <span className="text-sm text-gray-700">Password</span>
+                  <span className="text-sm text-gray-700">Mật khẩu</span>
                 </div>
                 <a className="cursor-pointer px-4 py-2 border border-gray-300 rounded-sm shadow-sm text-sm font-medium scale-75 text-black bg-white hover:bg-gray-50  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black">
-                  Update
+                  Đổi mật khẩu
                 </a>
               </div>
             </div>
@@ -306,7 +306,7 @@ const ProfileEditor: React.FC = () => {
               className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black"
             >
               <MdRefresh className="mr-2" />
-              Reset
+              Đặt lại
             </button>
             <button
               type="submit"
@@ -342,7 +342,7 @@ const ProfileEditor: React.FC = () => {
               ) : (
                 <>
                   <MdSave className="mr-2" />
-                  Save Changes
+                  Lưu thay đổi
                 </>
               )}
             </button>

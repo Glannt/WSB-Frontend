@@ -26,11 +26,11 @@ const MyWallet: React.FC = () => {
       <div className="max-w-screen-lg mx-auto bg-white shadow-lg rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl">
         <div className="bg-gradient-to-r from-black via-slate-600 to-gray-400 p-6 text-white">
           <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold">My Wallet</h2>
+            <h2 className="text-2xl font-bold">Ví Điện Tử</h2>
             <FaWallet className="text-3xl" />
           </div>
           <div className="mt-4">
-            <p className="text-sm">Current Balance</p>
+            <p className="text-sm">Số dư tiện tại</p>
             <p className="text-4xl font-bold">${balance.toFixed(2)}</p>
           </div>
           <div className="flex justify-end">

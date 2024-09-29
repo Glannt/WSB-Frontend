@@ -36,8 +36,9 @@ import { roomStatuses } from '@/data/dataStatusRoom';
 import { roomTypes } from '../../data/dataRoomType';
 
 const statusOptions = [
-  { name: 'Pending', uid: 'pending' },
-  { name: 'Compeleted', uid: 'compeleted' },
+  { name: 'Đang xử lý', uid: 'pending' },
+  { name: 'Thành công', uid: 'completed' },
+  { name: 'Thất bại', uid: 'cancelled' },
 ];
 
 const bookings = [
@@ -52,14 +53,14 @@ const bookings = [
     id: 2,
     date: '2021-10-10',
     amount: '$110',
-    status: 'compeleted',
+    status: 'completed',
     actions: 'abc xyz',
   },
   {
     id: 3,
     date: '2021-10-10',
     amount: '$100',
-    status: 'compeleted',
+    status: 'completed',
     actions: 'abc xyz',
   },
   {
@@ -172,17 +173,17 @@ const bookings = [
 
 const columns = [
   { name: 'ID', uid: 'id', sortable: true },
-  { name: 'DATE', uid: 'date', sortable: true },
-  { name: 'AMOUNT', uid: 'amount', sortable: true },
+  { name: 'Thời gian', uid: 'date', sortable: true },
+  { name: 'Số tiền', uid: 'amount', sortable: true },
   //   { name: 'STATUS', uid: 'role', sortable: true },
   //   { name: 'TEAM', uid: 'team' },
   //   { name: 'EMAIL', uid: 'email' },
-  { name: 'STATUS', uid: 'status' },
+  { name: 'Tình Trạng', uid: 'status' },
   { name: 'Nội dung', uid: 'actions' },
 ];
 
 const statusColorMap: Record<string, ChipProps['color']> = {
-  compeleted: 'success',
+  completed: 'success',
   cancelled: 'danger',
   pending: 'warning',
 };
@@ -299,7 +300,9 @@ export default function TransactionHistory() {
               size="sm"
               variant="flat"
             >
-              {user.status}
+              {user.status === 'completed' && 'Thành công'}
+              {user.status === 'cancelled' && 'Thất bại'}
+              {user.status === 'pending' && 'Đang xử lý'}
             </Chip>
           );
         case 'actions':
@@ -389,7 +392,7 @@ export default function TransactionHistory() {
     return (
       <div className="flex flex-col gap-1 h-full max-h-screen">
         <h4 className=" text-xl font-bold mb-0 text-center text-gray-800">
-          Transaction History
+          Lịch Sử Giao Dịch
         </h4>
         <div className="flex justify-end gap-3">
           {/* <Input
@@ -413,7 +416,7 @@ export default function TransactionHistory() {
                   endContent={<ChevronDownIcon className="text-small" />}
                   variant="flat"
                 >
-                  Status
+                  Trạng thái
                 </Button>
               </DropdownTrigger>
               <DropdownMenu
@@ -437,7 +440,7 @@ export default function TransactionHistory() {
                   endContent={<ChevronDownIcon className="text-small" />}
                   variant="flat"
                 >
-                  Columns
+                  Cột hiển thị
                 </Button>
               </DropdownTrigger>
               <DropdownMenu
@@ -467,7 +470,7 @@ export default function TransactionHistory() {
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">
-            Total {bookings.length} transactions
+            Tổng {bookings.length} giao dịch
           </span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
@@ -517,7 +520,7 @@ export default function TransactionHistory() {
             variant="flat"
             onPress={onPreviousPage}
           >
-            Previous
+            Trước
           </Button>
           <Button
             isDisabled={pages === 1}
@@ -525,7 +528,7 @@ export default function TransactionHistory() {
             variant="flat"
             onPress={onNextPage}
           >
-            Next
+            Sau
           </Button>
         </div>
       </div>
