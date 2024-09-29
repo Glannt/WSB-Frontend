@@ -10,8 +10,9 @@ import {
 } from 'lucide-react';
 import { SidebarStaff } from './SideBarStaff';
 import { MenuIconStaff } from './MenuIconStaff';
+import { Outlet } from 'react-router';
 
-export const Dashboard = () => {
+export const DashboardStaff = () => {
   const [collapse, setCollapse] = useState<boolean>(true);
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const toggleSidebar = () => {
@@ -70,11 +71,7 @@ export const Dashboard = () => {
       </div>
       <div className="mainContent flex-1 m-9 bg-gray-100">
         {' '}
-        <h1 className="text-2xl font-bold mb-4">Main Content</h1>
-        <p>
-          This is the main content area. It will adjust based on the sidebar's
-          state.
-        </p>
+        <Outlet />
       </div>
     </div>
   );

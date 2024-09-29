@@ -53,6 +53,9 @@ class Http {
           this.accessToken = '';
           clearLS();
         }
+        toast.success(response.data.message, {
+          autoClose: 3000,
+        });
         return response;
       },
       function (error) {

@@ -11,18 +11,22 @@ import { MainLayout } from '@/layouts/MainLayout';
 import { useContext } from 'react';
 import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
 import path from '@/constants/path';
-import { Dashboard } from '@/components/Admin/Dashboard';
-import CreateRoom from '@/components/AdminService/ManageRoom';
-import TableAddRoom from '@/components/AdminService/TableAddRoom';
-import AddStaffToRoom from '@/components/AdminService/AddStaffToRoom';
-import { ComboChart } from '@/components/Admin/ContentDashboard';
-import { ComboChartSingleAxisExample } from '@/components/Admin/TestChart';
+
 import { Settings } from '@/components/Customer/Settings';
 import BookingHistory from '@/components/Customer/BookingHistory';
 import TransactionHistory from '@/components/Customer/TransactionHistory';
 import MyWallet from '@/components/Customer/MyWallet';
 import PackageMembership from '@/components/Customer/PackageMembership';
 import ChangePassword from '@/components/ProfileEditor/ChangePassword';
+import { DashboardManager } from '@/components/Admin/DashboardManager';
+import ManageRoom from '@/components/AdminService/ManageRoom';
+import ManageStaff from '@/components/AdminService/ManageStaff';
+import { AdminDashboard } from '@/components/Admin/AdminDashboard';
+import EquipmentList from '@/components/Content/ListEquipment';
+import { DashboardStaff } from '@/components/Staff/DashboardStaff';
+import { StaffWelComeback } from '@/components/Staff/StaffWelcomeback';
+import StaffBookings from '@/components/Staff/StaffBookings';
+import StaffRoomOverview from '@/components/Staff/StaffRoomOverview';
 function ProtectedRoute() {
   const { isAuthenticated } = useContext(AppContext);
   return !isAuthenticated ? <Outlet /> : <Navigate to={path.login} />;
@@ -32,30 +36,6 @@ function RejectedRoute() {
   return !isAuthenticated ? <Outlet /> : <Navigate to="/profile" />;
 }
 
-// let isAuthenticated = false;
-// const checkAuthenticated = () => {
-//   const token = localStorage.getItem('token');
-//   if (!token) {
-//     return (isAuthenticated = false);
-//   }
-//   return (isAuthenticated = true);
-// };
-
-// Assuming this is your ChartSeries type
-type ChartSeries = {
-  name: string;
-  data: number[]; // or whatever type is appropriate
-  categories: string[]; // add the categories property
-  type?: 'default' | 'stacked'; // optional type property
-};
-
-// Example of creating a bar series with the required categories
-const barSeries: ChartSeries = {
-  name: 'Sample Series',
-  data: [10, 20, 30, 40], // example data points
-  categories: ['Category 1', 'Category 2', 'Category 3', 'Category 4'], // required categories
-  type: 'default', // set type appropriately
-};
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -70,6 +50,14 @@ export const router = createBrowserRouter([
     element: (
       <MainLayout>
         <ListRoom />
+      </MainLayout>
+    ),
+  },
+  {
+    path: 'equipments',
+    element: (
+      <MainLayout>
+        <EquipmentList />
       </MainLayout>
     ),
   },
@@ -143,20 +131,42 @@ export const router = createBrowserRouter([
         ],
       },
       {
-        path: '/dashboard',
-        element: <Dashboard />,
+        path: path.manager,
+        element: <DashboardManager />,
         children: [
           {
-            path: 'create-room',
-            element: <CreateRoom />,
+            path: path.managerRooms,
+            element: <ManageRoom />,
           },
           {
-            path: 'update-staff-schedule',
-            element: <AddStaffToRoom />,
+            path: path.managerStaff,
+            element: <ManageStaff />,
           },
           {
             path: '',
-            element: <ComboChartSingleAxisExample />,
+            element: <AdminDashboard />,
+          },
+        ],
+      },
+      {
+        path: path.staff,
+        element: <DashboardStaff />,
+        children: [
+          {
+            path: path.staffRooms,
+            element: <StaffRoomOverview />,
+          },
+          {
+            path: path.staffBooking,
+            element: <StaffBookings />,
+          },
+          {
+            path: '',
+            element: <StaffWelComeback />,
+          },
+          {
+            path: path.staffProfile,
+            element: <AdminDashboard />,
           },
         ],
       },
