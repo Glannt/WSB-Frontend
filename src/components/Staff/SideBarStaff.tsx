@@ -55,6 +55,12 @@ export function SidebarStaff({ children, collapse, hover }: SidebarProps) {
                 Lịch làm việc
               </Sidebar.Item>
               <Sidebar.Item
+                onClick={() => handleItemClick('profile', path.staffProfile)}
+                className={`${activeItem === path.staffProfile ? 'bg-slate-600 text-white' : ''} hover:text-gray-900 hover:bg-gray-100`}
+              >
+                Thông tin cá nhân
+              </Sidebar.Item>
+              <Sidebar.Item
                 onClick={() => handleItemClick('logout', path.logout)}
                 className={`${activeItem === path.logout ? 'bg-slate-600 text-white' : ''} hover:text-gray-900 hover:bg-gray-100`}
                 icon={HiArrowSmRight}

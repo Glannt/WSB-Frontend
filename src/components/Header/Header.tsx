@@ -93,7 +93,7 @@ export const Header = (props: any) => {
                     <ListItem
                       className="cursor-pointer"
                       title="Phòng làm việc"
-                      onClick={() => navigate('/list-room')}
+                      onClick={() => navigate(path.rooms)}
                     >
                       Build high-quality, accessible design systems and web
                       apps.
@@ -101,7 +101,15 @@ export const Header = (props: any) => {
                     <ListItem
                       className="cursor-pointer"
                       title="Đồ ăn"
-                      onClick={() => navigate('/list-food')}
+                      onClick={() => navigate('/foods')}
+                    >
+                      A quick tutorial to get you up and running with Radix
+                      Primitives.
+                    </ListItem>
+                    <ListItem
+                      className="cursor-pointer"
+                      title="Thiết bị"
+                      onClick={() => navigate('/equipments')}
                     >
                       A quick tutorial to get you up and running with Radix
                       Primitives.

@@ -7,6 +7,7 @@ import { DescriptionUtil } from '../HomepageContent/DescriptionHomePage';
 import HeroSection from './heroSection';
 import RoomDecription from '../HomepageContent/RoomDecription';
 import { useNavigate } from 'react-router';
+import path from '@/constants/path';
 
 export interface CarouselPropsSlider {
   autoSlide?: boolean;
@@ -117,13 +118,10 @@ export const HomePage: React.FC<CarouselPropsSlider> = ({
             name="Phòng 10"
             description="Càng đông càng xịn"
           />
-          {/* <TypeRoomCard />
-          <TypeRoomCard />
-          <TypeRoomCard /> */}
         </div>
         <div className="flex justify-end mx-auto mt-10">
           <Button
-            onClick={() => navigate('/list-room')}
+            onClick={() => navigate(path.rooms)}
             className="mt-8 bg-blackA12 text-white py-3 px-6 rounded-lg font-semibold hover:bg-white hover:text-black hover:shadow-2xl transition duration-300 ease-in-out flex items-center"
           >
             Xem thêm

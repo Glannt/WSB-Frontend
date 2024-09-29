@@ -14,6 +14,9 @@ const path = {
   manager: '/manager',
   managerRooms: '/manager/manage-room',
   managerStaff: '/manager/manage-staff',
+  foods: '/foods',
+  equipments: '/equipments',
+  rooms: '/rooms',
 };
 
 export default path;

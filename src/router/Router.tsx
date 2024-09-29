@@ -27,6 +27,7 @@ import { DashboardStaff } from '@/components/Staff/DashboardStaff';
 import { StaffWelComeback } from '@/components/Staff/StaffWelcomeback';
 import StaffBookings from '@/components/Staff/StaffBookings';
 import StaffRoomOverview from '@/components/Staff/StaffRoomOverview';
+import { StaffProfile } from '@/components/Staff/StaffProfie';
 function ProtectedRoute() {
   const { isAuthenticated } = useContext(AppContext);
   return !isAuthenticated ? <Outlet /> : <Navigate to={path.login} />;
@@ -46,7 +47,7 @@ export const router = createBrowserRouter([
     ),
   },
   {
-    path: 'list-room',
+    path: path.rooms,
     element: (
       <MainLayout>
         <ListRoom />
@@ -54,7 +55,7 @@ export const router = createBrowserRouter([
     ),
   },
   {
-    path: 'equipments',
+    path: path.equipments,
     element: (
       <MainLayout>
         <EquipmentList />
@@ -67,7 +68,7 @@ export const router = createBrowserRouter([
   },
 
   {
-    path: 'list-food',
+    path: path.foods,
     element: (
       <MainLayout>
         <ListFood />
@@ -166,7 +167,7 @@ export const router = createBrowserRouter([
           },
           {
             path: path.staffProfile,
-            element: <AdminDashboard />,
+            element: <StaffProfile />,
           },
         ],
       },
