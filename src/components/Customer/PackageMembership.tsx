@@ -69,7 +69,7 @@ const PackageMembership: React.FC = () => {
       <h2 className="text-3xl font-bold mb-10 mt-5 text-center text-gray-800">
         Package Membership
       </h2>
-      <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 shadow-lg">
+      <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 shadow-lg">
         {/* <div className="flex items-center justify-center"> */}
 
         {/* </div> */}

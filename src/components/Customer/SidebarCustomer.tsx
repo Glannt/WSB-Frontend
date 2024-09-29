@@ -1,6 +1,16 @@
 import path from '@/constants/path';
 import { Sidebar } from 'flowbite-react';
 import {
+  BadgeIcon,
+  EditIcon,
+  GroupIcon,
+  HistoryIcon,
+  PackageIcon,
+  SettingsIcon,
+  UserIcon,
+  WalletIcon,
+} from 'lucide-react';
+import {
   HiArrowSmRight,
   HiChartPie,
   HiInbox,
@@ -62,14 +72,14 @@ export function SidebarAdmin({ children, collapse, hover }: SidebarProps) {
               <Sidebar.Item
                 className="cursor-pointer"
                 onClick={() => navigate(path.settings + '/edit-profile')}
-                icon={HiChartPie}
+                icon={EditIcon}
               >
                 Chỉnh sửa thông tin
               </Sidebar.Item>
               <Sidebar.Item
                 className="cursor-pointer"
                 onClick={() => navigate(path.settings + '/booking-history')}
-                icon={HiViewBoards}
+                icon={HistoryIcon}
                 label="3"
                 // label="Pro"
                 // labelColor="dark"
@@ -77,7 +87,7 @@ export function SidebarAdmin({ children, collapse, hover }: SidebarProps) {
                 Phòng đã đặt
               </Sidebar.Item>
               <Sidebar.Item
-                icon={HiChartPie}
+                icon={WalletIcon}
                 className="cursor-pointer"
                 onClick={() => navigate(path.settings + '/transaction-history')}
               >
@@ -86,7 +96,7 @@ export function SidebarAdmin({ children, collapse, hover }: SidebarProps) {
               <Sidebar.Item
                 className="cursor-pointer"
                 onClick={() => navigate(path.settings + '/package-membership')}
-                icon={HiUser}
+                icon={UserIcon}
               >
                 Gói thành viên
               </Sidebar.Item>
