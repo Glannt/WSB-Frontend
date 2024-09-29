@@ -12,7 +12,7 @@ export const TypeRoomCard: React.FC<TypeRoomCardProps> = ({
 }) => {
   return (
     <div className={className}>
-      <div className="card bg-base-100 w-96 h-80 shadow-xl">
+      <div className="card bg-base-100 w-96 h-80 shadow-xl hover:scale-105 transition-all">
         <figure>
           <img src={url} alt="Shoes" />
         </figure>

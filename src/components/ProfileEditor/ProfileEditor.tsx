@@ -1,6 +1,8 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { FaEye, FaEyeSlash, FaUpload, FaLock } from 'react-icons/fa';
 import { MdSave, MdRefresh } from 'react-icons/md';
+import { Outlet, useNavigate } from 'react-router';
+import path from '@/constants/path';
 
 interface FormData {
   fullName: string;
@@ -20,6 +22,11 @@ interface ShowPassword {
 }
 
 const ProfileEditor: React.FC = () => {
+  const [showPolicyModal, setShowPolicyModal] = useState<boolean>(false);
+  const togglePolicyModal = () => {
+    setShowPolicyModal(!showPolicyModal);
+  };
+
   const [formData, setFormData] = useState<FormData>({
     fullName: 'John Doe',
     email: 'johndoe@example.com',
@@ -37,6 +44,8 @@ const ProfileEditor: React.FC = () => {
     new: false,
     confirm: false,
   });
+
+  const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isModified, setIsModified] = useState<boolean>(false);
@@ -101,128 +110,135 @@ const ProfileEditor: React.FC = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg">
-      <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
-        Edit Profile
+    <>
+      <h2 className="text-3xl font-bold mb-10 mt-5 text-center text-gray-800">
+        Chỉnh sửa thông tin
       </h2>
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="flex flex-col md:flex-row md:space-x-4">
-          <div className="w-full md:w-2/3 space-y-6">
-            <div>
-              <label
-                htmlFor="fullName"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Full Name
-              </label>
-              <input
-                type="text"
-                id="fullName"
-                name="fullName"
-                value={formData.fullName}
-                onChange={handleInputChange}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-black focus:border-black"
-                required
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Email
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-black focus:border-black"
-                required
-                list="email-suggestions"
-              />
-              <datalist id="email-suggestions">
-                <option value="@gmail.com" />
-                <option value="@outlook.com" />
-                <option value="@yahoo.com" />
-              </datalist>
-            </div>
-            <div>
-              <label
-                htmlFor="phoneNumber"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Phone Number
-              </label>
-              <input
-                type="tel"
-                id="phoneNumber"
-                name="phoneNumber"
-                value={formData.phoneNumber}
-                onChange={handleInputChange}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-black focus:border-black"
-                required
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="dateOfBirth"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Date of Birth
-              </label>
-              <input
-                type="date"
-                id="dateOfBirth"
-                name="dateOfBirth"
-                value={formData.dateOfBirth}
-                onChange={handleInputChange}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-black focus:border-black"
-                required
-              />
-            </div>
-          </div>
-          <div className="w-full md:w-1/3 mt-6 md:mt-0">
-            <div>
-              <div className="text-center">
-                <img
-                  src={formData.avatar}
-                  alt="User Avatar"
-                  className="w-32 h-32 mx-auto rounded-full object-cover"
-                />
+      <div className="flex flex-col gap-4 h-auto max-h-screen mx-auto p-6 bg-white shadow-lg rounded-lg w-382px">
+        {/* <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
+        Edit Profile
+      </h2> */}
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="flex flex-col md:flex-row md:space-x-4">
+            <div className="w-full md:w-2/3 space-y-6">
+              <div>
                 <label
-                  htmlFor="avatar"
-                  className="mt-2 cursor-pointer inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black"
+                  htmlFor="fullName"
+                  className="block text-sm font-medium text-gray-700"
                 >
-                  <FaUpload className="mr-2" />
-                  Change Avatar
+                  Họ và tên
                 </label>
                 <input
-                  type="file"
-                  id="avatar"
-                  name="avatar"
-                  onChange={handleAvatarChange}
-                  className="hidden"
-                  accept="image/*"
+                  type="text"
+                  id="fullName"
+                  name="fullName"
+                  value={formData.fullName}
+                  onChange={handleInputChange}
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-black focus:border-black"
+                  required
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Email
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-black focus:border-black"
+                  required
+                  list="email-suggestions"
+                />
+                <datalist id="email-suggestions">
+                  <option value="@gmail.com" />
+                  <option value="@outlook.com" />
+                  <option value="@yahoo.com" />
+                </datalist>
+              </div>
+              <div>
+                <label
+                  htmlFor="phoneNumber"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Số điện thoại
+                </label>
+                <input
+                  type="tel"
+                  id="phoneNumber"
+                  name="phoneNumber"
+                  value={formData.phoneNumber}
+                  onChange={handleInputChange}
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-black focus:border-black"
+                  required
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="dateOfBirth"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Ngày sinh
+                </label>
+                <input
+                  type="date"
+                  id="dateOfBirth"
+                  name="dateOfBirth"
+                  value={formData.dateOfBirth}
+                  onChange={handleInputChange}
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-black focus:border-black"
+                  required
                 />
               </div>
             </div>
-            <div className="px-3 py-5 block text-sm text-gray-700 font-bold">
-              Security
-            </div>
-            <div className="px-8 flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                <FaLock className="text-black text-sm" />
-                <span className="text-sm text-gray-700">Password</span>
+            <div className="w-full md:w-1/3 mt-6 md:mt-0">
+              <div>
+                <div className="text-center">
+                  <img
+                    src={formData.avatar}
+                    alt="User Avatar"
+                    className="w-32 h-32 mx-auto rounded-full object-cover"
+                  />
+                  <label
+                    htmlFor="avatar"
+                    className="mt-2 cursor-pointer inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black"
+                  >
+                    <FaUpload className="mr-2" />
+                    Thay ảnh đại diện
+                  </label>
+                  <input
+                    type="file"
+                    id="avatar"
+                    name="avatar"
+                    onChange={handleAvatarChange}
+                    className="hidden"
+                    accept="image/*"
+                  />
+                </div>
               </div>
-              <a className="cursor-pointer px-4 py-2 border border-gray-300 rounded-sm shadow-sm text-sm font-medium scale-75 text-black bg-white hover:bg-gray-50  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black">
-                Update
-              </a>
+              <div className="px-3 py-5 block text-sm text-gray-700 font-bold">
+                Bảo mật
+              </div>
+              <div className="px-8 flex items-center justify-between">
+                <div className="flex items-center space-x-2">
+                  <FaLock className="text-black text-sm" />
+                  <span className="text-sm text-gray-700">Mật khẩu</span>
+                </div>
+                <a
+                  onClick={() => navigate(path.settings + '/change-password')}
+                  className="cursor-pointer px-4 py-2 border border-gray-300 rounded-sm shadow-sm text-sm font-medium scale-75 text-black bg-white hover:bg-gray-50  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black"
+                >
+                  Đổi mật khẩu
+                </a>
+              </div>
             </div>
           </div>
-        </div>
-        {/* <div className="space-y-6">
+          {/* <div className="space-y-6">
           <div className="relative">
             <label
               htmlFor="currentPassword"
@@ -295,56 +311,61 @@ const ProfileEditor: React.FC = () => {
             </button>
           </div>
         </div> */}
-        <div className="flex justify-end space-x-4">
-          <button
-            type="button"
-            onClick={handleReset}
-            className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black"
-          >
-            <MdRefresh className="mr-2" />
-            Reset
-          </button>
-          <button
-            type="submit"
-            disabled={!isModified || isLoading}
-            className={`inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-black hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black ${
-              (!isModified || isLoading) && 'opacity-50 cursor-not-allowed'
-            }`}
-          >
-            {isLoading ? (
-              <>
-                <svg
-                  className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  ></circle>
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  ></path>
-                </svg>
-                Saving....
-              </>
-            ) : (
-              <>
-                <MdSave className="mr-2" />
-                Save Changes
-              </>
-            )}
-          </button>
-        </div>
-      </form>
-    </div>
+          <div className="flex justify-end space-x-4">
+            <button
+              type="button"
+              onClick={handleReset}
+              className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black"
+            >
+              <MdRefresh className="mr-2" />
+              Đặt lại
+            </button>
+            <button
+              type="submit"
+              disabled={!isModified || isLoading}
+              className={`inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-black hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black ${
+                (!isModified || isLoading) && 'opacity-50 cursor-not-allowed'
+              }`}
+            >
+              {isLoading ? (
+                <>
+                  <svg
+                    className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                  </svg>
+                  Saving....
+                </>
+              ) : (
+                <>
+                  <MdSave className="mr-2" />
+                  Lưu thay đổi
+                </>
+              )}
+            </button>
+          </div>
+        </form>
+      </div>
+      {/* {showPolicyModal && (
+        
+      )} */}
+      <Outlet />
+    </>
   );
 };
 

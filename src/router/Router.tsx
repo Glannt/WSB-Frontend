@@ -11,6 +11,13 @@ import { MainLayout } from '@/layouts/MainLayout';
 import { useContext } from 'react';
 import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
 import path from '@/constants/path';
+
+import { Settings } from '@/components/Customer/Settings';
+import BookingHistory from '@/components/Customer/BookingHistory';
+import TransactionHistory from '@/components/Customer/TransactionHistory';
+import MyWallet from '@/components/Customer/MyWallet';
+import PackageMembership from '@/components/Customer/PackageMembership';
+import ChangePassword from '@/components/ProfileEditor/ChangePassword';
 import { DashboardManager } from '@/components/Admin/DashboardManager';
 import ManageRoom from '@/components/AdminService/ManageRoom';
 import ManageStaff from '@/components/AdminService/ManageStaff';
@@ -22,7 +29,7 @@ import StaffBookings from '@/components/Staff/StaffBookings';
 import StaffRoomOverview from '@/components/Staff/StaffRoomOverview';
 function ProtectedRoute() {
   const { isAuthenticated } = useContext(AppContext);
-  return isAuthenticated ? <Outlet /> : <Navigate to={path.login} />;
+  return !isAuthenticated ? <Outlet /> : <Navigate to={path.login} />;
 }
 function RejectedRoute() {
   const { isAuthenticated } = useContext(AppContext);
@@ -86,12 +93,42 @@ export const router = createBrowserRouter([
         element: 'room-bill',
       },
       {
-        path: path.profile,
+        path: path.settings,
         element: (
           <MainLayout>
-            <ProfileEditor />
+            <Settings />
           </MainLayout>
         ),
+        children: [
+          {
+            path: 'edit-profile',
+            element: (
+              // <MainLayout>
+              <ProfileEditor />
+              // </MainLayout>
+            ),
+          },
+          {
+            path: 'change-password',
+            element: (
+              // <MainLayout>
+              <ChangePassword />
+              // </MainLayout>
+            ),
+          },
+          {
+            path: 'booking-history',
+            element: <BookingHistory />,
+          },
+          {
+            path: 'transaction-history',
+            element: <MyWallet />,
+          },
+          {
+            path: 'package-membership',
+            element: <PackageMembership />,
+          },
+        ],
       },
       {
         path: path.manager,
