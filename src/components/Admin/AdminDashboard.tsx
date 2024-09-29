@@ -10,6 +10,7 @@ import {
   FaTimesCircle,
 } from 'react-icons/fa';
 import RoomList from './TestRoomList';
+
 const dataStats = [
   {
     title: 'Tổng số lượt đặt chỗ hôm nay',
@@ -38,6 +39,7 @@ const dataStats = [
     icon: <FaBriefcase />,
   },
 ];
+
 export const AdminDashboard: React.FC = () => {
   return (
     <>
@@ -63,7 +65,7 @@ export const AdminDashboard: React.FC = () => {
           {/* <ChartThree /> */}
           <div className="col-span-12 xl:col-span-8">
             {/* <TableOne /> */}
-            <RoomList />
+            {/* <RoomList /> */}
           </div>
         </div>
       </div>

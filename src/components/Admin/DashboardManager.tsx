@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { SidebarAdmin } from './SideBarAdmin';
+import { SidebarAdmin } from './SideBarManager';
 
 import { ChevronLeftCircle, ChevronRightCircle } from 'lucide-react';
 import { MenuIconManager } from './MenuIconManager';

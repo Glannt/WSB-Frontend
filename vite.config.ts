@@ -34,5 +34,6 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/api/, ''), // If necessary, adjust path
       },
     },
+    port: 3000, // You can set the dev server port here
   },
 });
