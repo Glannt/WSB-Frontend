@@ -22,6 +22,7 @@ import BookingHistory from '@/components/Customer/BookingHistory';
 import TransactionHistory from '@/components/Customer/TransactionHistory';
 import MyWallet from '@/components/Customer/MyWallet';
 import PackageMembership from '@/components/Customer/PackageMembership';
+import ChangePassword from '@/components/ProfileEditor/ChangePassword';
 function ProtectedRoute() {
   const { isAuthenticated } = useContext(AppContext);
   return !isAuthenticated ? <Outlet /> : <Navigate to={path.login} />;
@@ -116,6 +117,14 @@ export const router = createBrowserRouter([
             element: (
               // <MainLayout>
               <ProfileEditor />
+              // </MainLayout>
+            ),
+          },
+          {
+            path: 'change-password',
+            element: (
+              // <MainLayout>
+              <ChangePassword />
               // </MainLayout>
             ),
           },

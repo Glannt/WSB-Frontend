@@ -1,6 +1,8 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { FaEye, FaEyeSlash, FaUpload, FaLock } from 'react-icons/fa';
 import { MdSave, MdRefresh } from 'react-icons/md';
+import { Outlet, useNavigate } from 'react-router';
+import path from '@/constants/path';
 
 interface FormData {
   fullName: string;
@@ -20,6 +22,11 @@ interface ShowPassword {
 }
 
 const ProfileEditor: React.FC = () => {
+  const [showPolicyModal, setShowPolicyModal] = useState<boolean>(false);
+  const togglePolicyModal = () => {
+    setShowPolicyModal(!showPolicyModal);
+  };
+
   const [formData, setFormData] = useState<FormData>({
     fullName: 'John Doe',
     email: 'johndoe@example.com',
@@ -37,6 +44,8 @@ const ProfileEditor: React.FC = () => {
     new: false,
     confirm: false,
   });
+
+  const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isModified, setIsModified] = useState<boolean>(false);
@@ -220,7 +229,10 @@ const ProfileEditor: React.FC = () => {
                   <FaLock className="text-black text-sm" />
                   <span className="text-sm text-gray-700">Mật khẩu</span>
                 </div>
-                <a className="cursor-pointer px-4 py-2 border border-gray-300 rounded-sm shadow-sm text-sm font-medium scale-75 text-black bg-white hover:bg-gray-50  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black">
+                <a
+                  onClick={() => navigate(path.settings + '/change-password')}
+                  className="cursor-pointer px-4 py-2 border border-gray-300 rounded-sm shadow-sm text-sm font-medium scale-75 text-black bg-white hover:bg-gray-50  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black"
+                >
                   Đổi mật khẩu
                 </a>
               </div>
@@ -349,6 +361,10 @@ const ProfileEditor: React.FC = () => {
           </div>
         </form>
       </div>
+      {/* {showPolicyModal && (
+        
+      )} */}
+      <Outlet />
     </>
   );
 };
