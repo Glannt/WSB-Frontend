@@ -57,7 +57,7 @@ export const DashboardStaff = () => {
             <>
               {!isHovered && (
                 <div
-                  className="absolute pt-16 top-0 left-16 w-16 h-full bg-gray-100 flex flex-col items-center bg-gray-50 text-black"
+                  className="absolute pt-16 top-0 left-16 w-16 h-full bg-gray-100 flex flex-col items-center text-black"
                   //   onMouseEnter={handleMouseEnter}
                   //   onMouseLeave={handleMouseLeave}
                   aria-hidden={collapse}

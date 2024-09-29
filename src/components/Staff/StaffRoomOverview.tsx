@@ -319,14 +319,6 @@ export default function StaffRoomOverview() {
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <Button
-              className="rounded-lg hover:scale-105 hover:shadow-xl"
-              color="primary"
-              endContent={<PlusIcon />}
-              onPress={openAdd}
-            >
-              Thêm phòng
-            </Button>
           </div>
         </div>
         <div className="flex justify-between items-center">

@@ -1,54 +1,3 @@
-// import React from 'react';
-
-// interface Booking {
-//   roomName: string;
-//   bookedBy: string;
-//   date: string;
-//   status: string;
-// }
-
-// const bookings: Booking[] = [
-//   {
-//     roomName: 'Room 101',
-//     bookedBy: 'John Doe',
-//     date: '2024-09-30',
-//     status: 'Confirmed',
-//   },
-//   {
-//     roomName: 'Room 102',
-//     bookedBy: 'Jane Smith',
-//     date: '2024-10-01',
-//     status: 'Pending',
-//   },
-// ];
-
-// export const StaffBookings: React.FC = () => {
-//   return (
-//     <div className="p-6">
-//       <h2 className="text-2xl font-bold mb-4">Booking Management</h2>
-//       <table className="min-w-full bg-white shadow-md rounded-lg">
-//         <thead>
-//           <tr>
-//             <th className="px-4 py-2">Room Name</th>
-//             <th className="px-4 py-2">Booked By</th>
-//             <th className="px-4 py-2">Date</th>
-//             <th className="px-4 py-2">Status</th>
-//           </tr>
-//         </thead>
-//         <tbody>
-//           {bookings.map((booking, index) => (
-//             <tr key={index} className="border-t">
-//               <td className="px-4 py-2">{booking.roomName}</td>
-//               <td className="px-4 py-2">{booking.bookedBy}</td>
-//               <td className="px-4 py-2">{booking.date}</td>
-//               <td className="px-4 py-2">{booking.status}</td>
-//             </tr>
-//           ))}
-//         </tbody>
-//       </table>
-//     </div>
-//   );
-// };
 import React, { useState } from 'react';
 import {
   Table,
@@ -354,14 +303,6 @@ export default function StaffBookings() {
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <Button
-              className="rounded-lg hover:scale-105 hover:shadow-xl"
-              color="primary"
-              endContent={<PlusIcon />}
-              onPress={openAdd}
-            >
-              Thêm phòng
-            </Button>
           </div>
         </div>
         <div className="flex justify-between items-center">

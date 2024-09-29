@@ -40,7 +40,7 @@ export const router = createBrowserRouter([
     ),
   },
   {
-    path: 'list-room',
+    path: path.rooms,
     element: (
       <MainLayout>
         <ListRoom />
@@ -48,7 +48,7 @@ export const router = createBrowserRouter([
     ),
   },
   {
-    path: 'equipments',
+    path: path.equipments,
     element: (
       <MainLayout>
         <EquipmentList />
@@ -61,7 +61,7 @@ export const router = createBrowserRouter([
   },
 
   {
-    path: 'list-food',
+    path: path.foods,
     element: (
       <MainLayout>
         <ListFood />
