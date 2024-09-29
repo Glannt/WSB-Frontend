@@ -1,3 +1,4 @@
+import path from '@/constants/path';
 import { Sidebar } from 'flowbite-react';
 import { useState } from 'react';
 import {
@@ -41,16 +42,16 @@ export function SidebarAdmin({
             <Sidebar.ItemGroup>
               <Sidebar.Item
                 className={`${activeItem === 'dashboard' ? 'bg-slate-600 text-white' : ''} hover:text-gray-900 hover:bg-gray-100`}
-                onClick={() => handleItemClick('dashboard', '/manager')}
+                onClick={() => handleItemClick('dashboard', path.manager)}
                 icon={HiChartPie}
               >
                 Dashboard
               </Sidebar.Item>
 
               <Sidebar.Item
-                className={`${activeItem === 'manage-staff' ? 'bg-slate-600 text-white' : ''} hover:text-gray-900 hover:bg-gray-100`}
+                className={`${activeItem === 'manage-staff' ? 'bg-slate-600 text-white' : ''} hover:text-gray-900 hover:bg-gray-100 duration-200`}
                 onClick={() =>
-                  handleItemClick('manage-staff', '/manager/manage-staff')
+                  handleItemClick('manage-staff', path.managerStaff)
                 }
               >
                 Manage Staff
@@ -59,7 +60,7 @@ export function SidebarAdmin({
               <Sidebar.Item
                 className={`${activeItem === 'manage-room' ? 'bg-slate-600 text-white' : ''} hover:text-gray-900 hover:bg-gray-100`}
                 onClick={() =>
-                  handleItemClick('manage-room', '/manager/manage-room')
+                  handleItemClick('manage-room', path.managerRooms)
                 }
               >
                 Manage Room

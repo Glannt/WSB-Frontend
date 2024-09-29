@@ -6,6 +6,14 @@ const path = {
   authRegister: '/api/auth/register',
   profile: '/profile',
   logout: '/api/auth/log-out',
+  staff: '/staff',
+  staffRooms: '/staff/rooms',
+  staffBooking: '/staff/bookings',
+  staffShift: '/staff/shifts',
+  staffProfile: '/staff/profile',
+  manager: '/manager',
+  managerRooms: '/manager/manage-room',
+  managerStaff: '/manager/manage-staff',
 };
 
 export default path;
