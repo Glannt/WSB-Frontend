@@ -1,53 +1,6 @@
 import type { UseFormGetValues, RegisterOptions } from 'react-hook-form';
 import * as Yup from 'yup';
-// type FormData = {
-//   email: string;
-//   password: string;
-//   confirm_password: string;
-// };
-// // type Rules = {
-// //   [key in 'email' | 'password' | 'confirm_password']?: RegisterOptions;
-// // };
-// type Rules = {
-//   [key in keyof FormData]?: RegisterOptions<FormData, key>;
-// };
 
-// export const getRules = (getValues?: UseFormGetValues<any>): Rules => ({
-//   email: {
-//     required: { value: true, message: 'Email là bắt buộc' },
-//     pattern:
-//       /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/,
-//   },
-//   password: {
-//     required: {
-//       value: true,
-//       message: 'Mật khẩu là bắt buộc',
-//     },
-//     minLength: {
-//       value: 6,
-//       message: 'Độ dài từ 6 - 100 ký tự',
-//     },
-//     maxLength: {
-//       value: 100,
-//       message: 'Độ dài từ 6 - 100 ký tự',
-//     },
-//   },
-//   confirm_password: {
-//     required: { value: true, message: 'Xác nhận mật khẩu bắt buộc' },
-//     minLength: {
-//       value: 6,
-//       message: 'Độ dài từ 6 - 100 ký tự',
-//     },
-//     maxLength: {
-//       value: 100,
-//       message: 'Độ dài từ 6 - 100 ký tự',
-//     },
-//     validate:
-//       typeof getValues === 'function'
-//         ? (value) => value === getValues('password') || 'Mật khẩu không khớp'
-//         : undefined,
-//   },
-// });
 const today = new Date();
 const minDate = new Date();
 minDate.setFullYear(minDate.getFullYear() - 13);
@@ -94,3 +47,31 @@ export const schemaLogin = Yup.object().shape({
     .min(6, 'Mật khẩu phải có ít nhất 6 ký tự'),
 });
 export type SchemaLogin = Yup.InferType<typeof schemaLogin>;
+
+export const schemaAddRoom = Yup.object().shape({
+  buildingId: Yup.string().default('1'),
+  roomName: Yup.string().required('Room Name is required'),
+  price: Yup.number()
+    .positive('Price must be positive')
+    .required('Price is required'),
+  image: Yup.string().url('Must be a valid URL').optional(),
+  status: Yup.string().required('Status is required'),
+  roomTypeId: Yup.string().required('Room Type ID is required'),
+});
+
+export type SchemaAddRoom = Yup.InferType<typeof schemaAddRoom>;
+
+export const schemaUpdateRoom = Yup.object().shape({
+  roomName: Yup.string().required('Thiếu tên phòng'),
+  price: Yup.number().positive('Giá phải dương').required('Thiếu giá phòng'),
+  image: Yup.string()
+    .url('Cần phải là URL')
+    .matches(
+      /^https?:\/\/.*\.amazonaws\.com\/.*$/,
+      'Must be a valid AWS S3 URL'
+    )
+    .optional(),
+  status: Yup.string().required('Thiếu trạng thái phòng'),
+});
+
+export type SchemaUpdateRoom = Yup.InferType<typeof schemaUpdateRoom>;

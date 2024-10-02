@@ -14,7 +14,6 @@ import React from 'react';
 interface StaffModalProps {
   isOpen: boolean;
   onClose: () => void;
-  mode: 'edit' | 'add';
   selectedStaff: {
     staffId?: string;
     fullName?: string;
@@ -43,15 +42,12 @@ interface StaffModalProps {
     | undefined;
 }
 
-const AdminStaffModal: React.FC<StaffModalProps> = ({
+const EditStaff: React.FC<StaffModalProps> = ({
   isOpen,
   onClose,
-  mode,
   selectedStaff,
   setSelectedStaff,
 }) => {
-  const isEditMode = mode === 'edit';
-
   // Default values for Selects
   const [valueStatus, setValueStatus] = React.useState(
     new Set([selectedStaff?.status || 'active'])
@@ -62,7 +58,7 @@ const AdminStaffModal: React.FC<StaffModalProps> = ({
 
   // Handle changes in form fields
   const handleFieldChange = (field: string, value: any) => {
-    if (isEditMode && selectedStaff) {
+    if (selectedStaff) {
       setSelectedStaff
         ? {
             ...selectedStaff,
@@ -87,9 +83,7 @@ const AdminStaffModal: React.FC<StaffModalProps> = ({
       <ModalContent>
         {(onClose) => (
           <>
-            <ModalHeader>
-              {isEditMode ? 'Chỉnh sửa nhân viên' : 'Thêm nhân viên mới'}
-            </ModalHeader>
+            <ModalHeader>{'Chỉnh sửa nhân viên'}</ModalHeader>
             <ModalBody>
               <div className="flex flex-wrap gap-4">
                 {/* Nhân viên */}
@@ -101,7 +95,7 @@ const AdminStaffModal: React.FC<StaffModalProps> = ({
                     handleFieldChange('fullName', newFullName);
                   }}
                   defaultSelectedKeys={
-                    isEditMode && selectedStaff?.fullName
+                    selectedStaff?.fullName
                       ? new Set([selectedStaff.fullName])
                       : undefined
                   }
@@ -122,7 +116,7 @@ const AdminStaffModal: React.FC<StaffModalProps> = ({
                     handleFieldChange('status', newStatus);
                   }}
                   defaultSelectedKeys={
-                    isEditMode && selectedStaff?.status
+                    selectedStaff?.status
                       ? new Set([selectedStaff.status])
                       : valueStatus
                   }
@@ -143,7 +137,7 @@ const AdminStaffModal: React.FC<StaffModalProps> = ({
                     handleFieldChange('workShift', newWorkShift);
                   }}
                   defaultSelectedKeys={
-                    isEditMode && selectedStaff?.workShift
+                    selectedStaff?.workShift
                       ? new Set([selectedStaff.workShift])
                       : undefined
                   }
@@ -163,7 +157,7 @@ const AdminStaffModal: React.FC<StaffModalProps> = ({
                     handleFieldChange('workDays', newWorkDays);
                   }}
                   defaultSelectedKeys={
-                    isEditMode && selectedStaff?.workDays
+                    selectedStaff?.workDays
                       ? new Set(selectedStaff.workDays)
                       : undefined
                   }
@@ -181,7 +175,7 @@ const AdminStaffModal: React.FC<StaffModalProps> = ({
                 Đóng
               </Button>
               <Button color="primary" onPress={onClose}>
-                {isEditMode ? 'Hoàn thành' : 'Tạo'}
+                {'Hoàn thành'}
               </Button>
             </ModalFooter>
           </>
@@ -191,4 +185,4 @@ const AdminStaffModal: React.FC<StaffModalProps> = ({
   );
 };
 
-export default AdminStaffModal;
+export default EditStaff;

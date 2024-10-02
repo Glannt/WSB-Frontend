@@ -1,3 +1,5 @@
+import { roomTypes } from './dataRoomType';
+
 const columns = [
   { name: 'ID', uid: 'id', sortable: true },
   { name: 'NAME', uid: 'name', sortable: true },
@@ -220,94 +222,12 @@ const users = [
 
 const columnsRoom = [
   { name: 'Room Name', uid: 'roomName', sortable: true },
-  { name: 'Room Price', uid: 'roomPrice', sortable: true },
-  { name: 'Room Status', uid: 'roomStatus', sortable: true },
+  { name: 'Room Price', uid: 'price', sortable: true },
+  { name: 'Room Status', uid: 'status', sortable: true },
   { name: 'Room Type', uid: 'roomType' },
-  { name: 'Employees', uid: 'employees' },
+  { name: 'Create Date', uid: 'creationTime', sortable: true },
+  // { name: 'Employees', uid: 'employees' },
   { name: 'Actions', uid: 'actions' },
-];
-
-const rooms = [
-  {
-    id: 1,
-    roomName: 'Conference Room A',
-    roomPrice: 200,
-    roomStatus: 'available',
-    roomType: '10-person meeting room',
-    employees: ['Tony Reichert', 'Zoey Lang'],
-  },
-  {
-    id: 2,
-    roomName: 'Pod Room 1',
-    roomPrice: 50,
-    roomStatus: 'available',
-    roomType: 'single pod',
-    employees: ['Jane Fisher'],
-  },
-  {
-    id: 3,
-    roomName: 'Pod Room 2',
-    roomPrice: 75,
-    roomStatus: 'maintenance',
-    roomType: 'double pod',
-    employees: ['William Howard', 'Kristen Copper'],
-  },
-  {
-    id: 4,
-    roomName: 'Conference Room B',
-    roomPrice: 300,
-    roomStatus: 'available',
-    roomType: '7-day meeting room',
-    employees: ['Brian Kim'],
-  },
-  {
-    id: 5,
-    roomName: 'Pod Room 3',
-    roomPrice: 50,
-    roomStatus: 'available',
-    roomType: 'single pod',
-    employees: ['Samantha Brooks', 'Emma Adams'],
-  },
-  {
-    id: 6,
-    roomName: 'Board Room',
-    roomPrice: 250,
-    roomStatus: 'maintenance',
-    roomType: '10-person meeting room',
-    employees: ['Oliver Scott'],
-  },
-  {
-    id: 7,
-    roomName: 'Meeting Room C',
-    roomPrice: 150,
-    roomStatus: 'available',
-    roomType: '7-day meeting room',
-    employees: ['Megan Richards', 'Lucas Harris'],
-  },
-  {
-    id: 8,
-    roomName: 'Pod Room 4',
-    roomPrice: 60,
-    roomStatus: 'available',
-    roomType: 'double pod',
-    employees: ['Grace Allen'],
-  },
-  {
-    id: 9,
-    roomName: 'Creative Space',
-    roomPrice: 120,
-    roomStatus: 'available',
-    roomType: '10-person meeting room',
-    employees: ['Noah Carter', 'Ava Perez'],
-  },
-  {
-    id: 10,
-    roomName: 'Pod Room 5',
-    roomPrice: 55,
-    roomStatus: 'maintenance',
-    roomType: 'single pod',
-    employees: [],
-  },
 ];
 
 const staffColumns = [
@@ -446,7 +366,6 @@ export {
   staffs,
   columns,
   columnsRoom,
-  rooms,
   users,
   statusOptions,
   statusOptionsStaff,

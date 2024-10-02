@@ -1,4 +1,3 @@
-import App from '@/App';
 import { BookingRoomDetail } from '@/components/Content/BookingRoomDetail';
 import { HomePage } from '@/components/Content/HomePage';
 import { ListFood } from '@/components/Content/ListFood';
@@ -11,19 +10,37 @@ import { MainLayout } from '@/layouts/MainLayout';
 import { useContext } from 'react';
 import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
 import path from '@/constants/path';
-import { DashboardManager } from '@/components/Admin/DashboardManager';
+import { DashboardManager } from '@/components/Manager/DashboardManager';
 import ManageRoom from '@/components/AdminService/ManageRoom';
 import ManageStaff from '@/components/AdminService/ManageStaff';
-import { AdminDashboard } from '@/components/Admin/AdminDashboard';
+import { AdminDashboard } from '@/components/Manager/AdminDashboard';
 import EquipmentList from '@/components/Content/ListEquipment';
 import { DashboardStaff } from '@/components/Staff/DashboardStaff';
 import { StaffWelComeback } from '@/components/Staff/StaffWelcomeback';
 import StaffBookings from '@/components/Staff/StaffBookings';
 import StaffRoomOverview from '@/components/Staff/StaffRoomOverview';
 import { StaffProfile } from '@/components/Staff/StaffProfie';
-function ProtectedRoute() {
-  const { isAuthenticated } = useContext(AppContext);
-  return isAuthenticated ? <Outlet /> : <Navigate to={path.login} />;
+import { Role } from '@/types/user.type';
+import RoomsList from '@/components/Modal/Manager/testGET';
+interface ProtectedRouteProps {
+  requiredRoles?: Role[]; // Optional prop for role-based protection
+}
+
+function ProtectedRoute({ requiredRoles }: ProtectedRouteProps) {
+  const { isAuthenticated, hasRole } = useContext(AppContext);
+
+  // Check if user is authenticated
+  if (!isAuthenticated) {
+    return <Navigate to={path.login} />; // Redirect to login if not authenticated
+  }
+
+  // Check if user has the required roles
+  if (requiredRoles && !hasRole(requiredRoles)) {
+    return <Navigate to={path.home} />; // Redirect to home if user doesn't have required role(s)
+  }
+
+  // Render nested routes if authenticated and authorized
+  return <Outlet />;
 }
 function RejectedRoute() {
   const { isAuthenticated } = useContext(AppContext);
@@ -68,32 +85,10 @@ export const router = createBrowserRouter([
       </MainLayout>
     ),
   },
-
   {
-    path: '',
-    element: <ProtectedRoute />,
+    path: path.manager,
+    element: <ProtectedRoute requiredRoles={['MANAGER']} />, // Only accessible by Manager or Owner
     children: [
-      {
-        path: 'room-detail/:roomId',
-        element: (
-          <MainLayout>
-            <BookingRoomDetail />
-          </MainLayout>
-        ),
-        // <BookingRoomDetail />,
-      },
-      {
-        path: 'room-bill',
-        element: 'room-bill',
-      },
-      {
-        path: path.profile,
-        element: (
-          <MainLayout>
-            <ProfileEditor />
-          </MainLayout>
-        ),
-      },
       {
         path: path.manager,
         element: <DashboardManager />,
@@ -112,6 +107,62 @@ export const router = createBrowserRouter([
           },
         ],
       },
+    ],
+  },
+  // {
+  //   path: path.staff,
+  //   element: <ProtectedRoute requiredRoles={['STAFF']} />,
+  //   children: [
+  //     {
+  //       path: path.staff,
+  //       element: <DashboardStaff />,
+  //       children: [
+  //         {
+  //           path: path.staffRooms,
+  //           element: <StaffRoomOverview />,
+  //         },
+  //         {
+  //           path: path.staffBooking,
+  //           element: <StaffBookings />,
+  //         },
+  //         {
+  //           path: '',
+  //           element: <StaffWelComeback />,
+  //         },
+  //         {
+  //           path: path.staffProfile,
+  //           element: <StaffProfile />,
+  //         },
+  //       ],
+  //     },
+  //   ],
+  // },
+  {
+    path: '',
+    element: <ProtectedRoute />,
+    children: [
+      {
+        path: 'room-detail/:roomId',
+        element: (
+          <MainLayout>
+            <BookingRoomDetail />
+          </MainLayout>
+        ),
+        // <BookingRoomDetail />,
+      },
+      {
+        path: 'room-bill',
+        element: <RoomsList />,
+      },
+      {
+        path: path.profile,
+        element: (
+          <MainLayout>
+            <ProfileEditor />
+          </MainLayout>
+        ),
+      },
+      //ko phân quyền staff tạm thời
       {
         path: path.staff,
         element: <DashboardStaff />,
