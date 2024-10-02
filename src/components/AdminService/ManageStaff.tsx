@@ -465,20 +465,18 @@
 
 import React, { useState, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Room, Column, columnsRoom } from '@/types/room.type'; // Define types accordingly
 
 import RoomPagination from './RoomPagination';
-import { getAllRoom } from '@/service/manager.api';
+import { getAllStaff } from '@/service/manager.api';
 import { statusOptions } from '../../data/data';
-import RoomFilters from './RoomFilter';
-import RoomTable from './RoomTable';
+
 import { Selection, SortDescriptor } from '@nextui-org/react';
-import { AddRoom } from '../Modal/Manager/AddRoom';
-import EditRoom from '../Modal/Manager/EditRoom';
-import { columnsStaff } from '@/types/staff.type';
+
+import { columnsStaff, Staff } from '@/types/staff.type';
 import StaffFilter from './StaffFilter';
 import StaffTable from './StaffTable';
 import EditStaff from '../Modal/Manager/EditStaff';
+import { AddStaff } from '../Modal/Manager/AddStaff';
 
 const INITIAL_VISIBLE_COLUMNS = [
   'fullName',
@@ -488,20 +486,20 @@ const INITIAL_VISIBLE_COLUMNS = [
   'actions',
 ];
 export default function ManageStaff() {
-  const getAllRoomsApi = async () => {
-    const response = await getAllRoom();
-    console.log(response.data.data);
+  const getAllStaffApi = async () => {
+    const response = await getAllStaff();
+    console.log(response.data.content);
 
-    return response.data.data;
+    return response.data.content;
   };
 
   const {
-    data: rooms = [],
+    data: staffs = [],
     isLoading,
     refetch,
-  } = useQuery<Room[]>({
-    queryKey: ['rooms'],
-    queryFn: getAllRoomsApi,
+  } = useQuery<Staff[]>({
+    queryKey: ['staffs'],
+    queryFn: getAllStaffApi,
   });
   const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]));
   const [filterValue, setFilterValue] = useState('');
@@ -518,42 +516,42 @@ export default function ManageStaff() {
 
   const headerColumns = React.useMemo(() => {
     if (visibleColumns === 'all') return columnsStaff;
-    return columnsRoom.filter((column) =>
+    return columnsStaff.filter((column) =>
       Array.from(visibleColumns).includes(column.uid)
     );
   }, [visibleColumns]);
   const hasSearchFilter = Boolean(filterValue);
-  const filteredRooms = useMemo(() => {
-    let filteredRooms = rooms;
+  const filteredStaffs = useMemo(() => {
+    let filteredStaffs = staffs;
 
     if (hasSearchFilter) {
-      filteredRooms = filteredRooms?.filter((room) =>
-        room.roomName.toLowerCase().includes(filterValue.toLowerCase())
+      filteredStaffs = filteredStaffs?.filter((staff) =>
+        staff.staffId.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
     if (
       statusFilter !== 'all' &&
       Array.from(statusFilter).length !== statusOptions.length
     ) {
-      filteredRooms = filteredRooms.filter((room) =>
-        Array.from(statusFilter).includes(room.status)
+      filteredStaffs = filteredStaffs.filter((staff) =>
+        Array.from(statusFilter).includes(staff.status)
       );
     }
-    filteredRooms = filteredRooms.sort((a, b) => {
-      const firstCreationTime = new Date(a.creationTime).getTime();
-      const secondCreationTime = new Date(b.creationTime).getTime();
-      return secondCreationTime - firstCreationTime; // Mới nhất trước
+    filteredStaffs = filteredStaffs.sort((a, b) => {
+      const firstStaffID = a.staffId;
+      const secondStaffID = b.staffId;
+      return firstStaffID.localeCompare(secondStaffID); // Mới nhất trước
     });
-    return filteredRooms;
-  }, [filterValue, rooms, statusFilter]);
+    return filteredStaffs;
+  }, [filterValue, staffs, statusFilter]);
 
-  const paginatedRooms = useMemo(() => {
+  const paginatedStaff = useMemo(() => {
     const start = (page - 1) * rowsPerPage;
     const end = start + rowsPerPage;
-    return filteredRooms.slice(start, end);
-  }, [page, filteredRooms, rowsPerPage]);
+    return filteredStaffs.slice(start, end);
+  }, [page, filteredStaffs, rowsPerPage]);
 
-  const pages = Math.ceil(filteredRooms.length / rowsPerPage);
+  const pages = Math.ceil(filteredStaffs.length / rowsPerPage);
 
   const onNextPage = React.useCallback(() => {
     if (page < pages) {
@@ -576,21 +574,10 @@ export default function ManageStaff() {
   );
 
   const sortedItems = useMemo(() => {
-    return [...paginatedRooms].sort((a, b) => {
-      // So sánh theo creationTime trước
-      const firstCreationTime = new Date(a.creationTime).getTime();
-      const secondCreationTime = new Date(b.creationTime).getTime();
-
-      // Nếu creationTime khác nhau, ưu tiên sắp xếp giảm dần theo creationTime (mới nhất đứng trước)
-      if (firstCreationTime !== secondCreationTime) {
-        return sortDescriptor.direction === 'ascending'
-          ? secondCreationTime - firstCreationTime
-          : firstCreationTime - secondCreationTime;
-      }
-
+    return [...paginatedStaff].sort((a, b) => {
       // Nếu creationTime giống nhau, sắp xếp theo cột đã chọn
-      const first = a[sortDescriptor.column as keyof Room];
-      const second = b[sortDescriptor.column as keyof Room];
+      const first = a[sortDescriptor.column as keyof Staff];
+      const second = b[sortDescriptor.column as keyof Staff];
 
       // Đảm bảo các giá trị so sánh là chuỗi hoặc số
       if (typeof first === 'string' && typeof second === 'string') {
@@ -606,7 +593,7 @@ export default function ManageStaff() {
       // Dự phòng nếu các giá trị không xác định hoặc null
       return 0;
     });
-  }, [sortDescriptor, paginatedRooms]);
+  }, [sortDescriptor, paginatedStaff]);
 
   const onSearchChange = React.useCallback((value?: string) => {
     if (value) {
@@ -623,7 +610,7 @@ export default function ManageStaff() {
 
   const [isOpenAdd, setIsOpenAdd] = useState<boolean>(false);
   const [isOpenEdit, setIsOpenEdit] = useState<boolean>(false);
-  const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
+  const [selectedStaff, setSelectedStaff] = useState<Staff | null>(null);
   const openAdd = () => {
     setIsOpenAdd(true);
   };
@@ -632,9 +619,9 @@ export default function ManageStaff() {
     refetch();
   };
 
-  const openEdit = (room: Room) => {
+  const openEdit = (staff: Staff) => {
     setIsOpenEdit(true);
-    setSelectedRoom(room);
+    setSelectedStaff(staff);
   };
   const closeEdit = () => {
     setIsOpenEdit(false);
@@ -647,16 +634,16 @@ export default function ManageStaff() {
         statusFilter={statusFilter}
         visibleColumns={visibleColumns}
         statusOptions={statusOptions}
-        columns={columnsRoom}
+        columns={columnsStaff}
         onSearchChange={onSearchChange}
         onClear={() => onClear()}
-        onAddRoom={openAdd} // Add Room handler
+        onAddStaff={openAdd} // Add Room handler
         setStatusFilter={setStatusFilter}
         setVisibleColumns={setVisibleColumns}
       />
       <div className="flex justify-between items-center mt-5 mb-5">
         <span className="text-default-400 text-small">
-          Tổng {rooms?.length} phòng
+          Tổng {staffs?.length} phòng
         </span>
         <label className="flex items-center text-default-400 text-small">
           Số hàng
@@ -687,18 +674,22 @@ export default function ManageStaff() {
         onNextPage={onNextPage}
         onChange={setPage}
       />
-      {/* {isOpenAdd && (
-        <AddRoom isOpen={isOpenAdd} onClose={closeAdd} refetchRooms={refetch} />
-      )} */}
+      {isOpenAdd && (
+        <AddStaff
+          isOpen={isOpenAdd}
+          onClose={closeAdd}
+          refetchRooms={refetch}
+        />
+      )}
 
-      {/* {isOpenEdit && (
+      {isOpenEdit && (
         <EditStaff
           isOpen={isOpenEdit}
           onClose={closeEdit}
-          selectedRoom={selectedRoom}
-          setSelectedRoom={setSelectedRoom}
+          selectedStaff={selectedStaff}
+          setSelectedStaff={setSelectedStaff}
         />
-      )} */}
+      )}
     </div>
   );
 }

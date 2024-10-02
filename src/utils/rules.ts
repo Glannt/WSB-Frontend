@@ -75,3 +75,53 @@ export const schemaUpdateRoom = Yup.object().shape({
 });
 
 export type SchemaUpdateRoom = Yup.InferType<typeof schemaUpdateRoom>;
+
+export const schemaAddStaff = Yup.object().shape({
+  fullName: Yup.string()
+    .required('Full Name is required')
+    .min(2, 'Full Name must be at least 2 characters')
+    .max(50, 'Full Name must be less than 50 characters'),
+
+  phoneNumber: Yup.string()
+    .required('Phone Number is required')
+    .matches(
+      /^\+?\d{10,15}$/,
+      'Phone Number must be valid and contain 10-15 digits'
+    ),
+
+  dateOfBirth: Yup.string()
+    .required('Date of Birth is required')
+    .matches(
+      /^\d{4}-\d{2}-\d{2}$/,
+      'Date of Birth must be in the format YYYY-MM-DD'
+    )
+    .test('is-18', 'Staff must be at least 18 years old', (value) => {
+      const currentDate = new Date();
+      const birthDate = new Date(value as string);
+      const age = currentDate.getFullYear() - birthDate.getFullYear();
+      return age >= 18;
+    }),
+
+  email: Yup.string()
+    .required('Email is required')
+    .email('Email must be a valid email'),
+
+  workShift: Yup.string().required('Work Shift is required'),
+
+  workDays: Yup.string()
+    .required('Work Days is required')
+    .matches(
+      /^[MTWFS]{1,7}$/,
+      'Work Days must be a valid combination of letters representing days (M, T, W, F, S)'
+    ), // Example: 'MTW' for Monday, Tuesday, Wednesday
+
+  buildingId: Yup.string()
+    .required('Building ID is required')
+    .length(36, 'Building ID must be 36 characters long'), // Assuming UUID format
+
+  // status: Yup.string()
+  //   .required('Status is required')
+  //   .oneOf(['Active', 'Inactive'], 'Invalid status'),
+});
+
+export type SchemaAddStaff = Yup.InferType<typeof schemaAddStaff>;

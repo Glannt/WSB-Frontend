@@ -37,6 +37,7 @@ const RoomFilters: React.FC<RoomFiltersProps> = ({
   columns,
   onSearchChange,
   onClear,
+  onAddRoom,
   setStatusFilter,
   setVisibleColumns,
   onRowsPerPageChange,
@@ -83,6 +84,9 @@ const RoomFilters: React.FC<RoomFiltersProps> = ({
             ))}
           </DropdownMenu>
         </Dropdown>
+        <Button color="primary" endContent={<PlusIcon />} onClick={onAddRoom}>
+          Thêm phòng
+        </Button>
       </div>
     </div>
   );

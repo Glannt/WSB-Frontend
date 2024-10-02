@@ -16,3 +16,16 @@ export const UpdateRoom = (roomId: number | undefined, formData: FormData) =>
   });
 
 export const getAllRoom = () => http.get('/api/manager/get-all-room');
+
+export const getAllStaff = () => http.get('/api/auth/staffs');
+
+export const AddNewStaff = (body: {
+  fullName: string;
+  phoneNumber: string;
+  dateOfBirth?: string;
+  email?: string;
+  workShift: string;
+  workDays: string;
+  buildingId: string;
+  // status: string;
+}) => http.post('/api/auth/staffs', body);

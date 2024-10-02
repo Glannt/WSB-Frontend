@@ -13,7 +13,7 @@ import path from '@/constants/path';
 import { DashboardManager } from '@/components/Manager/DashboardManager';
 import ManageRoom from '@/components/AdminService/ManageRoom';
 import ManageStaff from '@/components/AdminService/ManageStaff';
-import { AdminDashboard } from '@/components/Manager/AdminDashboard';
+
 import EquipmentList from '@/components/Content/ListEquipment';
 import { DashboardStaff } from '@/components/Staff/DashboardStaff';
 import { StaffWelComeback } from '@/components/Staff/StaffWelcomeback';
@@ -22,6 +22,7 @@ import StaffRoomOverview from '@/components/Staff/StaffRoomOverview';
 import { StaffProfile } from '@/components/Staff/StaffProfie';
 import { Role } from '@/types/user.type';
 import RoomsList from '@/components/Modal/Manager/testGET';
+import { AdminDashboard } from '@/components/Manager/AdminDashboard';
 interface ProtectedRouteProps {
   requiredRoles?: Role[]; // Optional prop for role-based protection
 }

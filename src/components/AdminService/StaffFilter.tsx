@@ -22,7 +22,7 @@ interface StaffFiltersProps {
   columns: Column[];
   onSearchChange: (value: string) => void;
   onClear: () => void;
-  onAddRoom: () => void;
+  onAddStaff: () => void;
   setStatusFilter: (keys: Selection) => void;
   setVisibleColumns: (keys: Selection) => void;
 }
@@ -36,7 +36,7 @@ const StaffFilter: React.FC<StaffFiltersProps> = ({
   columns,
   onSearchChange,
   onClear,
-  onAddRoom,
+  onAddStaff,
   setStatusFilter,
   setVisibleColumns,
 }) => {
@@ -82,8 +82,8 @@ const StaffFilter: React.FC<StaffFiltersProps> = ({
             ))}
           </DropdownMenu>
         </Dropdown>
-        <Button color="primary" endContent={<PlusIcon />} onClick={onAddRoom}>
-          Thêm phòng
+        <Button color="primary" endContent={<PlusIcon />} onClick={onAddStaff}>
+          Thêm nhân viên
         </Button>
       </div>
     </div>

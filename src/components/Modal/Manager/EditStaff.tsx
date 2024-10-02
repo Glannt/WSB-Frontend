@@ -1,6 +1,8 @@
 import { staffs } from '@/data/data';
+import { Staff } from '@/types/staff.type';
 import {
   Button,
+  Input,
   Modal,
   ModalBody,
   ModalContent,
@@ -9,37 +11,13 @@ import {
   Select,
   SelectItem,
 } from '@nextui-org/react';
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 
 interface StaffModalProps {
   isOpen: boolean;
   onClose: () => void;
-  selectedStaff: {
-    staffId?: string;
-    fullName?: string;
-    workShift?: string;
-    roomInCharge?: string[];
-    phoneNumber?: string;
-    email?: string;
-    dateOfHire?: string;
-    workDays?: string[];
-    status?: string;
-  } | null;
-  setSelectedStaff:
-    | React.Dispatch<
-        React.SetStateAction<{
-          staffId?: string;
-          fullName?: string;
-          workShift?: string;
-          roomInCharge?: string[];
-          phoneNumber?: string;
-          email?: string;
-          dateOfHire?: string;
-          workDays?: string[];
-          status?: string;
-        } | null>
-      >
-    | undefined;
+  selectedStaff: Staff | null;
+  setSelectedStaff: Dispatch<SetStateAction<Staff | null>> | undefined;
 }
 
 const EditStaff: React.FC<StaffModalProps> = ({
@@ -87,25 +65,19 @@ const EditStaff: React.FC<StaffModalProps> = ({
             <ModalBody>
               <div className="flex flex-wrap gap-4">
                 {/* Nhân viên */}
-                <Select
-                  label="Nhân viên"
-                  className="max-w-xl"
-                  onSelectionChange={(keys) => {
-                    const newFullName = Array.from(keys).join('');
-                    handleFieldChange('fullName', newFullName);
+                <Input
+                  isClearable
+                  autoFocus
+                  isDisabled
+                  label="Tên phòng"
+                  variant="bordered"
+                  classNames={{
+                    label: 'text-black/50 dark:text-white/90 pb-2',
+                    input: 'border-0 focus:outline-none focus:border-none',
+                    clearButton: 'pb-4',
                   }}
-                  defaultSelectedKeys={
-                    selectedStaff?.fullName
-                      ? new Set([selectedStaff.fullName])
-                      : undefined
-                  }
-                >
-                  {staffs.map((staff) => (
-                    <SelectItem key={staff.staffId}>
-                      {staff.fullName}
-                    </SelectItem>
-                  ))}
-                </Select>
+                  defaultValue={selectedStaff ? selectedStaff?.fullName : ''}
+                />
 
                 {/* Trạng thái */}
                 <Select
@@ -141,6 +113,7 @@ const EditStaff: React.FC<StaffModalProps> = ({
                       ? new Set([selectedStaff.workShift])
                       : undefined
                   }
+                  //thêm register reacthookform
                 >
                   <SelectItem key="Sáng">Sáng</SelectItem>
                   <SelectItem key="Chiều">Chiều</SelectItem>
@@ -161,6 +134,7 @@ const EditStaff: React.FC<StaffModalProps> = ({
                       ? new Set(selectedStaff.workDays)
                       : undefined
                   }
+                  //thêm register reacthookform
                 >
                   <SelectItem key="Monday">Monday</SelectItem>
                   <SelectItem key="Tuesday">Tuesday</SelectItem>

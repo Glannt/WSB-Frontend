@@ -43,11 +43,11 @@ export interface RoomType {
 }
 
 export const columnsRoom = [
-  { name: 'Room Name', uid: 'roomName', sortable: true },
-  { name: 'Room Price', uid: 'price', sortable: true },
-  { name: 'Room Status', uid: 'status', sortable: true },
-  { name: 'Room Type', uid: 'roomType' },
-  { name: 'Create Date', uid: 'creationTime', sortable: true },
+  { name: 'Tên Phòng', uid: 'roomName', sortable: true },
+  { name: 'Giá phòng', uid: 'price', sortable: true },
+  { name: 'Trạng thái phòng', uid: 'status', sortable: true },
+  { name: 'Loại phòng', uid: 'roomType' },
+  { name: 'Ngày tạo', uid: 'creationTime', sortable: true },
   // { name: 'Employees', uid: 'employees' },
   { name: 'Actions', uid: 'actions' },
 ];

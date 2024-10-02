@@ -7,7 +7,6 @@ export interface Staff {
   workShift: string;
   workDays: string;
   buildingId: string;
-  userId: string;
   status: string;
 }
 export const columnsStaff = [
@@ -16,8 +15,13 @@ export const columnsStaff = [
   { name: 'Work Shift', uid: 'workShift', sortable: true },
   { name: 'Phone Number', uid: 'phoneNumber', sortable: true },
   { name: 'Email', uid: 'email', sortable: true },
-  { name: 'Date of Hire', uid: 'dateOfHire', sortable: true },
   { name: 'Work Days', uid: 'workDays', sortable: true },
   { name: 'Status ', uid: 'status', sortable: true },
   { name: 'Actions', uid: 'actions' },
+];
+
+export const columnWorkShift = [
+  { name: 'Sáng', uid: 'morning' },
+  { name: 'Chiều', uid: 'afternoon' },
+  { name: 'Tối', uid: 'evening' },
 ];
