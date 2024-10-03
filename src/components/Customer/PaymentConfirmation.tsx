@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { FaWallet, FaCheckCircle, FaExclamationTriangle } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate } from 'react-router';
 
 const PaymentConfirmation = () => {
-  const [walletBalance, setWalletBalance] = useState(1000);
+  const navigate = useNavigate();
+  const [walletBalance, setWalletBalance] = useState(230);
   const [orderTotal, setOrderTotal] = useState(850);
   const [discount, setDiscount] = useState(50);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -83,13 +85,15 @@ const PaymentConfirmation = () => {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className={`w-full py-3 rounded-md text-white font-bold text-lg relative ${isWalletBalanceSufficient ? 'bg-green-500 hover:bg-green-600' : 'bg-gray-400 cursor-not-allowed'}`}
-              onClick={handlePayment}
-              disabled={!isWalletBalanceSufficient || isProcessing}
-              aria-label={
+              className={`w-full py-3 rounded-md text-white font-bold text-lg relative ${isWalletBalanceSufficient ? 'bg-green-500 hover:bg-green-600' : 'bg-yellow-400 hover:bg-yellow-600'}`}
+              onClick={
                 isWalletBalanceSufficient
-                  ? 'Confirm Payment'
-                  : 'Insufficient Balance'
+                  ? handlePayment
+                  : () => navigate('/top-up')
+              }
+              disabled={isProcessing}
+              aria-label={
+                isWalletBalanceSufficient ? 'Confirm Payment' : 'Nạp Ngay'
               }
             >
               {isProcessing ? (
@@ -100,7 +104,7 @@ const PaymentConfirmation = () => {
               ) : isWalletBalanceSufficient ? (
                 'Confirm Payment'
               ) : (
-                'Insufficient Balance'
+                'Nạp Thêm Tiền'
               )}
             </motion.button>
 
