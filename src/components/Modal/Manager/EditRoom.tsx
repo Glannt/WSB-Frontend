@@ -36,6 +36,7 @@ interface RoomModalProps {
 
   selectedRoom?: Room | null; // Selected room data for edit mode
   setSelectedRoom?: Dispatch<SetStateAction<Room | null>>; // Setter for selected room in edit mode
+  refetchRooms: () => void;
 }
 
 const EditRoom: React.FC<RoomModalProps> = ({
@@ -43,6 +44,7 @@ const EditRoom: React.FC<RoomModalProps> = ({
   onClose,
   selectedRoom,
   setSelectedRoom,
+  refetchRooms,
 }) => {
   const [valueStatus, setValueStatus] = React.useState(new Set(['available']));
   const [valueRoomType, setValueRoomType] = React.useState(new Set(['single']));
@@ -93,6 +95,7 @@ const EditRoom: React.FC<RoomModalProps> = ({
         onSuccess: () => {
           // navigate('/'); // Uncomment this line if you want to navigate
           console.log('Update success');
+          refetchRooms();
           onClose(); // Close the modal or perform any action on success
         },
         onError: (error) => {

@@ -25,11 +25,8 @@ interface RoomTableProps {
   selectedKeys: Selection;
   setSelectedKeys: (keys: Selection) => void;
   onSortChange: (descriptor: SortDescriptor) => void;
-  // renderCell: (
-  //   room: Room,
-  //   columnKey: React.Key
-  // ) => string | number | JSX.Element;
   onEdit: (room: Room) => void;
+  onDelete: (room: Room) => void;
 }
 const statusColorMap: Record<string, ChipProps['color']> = {
   available: 'success',
@@ -44,6 +41,7 @@ const RoomTable: React.FC<RoomTableProps> = ({
   setSelectedKeys,
   onSortChange,
   onEdit,
+  onDelete,
 }) => {
   const renderCell = React.useCallback((room: Room, columnKey: React.Key) => {
     const cellValue = room[columnKey as keyof Room];
@@ -133,7 +131,10 @@ const RoomTable: React.FC<RoomTableProps> = ({
               </span>
             </Tooltip>
             <Tooltip color="danger" content="Xóa">
-              <span className="text-lg text-danger cursor-pointer active:opacity-50">
+              <span
+                onClick={() => onDelete(room)}
+                className="text-lg text-danger cursor-pointer active:opacity-50"
+              >
                 <DeleteIcon />
               </span>
             </Tooltip>

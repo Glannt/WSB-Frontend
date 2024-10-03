@@ -10,6 +10,8 @@ import RoomTable from './RoomTable';
 import { Selection, SortDescriptor } from '@nextui-org/react';
 import { AddRoom } from '../Modal/Manager/AddRoom';
 import EditRoom from '../Modal/Manager/EditRoom';
+import { DeleteRoom } from '../Modal/Manager/DeleteRoom';
+import { useParams } from 'react-router';
 
 const INITIAL_VISIBLE_COLUMNS = [
   'roomName',
@@ -46,7 +48,12 @@ export default function ManageRoom() {
     column: 'roomName',
     direction: 'ascending',
   });
-
+  const [isOpenAdd, setIsOpenAdd] = useState<boolean>(false);
+  const [isOpenEdit, setIsOpenEdit] = useState<boolean>(false);
+  const [isDeleteRoom, setIsDeleteRoom] = useState<boolean>(false);
+  const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
+  const params = useParams();
+  console.log(params);
   const headerColumns = React.useMemo(() => {
     if (visibleColumns === 'all') return columnsRoom;
     return columnsRoom.filter((column) =>
@@ -152,9 +159,6 @@ export default function ManageRoom() {
     setPage(1);
   }, []);
 
-  const [isOpenAdd, setIsOpenAdd] = useState<boolean>(false);
-  const [isOpenEdit, setIsOpenEdit] = useState<boolean>(false);
-  const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
   const openAdd = () => {
     setIsOpenAdd(true);
   };
@@ -169,6 +173,15 @@ export default function ManageRoom() {
   };
   const closeEdit = () => {
     setIsOpenEdit(false);
+    refetch();
+  };
+
+  const openDelete = (room: Room) => {
+    setIsDeleteRoom(true);
+    setSelectedRoom(room);
+  };
+  const closeDelete = () => {
+    setIsDeleteRoom(false);
   };
 
   return (
@@ -212,6 +225,7 @@ export default function ManageRoom() {
         setSelectedKeys={setSelectedKeys} // Selection handler
         onSortChange={setSortDescriptor}
         onEdit={openEdit}
+        onDelete={openDelete}
       />
       <RoomPagination
         page={page}
@@ -230,6 +244,16 @@ export default function ManageRoom() {
           onClose={closeEdit}
           selectedRoom={selectedRoom}
           setSelectedRoom={setSelectedRoom}
+          refetchRooms={refetch}
+        />
+      )}
+      {isDeleteRoom && (
+        <DeleteRoom
+          isOpen={isDeleteRoom}
+          onClose={closeDelete}
+          selectedDeleteRoom={selectedRoom}
+          setSelectedDeleteRoom={setSelectedRoom}
+          refetchRooms={refetch}
         />
       )}
     </div>

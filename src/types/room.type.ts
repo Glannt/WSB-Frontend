@@ -27,7 +27,7 @@ export interface StatusOption {
 }
 // Define the Room type
 export interface Room {
-  roomId: number; // Unique identifier for the room
+  roomId?: number; // Unique identifier for the room
   roomName: string; // Name of the room
   price: number; // Price of the room
   creationTime: string; // Creation time of the room in ISO format
