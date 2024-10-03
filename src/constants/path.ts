@@ -17,6 +17,7 @@ const path = {
   foods: '/foods',
   equipments: '/equipments',
   rooms: '/rooms',
+  aboutUs: '/about-us',
 };
 
 export default path;
