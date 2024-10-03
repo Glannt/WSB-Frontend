@@ -2,8 +2,9 @@ import { UploadImage } from '@/components/AdminService/UploadImage';
 import { roomTypes } from '@/data/dataRoomType';
 import { roomStatusManager } from '@/data/dataStatusRoom';
 
-import { AddNewRoom } from '@/service/manager.api';
+import { AddNewRoom, getAllStaff } from '@/service/manager.api';
 import { AddRoomResponse } from '@/types/room.type';
+import { Staff } from '@/types/staff.type';
 import { getAccessTokenFromLS } from '@/utils/auth';
 import http from '@/utils/http';
 import { schemaAddRoom, SchemaAddRoom } from '@/utils/rules';
@@ -19,7 +20,7 @@ import {
   Select,
   SelectItem,
 } from '@nextui-org/react';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import axios, { AxiosResponse } from 'axios';
 import React from 'react';
 import { useForm } from 'react-hook-form';
@@ -30,6 +31,9 @@ interface RoomModalProps {
   refetchRooms: () => void;
 }
 
+interface ListStaffID {
+  staffID: string;
+}
 export const AddRoom: React.FC<RoomModalProps> = ({
   isOpen,
   onClose,
@@ -37,6 +41,21 @@ export const AddRoom: React.FC<RoomModalProps> = ({
 }) => {
   const [valueStatus, setValueStatus] = React.useState(new Set(['available']));
   const [valueRoomType, setValueRoomType] = React.useState(new Set(['1']));
+  const [selectedStaff, setSelectedStaff] = React.useState<string[]>([]);
+  const getAllStaffApi = async () => {
+    const response = await getAllStaff();
+    console.log(response.data.content);
+
+    return response.data.content;
+  };
+  const {
+    data: staffs = [],
+    isLoading,
+    refetch,
+  } = useQuery<Staff[]>({
+    queryKey: ['staffs'],
+    queryFn: getAllStaffApi,
+  });
   const {
     register,
     handleSubmit,
@@ -51,7 +70,6 @@ export const AddRoom: React.FC<RoomModalProps> = ({
   const AddNewRoomMutation = useMutation({
     mutationFn: (formData: FormData) => AddNewRoom(formData),
   });
-
   const addNewRoom = (data: SchemaAddRoom) => {
     const formData = new FormData();
     // Append all form fields to the FormData object
@@ -60,6 +78,8 @@ export const AddRoom: React.FC<RoomModalProps> = ({
     formData.append('status', data.status);
     formData.append('roomTypeId', data.roomTypeId.toString());
     formData.append('buildingId', data.buildingId.toString());
+    formData.append('listStaffID', data.listStaffID);
+
     AddNewRoomMutation.mutate(formData, {
       onSuccess: () => {
         console.log('Room added successfully');
@@ -78,6 +98,7 @@ export const AddRoom: React.FC<RoomModalProps> = ({
   });
   const handleFieldChange = (field: keyof SchemaAddRoom, value: any) => {
     setValue(field, value);
+    console.log(getValues(field));
   };
   return (
     <Modal
@@ -188,30 +209,45 @@ export const AddRoom: React.FC<RoomModalProps> = ({
                     ))}
                   </Select>
                 </div>
-                <div className="flex flex-wrap py-2 px-3 md:flex-nowrap gap-4 w-[960px] justify-evenly">
-                  {/* <Select
+                {/* <div className="flex flex-wrap py-2 px-3 md:flex-nowrap gap-4 w-[960px] justify-evenly">
+                  <Select
+                    aria-hidden={false}
                     label="Nhân viên"
                     placeholder="Chọn nhân viên phụ trách"
                     className="max-w-xl"
                     selectionMode="multiple"
+                    {...register('listStaffID')}
                     onSelectionChange={(keys) => {
-                      const selectedEmployees = Array.from(keys);
-                      handleFieldChange(
-                        'employees',
-                        selectedEmployees.map(Number)
-                      ); // Chuyển key sang số
-                      setEmployees(new Set(keys));
+                      const listStaffID = Array.from(keys) as string[];
+                      handleFieldChange('listStaffID', listStaffID);
                     }}
-                    defaultSelectedKeys={
-                      isEditMode
-                        ? new Set(selectedRoom?.employees.map(String))
-                        : undefined
-                    }
                   >
-                    {users.map((user) => (
-                      <SelectItem key={user.id}>{user.name}</SelectItem>
+                    {staffs.map((staff) => (
+                      <SelectItem key={staff.staffId}>
+                        {staff.fullName}
+                      </SelectItem>
                     ))}
-                  </Select> */}
+                  </Select>
+                </div> */}
+                <div className="flex flex-wrap py-2 px-3 md:flex-nowrap gap-4 w-[960px] justify-evenly">
+                  <Select
+                    tabIndex={1}
+                    label="Nhân viên"
+                    selectionMode="multiple"
+                    placeholder="Chọn nhân viên phụ trách"
+                    className="max-w-xl"
+                    {...register('listStaffID')}
+                    onSelectionChange={(keys) => {
+                      const listStaffID = Array.from(keys).join(',');
+                      handleFieldChange('listStaffID', listStaffID);
+                    }}
+                  >
+                    {staffs.map((staff) => (
+                      <SelectItem key={staff.staffId}>
+                        {staff.fullName}
+                      </SelectItem>
+                    ))}
+                  </Select>
                 </div>
                 <div className="py-2 px-3">
                   <UploadImage />

@@ -85,19 +85,19 @@ const RoomTable: React.FC<RoomTableProps> = ({
             </p>
           </div>
         );
-      // case 'employees':
-      //   return (
-      //     <div className="flex flex-col">
-      //       <p className="text-bold text-small capitalize">
-      //         {getEmployeeNames(room.staff)} {/* Lấy danh sách tên nhân viên */}
-      //       </p>
-      //       <p className="text-bold text-tiny capitalize text-default-400">
-      //         {room.staff.length > 1
-      //           ? `${room.staff.length} nhân viên phụ trách`
-      //           : `${room.staff.length} nhân viên phụ trách`}
-      //       </p>
-      //     </div>
-      //   );
+      case 'staffs':
+        return (
+          <div className="flex flex-col">
+            <p className="text-bold text-small capitalize">
+              {room.staffAtRoom} {/* Lấy danh sách tên nhân viên */}
+            </p>
+            <p className="text-bold text-tiny capitalize text-default-400">
+              {room.staffAtRoom.length > 1
+                ? `${room.staffAtRoom.length} nhân viên phụ trách`
+                : `${room.staffAtRoom.length} nhân viên phụ trách`}
+            </p>
+          </div>
+        );
       case 'status':
         return (
           <Chip

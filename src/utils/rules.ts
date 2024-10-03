@@ -57,7 +57,18 @@ export const schemaAddRoom = Yup.object().shape({
   image: Yup.string().url('Must be a valid URL').optional(),
   status: Yup.string().required('Status is required'),
   roomTypeId: Yup.string().required('Room Type ID is required'),
+  listStaffID: Yup.string().default(''),
 });
+// listStaffID: yup
+// .array()
+// .of(
+//   yup
+//     .string()
+//     .required('Staff ID is required') // Each staff ID must be a string
+//     .matches(/^[0-9]+$/, 'Staff ID must be a number') // Assuming staff ID is numeric
+// )
+// .min(1, 'At least one staff ID is required') // At least one staff ID is required
+// .required('List of Staff IDs is required') // Overall validation for listStaffID
 
 export type SchemaAddRoom = Yup.InferType<typeof schemaAddRoom>;
 

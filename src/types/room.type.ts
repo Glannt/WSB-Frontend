@@ -34,6 +34,7 @@ export interface Room {
   roomImg: string; // URL of the room image
   status: string; // Current status of the room (e.g., 'available', 'maintenance')
   roomType: RoomType; // Details about the type of room
+  staffAtRoom: string;
 }
 
 export interface RoomType {
@@ -48,6 +49,11 @@ export const columnsRoom = [
   { name: 'Trạng thái phòng', uid: 'status', sortable: true },
   { name: 'Loại phòng', uid: 'roomType' },
   { name: 'Ngày tạo', uid: 'creationTime', sortable: true },
+  { name: 'Nhân viên', uid: 'staffs' },
   // { name: 'Employees', uid: 'employees' },
   { name: 'Actions', uid: 'actions' },
 ];
+
+// export const listStaffID: string = {
+
+// }
