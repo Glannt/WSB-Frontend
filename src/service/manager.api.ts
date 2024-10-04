@@ -16,7 +16,7 @@ export const UpdateRoom = (roomId: number | undefined, formData: FormData) =>
     },
   });
 
-export const getAllRoom = () => http.get('/api/manager/get-all-room');
+export const getAllRoom = () => http.get('/api/get-all-room');
 
 export const deleteRoomById = (roomId: number | undefined) =>
   http.delete(`/api/manager/delete-room/${roomId}`);

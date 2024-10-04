@@ -24,11 +24,12 @@ import {
 } from '@/utils/rules';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { omit } from 'lodash';
-import { useMutation } from '@tanstack/react-query';
-import { AddNewRoom, UpdateRoom } from '@/service/manager.api';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { AddNewRoom, getAllStaff, UpdateRoom } from '@/service/manager.api';
 import axios from 'axios';
 import { getAccessTokenFromLS } from '@/utils/auth';
 import { Room, RoomType } from '@/types/room.type';
+import { Staff } from '@/types/staff.type';
 
 interface RoomModalProps {
   isOpen: boolean;
@@ -48,10 +49,20 @@ const EditRoom: React.FC<RoomModalProps> = ({
 }) => {
   const [valueStatus, setValueStatus] = React.useState(new Set(['available']));
   const [valueRoomType, setValueRoomType] = React.useState(new Set(['single']));
-  //check mode
-  //   const isEditMode = React.useMemo(() => mode === 'edit', [mode]);
-  //   console.log(isEditMode);
-  //add room function
+  const getAllStaffApi = async () => {
+    const response = await getAllStaff();
+    console.log(response.data.content);
+
+    return response.data.content;
+  };
+  const {
+    data: staffs = [],
+    isLoading,
+    refetch,
+  } = useQuery<Staff[]>({
+    queryKey: ['staffs'],
+    queryFn: getAllStaffApi,
+  });
   const {
     register,
     handleSubmit,
@@ -62,11 +73,6 @@ const EditRoom: React.FC<RoomModalProps> = ({
   } = useForm<SchemaUpdateRoom>({
     resolver: yupResolver(schemaUpdateRoom),
   });
-
-  //new Set employee
-  // const [employees, setEmployees] = useState<Selection>(
-  //   selectedRoom ? new Set(selectedRoom.employees) : new Set([])
-  // );
 
   const UpdateMutation = useMutation({
     mutationFn: ({
@@ -85,6 +91,7 @@ const EditRoom: React.FC<RoomModalProps> = ({
     formData.append('roomName', data.roomName);
     formData.append('price', data.price.toString());
     formData.append('status', data.status);
+    formData.append('listStaffID', data.listStaffID.toString());
 
     // Assuming you have the roomId from selectedRoom
     const roomId = selectedRoom?.roomId;
@@ -214,55 +221,26 @@ const EditRoom: React.FC<RoomModalProps> = ({
                       </SelectItem>
                     ))}
                   </Select>
-                  {/* <Select
-                    label="Loại phòng"
-                    placeholder="Chọn loại phòng"
-                    className="max-w-xl"
-                    {...register('roomTypeId')}
-                    onSelectionChange={(keys) => {
-                      const newRoomType = Array.from(keys).join('');
-                      const newRoomTypeId = Number(Array.from(keys)[0]);
-                      setValue('roomTypeId', newRoomTypeId);
-                      handleFieldChange('roomType', newRoomType);
-                    }}
-                    defaultSelectedKeys={
-                      isEditMode && selectedRoom?.roomType
-                        ? new Set([selectedRoom.roomType])
-                        : valueRoomType
-                    }
-                  >
-                    {roomTypes.map((roomType) => (
-                      <SelectItem key={roomType.key}>
-                        {roomType.label}
-                      </SelectItem>
-                    ))}
-                  </Select> */}
-                </div>
-                {/* <div className="flex flex-wrap py-2 px-3 md:flex-nowrap gap-4 w-[960px] justify-evenly">
                   <Select
+                    tabIndex={1}
                     label="Nhân viên"
+                    selectionMode="multiple"
                     placeholder="Chọn nhân viên phụ trách"
                     className="max-w-xl"
-                    selectionMode="multiple"
+                    {...register('listStaffID')}
                     onSelectionChange={(keys) => {
-                      const selectedEmployees = Array.from(keys);
-                      handleFieldChange(
-                        'employees',
-                        selectedEmployees.map(Number)
-                      ); // Chuyển key sang số
-                      setEmployees(new Set(keys));
+                      const listStaffID = Array.from(keys).join(',');
+                      handleFieldChange('listStaffID', listStaffID);
                     }}
-                    defaultSelectedKeys={
-                      isEditMode
-                        ? new Set(selectedRoom?.employees.map(String))
-                        : undefined
-                    }
                   >
-                    {users.map((user) => (
-                      <SelectItem key={user.id}>{user.name}</SelectItem>
+                    {staffs.map((staff) => (
+                      <SelectItem key={staff.staffId}>
+                        {staff.fullName}
+                      </SelectItem>
                     ))}
                   </Select>
-                </div> */}
+                </div>
+
                 <div className="py-2 px-3">
                   <UploadImage />
                 </div>

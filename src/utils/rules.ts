@@ -83,6 +83,7 @@ export const schemaUpdateRoom = Yup.object().shape({
     )
     .optional(),
   status: Yup.string().required('Thiếu trạng thái phòng'),
+  listStaffID: Yup.string().default(''),
 });
 
 export type SchemaUpdateRoom = Yup.InferType<typeof schemaUpdateRoom>;
