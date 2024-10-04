@@ -4,8 +4,8 @@ const path = {
   register: '/sign-up',
   authLogin: '/api/auth/login',
   authRegister: '/api/auth/register',
-  profile: '/profile',
   logout: '/api/auth/log-out',
+  settings: '/settings',
   staff: '/staff',
   staffRooms: '/staff/rooms',
   staffBooking: '/staff/bookings',
@@ -17,6 +17,7 @@ const path = {
   foods: '/foods',
   equipments: '/equipments',
   rooms: '/rooms',
+  aboutUs: '/about-us',
 };
 
 export default path;

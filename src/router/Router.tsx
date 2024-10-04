@@ -10,7 +10,14 @@ import { MainLayout } from '@/layouts/MainLayout';
 import { useContext } from 'react';
 import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
 import path from '@/constants/path';
-import { DashboardManager } from '@/components/Manager/DashboardManager';
+
+
+import { Settings } from '@/components/Customer/Settings';
+import BookingHistory from '@/components/Customer/BookingHistory';
+import TransactionHistory from '@/components/Customer/TransactionHistory';
+import MyWallet from '@/components/Customer/MyWallet';
+import PackageMembership from '@/components/Customer/PackageMembership';
+import ChangePassword from '@/components/ProfileEditor/ChangePassword';
 import ManageRoom from '@/components/AdminService/ManageRoom';
 import ManageStaff from '@/components/AdminService/ManageStaff';
 
@@ -20,6 +27,9 @@ import { StaffWelComeback } from '@/components/Staff/StaffWelcomeback';
 import StaffBookings from '@/components/Staff/StaffBookings';
 import StaffRoomOverview from '@/components/Staff/StaffRoomOverview';
 import { StaffProfile } from '@/components/Staff/StaffProfie';
+import AboutUs from '@/components/AboutUs/AboutUs';
+import RoomDetail from '@/components/Content/RoomDetail';
+
 import { Role } from '@/types/user.type';
 import RoomsList from '@/components/Modal/Manager/testGET';
 import { AdminDashboard } from '@/components/Manager/AdminDashboard';
@@ -42,6 +52,11 @@ function ProtectedRoute({ requiredRoles }: ProtectedRouteProps) {
 
   // Render nested routes if authenticated and authorized
   return <Outlet />;
+
+
+function ProtectedRoute() {
+  const { isAuthenticated } = useContext(AppContext);
+  return !isAuthenticated ? <Outlet /> : <Navigate to={path.login} />;
 }
 function RejectedRoute() {
   const { isAuthenticated } = useContext(AppContext);
@@ -73,10 +88,10 @@ export const router = createBrowserRouter([
       </MainLayout>
     ),
   },
-  {
-    path: 'contact',
-    element: 'Contact',
-  },
+  // {
+  //   path: 'contact',
+  //   element: 'Contact',
+  // },
 
   {
     path: path.foods,
@@ -139,6 +154,15 @@ export const router = createBrowserRouter([
   //   ],
   // },
   {
+    path: path.aboutUs,
+    element: (
+      <MainLayout>
+        <AboutUs />
+      </MainLayout>
+    ),
+  },
+
+  {
     path: '',
     element: <ProtectedRoute />,
     children: [
@@ -146,7 +170,7 @@ export const router = createBrowserRouter([
         path: 'room-detail/:roomId',
         element: (
           <MainLayout>
-            <BookingRoomDetail />
+            <RoomDetail />
           </MainLayout>
         ),
         // <BookingRoomDetail />,
@@ -156,12 +180,42 @@ export const router = createBrowserRouter([
         element: <RoomsList />,
       },
       {
-        path: path.profile,
+        path: path.settings,
         element: (
           <MainLayout>
-            <ProfileEditor />
+            <Settings />
           </MainLayout>
         ),
+        children: [
+          {
+            path: 'edit-profile',
+            element: (
+              // <MainLayout>
+              <ProfileEditor />
+              // </MainLayout>
+            ),
+          },
+          {
+            path: 'change-password',
+            element: (
+              // <MainLayout>
+              <ChangePassword />
+              // </MainLayout>
+            ),
+          },
+          {
+            path: 'booking-history',
+            element: <BookingHistory />,
+          },
+          {
+            path: 'transaction-history',
+            element: <MyWallet />,
+          },
+          {
+            path: 'package-membership',
+            element: <PackageMembership />,
+          },
+        ],
       },
       //ko phân quyền staff tạm thời
       {
