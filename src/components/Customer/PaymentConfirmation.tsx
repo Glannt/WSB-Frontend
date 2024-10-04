@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router';
 
 const PaymentConfirmation = () => {
   const navigate = useNavigate();
-  const [walletBalance, setWalletBalance] = useState(230);
+  const [walletBalance, setWalletBalance] = useState(1000);
   const [orderTotal, setOrderTotal] = useState(850);
   const [discount, setDiscount] = useState(50);
   const [isProcessing, setIsProcessing] = useState(false);
