@@ -34,7 +34,7 @@ export function SidebarStaff({ children, collapse, hover }: SidebarProps) {
           </Sidebar.Logo>
           <Sidebar.Items>
             <Sidebar.ItemGroup>
-              <Sidebar.Collapse icon={HiShoppingBag} label="Quản lý phòng">
+              <Sidebar.Collapse icon={HiInbox} label="Quản lý phòng">
                 <Sidebar.Item
                   className={`${activeItem === path.staffRooms ? 'bg-slate-600 text-white' : ''} hover:text-gray-900 hover:bg-gray-100`}
                   onClick={() => handleItemClick('roomStatus', path.staffRooms)}
@@ -51,12 +51,14 @@ export function SidebarStaff({ children, collapse, hover }: SidebarProps) {
               <Sidebar.Item
                 onClick={() => handleItemClick('shift', path.staffShift)}
                 className={`${activeItem === path.staffShift ? 'bg-slate-600 text-white' : ''} hover:text-gray-900 hover:bg-gray-100`}
+                icon={HiViewBoards}
               >
                 Lịch làm việc
               </Sidebar.Item>
               <Sidebar.Item
                 onClick={() => handleItemClick('profile', path.staffProfile)}
                 className={`${activeItem === path.staffProfile ? 'bg-slate-600 text-white' : ''} hover:text-gray-900 hover:bg-gray-100`}
+                icon={HiUser}
               >
                 Thông tin cá nhân
               </Sidebar.Item>

@@ -35,44 +35,46 @@ export function SidebarAdmin({
     <>
       {collapse && !hover && (
         <Sidebar aria-label="Default sidebar example">
-          <Sidebar.Logo href="#" img="/favicon.svg" imgAlt="Flowbite logo">
-            Flowbite
+          <Sidebar.Logo href="" img="/favicon.svg" imgAlt="Flowbite logo">
+            WSB
           </Sidebar.Logo>
           <Sidebar.Items>
             <Sidebar.ItemGroup>
               <Sidebar.Item
-                className={`${activeItem === 'dashboard' ? 'bg-slate-600 text-white' : ''} hover:text-gray-900 hover:bg-gray-100`}
+                className={`${activeItem === 'dashboard' ? 'bg-slate-600 text-white' : ''} hover:text-gray-900 hover:bg-gray-100 transition duration-300 cursor-pointer`}
                 onClick={() => handleItemClick('dashboard', path.manager)}
                 icon={HiChartPie}
               >
-                Dashboard
+                Bảng điều khiển
               </Sidebar.Item>
 
               <Sidebar.Item
-                className={`${activeItem === 'manage-staff' ? 'bg-slate-600 text-white' : ''} hover:text-gray-900 hover:bg-gray-100 duration-200`}
+                className={`${activeItem === 'manage-staff' ? 'bg-slate-600 text-white' : ''} hover:text-gray-900 hover:bg-gray-100 transition duration-300 cursor-pointer`}
                 onClick={() =>
                   handleItemClick('manage-staff', path.managerStaff)
                 }
+                icon={HiUser}
               >
-                Manage Staff
+                Quản lý nhân viên
               </Sidebar.Item>
 
               <Sidebar.Item
-                className={`${activeItem === 'manage-room' ? 'bg-slate-600 text-white' : ''} hover:text-gray-900 hover:bg-gray-100`}
+                className={`${activeItem === 'manage-room' ? 'bg-slate-600 text-white' : ''} hover:text-gray-900 hover:bg-gray-100 transition duration-300 cursor-pointer`}
                 onClick={() =>
                   handleItemClick('manage-room', path.managerRooms)
                 }
+                icon={HiInbox}
               >
-                Manage Room
+                Quản lý phòng
               </Sidebar.Item>
 
               <Sidebar.Item
-                className="target: active:bg-slate-600"
+                className="target: active:bg-slate-600 transition duration-300"
                 href="#"
-                icon={HiInbox}
+                icon={HiArrowSmRight}
                 label="3"
               >
-                Inbox
+                Đăng xuất
               </Sidebar.Item>
             </Sidebar.ItemGroup>
           </Sidebar.Items>

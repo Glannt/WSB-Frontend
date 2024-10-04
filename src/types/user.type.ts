@@ -1,4 +1,4 @@
-type Role = 'Customer' | 'Staff' | 'Manager' | 'Owner';
+export type Role = 'CUSTOMER' | 'STAFF' | 'MANAGER' | 'OWNER';
 export type User = {
   userId: String;
   username: String;
@@ -6,5 +6,5 @@ export type User = {
   phoneNumber: String;
   dateOfBirth: String;
   createAt: String;
-  roleName: String;
+  roleName: Role;
 };

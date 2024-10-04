@@ -1,53 +1,6 @@
 import type { UseFormGetValues, RegisterOptions } from 'react-hook-form';
 import * as Yup from 'yup';
-// type FormData = {
-//   email: string;
-//   password: string;
-//   confirm_password: string;
-// };
-// // type Rules = {
-// //   [key in 'email' | 'password' | 'confirm_password']?: RegisterOptions;
-// // };
-// type Rules = {
-//   [key in keyof FormData]?: RegisterOptions<FormData, key>;
-// };
 
-// export const getRules = (getValues?: UseFormGetValues<any>): Rules => ({
-//   email: {
-//     required: { value: true, message: 'Email là bắt buộc' },
-//     pattern:
-//       /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/,
-//   },
-//   password: {
-//     required: {
-//       value: true,
-//       message: 'Mật khẩu là bắt buộc',
-//     },
-//     minLength: {
-//       value: 6,
-//       message: 'Độ dài từ 6 - 100 ký tự',
-//     },
-//     maxLength: {
-//       value: 100,
-//       message: 'Độ dài từ 6 - 100 ký tự',
-//     },
-//   },
-//   confirm_password: {
-//     required: { value: true, message: 'Xác nhận mật khẩu bắt buộc' },
-//     minLength: {
-//       value: 6,
-//       message: 'Độ dài từ 6 - 100 ký tự',
-//     },
-//     maxLength: {
-//       value: 100,
-//       message: 'Độ dài từ 6 - 100 ký tự',
-//     },
-//     validate:
-//       typeof getValues === 'function'
-//         ? (value) => value === getValues('password') || 'Mật khẩu không khớp'
-//         : undefined,
-//   },
-// });
 const today = new Date();
 const minDate = new Date();
 minDate.setFullYear(minDate.getFullYear() - 13);
@@ -94,3 +47,93 @@ export const schemaLogin = Yup.object().shape({
     .min(6, 'Mật khẩu phải có ít nhất 6 ký tự'),
 });
 export type SchemaLogin = Yup.InferType<typeof schemaLogin>;
+
+export const schemaAddRoom = Yup.object().shape({
+  buildingId: Yup.string().default('1'),
+  roomName: Yup.string().required('Room Name is required'),
+  price: Yup.number()
+    .positive('Price must be positive')
+    .required('Price is required'),
+  image: Yup.string().url('Must be a valid URL').optional(),
+  status: Yup.string().required('Status is required'),
+  roomTypeId: Yup.string().required('Room Type ID is required'),
+  listStaffID: Yup.string().default(''),
+});
+// listStaffID: yup
+// .array()
+// .of(
+//   yup
+//     .string()
+//     .required('Staff ID is required') // Each staff ID must be a string
+//     .matches(/^[0-9]+$/, 'Staff ID must be a number') // Assuming staff ID is numeric
+// )
+// .min(1, 'At least one staff ID is required') // At least one staff ID is required
+// .required('List of Staff IDs is required') // Overall validation for listStaffID
+
+export type SchemaAddRoom = Yup.InferType<typeof schemaAddRoom>;
+
+export const schemaUpdateRoom = Yup.object().shape({
+  roomName: Yup.string().required('Thiếu tên phòng'),
+  price: Yup.number().positive('Giá phải dương').required('Thiếu giá phòng'),
+  image: Yup.string()
+    .url('Cần phải là URL')
+    .matches(
+      /^https?:\/\/.*\.amazonaws\.com\/.*$/,
+      'Must be a valid AWS S3 URL'
+    )
+    .optional(),
+  status: Yup.string().required('Thiếu trạng thái phòng'),
+  listStaffID: Yup.string().default(''),
+});
+
+export type SchemaUpdateRoom = Yup.InferType<typeof schemaUpdateRoom>;
+
+export const schemaAddStaff = Yup.object().shape({
+  fullName: Yup.string()
+    .required('Full Name is required')
+    .min(2, 'Full Name must be at least 2 characters')
+    .max(50, 'Full Name must be less than 50 characters'),
+
+  phoneNumber: Yup.string()
+    .required('Phone Number is required')
+    .matches(
+      /^\+?\d{10,15}$/,
+      'Phone Number must be valid and contain 10-15 digits'
+    ),
+
+  dateOfBirth: Yup.string()
+    .required('Date of Birth is required')
+    .matches(
+      /^\d{4}-\d{2}-\d{2}$/,
+      'Date of Birth must be in the format YYYY-MM-DD'
+    )
+    .test('is-18', 'Staff must be at least 18 years old', (value) => {
+      const currentDate = new Date();
+      const birthDate = new Date(value as string);
+      const age = currentDate.getFullYear() - birthDate.getFullYear();
+      return age >= 18;
+    }),
+
+  email: Yup.string()
+    .required('Email is required')
+    .email('Email must be a valid email'),
+
+  workShift: Yup.string().required('Work Shift is required'),
+
+  workDays: Yup.string()
+    .required('Work Days is required')
+    .matches(
+      /^[MTWFS]{1,7}$/,
+      'Work Days must be a valid combination of letters representing days (M, T, W, F, S)'
+    ), // Example: 'MTW' for Monday, Tuesday, Wednesday
+
+  buildingId: Yup.string()
+    .required('Building ID is required')
+    .length(36, 'Building ID must be 36 characters long'), // Assuming UUID format
+
+  // status: Yup.string()
+  //   .required('Status is required')
+  //   .oneOf(['Active', 'Inactive'], 'Invalid status'),
+});
+
+export type SchemaAddStaff = Yup.InferType<typeof schemaAddStaff>;

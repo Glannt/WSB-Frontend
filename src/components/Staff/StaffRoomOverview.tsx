@@ -37,7 +37,7 @@ import { roomTypes } from '../../data/dataRoomType';
 import { EyeIcon } from '../Icons/EyeIcon';
 import { EditIcon } from '../Icons/EditIcon';
 import { DeleteIcon } from '../Icons/DeleteIcon';
-import AdminRoomModal from '../Modal/Admin/AdminRoomModal';
+import AdminRoomModal from '../Modal/Manager/AdminRoomModal';
 import { capitalize } from '../AdminService/utils';
 import {
   columnsRoomOverview,
