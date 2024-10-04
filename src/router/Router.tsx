@@ -28,6 +28,8 @@ import { StaffWelComeback } from '@/components/Staff/StaffWelcomeback';
 import StaffBookings from '@/components/Staff/StaffBookings';
 import StaffRoomOverview from '@/components/Staff/StaffRoomOverview';
 import { StaffProfile } from '@/components/Staff/StaffProfie';
+import AboutUs from '@/components/AboutUs/AboutUs';
+import RoomDetail from '@/components/Content/RoomDetail';
 function ProtectedRoute() {
   const { isAuthenticated } = useContext(AppContext);
   return !isAuthenticated ? <Outlet /> : <Navigate to={path.login} />;
@@ -62,16 +64,25 @@ export const router = createBrowserRouter([
       </MainLayout>
     ),
   },
-  {
-    path: 'contact',
-    element: 'Contact',
-  },
+  // {
+  //   path: 'contact',
+  //   element: 'Contact',
+  // },
 
   {
     path: path.foods,
     element: (
       <MainLayout>
         <ListFood />
+      </MainLayout>
+    ),
+  },
+
+  {
+    path: path.aboutUs,
+    element: (
+      <MainLayout>
+        <AboutUs />
       </MainLayout>
     ),
   },
@@ -84,7 +95,7 @@ export const router = createBrowserRouter([
         path: 'room-detail/:roomId',
         element: (
           <MainLayout>
-            <BookingRoomDetail />
+            <RoomDetail />
           </MainLayout>
         ),
         // <BookingRoomDetail />,
