@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaSearch, FaMapMarkerAlt } from 'react-icons/fa';
+import { FaMapMarkerAlt } from 'react-icons/fa';
 
 const Location = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -35,10 +35,6 @@ const Location = () => {
     facility.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
-  };
-
   const handleFacilityClick = (facility: {
     id: number;
     name: string;
@@ -58,11 +54,12 @@ const Location = () => {
         Workspace in Ho Chi Minh City
       </h1>
       <p className="text-lg text-gray-600 mb-8 text-center">
-        Discover modern workspaces in Ho Chi Minh City, a vibrant economic hub
-        perfect for businesses, freelancers, and teams.
+        Khám phá không gian làm việc hiện đại tại Thành phố Hồ Chí Minh, một
+        trung tâm kinh tế sôi động, hoàn hảo cho các doanh nghiệp, người làm
+        việc tự do và nhóm.
       </p>
 
-      <div className="mb-8">
+      {/* <div className="mb-8">
         <div className="relative">
           <input
             type="text"
@@ -74,7 +71,7 @@ const Location = () => {
           />
           <FaSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
         </div>
-      </div>
+      </div> */}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div>
@@ -116,21 +113,24 @@ const Location = () => {
       </div>
 
       <div className="mt-12">
-        <h2 className="text-2xl font-semibold mb-4">About Ho Chi Minh City</h2>
+        <h2 className="text-2xl font-semibold mb-4">
+          Về Thành phố Hồ Chí Minh
+        </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           <div>
             <p className="text-gray-600 mb-4">
-              Ho Chi Minh City, formerly known as Saigon, is the economic
-              powerhouse of Vietnam. It's a bustling metropolis that seamlessly
-              blends traditional charm with modern innovation, making it an
-              ideal location for businesses and entrepreneurs.
+              Thành phố Hồ Chí Minh trước đây gọi là Sài Gòn, là trung tâm kinh
+              tế cường quốc Việt Nam. Đó là một đô thị nhộn nhịp liền mạch pha
+              trộn nét quyến rũ truyền thống với sự đổi mới hiện đại, làm cho nó
+              trở thành một vị trí lý tưởng cho các doanh nghiệp và doanh nhân.
             </p>
             <p className="text-gray-600">
-              Our workspaces in Ho Chi Minh City offer state-of-the-art
-              facilities, flexible arrangements, and a vibrant community of
-              professionals. Whether you're a local startup or an international
-              company, you'll find the perfect space to grow and thrive in this
-              dynamic city.
+              Không gian làm việc của chúng tôi tại Thành phố Hồ Chí Minh mang
+              đến những không gian làm việc hiện đại cơ sở vật chất, sự sắp xếp
+              linh hoạt và một cộng đồng sôi động của các chuyên gia. Cho dù bạn
+              là một công ty khởi nghiệp địa phương hay quốc tế công ty, bạn sẽ
+              tìm thấy không gian hoàn hảo để phát triển và thịnh vượng trong
+              lĩnh vực này thành phố năng động.
             </p>
           </div>
           <div>

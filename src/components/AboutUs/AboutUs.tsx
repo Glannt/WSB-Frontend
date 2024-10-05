@@ -94,6 +94,7 @@ const AboutUs = () => {
           </div>
         </div>
       </section>
+
       {/* Workspace Features */}
       {/* <section className="py-16 bg-gray-100">
         <div className="container mx-auto px-4">
