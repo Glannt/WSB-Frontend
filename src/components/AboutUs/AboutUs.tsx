@@ -123,46 +123,44 @@ const AboutUs = () => {
       <section className="py-16 px-4 md:px-8 lg:px-16 bg-gray-100">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-4xl font-bold mb-12 text-center">
-            Workspace Features
+            Tính Năng Không Gian Làm Việc
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               {
-                icon: <FaWifi className="text-4xl mb-4 text-blue-600" />,
-                title: 'High-Speed Internet',
+                icon: <FaWifi className="text-4xl mb-4 text-black" />,
+                title: 'Wifi tốc độ cao',
                 description:
-                  'Lightning-fast, reliable WiFi throughout the workspace.',
+                  'Kết nối wifi nhanh chóng và đáng tin cậy trong không gian làm việc.',
               },
               {
-                icon: <FaCoffee className="text-4xl mb-4 text-blue-600" />,
-                title: 'Coffee Bar',
+                icon: <FaCoffee className="text-4xl mb-4 text-black" />,
+                title: 'Quầy Cà Phê',
                 description:
-                  'Complimentary gourmet coffee and tea to fuel your workday.',
+                  'Cà phê và trà ngon miễn phí để nâng cao năng lượng làm việc của bạn.',
               },
               {
-                icon: <FaPrint className="text-4xl mb-4 text-blue-600" />,
-                title: 'Printing Services',
+                icon: <FaPrint className="text-4xl mb-4 text-black" />,
+                title: 'Dịch Vụ In Ấn',
                 description:
-                  'Access to high-quality printers for all your document needs.',
+                  'Truy cập máy in chất lượng cao cho tất cả nhu cầu tài liệu của bạn.',
               },
               {
-                icon: (
-                  <FaMapMarkerAlt className="text-4xl mb-4 text-blue-600" />
-                ),
-                title: 'Prime Location',
+                icon: <FaMapMarkerAlt className="text-4xl mb-4 text-black" />,
+                title: 'Vị Trí Đắc Địa',
                 description:
-                  'Centrally located with easy access to public transportation.',
+                  'Vị trí trung tâm với việc tiếp cận dễ dàng đến các phương tiện giao thông công cộng.',
               },
               {
-                icon: <FaPhone className="text-4xl mb-4 text-blue-600" />,
-                title: 'Meeting Rooms',
+                icon: <FaPhone className="text-4xl mb-4 text-black" />,
+                title: 'Phòng Họp',
                 description:
-                  'Fully equipped meeting rooms for client presentations and team collaborations.',
+                  'Phòng họp đầy đủ trang thiết bị cho các buổi thuyết trình khách hàng và cộng tác nhóm.',
               },
               {
-                icon: <FaEnvelope className="text-4xl mb-4 text-blue-600" />,
-                title: 'Mail Handling',
-                description: 'Professional mail and package handling services.',
+                icon: <FaEnvelope className="text-4xl mb-4 text-black" />,
+                title: 'Xử Lý Thư',
+                description: 'Dịch vụ xử lý thư và bưu kiện chuyên nghiệp.',
               },
             ].map((feature, index) => (
               <div
