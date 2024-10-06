@@ -98,26 +98,46 @@ export const HomePage: React.FC<CarouselPropsSlider> = ({
       <div className="max-auto h-auto w-full m-auto py-16 px-4">
         <h1 className="font-bold text-4xl ml-8 mb-14">Các loại phòng</h1>
         <div className="flex flex-row gap-4 w-full h-auto justify-evenly">
-          <TypeRoomCard
-            url="https://workflow.com.vn/wp-content/uploads/2024/07/b1f293e72e40e53c6d98a043c1cc3148.png"
-            name="Phòng đơn"
-            description="Giá cả phải chăng"
-          />
-          <TypeRoomCard
-            url="https://workflow.com.vn/wp-content/uploads/2024/07/72d7d94d35b0d6bce9ae803e5e5b8975.png"
-            name="Phòng đôi"
-            description="Rộng rãi thoải mái"
-          />
-          <TypeRoomCard
-            url="https://workflow.com.vn/wp-content/uploads/2024/07/675e66a2542d4618edc4802b0124c59e.jpg"
-            name="Phòng 7"
-            description="Thiết bị đầy đủ, tiện ích tốt"
-          />
-          <TypeRoomCard
-            url="https://workflow.com.vn/wp-content/uploads/2024/05/z5404832229897_c592108c054d4505476d97f2bbd6f86e-2.png"
-            name="Phòng 10"
-            description="Càng đông càng xịn"
-          />
+          <div
+            onClick={() => navigate('room-detail/' + 1)}
+            className="cursor-pointer"
+          >
+            <TypeRoomCard
+              url="https://workflow.com.vn/wp-content/uploads/2024/07/b1f293e72e40e53c6d98a043c1cc3148.png"
+              name="Phòng đơn"
+              description="Giá cả phải chăng"
+            />
+          </div>
+          <div
+            onClick={() => navigate('room-detail/' + 2)}
+            className="cursor-pointer"
+          >
+            <TypeRoomCard
+              url="https://workflow.com.vn/wp-content/uploads/2024/07/72d7d94d35b0d6bce9ae803e5e5b8975.png"
+              name="Phòng đôi"
+              description="Rộng rãi thoải mái"
+            />
+          </div>
+          <div
+            onClick={() => navigate('room-detail/' + 3)}
+            className="cursor-pointer"
+          >
+            <TypeRoomCard
+              url="https://workflow.com.vn/wp-content/uploads/2024/07/675e66a2542d4618edc4802b0124c59e.jpg"
+              name="Phòng 7"
+              description="Thiết bị đầy đủ, tiện ích tốt"
+            />
+          </div>
+          <div
+            onClick={() => navigate('room-detail/' + 4)}
+            className="cursor-pointer"
+          >
+            <TypeRoomCard
+              url="https://workflow.com.vn/wp-content/uploads/2024/05/z5404832229897_c592108c054d4505476d97f2bbd6f86e-2.png"
+              name="Phòng 10"
+              description="Càng đông càng xịn"
+            />
+          </div>
         </div>
         <div className="flex justify-end mx-auto mt-10">
           <Button

@@ -30,6 +30,8 @@ import StaffRoomOverview from '@/components/Staff/StaffRoomOverview';
 import { StaffProfile } from '@/components/Staff/StaffProfie';
 import AboutUs from '@/components/AboutUs/AboutUs';
 import RoomDetail from '@/components/Content/RoomDetail';
+import Location from '@/components/Content/Location';
+import Contact from '@/Contact/Contact';
 function ProtectedRoute() {
   const { isAuthenticated } = useContext(AppContext);
   return !isAuthenticated ? <Outlet /> : <Navigate to={path.login} />;
@@ -64,10 +66,22 @@ export const router = createBrowserRouter([
       </MainLayout>
     ),
   },
-  // {
-  //   path: 'contact',
-  //   element: 'Contact',
-  // },
+  {
+    path: path.contact,
+    element: (
+      <MainLayout>
+        <Contact />
+      </MainLayout>
+    ),
+  },
+  {
+    path: path.location,
+    element: (
+      <MainLayout>
+        <Location />
+      </MainLayout>
+    ),
+  },
 
   {
     path: path.foods,

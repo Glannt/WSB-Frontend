@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   FaMapMarkerAlt,
   FaPhone,
@@ -7,12 +7,51 @@ import {
   FaCoffee,
   FaPrint,
   FaStar,
+  FaMinus,
+  FaPlus,
+  FaComments,
 } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import path from '@/constants/path';
 import { useNavigate } from 'react-router';
 
+interface FAQItem {
+  question: string;
+  answer: string;
+}
+
 const AboutUs = () => {
+  const [expandedQuestions, setExpandedQuestions] = useState<number[]>([]);
+
+  const faqData: FAQItem[] = [
+    {
+      question: 'What is Solstice? What is it for?',
+      answer:
+        'Solstice is a platform designed to enhance your learning experience. It provides a collaborative environment for students to connect, share knowledge, and grow together.',
+    },
+    {
+      question: 'What steps do I need to take to join?',
+      answer:
+        "Joining Solstice is easy! Simply visit our website, click on the 'Sign Up' button, fill in your details, and you're ready to start your journey with us.",
+    },
+    {
+      question:
+        'Do you facilitate any regular events or offer rooms for group discussions?',
+      answer:
+        'Yes, we regularly host virtual events and provide dedicated rooms for group discussions on various topics. These spaces are designed to foster collaboration and knowledge sharing.',
+    },
+    {
+      question: 'Is there a particular subject I should focus on learning?',
+      answer:
+        'The beauty of Solstice is that you can focus on any subject that interests you. We offer a wide range of topics, so you can choose based on your personal goals and interests.',
+    },
+    {
+      question:
+        'Can I make it a fun group study session by inviting my buddies?',
+      answer:
+        'Absolutely! Solstice encourages collaborative learning. You can easily invite your friends to join your study sessions, making learning both fun and effective.',
+    },
+  ];
   const navigate = useNavigate();
   const teamMembers = [
     {
@@ -34,6 +73,14 @@ const AboutUs = () => {
         'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=256&q=80',
     },
   ];
+
+  const toggleQuestion = (index: number) => {
+    setExpandedQuestions((prev) =>
+      prev.includes(index)
+        ? prev.filter((item) => item !== index)
+        : [...prev, index]
+    );
+  };
 
   const testimonials = [
     {
@@ -178,7 +225,7 @@ const AboutUs = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-16 bg-white">
+      {/* <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-8">
             Những gì khách hàng của chúng tôi nói
@@ -195,6 +242,57 @@ const AboutUs = () => {
                 <p className="font-semibold">{testimonial.name}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section> */}
+
+      {/* FAQs here*/}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4">
+          <header className="mb-8">
+            <h2 className="text-3xl font-bold text-center mb-8">FAQs</h2>
+          </header>
+          <div className="space-y-4">
+            {faqData.map((item, index) => (
+              <div
+                key={index}
+                className={`border border-gray-200 rounded-lg overflow-hidden transition-all duration-500 ease-in-out ${expandedQuestions.includes(index) ? 'shadow-lg' : ''}`}
+              >
+                <button
+                  className="w-full text-left p-4 flex justify-between items-center focus:outline-none focus:ring-2 focus:ring-violet-400"
+                  onClick={() => toggleQuestion(index)}
+                  aria-expanded={expandedQuestions.includes(index)}
+                  aria-controls={`faq-answer-${index}`}
+                >
+                  <span className="font-medium text-gray-700">
+                    {item.question}
+                  </span>
+                  {expandedQuestions.includes(index) ? (
+                    <FaMinus className="text-black flex-shrink-0" />
+                  ) : (
+                    <FaPlus className="text-black flex-shrink-0" />
+                  )}
+                </button>
+                <div
+                  id={`faq-answer-${index}`}
+                  className={`transition-max-height duration-500 ease-in-out max-h-0 overflow-hidden ${expandedQuestions.includes(index) ? 'max-h-96 p-4 bg-gray-50 text-gray-600' : ''}`}
+                >
+                  {expandedQuestions.includes(index) && item.answer}
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="mt-8 text-center">
+            <p className="text-gray-600 mb-4">
+              Còn câu hỏi nào khác không? Hãy nói chuyện với đội
+            </p>
+            <button
+              onClick={() => navigate(path.contact)}
+              className="bg-black text-white px-6 py-3 rounded-full font-medium flex items-center justify-center mx-auto hover:bg-white hover:text-black transition shadow-lg hover:scale-105 duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+            >
+              <FaComments className="mr-2" />
+              Liên hệ
+            </button>
           </div>
         </div>
       </section>

@@ -18,6 +18,8 @@ const path = {
   equipments: '/equipments',
   rooms: '/rooms',
   aboutUs: '/about-us',
+  location: '/location',
+  contact: '/contact',
 };
 
 export default path;
