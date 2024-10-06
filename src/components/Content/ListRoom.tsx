@@ -128,51 +128,6 @@ export const ListRoom = () => {
             </Button>
           </div>
         </div>
-
-        {/* Time Slot Selection */}
-        {/* <div className="mb-4">
-          <h3 className="text-lg font-semibold mb-2">Time Slot</h3>
-          <div className="relative">
-            <select
-              className="w-full pl-10 pr-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none hover:shadow-md"
-              value={selectedTimeSlot}
-              onChange={handleTimeSlotChange}
-              aria-label="Select time slot"
-            >
-              {Array.from({ length: 18 }, (_, i) => {
-                const hour = i + 7;
-                return (
-                  <option
-                    key={hour}
-                    value={`${hour.toString().padStart(2, '0')}:00`}
-                  >
-                    {`${hour.toString().padStart(2, '0')}:00 - ${(hour + 3).toString().padStart(2, '0')}:00`}
-                  </option>
-                );
-              })}
-            </select>
-            <FaClock className="absolute left-3 top-3 text-gray-400" />
-          </div>
-        </div> */}
-
-        {/* Date Selection */}
-        {/* <div className="mb-4">
-          <h3 className="text-lg font-semibold mb-2">Date</h3>
-          <Input
-            type="date"
-            fullWidth
-            // contentLeft={<FaCalendarAlt />}
-            // content
-            value={selectedDate}
-            onChange={handleDateChange}
-            aria-label="Select date"
-            // rounded
-          />
-          <DatePicker
-            label="Birth date"
-            className="max-w-full rounded-lg hover:shadow-lg"
-          />
-        </div> */}
       </div>
 
       {/* Right Panel */}

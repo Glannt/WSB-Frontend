@@ -1,4 +1,5 @@
 import { AuthResponse } from '@/types/auth.type';
+import { getAccessTokenFromLS } from '@/utils/auth';
 import http from '@/utils/http';
 
 export const registerAccount = (body: {

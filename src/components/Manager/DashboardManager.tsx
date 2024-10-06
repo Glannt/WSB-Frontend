@@ -27,7 +27,7 @@ export const DashboardManager = () => {
         className={`relative transition-all duration-300 ease-in-out ${collapse || isHovered ? 'w[20%] p-0 m-0' : 'w-16'}`}
       >
         <div
-          className={`h-[1200px] text-white p-4 transition-all duration-300 ease-in-out ${
+          className={`h-screen text-white p-4 transition-all duration-300 ease-in-out ${
             collapse || isHovered ? 'translate-x-0' : '-translate-x-full'
           }`}
           //   onMouseEnter={handleMouseEnter}
@@ -64,7 +64,7 @@ export const DashboardManager = () => {
           )}
         </div>
       </div>
-      <div className="mainContent flex-auto w-full max-h-screen items-stretch justify-center m-9 border-spacing-2 ">
+      <div className="mainContent flex-auto w-full max-h-screen items-stretch justify-center p-5 border-spacing-2 overflow-y-auto mt-7 ">
         {' '}
         <Outlet />
       </div>
