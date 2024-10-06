@@ -64,7 +64,7 @@ export const Header = (props: any) => {
                 <NavigationMenu.Trigger className="text-black hover:text-violet11 hover:bg-violet3 focus:shadow-violet7 group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none focus:shadow-[0_0_0_2px]">
                   Địa điểm{' '}
                   <CaretDownIcon
-                    className="text-violet10 relative top-[1px] transition-transform duration-[250] ease-in group-data-[state=open]:-rotate-180"
+                    className="text-violet10 relative top-[1px] transition-transform duration-250 ease-in group-data-[state=open]:-rotate-180"
                     aria-hidden
                   />
                 </NavigationMenu.Trigger>
@@ -84,7 +84,7 @@ export const Header = (props: any) => {
                 <NavigationMenu.Trigger className="text-black hover:text-violet11 hover:bg-violet3 focus:shadow-violet7 group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none focus:shadow-[0_0_0_2px]">
                   Dịch vụ{' '}
                   <CaretDownIcon
-                    className="text-violet10 relative top-[1px] transition-transform duration-[250] ease-in group-data-[state=open]:-rotate-180"
+                    className="text-violet10 relative top-[1px] transition-transform duration-250 ease-in group-data-[state=open]:-rotate-180"
                     aria-hidden
                   />
                 </NavigationMenu.Trigger>
@@ -136,7 +136,7 @@ export const Header = (props: any) => {
               <NavigationMenu.Viewport className="data-[state=open]:animate-scaleIn data-[state=closed]:animate-scaleOut relative mt-[10px] h-[var(--radix-navigation-menu-viewport-height)] w-full origin-[top_center] overflow-hidden rounded-[6px] bg-white transition-[width,_height] duration-300 sm:w-[var(--radix-navigation-menu-viewport-width)]" />
             </div>
           </NavigationMenu.Root>
-          {!isAuthenticated && (
+          {isAuthenticated && (
             <NavigationMenu.Root className="relative z-[1] w-auto flex justify-end">
               <NavigationMenu.List className="center shadow-blackA4 m-0 flex list-none p-1">
                 <NavigationMenu.Item>
@@ -155,7 +155,7 @@ export const Header = (props: any) => {
                       </Avatar.Fallback>
                     </Avatar.Root>{' '}
                     <CaretDownIcon
-                      className="text-violet10 relative top-[1px] transition-transform duration-[250] ease-in group-data-[state=open]:-rotate-180"
+                      className="text-violet10 relative top-[1px] transition-transform duration-250 ease-in group-data-[state=open]:-rotate-180"
                       aria-hidden
                     />
                   </NavigationMenu.Trigger>

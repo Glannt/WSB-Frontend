@@ -48,10 +48,15 @@ const EditRoom: React.FC<RoomModalProps> = ({
   refetchRooms,
 }) => {
   const [valueStatus, setValueStatus] = React.useState(new Set(['available']));
-  const [valueRoomType, setValueRoomType] = React.useState(new Set(['single']));
+  const [valueStaffAtRoom, setValueStaffAtRoom] = React.useState(
+    new Set(
+      selectedRoom?.staffAtRoom
+        ? selectedRoom.staffAtRoom.split(',').map((id) => id.trim()) // Tách chuỗi thành mảng và loại bỏ khoảng trắng
+        : []
+    )
+  );
   const getAllStaffApi = async () => {
     const response = await getAllStaff();
-    console.log(response.data.content);
 
     return response.data.content;
   };
@@ -90,7 +95,7 @@ const EditRoom: React.FC<RoomModalProps> = ({
     // Append the fields you want to update
     formData.append('roomName', data.roomName);
     formData.append('price', data.price.toString());
-    formData.append('status', data.status);
+    formData.append('status', data.status?.toString());
     formData.append('listStaffID', data.listStaffID.toString());
 
     // Assuming you have the roomId from selectedRoom
@@ -232,6 +237,13 @@ const EditRoom: React.FC<RoomModalProps> = ({
                       const listStaffID = Array.from(keys).join(',');
                       handleFieldChange('listStaffID', listStaffID);
                     }}
+                    // defaultSelectedKeys={
+                    //   selectedRoom?.staffAtRoom &&
+                    //   Array.isArray(selectedRoom?.staffAtRoom)
+                    //     ? new Set(selectedRoom?.staffAtRoom)
+                    //     : undefined
+                    // }
+                    selectedKeys={valueStaffAtRoom}
                   >
                     {staffs.map((staff) => (
                       <SelectItem key={staff.staffId}>

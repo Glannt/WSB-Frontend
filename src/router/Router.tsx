@@ -11,10 +11,9 @@ import { useContext } from 'react';
 import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
 import path from '@/constants/path';
 
-
 import { Settings } from '@/components/Customer/Settings';
-import BookingHistory from '@/components/Customer/BookingHistory';
-import TransactionHistory from '@/components/Customer/TransactionHistory';
+import BookingHistory from '@/components/Customer/Setting/History/Booking/BookingHistory';
+import TransactionHistory from '@/components/Customer/Setting/History/Transaction/TransactionHistory';
 import MyWallet from '@/components/Customer/MyWallet';
 import PackageMembership from '@/components/Customer/PackageMembership';
 import ChangePassword from '@/components/ProfileEditor/ChangePassword';
@@ -33,6 +32,7 @@ import RoomDetail from '@/components/Content/RoomDetail';
 import { Role } from '@/types/user.type';
 import RoomsList from '@/components/Modal/Manager/testGET';
 import { AdminDashboard } from '@/components/Manager/AdminDashboard';
+import { DashboardManager } from '@/components/Manager/DashboardManager';
 interface ProtectedRouteProps {
   requiredRoles?: Role[]; // Optional prop for role-based protection
 }
@@ -52,12 +52,8 @@ function ProtectedRoute({ requiredRoles }: ProtectedRouteProps) {
 
   // Render nested routes if authenticated and authorized
   return <Outlet />;
-
-
-function ProtectedRoute() {
-  const { isAuthenticated } = useContext(AppContext);
-  return !isAuthenticated ? <Outlet /> : <Navigate to={path.login} />;
 }
+
 function RejectedRoute() {
   const { isAuthenticated } = useContext(AppContext);
   return !isAuthenticated ? <Outlet /> : <Navigate to="/profile" />;

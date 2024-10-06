@@ -7,3 +7,11 @@ export interface Booking {
   status: 'confirmed' | 'pending' | 'canceled'; // Booking status
   createdAt: Date; // Date when the booking was created
 }
+
+export interface CustomerOrderBookingHistory {
+  id: number;
+  date: string;
+  amount: string;
+  status: string;
+  address: string;
+}

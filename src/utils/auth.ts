@@ -1,3 +1,4 @@
+import { Customer } from '@/types/customer.type';
 import { User } from '@/types/user.type';
 
 export const saveAccessTokenToLS = (access_token: string) => {
@@ -27,4 +28,13 @@ export const setRoleNameToLS = (roleName: string) => {
 };
 export const getRoleName = () => {
   return localStorage.getItem('roleName') || '';
+};
+
+export const setCustomerToLS = (customer: Customer) => {
+  localStorage.setItem('customer', JSON.stringify(customer));
+};
+
+export const getCustomerFromLS = () => {
+  const result = localStorage.getItem('customer');
+  return result ? JSON.parse(result) : null;
 };

@@ -2,7 +2,6 @@ import { useNavigate } from 'react-router';
 
 export const MenuIconStaff = () => {
   const handleMenuClick = (menuItem: string, path: string) => {
-    // console.log(`Navigating to ${menuItem}`);
     navigate(path); // Or use a routing method like `useNavigate` if using React Router
   };
   const navigate = useNavigate();

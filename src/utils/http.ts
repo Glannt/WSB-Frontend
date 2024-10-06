@@ -8,6 +8,7 @@ import {
   clearLS,
   getAccessTokenFromLS,
   saveAccessTokenToLS,
+  setCustomerToLS,
   setProfileToLS,
   setRoleNameToLS,
 } from './auth';
@@ -32,15 +33,11 @@ class Http {
         this.accessToken = getAccessTokenFromLS();
         if (this.accessToken) {
           config.headers.Authorization = `Bearer ${this.accessToken}`;
-          console.log(config.headers.Authorization);
 
           return config;
         }
         if (this.accessToken && config.headers) {
           config.headers.Authorization = `Bearer ${this.accessToken}`;
-
-          // config.headers['Authorization'] = `Bearer ${this.accessToken}`;
-          // console.log(config.headers['Authorization']);
 
           return config;
         }
@@ -53,13 +50,10 @@ class Http {
     this.instance.interceptors.response.use(
       (response) => {
         const { url } = response.config;
-        // console.log(url);
 
         if (url === path.authLogin || url === path.authRegister) {
           // this.accessToken = (response.data as AuthResponse).data.access_token;
           this.accessToken = response.data.access_token;
-          console.log(response.data as AuthResponse);
-          console.log(response.data.data);
 
           const user = omit(response.data.data, ['password']);
           // setProfileToLS(user);
@@ -69,6 +63,8 @@ class Http {
         } else if (url === path.logout) {
           this.accessToken = '';
           clearLS();
+        } else if (url === '/api/customer/manage-profile') {
+          setCustomerToLS(response.data.data);
         }
         toast.success(response.data.message, {
           autoClose: 3000,
@@ -76,7 +72,6 @@ class Http {
         return response;
       },
       function (error) {
-        console.log(error);
         if (error.response?.status !== HttpStatusCode.UnprocessableEntity) {
           const data: any | undefined = error.response?.data;
           const message = data.message || error.message;
