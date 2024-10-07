@@ -8,7 +8,8 @@ import {
 } from 'react-icons/fa';
 import { MdAir, MdTv } from 'react-icons/md';
 import { BookingRoomDetail } from './BookingRoomDetail';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
+import path from '@/constants/path';
 
 const RoomDetail = () => {
   const [selectedImage, setSelectedImage] = useState(0);
@@ -61,6 +62,7 @@ const RoomDetail = () => {
         'https://images.unsplash.com/photo-1566665797739-1674de7a421a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1474&q=80',
     },
   ];
+  const navigate = useNavigate();
 
   const handleImageClick = (index: number) => {
     setSelectedImage(index);
@@ -144,7 +146,7 @@ const RoomDetail = () => {
               <div>Giá: {room.basePrice}$/slot</div>
             </div>
             <button
-              onClick={openModal}
+              onClick={() => navigate('/room-booking/' + room.id)}
               className="w-full bg-black text-white py-3 rounded-lg font-bold text-lg transition-colors duration-300 hover:bg-white hover:text-black shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
               aria-label="Book Now"
             >
@@ -178,11 +180,11 @@ const RoomDetail = () => {
         </div>
       </div>
 
-      {isModalOpen && (
+      {/* {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <BookingRoomDetail />
         </div>
-      )}
+      )} */}
     </div>
   );
 };
