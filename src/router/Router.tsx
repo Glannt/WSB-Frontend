@@ -29,6 +29,9 @@ import { StaffProfile } from '@/components/Staff/StaffProfie';
 import AboutUs from '@/components/AboutUs/AboutUs';
 import RoomDetail from '@/components/Content/RoomDetail';
 
+import Location from '@/components/Content/Location';
+import Contact from '@/Contact/Contact';
+
 import { Role } from '@/types/user.type';
 import RoomsList from '@/components/Modal/Manager/testGET';
 import { AdminDashboard } from '@/components/Manager/AdminDashboard';
@@ -52,6 +55,7 @@ function ProtectedRoute({ requiredRoles }: ProtectedRouteProps) {
 
   // Render nested routes if authenticated and authorized
   return <Outlet />;
+
 }
 
 function RejectedRoute() {
@@ -84,10 +88,22 @@ export const router = createBrowserRouter([
       </MainLayout>
     ),
   },
-  // {
-  //   path: 'contact',
-  //   element: 'Contact',
-  // },
+  {
+    path: path.contact,
+    element: (
+      <MainLayout>
+        <Contact />
+      </MainLayout>
+    ),
+  },
+  {
+    path: path.location,
+    element: (
+      <MainLayout>
+        <Location />
+      </MainLayout>
+    ),
+  },
 
   {
     path: path.foods,

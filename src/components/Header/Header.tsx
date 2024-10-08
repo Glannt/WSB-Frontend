@@ -60,6 +60,14 @@ export const Header = (props: any) => {
           </div>
           <NavigationMenu.Root className="relative z-[1] flex w-screen justify-center">
             <NavigationMenu.List className="center shadow-blackA4 m-0 flex list-none p-1">
+              <NavigationMenu.Item className="">
+                <NavigationMenu.Link
+                  className=" cursor-pointer text-black hover:text-violet11 hover:bg-violet3 focus:shadow-violet7 block select-none rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none no-underline outline-none focus:shadow-[0_0_0_2px]"
+                  onClick={() => navigate(path.home)}
+                >
+                  Trang chủ
+                </NavigationMenu.Link>
+              </NavigationMenu.Item>
               <NavigationMenu.Item>
                 <NavigationMenu.Trigger className="text-black hover:text-violet11 hover:bg-violet3 focus:shadow-violet7 group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none focus:shadow-[0_0_0_2px]">
                   Địa điểm{' '}
@@ -70,11 +78,21 @@ export const Header = (props: any) => {
                 </NavigationMenu.Trigger>
                 <NavigationMenu.Content className="data-[motion=from-start]:animate-enterFromLeft data-[motion=from-end]:animate-enterFromRight data-[motion=to-start]:animate-exitToLeft data-[motion=to-end]:animate-exitToRight absolute top-0 left-0 w-full sm:w-auto">
                   <ul className="m-0 grid list-none gap-x-[10px] p-[22px] sm:w-[300px] sm:grid-flow-col sm:grid-rows-2">
-                    <ListItem className="row-span-1" href="" title="Cơ sở 1">
-                      Thủ Đức, TP.HCM{' '}
+                    <ListItem
+                      onClick={() => navigate(path.location)}
+                      className="row-span-1"
+                      href=""
+                      title="Cơ sở 1"
+                    >
+                      TP. HCM{' '}
                     </ListItem>
-                    <ListItem className="row-span-1" href="" title="Cơ sở 2">
-                      Bình Thạnh, TP.HCM{' '}
+                    <ListItem
+                      onClick={() => navigate(path.location)}
+                      className="row-span-1"
+                      href=""
+                      title="Cơ sở 2"
+                    >
+                      Hà Nội{' '}
                     </ListItem>
                   </ul>
                 </NavigationMenu.Content>
@@ -124,6 +142,14 @@ export const Header = (props: any) => {
                   onClick={() => navigate(path.aboutUs)}
                 >
                   Về chúng tôi
+                </NavigationMenu.Link>
+              </NavigationMenu.Item>
+              <NavigationMenu.Item className="">
+                <NavigationMenu.Link
+                  className=" cursor-pointer text-black hover:text-violet11 hover:bg-violet3 focus:shadow-violet7 block select-none rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none no-underline outline-none focus:shadow-[0_0_0_2px]"
+                  onClick={() => navigate(path.contact)}
+                >
+                  Liên hệ
                 </NavigationMenu.Link>
               </NavigationMenu.Item>
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   FaMapMarkerAlt,
   FaPhone,
@@ -7,12 +7,51 @@ import {
   FaCoffee,
   FaPrint,
   FaStar,
+  FaMinus,
+  FaPlus,
+  FaComments,
 } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import path from '@/constants/path';
 import { useNavigate } from 'react-router';
 
+interface FAQItem {
+  question: string;
+  answer: string;
+}
+
 const AboutUs = () => {
+  const [expandedQuestions, setExpandedQuestions] = useState<number[]>([]);
+
+  const faqData: FAQItem[] = [
+    {
+      question: 'What is Solstice? What is it for?',
+      answer:
+        'Solstice is a platform designed to enhance your learning experience. It provides a collaborative environment for students to connect, share knowledge, and grow together.',
+    },
+    {
+      question: 'What steps do I need to take to join?',
+      answer:
+        "Joining Solstice is easy! Simply visit our website, click on the 'Sign Up' button, fill in your details, and you're ready to start your journey with us.",
+    },
+    {
+      question:
+        'Do you facilitate any regular events or offer rooms for group discussions?',
+      answer:
+        'Yes, we regularly host virtual events and provide dedicated rooms for group discussions on various topics. These spaces are designed to foster collaboration and knowledge sharing.',
+    },
+    {
+      question: 'Is there a particular subject I should focus on learning?',
+      answer:
+        'The beauty of Solstice is that you can focus on any subject that interests you. We offer a wide range of topics, so you can choose based on your personal goals and interests.',
+    },
+    {
+      question:
+        'Can I make it a fun group study session by inviting my buddies?',
+      answer:
+        'Absolutely! Solstice encourages collaborative learning. You can easily invite your friends to join your study sessions, making learning both fun and effective.',
+    },
+  ];
   const navigate = useNavigate();
   const teamMembers = [
     {
@@ -34,6 +73,14 @@ const AboutUs = () => {
         'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=256&q=80',
     },
   ];
+
+  const toggleQuestion = (index: number) => {
+    setExpandedQuestions((prev) =>
+      prev.includes(index)
+        ? prev.filter((item) => item !== index)
+        : [...prev, index]
+    );
+  };
 
   const testimonials = [
     {
@@ -94,6 +141,7 @@ const AboutUs = () => {
           </div>
         </div>
       </section>
+
       {/* Workspace Features */}
       {/* <section className="py-16 bg-gray-100">
         <div className="container mx-auto px-4">
@@ -123,46 +171,44 @@ const AboutUs = () => {
       <section className="py-16 px-4 md:px-8 lg:px-16 bg-gray-100">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-4xl font-bold mb-12 text-center">
-            Workspace Features
+            Tính Năng Không Gian Làm Việc
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               {
-                icon: <FaWifi className="text-4xl mb-4 text-blue-600" />,
-                title: 'High-Speed Internet',
+                icon: <FaWifi className="text-4xl mb-4 text-black" />,
+                title: 'Wifi tốc độ cao',
                 description:
-                  'Lightning-fast, reliable WiFi throughout the workspace.',
+                  'Kết nối wifi nhanh chóng và đáng tin cậy trong không gian làm việc.',
               },
               {
-                icon: <FaCoffee className="text-4xl mb-4 text-blue-600" />,
-                title: 'Coffee Bar',
+                icon: <FaCoffee className="text-4xl mb-4 text-black" />,
+                title: 'Quầy Cà Phê',
                 description:
-                  'Complimentary gourmet coffee and tea to fuel your workday.',
+                  'Cà phê và trà ngon miễn phí để nâng cao năng lượng làm việc của bạn.',
               },
               {
-                icon: <FaPrint className="text-4xl mb-4 text-blue-600" />,
-                title: 'Printing Services',
+                icon: <FaPrint className="text-4xl mb-4 text-black" />,
+                title: 'Dịch Vụ In Ấn',
                 description:
-                  'Access to high-quality printers for all your document needs.',
+                  'Truy cập máy in chất lượng cao cho tất cả nhu cầu tài liệu của bạn.',
               },
               {
-                icon: (
-                  <FaMapMarkerAlt className="text-4xl mb-4 text-blue-600" />
-                ),
-                title: 'Prime Location',
+                icon: <FaMapMarkerAlt className="text-4xl mb-4 text-black" />,
+                title: 'Vị Trí Đắc Địa',
                 description:
-                  'Centrally located with easy access to public transportation.',
+                  'Vị trí trung tâm với việc tiếp cận dễ dàng đến các phương tiện giao thông công cộng.',
               },
               {
-                icon: <FaPhone className="text-4xl mb-4 text-blue-600" />,
-                title: 'Meeting Rooms',
+                icon: <FaPhone className="text-4xl mb-4 text-black" />,
+                title: 'Phòng Họp',
                 description:
-                  'Fully equipped meeting rooms for client presentations and team collaborations.',
+                  'Phòng họp đầy đủ trang thiết bị cho các buổi thuyết trình khách hàng và cộng tác nhóm.',
               },
               {
-                icon: <FaEnvelope className="text-4xl mb-4 text-blue-600" />,
-                title: 'Mail Handling',
-                description: 'Professional mail and package handling services.',
+                icon: <FaEnvelope className="text-4xl mb-4 text-black" />,
+                title: 'Xử Lý Thư',
+                description: 'Dịch vụ xử lý thư và bưu kiện chuyên nghiệp.',
               },
             ].map((feature, index) => (
               <div
@@ -179,7 +225,7 @@ const AboutUs = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-16 bg-white">
+      {/* <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-8">
             Những gì khách hàng của chúng tôi nói
@@ -196,6 +242,57 @@ const AboutUs = () => {
                 <p className="font-semibold">{testimonial.name}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section> */}
+
+      {/* FAQs here*/}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4">
+          <header className="mb-8">
+            <h2 className="text-3xl font-bold text-center mb-8">FAQs</h2>
+          </header>
+          <div className="space-y-4">
+            {faqData.map((item, index) => (
+              <div
+                key={index}
+                className={`border border-gray-200 rounded-lg overflow-hidden transition-all duration-500 ease-in-out ${expandedQuestions.includes(index) ? 'shadow-lg' : ''}`}
+              >
+                <button
+                  className="w-full text-left p-4 flex justify-between items-center focus:outline-none focus:ring-2 focus:ring-violet-400"
+                  onClick={() => toggleQuestion(index)}
+                  aria-expanded={expandedQuestions.includes(index)}
+                  aria-controls={`faq-answer-${index}`}
+                >
+                  <span className="font-medium text-gray-700">
+                    {item.question}
+                  </span>
+                  {expandedQuestions.includes(index) ? (
+                    <FaMinus className="text-black flex-shrink-0" />
+                  ) : (
+                    <FaPlus className="text-black flex-shrink-0" />
+                  )}
+                </button>
+                <div
+                  id={`faq-answer-${index}`}
+                  className={`transition-max-height duration-500 ease-in-out max-h-0 overflow-hidden ${expandedQuestions.includes(index) ? 'max-h-96 p-4 bg-gray-50 text-gray-600' : ''}`}
+                >
+                  {expandedQuestions.includes(index) && item.answer}
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="mt-8 text-center">
+            <p className="text-gray-600 mb-4">
+              Còn câu hỏi nào khác không? Hãy nói chuyện với đội
+            </p>
+            <button
+              onClick={() => navigate(path.contact)}
+              className="bg-black text-white px-6 py-3 rounded-full font-medium flex items-center justify-center mx-auto hover:bg-white hover:text-black transition shadow-lg hover:scale-105 duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+            >
+              <FaComments className="mr-2" />
+              Liên hệ
+            </button>
           </div>
         </div>
       </section>
