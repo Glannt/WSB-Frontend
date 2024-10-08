@@ -82,14 +82,11 @@ export const AddRoom: React.FC<RoomModalProps> = ({
 
     AddNewRoomMutation.mutate(formData, {
       onSuccess: () => {
-        console.log('Room added successfully');
         refetchRooms();
         // Close modal or do something on success
         onClose();
       },
-      onError: (error) => {
-        console.error('Error adding room:', error);
-      },
+      onError: (error) => {},
     });
   };
   const onSubmit = handleSubmit((data) => {
@@ -98,7 +95,6 @@ export const AddRoom: React.FC<RoomModalProps> = ({
   });
   const handleFieldChange = (field: keyof SchemaAddRoom, value: any) => {
     setValue(field, value);
-    console.log(getValues(field));
   };
   return (
     <Modal

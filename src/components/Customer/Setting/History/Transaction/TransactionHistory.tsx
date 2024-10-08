@@ -27,13 +27,13 @@ import {
   Select,
   SelectItem,
 } from '@nextui-org/react';
-import { PlusIcon } from '../Icons/PlusIcon';
-import { VerticalDotsIcon } from '../Icons/VerticalDotsIcon';
-import { ChevronDownIcon } from '../Icons/ChevronDownIcon';
-import { SearchIcon } from '../Icons/SearchIcon';
-import { capitalize } from './utils';
+import { PlusIcon } from '../../../../Icons/PlusIcon';
+import { VerticalDotsIcon } from '../../../../Icons/VerticalDotsIcon';
+import { ChevronDownIcon } from '../../../../Icons/ChevronDownIcon';
+import { SearchIcon } from '../../../../Icons/SearchIcon';
+import { capitalize } from '../../../utils';
 import { roomStatuses } from '@/data/dataStatusRoom';
-import { roomTypes } from '../../data/dataRoomType';
+import { roomTypes } from '../../../../../data/dataRoomType';
 
 const statusOptions = [
   { name: 'Đang xử lý', uid: 'pending' },

@@ -23,8 +23,6 @@ const INITIAL_VISIBLE_COLUMNS = [
 export default function ManageRoom() {
   const getAllRoomsApi = async () => {
     const response = await getAllRoom();
-    console.log(response.data.data);
-
     return response.data.data;
   };
 
@@ -52,8 +50,6 @@ export default function ManageRoom() {
   const [isOpenEdit, setIsOpenEdit] = useState<boolean>(false);
   const [isDeleteRoom, setIsDeleteRoom] = useState<boolean>(false);
   const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
-  const params = useParams();
-  console.log(params);
   const headerColumns = React.useMemo(() => {
     if (visibleColumns === 'all') return columnsRoom;
     return columnsRoom.filter((column) =>

@@ -5,7 +5,21 @@ import { ChevronLeftCircle, ChevronRightCircle } from 'lucide-react';
 import { MenuIconManager } from './MenuIconManager';
 import { Navigate, Outlet, useNavigate } from 'react-router';
 import ProfileEditor from '../ProfileEditor/ProfileEditor';
+import { useQuery } from '@tanstack/react-query';
+import { getUser } from '@/service/customer.api';
+import { CustomerContext } from '@/context/customer.context';
+import { Customer } from '@/types/customer.type';
 export const Settings = () => {
+  const getProfileUser = async () => {
+    const response = await getUser();
+    // console.log(response.data);
+
+    return response.data.data;
+  };
+  const { data: customer, refetch } = useQuery<Customer>({
+    queryKey: ['customer'],
+    queryFn: getProfileUser,
+  });
   const [collapse, setCollapse] = useState<boolean>(false);
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const toggleSidebar = () => {
@@ -67,8 +81,8 @@ export const Settings = () => {
       </div>
       <div className="mainContent flex-auto max-h-screen h-vh items-stretch justify-center m-52 mt-16 border-spacing-2 border-0">
         {' '}
-        {/* <ProfileEditor /> */}
         <Outlet />
+        {/* <ProfileEditor /> */}
       </div>
     </div>
   );
