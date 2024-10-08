@@ -3,6 +3,28 @@ import { FaCalendarAlt, FaClock, FaPlus, FaCheck } from 'react-icons/fa';
 import { format } from 'date-fns';
 import { useParams } from 'react-router-dom';
 import { s } from 'vite/dist/node/types.d-aGj9QkWt';
+import {
+  parseDate,
+  getLocalTimeZone,
+  CalendarDate,
+} from '@internationalized/date';
+import {
+  Button,
+  Card,
+  CardBody,
+  DatePicker,
+  Input,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  Select,
+  SelectItem,
+  Tab,
+  Tabs,
+  useDisclosure,
+} from '@nextui-org/react';
 interface Service {
   id: number;
   name: string;
@@ -48,6 +70,21 @@ export const BookingRoomDetail = () => {
     '15:00 - 18:00',
     '19:00 - 22:00',
   ];
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+  const [quantities, setQuantities] = useState<{ [key: string]: number }>({
+    1: 1,
+    2: 1,
+    3: 1,
+  });
+
+  const handleQuantityChange = (id: string, newQuantity: number) => {
+    // calculateTotalPrice();
+    setQuantities((prevQuantities) => ({
+      ...prevQuantities,
+      [id]: newQuantity, // Cập nhật số lượng của món có id tương ứng
+    }));
+  };
 
   const building = ['Cơ sở 1', 'Cơ sở 2'];
 
@@ -55,8 +92,8 @@ export const BookingRoomDetail = () => {
     setSelectedBase(e.target.value);
   };
 
-  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedDate(new Date(e.target.value));
+  const handleDateChange = (value: CalendarDate) => {
+    setSelectedDate(new Date(value.toString()));
   };
 
   const handleTimeSlotChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -93,18 +130,35 @@ export const BookingRoomDetail = () => {
   }
   // console.log(room);
   const roomPrice = room.basePrice;
+  const [totals, setTotals] = useState<number>(roomPrice);
 
   const calculateTotalPrice = () => {
     const servicesTotal = selectedServices.reduce((total, serviceId) => {
       const selectedService = foodServices.find(
         (service) => service.id === serviceId
       );
-      return total + (selectedService ? selectedService.price : 0);
+      // Giả sử `quantities` là một đối tượng quản lý số lượng cho mỗi service theo id
+      const quantity = quantities[serviceId] || 1; // Lấy số lượng từ state, mặc định là 1
+      return total + (selectedService ? selectedService.price * quantity : 0);
     }, 0);
 
+    setTotals(roomPrice + servicesTotal);
     return roomPrice + servicesTotal;
   };
 
+  const [selectedImage, setSelectedImage] = useState(0);
+
+  const roomImages = [
+    'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
+    'https://images.unsplash.com/photo-1611892440504-42a792e24d32?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
+    'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
+    'https://images.unsplash.com/photo-1631049552057-403cdb8f0658?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
+  ];
+  const handleImageClick = (index: number) => {
+    setSelectedImage(index);
+  };
+
+  const [selected, setSelected] = React.useState('photos');
   // console.log(selectedTimeSlot);
   // console.log(selectedBase);
   // console.log(selectedDate);
@@ -112,23 +166,43 @@ export const BookingRoomDetail = () => {
   // selectedBase !== '' && selectedTimeSlot !== '' && setPolicyAgreed(true);
 
   return (
-    <div className="max-w-7xl mx-auto h-[700px] p-8 flex items-center justify-center">
-      <div className="bg-white rounded-lg shadow-lg overflow-hidden max-w-6xl w-full h-[700px] flex">
-        <div className="w-1/2 bg-gray-200">
+    <div className="w-full mx-auto h-[800px] p-8 flex items-center justify-center">
+      <div className="bg-white overflow-hidden w-full m-60 h-full flex">
+        {/* <div className="w-1/2 bg-gray-200">
           <img
             src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
             alt="Luxurious Hotel Room"
             className="w-full h-full object-cover"
           />
+        </div> */}
+        <div className="md:w-1/2">
+          <div className="relative overflow-hidden rounded-lg shadow-lg my-8">
+            <img
+              src={roomImages[selectedImage]}
+              alt={`Room Image ${selectedImage + 1}`}
+              className="w-full h-[400px] object-cover transition-transform duration-500 ease-in-out transform hover:scale-105"
+            />
+          </div>
+          <div className="flex mt-4 gap-2 overflow-x-auto">
+            {roomImages.map((image, index) => (
+              <img
+                key={index}
+                src={image}
+                alt={`Thumbnail ${index + 1}`}
+                className={`w-20 h-20 object-cover cursor-pointer rounded-md ${index === selectedImage ? 'ring-2 ring-blue-500' : ''}`}
+                onClick={() => handleImageClick(index)}
+              />
+            ))}
+          </div>
         </div>
         <div className="w-1/2 p-8 overflow-y-auto">
           <h2 className="text-3xl font-bold mb-6">{room?.name}</h2>
           <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            {/* <label className="block text-sm font-medium text-gray-700 mb-2">
               Cơ sở
-            </label>
+            </label> */}
             <div className="relative">
-              <select
+              {/* <select
                 value={selectedBase}
                 onChange={handleBaseChange}
                 className="w-full p-2 border rounded-md pl-10 appearance-none"
@@ -139,15 +213,33 @@ export const BookingRoomDetail = () => {
                     {base}
                   </option>
                 ))}
-              </select>
-              <FaClock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              </select> */}
+              {/* <FaClock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" /> */}
+              <div className="w-full flex flex-row flex-wrap gap-4">
+                {/* {colors.map((color) => ( */}
+                <Select
+                  value={selectedBase}
+                  onChange={handleBaseChange}
+                  key="default"
+                  color="default"
+                  label="Cơ sở"
+                  placeholder="Chọn cơ sở..."
+                  // defaultSelectedKeys={['cat']}
+                  className="w-full rounded-md appearance-none"
+                  // className="max-w-xs"
+                >
+                  {building.map((building) => (
+                    <SelectItem key={building}>{building}</SelectItem>
+                  ))}
+                </Select>
+              </div>
             </div>
           </div>
           <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            {/* <label className="block text-sm font-medium text-gray-700 mb-2">
               Ngày đặt
-            </label>
-            <div className="relative">
+            </label> */}
+            {/* <div className="relative">
               <input
                 type="date"
                 value={format(selectedDate, 'yyyy-MM-dd')}
@@ -155,10 +247,16 @@ export const BookingRoomDetail = () => {
                 className="w-full p-2 border rounded-md pl-10"
               />
               <FaCalendarAlt className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-            </div>
+            </div> */}
+            <DatePicker
+              onChange={handleDateChange}
+              value={parseDate(format(selectedDate, 'yyyy-MM-dd'))}
+              label="Ngày đặt"
+              className="w-full"
+            />
           </div>
           <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            {/* <label className="block text-sm font-medium text-gray-700 mb-2">
               Slot thời gian
             </label>
             <div className="relative">
@@ -174,19 +272,181 @@ export const BookingRoomDetail = () => {
                   </option>
                 ))}
               </select>
-              <FaClock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <FaClock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" /> */}
+            {/* </div> */}
+            <div className="w-full flex flex-row flex-wrap gap-4">
+              {/* {colors.map((color) => ( */}
+              <Select
+                value={selectedTimeSlot}
+                onChange={handleTimeSlotChange}
+                key="default"
+                color="default"
+                label="Thời gian"
+                placeholder="Chọn thời gian..."
+                // defaultSelectedKeys={['cat']}
+                className="w-full rounded-md appearance-none"
+                // className="max-w-xs"
+              >
+                {timeSlots.map((slot) => (
+                  <SelectItem key={slot}>{slot}</SelectItem>
+                ))}
+              </Select>
             </div>
           </div>
+
           <div className="mb-6">
             <p className="text-xl font-semibold">Giá ban đầu: ${roomPrice}</p>
           </div>
-          <button
+          {/* <Button
             onClick={toggleServiceModal}
-            className="bg-orange-500 shadow-lg font-bold text-black px-4 py-2 rounded-md hover:bg-orange-600 hover:text-blackA12 transition duration-300 flex items-center mb-6"
+            className="bg-violet-300 shadow-lg font-bold text-black px-4 py-2 rounded-md hover:bg-violet-500 hover:text-blackA12 transition duration-300 flex items-center mb-6"
           >
-            <FaPlus className="mr-2" /> Dịch vụ đồ ăn
-          </button>
-          {showServiceModal && (
+            <FaPlus className="mr-2" /> Thêm dịch vụ
+          </Button> */}
+          <Button
+            className="bg-violet-300 shadow-lg font-bold text-black px-4 py-2 rounded-md hover:bg-violet-500 hover:text-blackA12 transition duration-300 flex items-center mb-6"
+            onPress={onOpen}
+          >
+            <FaPlus className="mr-2" /> Thêm dịch vụ
+          </Button>
+          <Modal
+            onClose={calculateTotalPrice}
+            hideCloseButton={true}
+            scrollBehavior="inside"
+            size="4xl"
+            isOpen={isOpen}
+            onOpenChange={onOpenChange}
+          >
+            <ModalContent>
+              {(onClose) => (
+                <>
+                  <ModalHeader className="flex flex-col gap-1">
+                    Dịch vụ
+                  </ModalHeader>
+                  <ModalBody>
+                    {/* <div className="flex w-full flex-col fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50"> */}
+                    <Tabs
+                      aria-label="Options"
+                      selectedKey={selected}
+                      onSelectionChange={(key) => setSelected(key.toString())}
+                    >
+                      <Tab key="photos" title="Thiết bị">
+                        <Card>
+                          <CardBody>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                              {foodServices.map((service) => (
+                                <div className="flex-col">
+                                  <label htmlFor={service.id.toString()}>
+                                    <div
+                                      key={service.id}
+                                      className="border rounded-lg p-4 flex items-center"
+                                    >
+                                      <img
+                                        src={service.image}
+                                        alt={service.name}
+                                        className="w-20 h-20 object-cover rounded-md mr-4"
+                                      />
+                                      <div>
+                                        <h4 className="font-semibold">
+                                          {service.name}
+                                        </h4>
+                                        <p className="text-gray-600">
+                                          ${service.price}
+                                        </p>
+                                      </div>
+                                      {/* <span className="flex justify-end-end"> */}
+                                      {
+                                        <Input
+                                          variant="underlined"
+                                          className="h-12 w-20 ml-auto"
+                                          min={1}
+                                          type="number"
+                                          label="Số lượng"
+                                          placeholder="0"
+                                          value={'' + quantities[service.id]} // Số lượng tương ứng với từng món
+                                          onChange={(e) =>
+                                            handleQuantityChange(
+                                              service.id.toString(),
+                                              Number(e.target.value)
+                                            )
+                                          }
+                                          labelPlacement="inside"
+                                          startContent={
+                                            <div className="pointer-events-none flex items-center">
+                                              {/* <span className="text-default-400 text-small"></span> */}
+                                            </div>
+                                          }
+                                        />
+                                      }
+                                      {/* <div className="flex flex-col items-end justify-end"> */}
+                                      <input
+                                        id={service.id.toString()}
+                                        type="checkbox"
+                                        checked={selectedServices.includes(
+                                          service.id
+                                        )}
+                                        onChange={() =>
+                                          handleServiceSelection(service.id)
+                                        }
+                                        className="ml-auto size-5"
+                                      />
+                                      {/* </span> */}
+                                      {/* </div> */}
+                                    </div>
+                                  </label>
+                                  <div></div>
+                                </div>
+                              ))}
+                            </div>
+                          </CardBody>
+                        </Card>
+                      </Tab>
+                      <Tab key="music" title="Đồ ăn">
+                        <Card>
+                          <CardBody>
+                            Ut enim ad minim veniam, quis nostrud exercitation
+                            ullamco laboris nisi ut aliquip ex ea commodo
+                            consequat. Duis aute irure dolor in reprehenderit in
+                            voluptate velit esse cillum dolore eu fugiat nulla
+                            pariatur.
+                          </CardBody>
+                        </Card>
+                      </Tab>
+                    </Tabs>
+                    {/* </div> */}
+                    {/* <p>
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                      Nullam pulvinar risus non risus hendrerit venenatis.
+                      Pellentesque sit amet hendrerit risus, sed porttitor quam.
+                    </p>
+                    <p>
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                      Nullam pulvinar risus non risus hendrerit venenatis.
+                      Pellentesque sit amet hendrerit risus, sed porttitor quam.
+                    </p>
+                    <p>
+                      Magna exercitation reprehenderit magna aute tempor
+                      cupidatat consequat elit dolor adipisicing. Mollit dolor
+                      eiusmod sunt ex incididunt cillum quis. Velit duis sit
+                      officia eiusmod Lorem aliqua enim laboris do dolor
+                      eiusmod. Et mollit incididunt nisi consectetur esse
+                      laborum eiusmod pariatur proident Lorem eiusmod et. Culpa
+                      deserunt nostrud ad veniam.
+                    </p> */}
+                  </ModalBody>
+                  <ModalFooter>
+                    {/* <Button color="danger" variant="light" onPress={onClose}>
+                      Đóng
+                    </Button> */}
+                    <Button color="primary" onPress={onClose}>
+                      Đóng
+                    </Button>
+                  </ModalFooter>
+                </>
+              )}
+            </ModalContent>
+          </Modal>
+          {/* {showServiceModal && (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
               <div className="bg-white p-8 rounded-lg max-w-2xl w-full">
                 <h3 className="text-2xl font-bold mb-4">Đặt đồ ăn</h3>
@@ -222,12 +482,47 @@ export const BookingRoomDetail = () => {
                 </button>
               </div>
             </div>
-          )}
+            // <div className="flex w-full flex-col fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50">
+            //   <Tabs
+            //     aria-label="Options"
+            //     selectedKey={selected}
+            //     onSelectionChange={(key) => setSelected(key.toString())}
+            //   >
+            //     <Tab key="photos" title="Photos">
+            //       <Card>
+            //         <CardBody>
+            //           Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+            //           sed do eiusmod tempor incididunt ut labore et dolore magna
+            //           aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+            //           ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            //         </CardBody>
+            //       </Card>
+            //     </Tab>
+            //     <Tab key="music" title="Music">
+            //       <Card>
+            //         <CardBody>
+            //           Ut enim ad minim veniam, quis nostrud exercitation ullamco
+            //           laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+            //           irure dolor in reprehenderit in voluptate velit esse
+            //           cillum dolore eu fugiat nulla pariatur.
+            //         </CardBody>
+            //       </Card>
+            //     </Tab>
+            //     <Tab key="videos" title="Videos">
+            //       <Card>
+            //         <CardBody>
+            //           Excepteur sint occaecat cupidatat non proident, sunt in
+            //           culpa qui officia deserunt mollit anim id est laborum.
+            //         </CardBody>
+            //       </Card>
+            //     </Tab>
+            //   </Tabs>
+            // </div>
+          )} */}
           <div className="mb-6">
-            <p className="text-2xl font-bold">
-              Tổng đơn: ${calculateTotalPrice()}
-            </p>
+            <p className="text-2xl font-bold">Tổng đơn: ${totals}</p>
           </div>
+
           <div className="mb-6 flex items-center">
             <input
               type="checkbox"
@@ -242,7 +537,7 @@ export const BookingRoomDetail = () => {
                 onClick={togglePolicyModal}
                 className="text-blue-500 underline"
               >
-                chính sách đặt phòng
+                Chính sách đặt phòng
               </button>
             </label>
           </div>
