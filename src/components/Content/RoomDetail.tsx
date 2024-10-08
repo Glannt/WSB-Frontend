@@ -84,12 +84,12 @@ const RoomDetail = () => {
   ]);
 
   const { roomId } = useParams<{ roomId: string }>();
-  console.log(roomId);
+  // console.log(roomId);
   const room = rooms.find((room) => room.id === Number(roomId));
   const similarRooms = similarRooms1.filter(
     (room) => room.id !== Number(roomId)
   );
-  console.log(similarRooms);
+  // console.log(similarRooms);
 
   if (!room) {
     return <div>Phòng không tồn tại</div>;
