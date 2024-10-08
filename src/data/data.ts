@@ -16,6 +16,11 @@ const statusOptions = [
   { name: 'Paused', uid: 'paused' },
   { name: 'Vacation', uid: 'vacation' },
 ];
+export const statusOptionsBooking = [
+  { name: 'Đang sử dụng', uid: 'using' },
+  { name: 'Hoàn thành', uid: 'finished' },
+  { name: 'Sắp tới', uid: 'upcoming' },
+];
 
 const users = [
   {

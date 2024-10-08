@@ -137,3 +137,15 @@ export const schemaAddStaff = Yup.object().shape({
 });
 
 export type SchemaAddStaff = Yup.InferType<typeof schemaAddStaff>;
+
+export const schemaUpdatePassword = Yup.object().shape({
+  currentPassword: Yup.string().required('Current password is required'),
+  newPassword: Yup.string()
+    .required('New password is required')
+    .min(6, 'Password must be at least 6 characters long'), // You can add more rules here if needed
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref('newPassword')], 'Passwords do not match')
+    .required('Confirm password is required'),
+});
+
+export type SchemaUpdatePassword = Yup.InferType<typeof schemaUpdatePassword>;

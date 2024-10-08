@@ -29,7 +29,6 @@ export const DeleteRoom: React.FC<DeleteRoomProps> = ({
     mutationFn: ({ roomId }: { roomId: number | undefined }) =>
       deleteRoomById(roomId),
     onSuccess: () => {
-      console.log('Room deleted successfully');
       setSelectedDeleteRoom?.(null);
       refetchRooms();
       onClose(); // Close the modal after successful deletion

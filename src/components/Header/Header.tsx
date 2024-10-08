@@ -72,7 +72,7 @@ export const Header = (props: any) => {
                 <NavigationMenu.Trigger className="text-black hover:text-violet11 hover:bg-violet3 focus:shadow-violet7 group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none focus:shadow-[0_0_0_2px]">
                   Địa điểm{' '}
                   <CaretDownIcon
-                    className="text-violet10 relative top-[1px] transition-transform duration-[250] ease-in group-data-[state=open]:-rotate-180"
+                    className="text-violet10 relative top-[1px] transition-transform duration-250 ease-in group-data-[state=open]:-rotate-180"
                     aria-hidden
                   />
                 </NavigationMenu.Trigger>
@@ -102,7 +102,7 @@ export const Header = (props: any) => {
                 <NavigationMenu.Trigger className="text-black hover:text-violet11 hover:bg-violet3 focus:shadow-violet7 group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none focus:shadow-[0_0_0_2px]">
                   Dịch vụ{' '}
                   <CaretDownIcon
-                    className="text-violet10 relative top-[1px] transition-transform duration-[250] ease-in group-data-[state=open]:-rotate-180"
+                    className="text-violet10 relative top-[1px] transition-transform duration-250 ease-in group-data-[state=open]:-rotate-180"
                     aria-hidden
                   />
                 </NavigationMenu.Trigger>
@@ -181,7 +181,7 @@ export const Header = (props: any) => {
                       </Avatar.Fallback>
                     </Avatar.Root>{' '}
                     <CaretDownIcon
-                      className="text-violet10 relative top-[1px] transition-transform duration-[250] ease-in group-data-[state=open]:-rotate-180"
+                      className="text-violet10 relative top-[1px] transition-transform duration-250 ease-in group-data-[state=open]:-rotate-180"
                       aria-hidden
                     />
                   </NavigationMenu.Trigger>
