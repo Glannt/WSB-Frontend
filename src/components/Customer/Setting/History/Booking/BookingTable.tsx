@@ -34,8 +34,18 @@ interface BookingTableProps {
 const statusColorMap: Record<string, ChipProps['color']> = {
   using: 'success',
   finished: 'danger',
-  upcoming: 'warning',
+  UPCOMING: 'warning',
 };
+const translateStatus = (status: string) => {
+  const translations: Record<string, string> = {
+    finished: 'Hoàn thành',
+    UPCOMING: 'Sắp tới',
+    using: 'Đang sử dụng',
+  };
+
+  return translations[status] || status; // Fallback to the original status if not found
+};
+
 const BookingTable: React.FC<BookingTableProps> = ({
   headerColumns,
   items,
@@ -46,22 +56,48 @@ const BookingTable: React.FC<BookingTableProps> = ({
   onSortChange,
 }) => {
   const renderCell = React.useCallback(
-    (user: CustomerOrderBookingHistory, columnKey: React.Key) => {
-      const cellValue = user[columnKey as keyof CustomerOrderBookingHistory];
+    (booking: CustomerOrderBookingHistory, columnKey: React.Key) => {
+      const cellValue = booking[columnKey as keyof CustomerOrderBookingHistory];
+      console.log(columnKey);
 
       switch (columnKey) {
         case 'status':
           return (
             <Chip
               className="capitalize"
-              color={statusColorMap[user.status]}
+              color={statusColorMap[booking.status]}
               size="sm"
               variant="flat"
             >
-              {user.status === 'finished' && 'Hoàn thành'}
-              {user.status === 'upcoming' && 'Sắp tới'}
-              {user.status === 'using' && 'Đang sử dụng'}
+              {translateStatus(booking.status) || booking.status}
             </Chip>
+          );
+        case 'room':
+          // Render room information like room name
+          const room = booking.room;
+          return room ? (
+            <div className="flex flex-col">
+              <p className="text-bold text-sm capitalize">{room.roomName}</p>
+              <p className="text-bold text-sm capitalize text-default-400">
+                {room.price} USD
+              </p>
+            </div>
+          ) : (
+            'N/A'
+          );
+        case 'slot':
+          // Render slot information (assuming there can be multiple slots)
+          const slots = booking.slot;
+          return slots && slots.length > 0 ? (
+            <div>
+              {slots.map((slot, index) => (
+                <div key={index}>
+                  {slot.timeStart} - {slot.timeEnd}
+                </div>
+              ))}
+            </div>
+          ) : (
+            'N/A'
           );
         case 'actions':
           return (
@@ -69,24 +105,25 @@ const BookingTable: React.FC<BookingTableProps> = ({
               <Dropdown>
                 <DropdownTrigger>
                   <Button
-                    className={`${user.status === 'finished' ? 'btn-disabled' : ''}`}
+                    className={`${booking.status === 'finished' ? 'btn-disabled' : ''}`}
                     size="sm"
                     variant="light"
                   >
                     <PlusIcon className="font-bold" />
-                    {/* <VerticalDotsIcon className="text-default-300" /> */}
                   </Button>
                 </DropdownTrigger>
                 <DropdownMenu>
                   <DropdownItem>Thêm thiết bị</DropdownItem>
                   <DropdownItem>Thêm đồ ăn, uống</DropdownItem>
-                  {/* <DropdownItem>Delete</DropdownItem> */}
                 </DropdownMenu>
               </Dropdown>
             </div>
           );
         default:
-          return cellValue;
+          // Default case for simple values like strings or numbers
+          return typeof cellValue === 'string' || typeof cellValue === 'number'
+            ? cellValue
+            : 'N/A';
       }
     },
     []
@@ -113,14 +150,16 @@ const BookingTable: React.FC<BookingTableProps> = ({
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent={'No users found'} items={sortedItems}>
-        {(item) => (
-          <TableRow key={item.id}>
+      <TableBody emptyContent={'Không có đơn đặt nào'} items={sortedItems}>
+        {items.map((item) => (
+          <TableRow key={item.bookingId}>
             {(columnKey) => (
-              <TableCell>{renderCell(item, columnKey)}</TableCell>
+              <TableCell key={columnKey}>
+                {renderCell(item, columnKey)}
+              </TableCell>
             )}
           </TableRow>
-        )}
+        ))}
       </TableBody>
     </Table>
   );

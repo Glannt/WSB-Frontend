@@ -1,3 +1,5 @@
+import { Room } from './room.type';
+
 export interface Booking {
   id: number; // Unique identifier for the booking
   roomId: number; // ID of the room being booked
@@ -8,10 +10,17 @@ export interface Booking {
   createdAt: Date; // Date when the booking was created
 }
 
-export interface CustomerOrderBookingHistory {
-  id: number;
-  date: string;
-  amount: string;
+export interface SlotBooking {
+  slotId: number;
+  timeStart: string;
+  timeEnd: string;
   status: string;
-  address: string;
+}
+export interface CustomerOrderBookingHistory {
+  bookingId: string;
+  checkinDate: string;
+  totalPrice: string;
+  status: string;
+  room: Room;
+  slot: SlotBooking[];
 }

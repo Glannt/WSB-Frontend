@@ -38,6 +38,10 @@ import BookingFilter from './BookingFilter';
 import { statusOptionsBooking } from '@/data/data';
 import BookingTable from './BookingTable';
 import BookingPagination from './BookingPagination';
+import { useQuery } from '@tanstack/react-query';
+import { CustomerOrderBookingHistory, SlotBooking } from '@/types/bookings';
+import { getHistoryBooking } from '@/service/customer.api';
+import { Room } from '@/types/room.type';
 
 const statusOptions = [
   { name: 'Đang sử dụng', uid: 'using' },
@@ -45,86 +49,14 @@ const statusOptions = [
   { name: 'Sắp tới', uid: 'upcoming' },
 ];
 
-const bookings = [
-  {
-    id: 1,
-    date: '2021-10-10',
-    amount: '$100',
-    status: 'finished',
-    address: '123/ABC, ABC, Hà Nội',
-  },
-  {
-    id: 2,
-    date: '2021-10-11',
-    amount: '$200',
-    status: 'using',
-    address: 'Hà Nội',
-  },
-  {
-    id: 3,
-    date: '2021-10-12',
-    amount: '$300',
-    status: 'upcoming',
-    address: 'Hà Nội',
-  },
-  {
-    id: 4,
-    date: '2021-10-13',
-    amount: '$400',
-    status: 'finished',
-    address: 'Hà Nội',
-  },
-  {
-    id: 5,
-    date: '2021-10-14',
-    amount: '$500',
-    status: 'using',
-    address: 'Hà Nội',
-  },
-  {
-    id: 6,
-    date: '2021-10-15',
-    amount: '$600',
-    status: 'upcoming',
-    address: 'Hà Nội',
-  },
-  {
-    id: 7,
-    date: '2021-10-16',
-    amount: '$700',
-    status: 'finished',
-    address: 'Hà Nội',
-  },
-  {
-    id: 8,
-    date: '2021-10-17',
-    amount: '$800',
-    status: 'using',
-    address: 'Hà Nội',
-  },
-  {
-    id: 9,
-    date: '2021-10-18',
-    amount: '$900',
-    status: 'upcoming',
-    address: 'Hà Nội',
-  },
-  {
-    id: 10,
-    date: '2021-10-19',
-    amount: '$1000',
-    status: 'finished',
-    address: 'Hà Nội',
-  },
-];
-
 const columns = [
-  { name: 'ID', uid: 'id', sortable: true },
-  { name: 'Thời gian', uid: 'date', sortable: true },
-  { name: 'Địa điểm', uid: 'address' },
-  { name: 'Đơn giá', uid: 'amount', sortable: true },
-  { name: 'Tình trạng', uid: 'status' },
-  { name: 'Thêm dịch vụ', uid: 'actions' },
+  { name: 'ID', uid: 'bookingId', sortable: true }, // Based on bookingId field
+  { name: 'Thời gian', uid: 'checkinDate', sortable: true }, // Date of booking
+  { name: 'Phòng', uid: 'room', sortable: true }, // Room name from `room.roomName`
+  { name: 'Đơn giá', uid: 'totalPrice', sortable: true }, // Amount for the booking
+  { name: 'Thời gian Slot', uid: 'slot', sortable: false }, // Display time slot from `slot.timeStart - slot.timeEnd`
+  { name: 'Tình trạng', uid: 'status' }, // Status of the booking
+  { name: 'Thêm dịch vụ', uid: 'actions' }, // Actions column for any additional operations
 ];
 
 const statusColorMap: Record<string, ChipProps['color']> = {
@@ -134,18 +66,28 @@ const statusColorMap: Record<string, ChipProps['color']> = {
 };
 
 const INITIAL_VISIBLE_COLUMNS = [
-  'id',
-  'date',
-  'amount',
+  'bookingId',
+  'checkinDate',
+  'room',
+  'totalPrice',
+  'slot',
   'status',
   'actions',
-
-  'address',
 ];
 
-type Booking = (typeof bookings)[0];
-
 export default function BookingHistory() {
+  const getHistoryBookingApi = async () => {
+    const response = await getHistoryBooking();
+    return response.data.data;
+  };
+
+  const { data: bookings = [], refetch } = useQuery<
+    CustomerOrderBookingHistory[]
+  >({
+    queryKey: ['bookings'],
+    queryFn: getHistoryBookingApi,
+  });
+
   const [filterValue, setFilterValue] = React.useState('');
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
     new Set([])
@@ -156,7 +98,7 @@ export default function BookingHistory() {
   const [statusFilter, setStatusFilter] = React.useState<Selection>('all');
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
-    column: 'age',
+    column: 'checkinDate',
     direction: 'ascending',
   });
   const [value, setValue] = React.useState(new Set([]));
@@ -173,23 +115,22 @@ export default function BookingHistory() {
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
-    let filteredUsers = [...bookings];
+    let filteredBookings = [...bookings];
 
     if (hasSearchFilter) {
-      filteredUsers = filteredUsers.filter((user) =>
-        user.amount.toLowerCase().includes(filterValue.toLowerCase())
+      filteredBookings = filteredBookings.filter((booking) =>
+        booking.totalPrice.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
     if (
       statusFilter !== 'all' &&
       Array.from(statusFilter).length !== statusOptions.length
     ) {
-      filteredUsers = filteredUsers.filter((user) =>
+      filteredBookings = filteredBookings.filter((user) =>
         Array.from(statusFilter).includes(user.status)
       );
     }
-
-    return filteredUsers;
+    return filteredBookings;
   }, [bookings, filterValue, statusFilter]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
@@ -202,13 +143,24 @@ export default function BookingHistory() {
   }, [page, filteredItems, rowsPerPage]);
 
   const sortedItems = React.useMemo(() => {
-    return [...items].sort((a: Booking, b: Booking) => {
-      const first = a[sortDescriptor.column as keyof Booking] as number;
-      const second = b[sortDescriptor.column as keyof Booking] as number;
-      const cmp = first < second ? -1 : first > second ? 1 : 0;
-      console.log(1, first, second, cmp);
+    return [...items].sort((a, b) => {
+      // Compare checkinDate
+      const firstCheckInDate = new Date(a.checkinDate).getTime();
+      const secondCheckInDate = new Date(b.checkinDate).getTime();
 
-      return sortDescriptor.direction === 'descending' ? -cmp : cmp;
+      if (firstCheckInDate !== secondCheckInDate) {
+        return sortDescriptor.direction === 'ascending'
+          ? secondCheckInDate - firstCheckInDate // Ascending order
+          : firstCheckInDate - secondCheckInDate; // Descending order
+      }
+
+      // If checkinDate is the same, compare roomName
+      const firstRoomName = (a.room as Room)?.roomName || '';
+      const secondRoomName = (b.room as Room)?.roomName || '';
+
+      return sortDescriptor.direction === 'ascending'
+        ? firstRoomName.localeCompare(secondRoomName)
+        : secondRoomName.localeCompare(firstRoomName);
     });
   }, [sortDescriptor, items]);
 
@@ -231,260 +183,6 @@ export default function BookingHistory() {
     },
     []
   );
-  // const topContent = React.useMemo(() => {
-  //   return (
-  //     <div className="flex flex-col gap-4 h-full max-h-screen">
-  //       <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
-  //         Lịch Sử Đặt Phòng
-  //       </h2>
-  //       <div className="flex justify-end gap-3">
-  //         <div className="flex gap-3">
-  //           <Dropdown>
-  //             <DropdownTrigger className="hidden sm:flex">
-  //               <Button
-  //                 endContent={<ChevronDownIcon className="text-small" />}
-  //                 variant="flat"
-  //               >
-  //                 Trạng thái
-  //               </Button>
-  //             </DropdownTrigger>
-  //             <DropdownMenu
-  //               disallowEmptySelection
-  //               aria-label="Table Columns"
-  //               closeOnSelect={false}
-  //               selectedKeys={statusFilter}
-  //               selectionMode="multiple"
-  //               onSelectionChange={setStatusFilter}
-  //             >
-  //               {statusOptions.map((status) => (
-  //                 <DropdownItem key={status.uid} className="capitalize">
-  //                   {capitalize(status.name)}
-  //                 </DropdownItem>
-  //               ))}
-  //             </DropdownMenu>
-  //           </Dropdown>
-  //           <Dropdown>
-  //             <DropdownTrigger className="hidden sm:flex">
-  //               <Button
-  //                 endContent={<ChevronDownIcon className="text-small" />}
-  //                 variant="flat"
-  //               >
-  //                 Cột hiển thị
-  //               </Button>
-  //             </DropdownTrigger>
-  //             <DropdownMenu
-  //               disallowEmptySelection
-  //               aria-label="Table Columns"
-  //               closeOnSelect={false}
-  //               selectedKeys={visibleColumns}
-  //               selectionMode="multiple"
-  //               onSelectionChange={setVisibleColumns}
-  //             >
-  //               {columns.map((column) => (
-  //                 <DropdownItem key={column.uid} className="capitalize">
-  //                   {capitalize(column.name)}
-  //                 </DropdownItem>
-  //               ))}
-  //             </DropdownMenu>
-  //           </Dropdown>
-  //         </div>
-  //       </div>
-  //       <div className="flex justify-between items-center">
-  //         <span className="text-default-400 text-small">
-  //           Tổng {bookings.length} đơn
-  //         </span>
-  //         <label className="flex items-center text-default-400 text-small">
-  //           Rows per page:
-  //           <select
-  //             className="bg-transparent outline-none text-default-400 text-small rounded-md ml-3"
-  //             onChange={onRowsPerPageChange}
-  //           >
-  //             <option value="5">5</option>
-  //             <option value="10">10</option>
-  //             <option value="15">15</option>
-  //           </select>
-  //         </label>
-  //       </div>
-  //     </div>
-  //   );
-  // }, [
-  //   filterValue,
-  //   statusFilter,
-  //   visibleColumns,
-  //   onSearchChange,
-  //   onRowsPerPageChange,
-  //   bookings.length,
-  //   hasSearchFilter,
-  // ]);
-
-  // const bottomContent = React.useMemo(() => {
-  //   return (
-  //     <div className="py-2 px-2 flex justify-between items-center">
-  //       <Pagination
-  //         isCompact
-  //         showControls
-  //         showShadow
-  //         color="primary"
-  //         page={page}
-  //         total={pages}
-  //         onChange={setPage}
-  //       />
-  //       <div className="hidden sm:flex w-[30%] justify-end gap-2">
-  //         <Button
-  //           isDisabled={pages === 1}
-  //           size="sm"
-  //           variant="flat"
-  //           onPress={onPreviousPage}
-  //         >
-  //           Trước
-  //         </Button>
-  //         <Button
-  //           isDisabled={pages === 1}
-  //           size="sm"
-  //           variant="flat"
-  //           onPress={onNextPage}
-  //         >
-  //           Sau
-  //         </Button>
-  //       </div>
-  //     </div>
-  //   );
-  // }, [selectedKeys, items.length, page, pages, hasSearchFilter]);
-
-  //   return (
-  //     <div className="h-full mt-5 ml-5 mr-5">
-  //       <Table
-  //         isStriped
-  //         aria-label="Example table with custom cells, pagination and sorting"
-  //         isHeaderSticky
-  //         bottomContent={bottomContent}
-  //         bottomContentPlacement="outside"
-  //         classNames={{
-  //           wrapper: 'max-h-[382px]',
-  //         }}
-  //         selectedKeys={selectedKeys}
-  //         // selectionMode="multiple"
-  //         sortDescriptor={sortDescriptor}
-  //         topContent={topContent}
-  //         topContentPlacement="outside"
-  //         onSelectionChange={setSelectedKeys}
-  //         onSortChange={setSortDescriptor}
-  //       >
-  //         <TableHeader columns={headerColumns}>
-  //           {(column) => (
-  //             <TableColumn
-  //               key={column.uid}
-  //               align={column.uid === 'actions' ? 'center' : 'start'}
-  //               allowsSorting={column.sortable}
-  //             >
-  //               {column.name}
-  //             </TableColumn>
-  //           )}
-  //         </TableHeader>
-  //         <TableBody emptyContent={'No users found'} items={sortedItems}>
-  //           {(item) => (
-  //             <TableRow key={item.id}>
-  //               {(columnKey) => (
-  //                 <TableCell>{renderCell(item, columnKey)}</TableCell>
-  //               )}
-  //             </TableRow>
-  //           )}
-  //         </TableBody>
-  //       </Table>
-  //       <Modal
-  //         // backdrop="opaque"
-  //         isOpen={isOpen}
-  //         onOpenChange={onOpenChange}
-  //         placement="top-center"
-  //         // classNames={{
-  //         //   backdrop:
-  //         //     'bg-gradient-to-t from-zinc-900 to-zinc-900/10 backdrop-opacity-20',
-  //         // }}
-  //         classNames={{
-  //           base: 'max-w-[1000px] h-[300px]',
-  //         }}
-  //         motionProps={{
-  //           variants: {
-  //             enter: {
-  //               y: 0,
-  //               opacity: 1,
-  //               transition: {
-  //                 duration: 0.3,
-  //                 ease: 'easeOut',
-  //               },
-  //             },
-  //             exit: {
-  //               y: -20,
-  //               opacity: 0,
-  //               transition: {
-  //                 duration: 0.2,
-  //                 ease: 'easeIn',
-  //               },
-  //             },
-  //           },
-  //         }}
-  //       >
-  //         <ModalContent>
-  //           {(onClose) => (
-  //             <>
-  //               <ModalHeader className="flex flex-col gap-1">
-  //                 Thêm phòng mới
-  //               </ModalHeader>
-  //               <ModalBody>
-  //                 <div className="flex py-2 px-3 justify-evenly flex-wrap md:flex-nowrap gap-4">
-  //                   {' '}
-  //                   <Input
-  //                     autoFocus
-  //                     label="Tên phòng"
-  //                     placeholder="Nhập tên phòng"
-  //                     variant="bordered"
-  //                   />
-  //                   <Input
-  //                     label="Giá"
-  //                     placeholder="Nhập giá phòng"
-  //                     type="number"
-  //                     variant="bordered"
-  //                   />
-  //                 </div>
-  //                 <div className="flex flex-wrap py-2 px-3 md:flex-nowrap gap-4 w-[960px] justify-evenly">
-  //                   <Select
-  //                     label="Trạng thái phòng"
-  //                     className="max-w-xl"
-  //                     selectedKeys={value}
-  //                     onSelectionChange={() => setValue(value)}
-  //                   >
-  //                     {bookings.map((user) => (
-  //                       <SelectItem key={user.id}>{user.amount}</SelectItem>
-  //                     ))}
-  //                   </Select>
-  //                   <Select
-  //                     label="Loại phòng"
-  //                     placeholder="Chọn loại phòng"
-  //                     className="max-w-xl"
-  //                   >
-  //                     {roomTypes.map((roomTypes) => (
-  //                       <SelectItem key={roomTypes.key}>
-  //                         {roomTypes.label}
-  //                       </SelectItem>
-  //                     ))}
-  //                   </Select>
-  //                 </div>
-  //               </ModalBody>
-  //               <ModalFooter>
-  //                 <Button color="danger" variant="flat" onPress={onClose}>
-  //                   Đóng
-  //                 </Button>
-  //                 <Button color="primary" onPress={onClose}>
-  //                   Tạo
-  //                 </Button>
-  //               </ModalFooter>
-  //             </>
-  //           )}
-  //         </ModalContent>
-  //       </Modal>
-  //     </div>
-  //   );
-  // }
 
   return (
     <div className="h-40 mt-5 ml-5 mr-5">

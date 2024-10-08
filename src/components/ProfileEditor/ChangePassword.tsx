@@ -3,6 +3,15 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { Navigate, useNavigate } from 'react-router';
 import path from '@/constants/path';
+import { useForm } from 'react-hook-form';
+import { SchemaUpdatePassword, schemaUpdatePassword } from '@/utils/rules';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { getProfileFromLS } from '@/utils/auth';
+import { changePassword } from '@/service/customer.api';
+import { useMutation } from '@tanstack/react-query';
+import { Input } from '@nextui-org/react';
+import { EyeSlashFilledIcon } from '../Icons/EyeSlashFilledIcon';
+import { EyeFilledIcon } from '../Icons/EyeFilledIcon';
 
 const ChangePassword: React.FC = () => {
   const [currentPassword, setCurrentPassword] = useState<string>('');
@@ -13,36 +22,52 @@ const ChangePassword: React.FC = () => {
   const [showNewPassword, setShowNewPassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] =
     useState<boolean>(false);
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  // const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  const validateForm = (): boolean => {
-    const newErrors: { [key: string]: string } = {};
-    if (!currentPassword)
-      newErrors.currentPassword = 'Current password is required';
-    if (!newPassword) newErrors.newPassword = 'New password is required';
-    if (!confirmPassword)
-      newErrors.confirmPassword = 'Confirm password is required';
-    if (newPassword !== confirmPassword) {
-      newErrors.confirmPassword = 'Passwords do not match';
-    }
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
   const navigate = useNavigate();
+  const {
+    register, // To register the form fields
+    handleSubmit, // To handle form submission
+    formState: { errors }, // To access validation errors
+    reset,
+    setValue,
+    getValues,
+  } = useForm<SchemaUpdatePassword>({
+    resolver: yupResolver(schemaUpdatePassword), // Integrate Yup with react-hook-form
+  });
+  const profile = getProfileFromLS();
+  const UpdatePasswordMutation = useMutation({
+    mutationFn: async (
+      data: Omit<SchemaUpdatePassword, 'currentPassword' | 'confirmPassword'>
+    ) => {
+      // Convert data to FormData before passing to changePassword
+      const formData = new FormData();
+      formData.append('newPassword', data.newPassword); // Assuming the API expects newPassword in FormData
+      console.log(profile.username, data.newPassword);
 
-  const handleSubmit = (e: FormEvent): void => {
-    e.preventDefault();
-    if (validateForm()) {
-      setIsLoading(true);
-      setTimeout(() => {
-        setIsLoading(false);
-        alert('Password changed successfully!');
-        setCurrentPassword('');
-        setNewPassword('');
-        setConfirmPassword('');
-      }, 2000);
-    }
+      // Call the API function with username and formData
+      return changePassword(profile.username, formData);
+    },
+    onSuccess: () => {
+      setIsLoading(false);
+      // refetch(); // You can refetch here if needed
+      reset();
+    },
+    onError: (error) => {
+      console.error('Error updating profile:', error);
+      setIsLoading(false);
+    },
+  });
+  const onSubmit = (data: SchemaUpdatePassword) => {
+    setIsLoading(true);
+
+    // Prepare the data excluding currentPassword and confirmPassword
+    const updateData = {
+      newPassword: data.newPassword,
+    };
+
+    // Call the mutation to update the password
+    UpdatePasswordMutation.mutate(updateData);
   };
 
   const togglePasswordVisibility = (
@@ -63,112 +88,104 @@ const ChangePassword: React.FC = () => {
     }
   };
 
+  const handleChangeField = (field: keyof SchemaUpdatePassword, value: any) => {
+    setValue(field, value);
+  };
   return (
     <div className="inset-0 flex items-center justify-center">
       {/* <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 to-gray-700 p-4"> */}
       <div className="bg-white rounded-lg shadow-xl p-8 w-full max-w-2xl gap-4 h-auto max-h-screen mx-auto w-382px">
-        <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
+        <h2 className="text-3xl font-bold mb-10 text-center text-gray-800">
           Đổi mật khẩu
         </h2>
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
           <div>
-            <label
-              htmlFor="currentPassword"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Mật khẩu hiện tại
-            </label>
-            <div className="relative">
-              <input
-                type={showCurrentPassword ? 'text' : 'password'}
-                id="currentPassword"
-                value={currentPassword}
-                onChange={(e) => setCurrentPassword(e.target.value)}
-                className={`w-full px-4 py-2 border ${errors.currentPassword ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-gray-400 transition-all duration-200`}
-                aria-invalid={errors.currentPassword ? 'true' : 'false'}
-                aria-describedby="currentPassword-error"
-              />
-              <button
-                type="button"
-                onClick={() => togglePasswordVisibility('current')}
-                className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-600 hover:text-gray-800"
-              >
-                {showCurrentPassword ? <FaEyeSlash /> : <FaEye />}
-              </button>
-            </div>
-            {errors.currentPassword && (
-              <p
-                id="currentPassword-error"
-                className="mt-1 text-xs text-red-500"
-              >
-                {errors.currentPassword}
-              </p>
-            )}
+            <Input
+              label=" Mật khẩu hiện tại"
+              labelPlacement="outside"
+              placeholder="Nhập mật khẩu hiện tại"
+              variant="bordered"
+              type={showCurrentPassword ? 'text' : 'password'}
+              className="max-w-auto"
+              radius="sm"
+              {...register('currentPassword')}
+              onChange={(e) =>
+                handleChangeField('currentPassword', e.target.value)
+              }
+              endContent={
+                <button
+                  className="focus:outline-none"
+                  type="button"
+                  onClick={() => togglePasswordVisibility('current')}
+                  aria-label="toggle password visibility"
+                >
+                  {showCurrentPassword ? (
+                    <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                  ) : (
+                    <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                  )}
+                </button>
+              }
+            />
           </div>
           <div>
-            <label
-              htmlFor="newPassword"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Mật khẩu mới
-            </label>
-            <div className="relative">
-              <input
-                type={showNewPassword ? 'text' : 'password'}
-                id="newPassword"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                className={`w-full px-4 py-2 border ${errors.newPassword ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-gray-400 transition-all duration-200`}
-                aria-invalid={errors.newPassword ? 'true' : 'false'}
-                aria-describedby="newPassword-error"
-              />
-              <button
-                type="button"
-                onClick={() => togglePasswordVisibility('new')}
-                className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-600 hover:text-gray-800"
-              >
-                {showNewPassword ? <FaEyeSlash /> : <FaEye />}
-              </button>
-            </div>
-            {errors.newPassword && (
-              <p id="newPassword-error" className="mt-1 text-xs text-red-500">
-                {errors.newPassword}
-              </p>
-            )}
+            <Input
+              label="Mật khẩu mới"
+              labelPlacement="outside"
+              placeholder="Nhập mật khẩu mới"
+              variant="bordered"
+              type={showNewPassword ? 'text' : 'password'}
+              className="max-w-auto"
+              radius="sm"
+              {...register('newPassword')}
+              onChange={(e) => handleChangeField('newPassword', e.target.value)}
+              errorMessage={errors.newPassword?.message}
+              endContent={
+                <button
+                  className="focus:outline-none"
+                  type="button"
+                  onClick={() => togglePasswordVisibility('new')}
+                  aria-label="toggle password visibility"
+                >
+                  {showNewPassword ? (
+                    <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                  ) : (
+                    <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                  )}
+                </button>
+              }
+            />
           </div>
+          {/* confirm new Password */}
           <div>
-            <label
-              htmlFor="confirmPassword"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Xác nhận mật khẩu
-            </label>
-            <div className="relative">
-              <input
-                type={showConfirmPassword ? 'text' : 'password'}
-                id="confirmPassword"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className={`w-full px-4 py-2 border ${errors.confirmPassword ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-gray-400 transition-all duration-200`}
-                aria-invalid={errors.confirmPassword ? 'true' : 'false'}
-                aria-describedby="confirmPassword-error"
-              />
-              <button
-                type="button"
-                onClick={() => togglePasswordVisibility('confirm')}
-                className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-600 hover:text-gray-800"
-              >
-                {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
-              </button>
-            </div>
-            {errors.confirmPassword && (
-              <p
-                id="confirmPassword-error"
-                className="mt-1 text-xs text-red-500"
-              >
-                {errors.confirmPassword}
-              </p>
-            )}
+            <Input
+              label="Xác nhận mật khẩu"
+              labelPlacement="outside"
+              placeholder="Nhập lại mật khẩu mới"
+              variant="bordered"
+              type={showConfirmPassword ? 'text' : 'password'}
+              className="max-w-auto"
+              radius="sm"
+              onChange={(e) =>
+                handleChangeField('confirmPassword', e.target.value)
+              }
+              isInvalid={errors.confirmPassword ? true : false}
+              errorMessage={errors.confirmPassword?.message}
+              endContent={
+                <button
+                  className="focus:outline-none"
+                  type="button"
+                  onClick={() => togglePasswordVisibility('confirm')}
+                  aria-label="toggle password visibility"
+                >
+                  {showConfirmPassword ? (
+                    <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                  ) : (
+                    <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                  )}
+                </button>
+              }
+            />
           </div>
           <div className="flex justify-between">
             <span
