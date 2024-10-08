@@ -16,9 +16,9 @@ export const changePassword = (username: string, formData: FormData) =>
 export const getUser = () => http.get('/api/customer/manage-profile');
 
 export const changeProfile = (
-  userName: string,
+  username: string,
   body: Omit<Customer, 'wallet' | 'roleName'>
-) => http.put(`/api/customer/manage-profile/edit-profile/${userName}`, body);
+) => http.put(`/api/customer/manage-profile/edit-profile/${username}`, body);
 
 export const getHistoryBooking = () =>
   http.get('/api/customer/history-booking');
