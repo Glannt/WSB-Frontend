@@ -36,6 +36,9 @@ import { Role } from '@/types/user.type';
 import RoomsList from '@/components/Modal/Manager/testGET';
 import { AdminDashboard } from '@/components/Manager/AdminDashboard';
 import { DashboardManager } from '@/components/Manager/DashboardManager';
+import { BuildingOne } from '@/components/Building/BuildingOne';
+import { BuildingTwo } from '@/components/Building/BuildingTwo';
+import { TypeSingle } from '@/pages/RoomType/TypeSingle';
 interface ProtectedRouteProps {
   requiredRoles?: Role[]; // Optional prop for role-based protection
 }
@@ -55,7 +58,6 @@ function ProtectedRoute({ requiredRoles }: ProtectedRouteProps) {
 
   // Render nested routes if authenticated and authorized
   return <Outlet />;
-
 }
 
 function RejectedRoute() {
@@ -173,7 +175,30 @@ export const router = createBrowserRouter([
       </MainLayout>
     ),
   },
-
+  {
+    path: 'single-space',
+    element: (
+      <MainLayout>
+        <TypeSingle />
+      </MainLayout>
+    ),
+  },
+  {
+    path: 'building-1',
+    element: (
+      <MainLayout>
+        <BuildingOne />
+      </MainLayout>
+    ),
+  },
+  {
+    path: 'building-2',
+    element: (
+      <MainLayout>
+        <BuildingTwo />
+      </MainLayout>
+    ),
+  },
   {
     path: '',
     element: <ProtectedRoute />,
