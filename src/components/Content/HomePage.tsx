@@ -106,6 +106,7 @@ export const HomePage: React.FC<CarouselPropsSlider> = ({
               url="https://workflow.com.vn/wp-content/uploads/2024/07/b1f293e72e40e53c6d98a043c1cc3148.png"
               name="Phòng đơn"
               description="Giá cả phải chăng"
+              className="hover:scale-105"
             />
           </div>
           <div

@@ -1,9 +1,12 @@
+import { Card, CardBody, CardHeader, Image } from '@nextui-org/react';
+
 interface TypeRoomCardProps {
   url: string;
   name: string;
   description: string;
   className?: string;
 }
+
 export const TypeRoomCard: React.FC<TypeRoomCardProps> = ({
   className,
   name,
@@ -12,18 +15,21 @@ export const TypeRoomCard: React.FC<TypeRoomCardProps> = ({
 }) => {
   return (
     <div className={className}>
-      <div className="card bg-base-100 w-96 h-80 shadow-xl hover:scale-105 transition-all">
-        <figure>
-          <img src={url} alt="Shoes" />
-        </figure>
-        <div className="card-body bg-white">
-          <h2 className="card-title">{name}</h2>
-          <p>&nbsp;&nbsp;{description}</p>
-          {/* <div className="card-actions justify-end">
-            <button className="btn btn-primary">Buy Now</button>
-          </div> */}
-        </div>
-      </div>
+      <Card className="w-96 shadow-xl transition-all">
+        <CardBody className="overflow-hidden p-0">
+          <Image
+            src={url}
+            alt="Room type"
+            className="object-cover rounded-t-xl"
+            width={384} // Adjust as needed
+            height={240} // Adjust as needed
+          />
+        </CardBody>
+        <CardHeader className="p-4 flex-col items-start">
+          <h2 className="font-bold text-lg">{name}</h2>
+          <p className="text-sm">{description}</p>
+        </CardHeader>
+      </Card>
     </div>
   );
 };
