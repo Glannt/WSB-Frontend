@@ -283,6 +283,7 @@ export const BookingRoomDetail = () => {
                 color="default"
                 label="Thời gian"
                 placeholder="Chọn thời gian..."
+                selectionMode="multiple"
                 // defaultSelectedKeys={['cat']}
                 className="w-full rounded-md appearance-none"
                 // className="max-w-xs"
