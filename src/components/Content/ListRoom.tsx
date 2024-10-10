@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { Select, SelectItem, Slider } from '@nextui-org/react';
 import { useNavigate } from 'react-router';
-import { c } from 'vite/dist/node/types.d-aGj9QkWt';
+import { ListingCard } from './RoomCard';
 
 export const ListRoom = () => {
   const navigate = useNavigate();
@@ -42,7 +42,7 @@ export const ListRoom = () => {
     },
     {
       id: 'D03',
-      name: 'Phòng Họp',
+      name: 'Phòng Họp 1',
       type: 'Phòng họp',
       building: 'Đà Nẵng City Centre',
       price: 12000000,
@@ -54,7 +54,7 @@ export const ListRoom = () => {
     },
     {
       id: 'D04',
-      name: 'Phòng Họp',
+      name: 'Phòng Họp 2',
       type: 'Phòng họp',
       building: 'Hồ Chí Minh',
       price: 15000000,
@@ -162,7 +162,12 @@ export const ListRoom = () => {
       <div className="lg:w-full p-6 overflow-y-auto">
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {filteredListings.map((listing) => (
-            <ListingCard key={listing.id} listing={listing} />
+            <div
+              className="cursor-pointer"
+              onClick={() => navigate('/room-detail/' + listing.id)}
+            >
+              <ListingCard key={listing.id} listing={listing} />
+            </div>
           ))}
         </div>
       </div>
@@ -170,81 +175,83 @@ export const ListRoom = () => {
   );
 };
 
-interface Listing {
-  id: string;
-  name: string;
-  type: string;
-  building: string;
-  price: number;
-  images: string[];
-}
+// interface Listing {
+//   id: string;
+//   name: string;
+//   type: string;
+//   building: string;
+//   price: number;
+//   images: string[];
+// }
 
-interface ListingCardProps {
-  listing: Listing;
-}
+// interface ListingCardProps {
+//   listing: Listing;
+// }
 
-const ListingCard: React.FC<ListingCardProps> = ({ listing }) => (
-  <div className="bg-white rounded-lg shadow-md overflow-hidden hover:bg-gray-50 transition-colors duration-200">
-    <Carousel images={listing.images} />
-    <div className="p-4">
-      <h2 className="text-xl font-bold mb-2">{listing.name}</h2>
-      <span className="text-gray-700">{listing.building}</span>
-      <div className="flex items-center">
-        <span className="text-red-600 font-bold">
-          {listing.price.toLocaleString()} đ
-        </span>
-      </div>
-    </div>
-  </div>
-);
+// const ListingCard: React.FC<ListingCardProps> = ({ listing }) => (
+//   <div className="bg-white rounded-lg shadow-md overflow-hidden hover:bg-gray-50 transition-colors duration-200">
+//     <Carousel images={listing.images} />
+//     <div className="p-4">
+//       <h2 className="text-xl font-bold mb-2">{listing.name}</h2>
+//       <span className="text-gray-700">{listing.type}</span>
+//       <span className="mx-2">•</span>
+//       <span className="text-gray-700">{listing.building}</span>
+//       <div className="flex items-center">
+//         <span className="text-red-600 font-bold">
+//           {listing.price.toLocaleString()} đ
+//         </span>
+//       </div>
+//     </div>
+//   </div>
+// );
 
-interface CarouselProps {
-  images: string[];
-}
+// interface CarouselProps {
+//   images: string[];
+// }
 
-const Carousel: React.FC<CarouselProps> = ({ images }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+// const Carousel: React.FC<CarouselProps> = ({ images }) => {
+//   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const nextSlide = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === images.length - 1 ? 0 : prevIndex + 1
-    );
-  };
+//   const nextSlide = () => {
+//     setCurrentIndex((prevIndex) =>
+//       prevIndex === images.length - 1 ? 0 : prevIndex + 1
+//     );
+//   };
 
-  const prevSlide = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? images.length - 1 : prevIndex - 1
-    );
-  };
+//   const prevSlide = () => {
+//     setCurrentIndex((prevIndex) =>
+//       prevIndex === 0 ? images.length - 1 : prevIndex - 1
+//     );
+//   };
 
-  return (
-    <div className="relative w-full h-64 overflow-hidden rounded-t-lg">
-      {images.map((image, index) => (
-        <div
-          key={index}
-          className={`absolute top-0 left-0 w-full h-full transition-opacity duration-500 ${
-            index === currentIndex ? 'opacity-100' : 'opacity-0'
-          }`}
-        >
-          <img
-            src={image}
-            alt={`Slide ${index + 1}`}
-            className="w-full h-full object-cover"
-          />
-        </div>
-      ))}
-      <button
-        onClick={prevSlide}
-        className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-white bg-opacity-50 rounded-full p-2 focus:outline-none"
-      >
-        <FaChevronLeft className="text-gray-800" />
-      </button>
-      <button
-        onClick={nextSlide}
-        className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-white bg-opacity-50 rounded-full p-2 focus:outline-none"
-      >
-        <FaChevronRight className="text-gray-800" />
-      </button>
-    </div>
-  );
-};
+//   return (
+//     <div className="relative w-full h-64 overflow-hidden rounded-t-lg">
+//       {images.map((image, index) => (
+//         <div
+//           key={index}
+//           className={`absolute top-0 left-0 w-full h-full transition-opacity duration-500 ${
+//             index === currentIndex ? 'opacity-100' : 'opacity-0'
+//           }`}
+//         >
+//           <img
+//             src={image}
+//             alt={`Slide ${index + 1}`}
+//             className="w-full h-full object-cover"
+//           />
+//         </div>
+//       ))}
+//       <button
+//         onClick={prevSlide}
+//         className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-white bg-opacity-50 rounded-full p-2 focus:outline-none"
+//       >
+//         <FaChevronLeft className="text-gray-800" />
+//       </button>
+//       <button
+//         onClick={nextSlide}
+//         className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-white bg-opacity-50 rounded-full p-2 focus:outline-none"
+//       >
+//         <FaChevronRight className="text-gray-800" />
+//       </button>
+//     </div>
+//   );
+// };
