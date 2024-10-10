@@ -162,12 +162,7 @@ export const ListRoom = () => {
       <div className="lg:w-full p-6 overflow-y-auto">
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {filteredListings.map((listing) => (
-            <div
-              className="cursor-pointer"
-              onClick={() => navigate('/room-detail/' + listing.id)}
-            >
-              <ListingCard key={listing.id} listing={listing} />
-            </div>
+            <ListingCard key={listing.id} listing={listing} />
           ))}
         </div>
       </div>
