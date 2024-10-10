@@ -27,16 +27,11 @@ export const TitleOverview: React.FC<TitleOverviewProps> = ({
       </div>
 
       <div className="lg:col-span-3 mt-16">
-        <div className="font-bold text-6xl text-center mb-5">Phòng đơn</div>
+        <div className="font-bold text-6xl text-center mb-5">{title}</div>
         <div className="font-semibold text-3xl text-pretty mb-5">
-          Thích hợp cho 1 người
+          {subTitle}
         </div>
-        <div className="text-xl font-medium mb-4">
-          Phòng dành cho sự riêng tư, cần tập trung. Đây là không gian lý tưởng
-          để làm việc, học tập hoặc thư giãn một mình. Với thiết kế hiện đại,
-          phòng đơn đảm bảo mang đến sự thoải mái và yên tĩnh, giúp bạn dễ dàng
-          tập trung vào công việc hoặc những sở thích cá nhân.
-        </div>
+        <div className="text-xl font-medium mb-4">{description}</div>
         <Button
           className="mt-10 w-full bg-transparent border border-blackA12 hover:transition hover:duration-700 hover:bg-black hover:text-[#f0ecec] p-7 shadow-lg"
           onClick={() => navigate(path.rooms)}

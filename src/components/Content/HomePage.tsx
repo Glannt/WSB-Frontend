@@ -5,7 +5,7 @@ import { SubcriptionCard } from '../HomepageContent/SubcriptionCard';
 import { TypeRoomCard } from '../HomepageContent/TypeRoomCard';
 import { DescriptionUtil } from '../HomepageContent/DescriptionHomePage';
 import HeroSection from './heroSection';
-import RoomDecription from '../HomepageContent/RoomDecription';
+import RoomDescription from '../HomepageContent/RoomDecription';
 import { useNavigate } from 'react-router';
 import path from '@/constants/path';
 
@@ -99,7 +99,7 @@ export const HomePage: React.FC<CarouselPropsSlider> = ({
         <h1 className="font-bold text-4xl ml-8 mb-14">Các loại phòng</h1>
         <div className="flex flex-row gap-4 w-full h-auto justify-evenly">
           <div
-            onClick={() => navigate('room-detail/' + 1)}
+            onClick={() => navigate('single-space')}
             className="cursor-pointer"
           >
             <TypeRoomCard
@@ -110,7 +110,7 @@ export const HomePage: React.FC<CarouselPropsSlider> = ({
             />
           </div>
           <div
-            onClick={() => navigate('room-detail/' + 2)}
+            onClick={() => navigate('double-space')}
             className="cursor-pointer"
           >
             <TypeRoomCard
@@ -120,22 +120,22 @@ export const HomePage: React.FC<CarouselPropsSlider> = ({
             />
           </div>
           <div
-            onClick={() => navigate('room-detail/' + 3)}
+            onClick={() => navigate('meeting-space')}
             className="cursor-pointer"
           >
             <TypeRoomCard
               url="https://workflow.com.vn/wp-content/uploads/2024/07/675e66a2542d4618edc4802b0124c59e.jpg"
-              name="Phòng 7"
+              name="Phòng họp"
               description="Thiết bị đầy đủ, tiện ích tốt"
             />
           </div>
           <div
-            onClick={() => navigate('room-detail/' + 4)}
+            onClick={() => navigate('event-space')}
             className="cursor-pointer"
           >
             <TypeRoomCard
               url="https://workflow.com.vn/wp-content/uploads/2024/05/z5404832229897_c592108c054d4505476d97f2bbd6f86e-2.png"
-              name="Phòng 10"
+              name="Phòng sự kiện"
               description="Càng đông càng xịn"
             />
           </div>
@@ -155,7 +155,7 @@ export const HomePage: React.FC<CarouselPropsSlider> = ({
       </div>
       <div className="max-w-[1800px] h-[50rem] w-full m-auto relative py-16 px-4">
         {/* <DescriptionUtil /> */}
-        <RoomDecription />
+        <RoomDescription />
       </div>
       {/* <div className="max-w-[1800px] h-[70rem] w-full m-auto relative py-16 px-4">
         <HeroSection />

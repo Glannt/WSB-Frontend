@@ -15,11 +15,11 @@ import {
   FaCogs,
 } from 'react-icons/fa';
 import { Building } from 'lucide-react';
-interface EventUtilityModalProps {
+interface UtilityEventModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
-const EventUtilityModal: React.FC<EventUtilityModalProps> = ({
+const UtilityEventModal: React.FC<UtilityEventModalProps> = ({
   isOpen,
   onClose,
 }) => {
@@ -123,4 +123,4 @@ const EventUtilityModal: React.FC<EventUtilityModalProps> = ({
   );
 };
 
-export default EventUtilityModal;
+export default UtilityEventModal;
