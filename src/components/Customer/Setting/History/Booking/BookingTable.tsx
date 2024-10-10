@@ -29,6 +29,7 @@ interface BookingTableProps {
   setSelectedKeys: (keys: Selection) => void;
   sortDescriptor: SortDescriptor;
   onSortChange: (descriptor: SortDescriptor) => void;
+  openModal: (booking: CustomerOrderBookingHistory) => void;
 }
 
 const statusColorMap: Record<string, ChipProps['color']> = {
@@ -54,11 +55,11 @@ const BookingTable: React.FC<BookingTableProps> = ({
   sortDescriptor,
   setSelectedKeys,
   onSortChange,
+  openModal,
 }) => {
   const renderCell = React.useCallback(
     (booking: CustomerOrderBookingHistory, columnKey: React.Key) => {
       const cellValue = booking[columnKey as keyof CustomerOrderBookingHistory];
-      console.log(columnKey);
 
       switch (columnKey) {
         case 'status':
@@ -74,12 +75,12 @@ const BookingTable: React.FC<BookingTableProps> = ({
           );
         case 'room':
           // Render room information like room name
-          const room = booking.room;
-          return room ? (
+          // const room = booking.room;
+          return booking ? (
             <div className="flex flex-col">
-              <p className="text-bold text-sm capitalize">{room.roomName}</p>
+              <p className="text-bold text-sm capitalize">{booking.roomId}</p>
               <p className="text-bold text-sm capitalize text-default-400">
-                {room.price} USD
+                {booking.totalPrice} USD
               </p>
             </div>
           ) : (
@@ -87,7 +88,8 @@ const BookingTable: React.FC<BookingTableProps> = ({
           );
         case 'slot':
           // Render slot information (assuming there can be multiple slots)
-          const slots = booking.slot;
+          const slots = booking.slots;
+
           return slots && slots.length > 0 ? (
             <div>
               {slots.map((slot, index) => (
@@ -99,6 +101,23 @@ const BookingTable: React.FC<BookingTableProps> = ({
           ) : (
             'N/A'
           );
+
+        case 'services':
+          const services = booking.serviceItems;
+          return services && Object.keys(services).length > 0 ? (
+            <div>
+              {Object.entries(services).map(
+                ([serviceName, quantity], index) => (
+                  <div key={index}>
+                    {serviceName} - {quantity} cái
+                  </div>
+                )
+              )}
+            </div>
+          ) : (
+            'N/A'
+          );
+
         case 'actions':
           return (
             <div className="relative flex justify-center items-center gap-2 h-10">
@@ -113,7 +132,9 @@ const BookingTable: React.FC<BookingTableProps> = ({
                   </Button>
                 </DropdownTrigger>
                 <DropdownMenu>
-                  <DropdownItem>Thêm thiết bị</DropdownItem>
+                  <DropdownItem onClick={() => openModal(booking)}>
+                    Thêm thiết bị
+                  </DropdownItem>
                   <DropdownItem>Thêm đồ ăn, uống</DropdownItem>
                 </DropdownMenu>
               </Dropdown>

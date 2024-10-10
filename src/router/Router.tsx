@@ -226,6 +226,7 @@ export const router = createBrowserRouter([
       </MainLayout>
     ),
   },
+
   {
     path: '',
     element: <ProtectedRoute />,
