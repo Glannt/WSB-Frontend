@@ -109,6 +109,7 @@ export default function BookingHistory() {
   };
   const closeModal = () => {
     setIsOpenServices(false);
+    refetch();
   };
   const hasSearchFilter = Boolean(filterValue);
 
@@ -219,7 +220,12 @@ export default function BookingHistory() {
         setPage={setPage}
       />
       {isOpenService && (
-        <AddMoreServices isOpen={isOpenService} onClose={closeModal} />
+        <AddMoreServices
+          refetchBooking={refetch}
+          isOpen={isOpenService}
+          onClose={closeModal}
+          booking={selectedBooking}
+        />
       )}
     </div>
   );

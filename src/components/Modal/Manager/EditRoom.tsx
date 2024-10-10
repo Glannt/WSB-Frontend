@@ -84,7 +84,7 @@ const EditRoom: React.FC<RoomModalProps> = ({
       roomId,
       formData,
     }: {
-      roomId: number | undefined;
+      roomId: string | undefined;
       formData: FormData;
     }) => UpdateRoom(roomId, formData), // Use the updated function
   });

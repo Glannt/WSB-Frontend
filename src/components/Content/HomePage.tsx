@@ -95,7 +95,7 @@ export const HomePage: React.FC<CarouselPropsSlider> = ({
         </div>
       </div>
       {/* Type room */}
-      <div className="max-auto h-auto w-full m-auto py-16 px-4">
+      <div className="max-auto h-auto w-full m-auto py-16 px-4 -z-20">
         <h1 className="font-bold text-4xl ml-8 mb-14">Các loại phòng</h1>
         <div className="flex flex-row gap-4 w-full h-auto justify-evenly">
           <div
@@ -117,6 +117,7 @@ export const HomePage: React.FC<CarouselPropsSlider> = ({
               url="https://workflow.com.vn/wp-content/uploads/2024/07/72d7d94d35b0d6bce9ae803e5e5b8975.png"
               name="Phòng đôi"
               description="Rộng rãi thoải mái"
+              className="hover:scale-105"
             />
           </div>
           <div
@@ -127,6 +128,7 @@ export const HomePage: React.FC<CarouselPropsSlider> = ({
               url="https://workflow.com.vn/wp-content/uploads/2024/07/675e66a2542d4618edc4802b0124c59e.jpg"
               name="Phòng họp"
               description="Thiết bị đầy đủ, tiện ích tốt"
+              className="hover:scale-105"
             />
           </div>
           <div
@@ -137,6 +139,7 @@ export const HomePage: React.FC<CarouselPropsSlider> = ({
               url="https://workflow.com.vn/wp-content/uploads/2024/05/z5404832229897_c592108c054d4505476d97f2bbd6f86e-2.png"
               name="Phòng sự kiện"
               description="Càng đông càng xịn"
+              className="hover:scale-105"
             />
           </div>
         </div>
