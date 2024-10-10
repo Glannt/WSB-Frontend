@@ -5,10 +5,18 @@ import {
   FaUsers,
   FaCalendarAlt,
   FaClock,
+  FaChevronLeft,
+  FaChevronRight,
+  FaRulerCombined,
 } from 'react-icons/fa';
 import { MdMeetingRoom } from 'react-icons/md';
-import { Select } from '@radix-ui/react-select';
-import { DatePicker, Input } from '@nextui-org/react';
+import {
+  DatePicker,
+  Input,
+  Select,
+  SelectItem,
+  Slider,
+} from '@nextui-org/react';
 import { Button, Card } from '@nextui-org/react';
 import { useNavigate } from 'react-router';
 
@@ -57,35 +65,230 @@ export const ListRoom = () => {
     );
   });
 
+  interface CarouselProps {
+    images: string[];
+  }
+  const Carousel: React.FC<CarouselProps> = ({ images }) => {
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    const nextSlide = () => {
+      setCurrentIndex((prevIndex) =>
+        prevIndex === images.length - 1 ? 0 : prevIndex + 1
+      );
+    };
+
+    const prevSlide = () => {
+      setCurrentIndex((prevIndex) =>
+        prevIndex === 0 ? images.length - 1 : prevIndex - 1
+      );
+    };
+
+    return (
+      <div className="relative w-full h-64 overflow-hidden rounded-t-lg">
+        {images.map((image, index) => (
+          <div
+            key={index}
+            className={`absolute top-0 left-0 w-full h-full transition-opacity duration-500 ${index === currentIndex ? 'opacity-100' : 'opacity-0'}`}
+          >
+            <img
+              src={image}
+              alt={`Slide ${index + 1}`}
+              className="w-full h-full object-cover"
+            />
+          </div>
+        ))}
+        <button
+          onClick={prevSlide}
+          className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-white bg-opacity-50 rounded-full p-2 focus:outline-none"
+        >
+          <FaChevronLeft className="text-gray-800" />
+        </button>
+        <button
+          onClick={nextSlide}
+          className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-white bg-opacity-50 rounded-full p-2 focus:outline-none"
+        >
+          <FaChevronRight className="text-gray-800" />
+        </button>
+      </div>
+    );
+  };
+
+  const listings = [
+    {
+      id: 'D01',
+      name: 'Văn phòng S03',
+      type: 'Văn phòng riêng',
+      building: 'Đà Nẵng City Centre',
+      price: '5,000,000',
+      images: [
+        'https://images.unsplash.com/photo-1497366754035-f200968a6e72',
+        'https://images.unsplash.com/photo-1497366811353-6870744d04b2',
+        'https://images.unsplash.com/photo-1524758631624-e2822e304c36',
+      ],
+    },
+    {
+      id: 'D02',
+      name: 'Văn phòng S04',
+      type: 'Văn phòng riêng',
+      building: 'Đà Nẵng City Centre',
+      price: '5,000,000',
+      images: [
+        'https://images.unsplash.com/photo-1497366754035-f200968a6e72',
+        'https://images.unsplash.com/photo-1497366811353-6870744d04b2',
+        'https://images.unsplash.com/photo-1524758631624-e2822e304c36',
+      ],
+    },
+    {
+      id: 'D03',
+      name: 'Văn phòng S05',
+      type: 'Văn phòng riêng',
+      building: 'Đà Nẵng City Centre',
+      price: '5,000,000',
+      images: [
+        'https://images.unsplash.com/photo-1497366754035-f200968a6e72',
+        'https://images.unsplash.com/photo-1497366811353-6870744d04b2',
+        'https://images.unsplash.com/photo-1524758631624-e2822e304c36',
+      ],
+    },
+    {
+      id: 'D04',
+      name: 'Văn phòng S06',
+      type: 'Văn phòng riêng',
+      building: 'Đà Nẵng City Centre',
+      price: '5,000,000',
+      images: [
+        'https://images.unsplash.com/photo-1497366754035-f200968a6e72',
+        'https://images.unsplash.com/photo-1497366811353-6870744d04b2',
+        'https://images.unsplash.com/photo-1524758631624-e2822e304c36',
+      ],
+    },
+    // Add more listings as needed
+  ];
+
+  interface Listing {
+    id: string;
+    name: string;
+    type: string;
+    building: string;
+    price: string;
+    images: string[];
+  }
+  interface ListingCardProps {
+    listing: Listing;
+  }
+  const ListingCard: React.FC<ListingCardProps> = ({ listing }) => (
+    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:bg-gray-50 transition-colors duration-200">
+      <Carousel images={listing.images} />
+      <div className="p-4">
+        <h2 className="text-xl font-bold mb-2">{listing.id}</h2>
+        <span className="text-gray-700 mr-4">{listing.name}</span>
+        <div className="flex items-center mb-2">
+          {/* <FaRulerCombined className="text-gray-500 mr-2" /> */}
+
+          {/* <FaUser className="text-gray-500 mr-2" /> */}
+          <span className="text-gray-700">{listing.building}</span>
+        </div>
+        <div className="flex items-center">
+          {/* <span className="text-gray-500 line-through mr-2">
+            {listing.originalPrice} đ
+          </span> */}
+          <span className="text-red-600 font-bold">{listing.price} đ</span>
+        </div>
+      </div>
+    </div>
+  );
+  const building = [
+    { key: '1', label: 'Hồ Chí Minh' },
+    { key: '2', label: 'Đà Nẵng City Centre' },
+  ];
   return (
-    <div className="flex flex-col lg:flex-row h-screen bg-gray-100">
+    <div className="flex-row lg:flex-row bg-white">
       {/* Left Panel */}
-      <div className="lg:w-1/3 p-6 bg-white shadow-md">
-        <h2 className="text-2xl font-bold mb-6">Room Search</h2>
+      <div className="flex justify-start lg:w-full p-6 bg-white">
+        <Select
+          label="Địa điểm"
+          placeholder="Chọn địa điểm"
+          selectionMode="multiple"
+          className="max-w-xs mx-4"
+        >
+          {building.map((animal) => (
+            <SelectItem key={animal.key}>{animal.label}</SelectItem>
+          ))}
+        </Select>
+        <Select
+          label="Loại Phòng"
+          placeholder="Chọn loại phòng"
+          selectionMode="multiple"
+          className="max-w-xs mx-4"
+        >
+          {building.map((animal) => (
+            <SelectItem key={animal.key}>{animal.label}</SelectItem>
+          ))}
+        </Select>
+        <Slider
+          label="Giá tiền"
+          step={50000}
+          maxValue={1000000}
+          minValue={0}
+          defaultValue={[0, 800]}
+          showSteps={true}
+          showTooltip={true}
+          showOutline={true}
+          disableThumbScale={true}
+          formatOptions={{ style: 'currency', currency: 'VND' }}
+          tooltipValueFormatOptions={{
+            style: 'currency',
+            currency: 'VND',
+            maximumFractionDigits: 0,
+          }}
+          classNames={{
+            base: 'max-w-md',
+            // filler: 'bg-gradient-to-r from-primary-500 to-secondary-400',
+            labelWrapper: 'mb-2',
+            label: 'font-medium text-default-700 text-medium',
+            value: 'font-medium text-default-500 text-small',
+            thumb: [
+              'transition-size',
+              'bg-gradient-to-r from-secondary-400 to-primary-500',
+              'data-[dragging=true]:shadow-lg data-[dragging=true]:shadow-black/20',
+              'data-[dragging=true]:w-7 data-[dragging=true]:h-7 data-[dragging=true]:after:h-6 data-[dragging=true]:after:w-6',
+            ],
+            step: 'data-[in-range=true]:bg-black/30 dark:data-[in-range=true]:bg-white/50',
+          }}
+          tooltipProps={{
+            offset: 10,
+            placement: 'bottom',
+            classNames: {
+              base: [
+                // arrow color
+                'before:bg-gradient-to-r before:from-secondary-400 before:to-primary-500',
+              ],
+              content: [
+                'py-2 shadow-xl',
+                'text-white bg-gradient-to-r from-secondary-400 to-primary-500',
+              ],
+            },
+          }}
+        />
+        {/* <h2 className="text-2xl font-bold mb-6">Room Search</h2>
         <div className="relative mb-4">
           <FaSearch className="absolute right-5 top-1/2 transform -translate-y-1/2 text-gray-400" />
-          {/* Search Input */}
           <Input
             placeholder="Search rooms..."
-            // contentLeft={<FaSearch />}
             value={searchQuery}
             onChange={handleSearch}
             aria-label="Search rooms"
             className="mb-4 rounded-xl"
             fullWidth
-            // rounded
           />
-        </div>
+        </div> */}
 
-        {/* Categories */}
-        <div className="mb-4">
-          <h3 className="text-lg font-semibold mb-2">Categories</h3>
+        <div className="">
+          {/* <h3 className="text-lg font-semibold mb-2">Categories</h3> */}
           <div className="flex flex-wrap gap-2">
-            <Button
+            {/* <Button
               onClick={() => handleCategoryChange('')}
               color={selectedCategory === '' ? 'primary' : 'default'}
-              // icon={<FaUser />}
-              // rounded
               className="rounded-2xl shadow-md cursor-pointer transition-transform transform hover:scale-105 hover:shadow-lg active:scale-95"
             >
               All
@@ -93,8 +296,6 @@ export const ListRoom = () => {
             <Button
               onClick={() => handleCategoryChange('single')}
               color={selectedCategory === 'single' ? 'primary' : 'default'}
-              // icon={<FaUser />}
-              // rounded
               className="rounded-2xl shadow-md cursor-pointer transition-transform transform hover:scale-105 hover:shadow-lg active:scale-95"
             >
               Single
@@ -102,8 +303,6 @@ export const ListRoom = () => {
             <Button
               onClick={() => handleCategoryChange('double')}
               color={selectedCategory === 'double' ? 'primary' : 'default'}
-              // icon={<FaUsers />}
-              // rounded
               className="rounded-2xl shadow-md cursor-pointer transition-transform transform hover:scale-105 hover:shadow-lg active:scale-95"
             >
               Double
@@ -111,8 +310,6 @@ export const ListRoom = () => {
             <Button
               onClick={() => handleCategoryChange('meeting7')}
               color={selectedCategory === 'meeting7' ? 'primary' : 'default'}
-              // icon={<MdMeetingRoom />}
-              // rounded
               className="rounded-2xl shadow-md cursor-pointer transition-transform transform hover:scale-105 hover:shadow-lg active:scale-95"
             >
               Meeting (7)
@@ -120,18 +317,24 @@ export const ListRoom = () => {
             <Button
               onClick={() => handleCategoryChange('meeting10')}
               color={selectedCategory === 'meeting10' ? 'primary' : 'default'}
-              // icon={<MdMeetingRoom />}
-              // rounded
               className="rounded-2xl shadow-md cursor-pointer transition-transform transform hover:scale-105 hover:shadow-lg active:scale-95"
             >
               Meeting (10)
-            </Button>
+            </Button> */}
           </div>
         </div>
       </div>
 
+      <div className="lg:w-full p-6 overflow-y-auto">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          {listings.map((listing) => (
+            <ListingCard key={listing.id} listing={listing} />
+          ))}
+        </div>
+      </div>
+
       {/* Right Panel */}
-      <div className="lg:w-2/3 p-6 overflow-y-auto">
+      {/* <div className="lg:w-full p-6 overflow-y-auto">
         <h2 className="text-2xl font-bold mb-6">Available Rooms</h2>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {filteredRooms.map((room) => (
@@ -164,7 +367,7 @@ export const ListRoom = () => {
             </Card>
           ))}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
