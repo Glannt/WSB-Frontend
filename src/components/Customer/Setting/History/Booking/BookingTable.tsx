@@ -34,12 +34,12 @@ interface BookingTableProps {
 
 const statusColorMap: Record<string, ChipProps['color']> = {
   using: 'success',
-  finished: 'danger',
+  FINISHED: 'primary',
   UPCOMING: 'warning',
 };
 const translateStatus = (status: string) => {
   const translations: Record<string, string> = {
-    finished: 'Hoàn thành',
+    FINISHED: 'Hoàn thành',
     UPCOMING: 'Sắp tới',
     using: 'Đang sử dụng',
   };
@@ -133,9 +133,9 @@ const BookingTable: React.FC<BookingTableProps> = ({
                 </DropdownTrigger>
                 <DropdownMenu>
                   <DropdownItem onClick={() => openModal(booking)}>
-                    Thêm thiết bị
+                    Thêm dịch vụ
                   </DropdownItem>
-                  <DropdownItem>Thêm đồ ăn, uống</DropdownItem>
+                  <DropdownItem>Thay đổi dịch vụ</DropdownItem>
                 </DropdownMenu>
               </Dropdown>
             </div>

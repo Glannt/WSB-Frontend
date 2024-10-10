@@ -17,7 +17,7 @@ export interface SlotBooking {
   status: string;
 }
 
-interface ServiceItems {
+export interface ServiceItems {
   [key: string]: number;
 }
 export interface CustomerOrderBookingHistory {
