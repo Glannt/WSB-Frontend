@@ -33,7 +33,7 @@ const RoomDetail = () => {
 
   const similarRooms1 = [
     {
-      id: 1,
+      id: 'D01',
       name: 'Phòng đơn',
       price: '50',
       image:
@@ -77,19 +77,27 @@ const RoomDetail = () => {
   };
 
   const [rooms, setRooms] = useState([
-    { id: 1, name: 'Cozy Single', category: 'single', basePrice: 50 },
-    { id: 2, name: 'Spacious Double', category: 'double', basePrice: 80 },
-    { id: 3, name: 'Meeting Room (7)', category: 'meeting7', basePrice: 120 },
-    { id: 4, name: 'Meeting Room (10)', category: 'meeting10', basePrice: 150 },
+    { id: 'D01', name: 'Cozy Single', category: 'single', basePrice: 50 },
+    { id: 'D02', name: 'Spacious Double', category: 'double', basePrice: 80 },
+    {
+      id: 'D03',
+      name: 'Meeting Room (7)',
+      category: 'meeting7',
+      basePrice: 120,
+    },
+    {
+      id: 'D04',
+      name: 'Meeting Room (10)',
+      category: 'meeting10',
+      basePrice: 150,
+    },
   ]);
 
   const { roomId } = useParams<{ roomId: string }>();
-  console.log(roomId);
-  const room = rooms.find((room) => room.id === Number(roomId));
-  const similarRooms = similarRooms1.filter(
-    (room) => room.id !== Number(roomId)
-  );
-  console.log(similarRooms);
+  // console.log(roomId);
+  const room = rooms.find((room) => room.id === roomId);
+  const similarRooms = similarRooms1.filter((room) => room.id !== roomId);
+  // console.log(similarRooms);
 
   if (!room) {
     return <div>Phòng không tồn tại</div>;
