@@ -11,16 +11,21 @@ export interface Booking {
 }
 
 export interface SlotBooking {
-  slotId: number;
+  timeSlotId: number;
   timeStart: string;
   timeEnd: string;
   status: string;
+}
+
+interface ServiceItems {
+  [key: string]: number;
 }
 export interface CustomerOrderBookingHistory {
   bookingId: string;
   checkinDate: string;
   totalPrice: string;
   status: string;
-  room: Room;
-  slot: SlotBooking[];
+  roomId: string;
+  slots: SlotBooking[];
+  serviceItems: ServiceItems;
 }

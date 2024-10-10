@@ -236,18 +236,6 @@ export const BookingRoomDetail = () => {
             </div>
           </div>
           <div className="mb-6">
-            {/* <label className="block text-sm font-medium text-gray-700 mb-2">
-              Ngày đặt
-            </label> */}
-            {/* <div className="relative">
-              <input
-                type="date"
-                value={format(selectedDate, 'yyyy-MM-dd')}
-                onChange={handleDateChange}
-                className="w-full p-2 border rounded-md pl-10"
-              />
-              <FaCalendarAlt className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-            </div> */}
             <DatePicker
               onChange={handleDateChange}
               value={parseDate(format(selectedDate, 'yyyy-MM-dd'))}
@@ -256,24 +244,6 @@ export const BookingRoomDetail = () => {
             />
           </div>
           <div className="mb-6">
-            {/* <label className="block text-sm font-medium text-gray-700 mb-2">
-              Slot thời gian
-            </label>
-            <div className="relative">
-              <select
-                value={selectedTimeSlot}
-                onChange={handleTimeSlotChange}
-                className="w-full p-2 border rounded-md pl-10 appearance-none"
-              >
-                <option value="">Chọn slot thời gian</option>
-                {timeSlots.map((slot) => (
-                  <option key={slot} value={slot}>
-                    {slot}
-                  </option>
-                ))}
-              </select>
-              <FaClock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" /> */}
-            {/* </div> */}
             <div className="w-full flex flex-row flex-wrap gap-4">
               {/* {colors.map((color) => ( */}
               <Select
@@ -297,12 +267,6 @@ export const BookingRoomDetail = () => {
           <div className="mb-6">
             <p className="text-xl font-semibold">Giá ban đầu: ${roomPrice}</p>
           </div>
-          {/* <Button
-            onClick={toggleServiceModal}
-            className="bg-violet-300 shadow-lg font-bold text-black px-4 py-2 rounded-md hover:bg-violet-500 hover:text-blackA12 transition duration-300 flex items-center mb-6"
-          >
-            <FaPlus className="mr-2" /> Thêm dịch vụ
-          </Button> */}
           <Button
             className="bg-violet-300 shadow-lg font-bold text-black px-4 py-2 rounded-md hover:bg-violet-500 hover:text-blackA12 transition duration-300 flex items-center mb-6"
             onPress={onOpen}
@@ -413,31 +377,8 @@ export const BookingRoomDetail = () => {
                         </Card>
                       </Tab>
                     </Tabs>
-                    {/* </div> */}
-                    {/* <p>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                      Nullam pulvinar risus non risus hendrerit venenatis.
-                      Pellentesque sit amet hendrerit risus, sed porttitor quam.
-                    </p>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                      Nullam pulvinar risus non risus hendrerit venenatis.
-                      Pellentesque sit amet hendrerit risus, sed porttitor quam.
-                    </p>
-                    <p>
-                      Magna exercitation reprehenderit magna aute tempor
-                      cupidatat consequat elit dolor adipisicing. Mollit dolor
-                      eiusmod sunt ex incididunt cillum quis. Velit duis sit
-                      officia eiusmod Lorem aliqua enim laboris do dolor
-                      eiusmod. Et mollit incididunt nisi consectetur esse
-                      laborum eiusmod pariatur proident Lorem eiusmod et. Culpa
-                      deserunt nostrud ad veniam.
-                    </p> */}
                   </ModalBody>
                   <ModalFooter>
-                    {/* <Button color="danger" variant="light" onPress={onClose}>
-                      Đóng
-                    </Button> */}
                     <Button color="primary" onPress={onClose}>
                       Đóng
                     </Button>
@@ -446,79 +387,7 @@ export const BookingRoomDetail = () => {
               )}
             </ModalContent>
           </Modal>
-          {/* {showServiceModal && (
-            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-              <div className="bg-white p-8 rounded-lg max-w-2xl w-full">
-                <h3 className="text-2xl font-bold mb-4">Đặt đồ ăn</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {foodServices.map((service) => (
-                    <div
-                      key={service.id}
-                      className="border rounded-lg p-4 flex items-center"
-                    >
-                      <img
-                        src={service.image}
-                        alt={service.name}
-                        className="w-20 h-20 object-cover rounded-md mr-4"
-                      />
-                      <div>
-                        <h4 className="font-semibold">{service.name}</h4>
-                        <p className="text-gray-600">${service.price}</p>
-                      </div>
-                      <input
-                        type="checkbox"
-                        checked={selectedServices.includes(service.id)}
-                        onChange={() => handleServiceSelection(service.id)}
-                        className="ml-auto"
-                      />
-                    </div>
-                  ))}
-                </div>
-                <button
-                  onClick={toggleServiceModal}
-                  className="mt-6 bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600 transition duration-300"
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-            // <div className="flex w-full flex-col fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50">
-            //   <Tabs
-            //     aria-label="Options"
-            //     selectedKey={selected}
-            //     onSelectionChange={(key) => setSelected(key.toString())}
-            //   >
-            //     <Tab key="photos" title="Photos">
-            //       <Card>
-            //         <CardBody>
-            //           Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-            //           sed do eiusmod tempor incididunt ut labore et dolore magna
-            //           aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-            //           ullamco laboris nisi ut aliquip ex ea commodo consequat.
-            //         </CardBody>
-            //       </Card>
-            //     </Tab>
-            //     <Tab key="music" title="Music">
-            //       <Card>
-            //         <CardBody>
-            //           Ut enim ad minim veniam, quis nostrud exercitation ullamco
-            //           laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-            //           irure dolor in reprehenderit in voluptate velit esse
-            //           cillum dolore eu fugiat nulla pariatur.
-            //         </CardBody>
-            //       </Card>
-            //     </Tab>
-            //     <Tab key="videos" title="Videos">
-            //       <Card>
-            //         <CardBody>
-            //           Excepteur sint occaecat cupidatat non proident, sunt in
-            //           culpa qui officia deserunt mollit anim id est laborum.
-            //         </CardBody>
-            //       </Card>
-            //     </Tab>
-            //   </Tabs>
-            // </div>
-          )} */}
+
           <div className="mb-6">
             <p className="text-2xl font-bold">Tổng đơn: ${totals}</p>
           </div>
