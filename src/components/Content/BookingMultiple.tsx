@@ -19,6 +19,7 @@ import {
   Card,
   CardBody,
   DatePicker,
+  DateRangePicker,
   Input,
   Modal,
   ModalBody,
@@ -268,12 +269,22 @@ export const BookingRoomDetail = () => {
             </div>
           </div>
           <div className="mb-6">
-            <DatePicker
+            <DateRangePicker
+              label="Ngày đặt"
+              minValue={parseDate(format(selectedDate, 'yyyy-MM-dd'))}
+              // defaultValue={{
+              //   start: parseDate('2024-04-01'),
+              //   end: parseDate('2024-04-08'),
+              // }}
+              className="w-full"
+            />
+
+            {/* <DatePicker
               onChange={handleDateChange}
               value={parseDate(format(selectedDate, 'yyyy-MM-dd'))}
               label="Ngày đặt"
               className="w-full"
-            />
+            /> */}
           </div>
           <div className="mb-6">
             <div className="w-full flex flex-row flex-wrap gap-4">
