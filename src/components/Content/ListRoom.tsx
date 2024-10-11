@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { Select, SelectItem, Slider } from '@nextui-org/react';
-import { useNavigate } from 'react-router';
 import { ListingCard } from './RoomCard';
 import { getAllRoom } from '@/service/room.api';
 import { useQuery } from '@tanstack/react-query';
 import { ListRooms } from '@/types/roomOverview';
+import { useNavigate } from 'react-router';
 
 export const ListRoom = () => {
   const getAllRoomApi = async () => {
@@ -136,7 +135,6 @@ export const ListRoom = () => {
           placeholder="Chọn địa điểm"
           selectionMode="multiple"
           className="max-w-xs mx-4"
-          // onSelectionChange={handleLocationChange}
           onChange={handleLocationChange}
         >
           {buildingOptions.map((option) => (
@@ -149,7 +147,6 @@ export const ListRoom = () => {
           placeholder="Chọn loại phòng"
           selectionMode="multiple"
           className="max-w-xs mx-4"
-          // onSelectionChange={handleRoomTypeChange}
           onChange={handleRoomTypeChange}
         >
           {roomTypeOptions.map((option) => (
@@ -193,84 +190,3 @@ export const ListRoom = () => {
     </div>
   );
 };
-
-// interface Listing {
-//   id: string;
-//   name: string;
-//   type: string;
-//   building: string;
-//   price: number;
-//   images: string[];
-// }
-
-// interface ListingCardProps {
-//   listing: Listing;
-// }
-
-// const ListingCard: React.FC<ListingCardProps> = ({ listing }) => (
-//   <div className="bg-white rounded-lg shadow-md overflow-hidden hover:bg-gray-50 transition-colors duration-200">
-//     <Carousel images={listing.images} />
-//     <div className="p-4">
-//       <h2 className="text-xl font-bold mb-2">{listing.name}</h2>
-//       <span className="text-gray-700">{listing.type}</span>
-//       <span className="mx-2">•</span>
-//       <span className="text-gray-700">{listing.building}</span>
-//       <div className="flex items-center">
-//         <span className="text-red-600 font-bold">
-//           {listing.price.toLocaleString()} đ
-//         </span>
-//       </div>
-//     </div>
-//   </div>
-// );
-
-// interface CarouselProps {
-//   images: string[];
-// }
-
-// const Carousel: React.FC<CarouselProps> = ({ images }) => {
-//   const [currentIndex, setCurrentIndex] = useState(0);
-
-//   const nextSlide = () => {
-//     setCurrentIndex((prevIndex) =>
-//       prevIndex === images.length - 1 ? 0 : prevIndex + 1
-//     );
-//   };
-
-//   const prevSlide = () => {
-//     setCurrentIndex((prevIndex) =>
-//       prevIndex === 0 ? images.length - 1 : prevIndex - 1
-//     );
-//   };
-
-//   return (
-//     <div className="relative w-full h-64 overflow-hidden rounded-t-lg">
-//       {images.map((image, index) => (
-//         <div
-//           key={index}
-//           className={`absolute top-0 left-0 w-full h-full transition-opacity duration-500 ${
-//             index === currentIndex ? 'opacity-100' : 'opacity-0'
-//           }`}
-//         >
-//           <img
-//             src={image}
-//             alt={`Slide ${index + 1}`}
-//             className="w-full h-full object-cover"
-//           />
-//         </div>
-//       ))}
-//       <button
-//         onClick={prevSlide}
-//         className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-white bg-opacity-50 rounded-full p-2 focus:outline-none"
-//       >
-//         <FaChevronLeft className="text-gray-800" />
-//       </button>
-//       <button
-//         onClick={nextSlide}
-//         className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-white bg-opacity-50 rounded-full p-2 focus:outline-none"
-//       >
-//         <FaChevronRight className="text-gray-800" />
-//       </button>
-//     </div>
-//   );
-// };
