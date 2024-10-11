@@ -25,31 +25,30 @@ const AboutUs = () => {
 
   const faqData: FAQItem[] = [
     {
-      question: 'What is Solstice? What is it for?',
+      question: 'Dịch vụ đặt chỗ không gian làm việc là gì?',
       answer:
-        'Solstice is a platform designed to enhance your learning experience. It provides a collaborative environment for students to connect, share knowledge, and grow together.',
+        'Dịch vụ đặt chỗ không gian làm việc cho phép bạn đặt phòng làm việc theo giờ, theo ngày hoặc theo gói thành viên, với đầy đủ các tiện ích đi kèm.',
     },
     {
-      question: 'What steps do I need to take to join?',
+      question: 'Làm thế nào để tôi đặt chỗ không gian làm việc?',
       answer:
-        "Joining Solstice is easy! Simply visit our website, click on the 'Sign Up' button, fill in your details, and you're ready to start your journey with us.",
+        'Bạn chỉ cần truy cập vào website, chọn ngày và giờ bạn muốn, sau đó chọn phòng phù hợp và hoàn tất thanh toán để đặt chỗ.',
+    },
+    {
+      question: 'Có các loại phòng nào để lựa chọn?',
+      answer:
+        'Chúng tôi cung cấp các loại phòng với sức chứa từ 1 đến 50 người, phù hợp cho cá nhân, nhóm nhỏ và các buổi họp nhóm lớn.',
+    },
+    {
+      question: 'Tôi có thể hủy hoặc thay đổi thời gian đặt phòng không?',
+      answer:
+        'Bạn có thể hủy hoặc thay đổi thời gian đặt phòng miễn phí nếu thông báo trước 24 giờ. Sau khoảng thời gian này, sẽ có phí hủy đặt phòng.',
     },
     {
       question:
-        'Do you facilitate any regular events or offer rooms for group discussions?',
+        'Tôi có thể thêm dịch vụ như đồ ăn hoặc thiết bị vào đơn đặt phòng không?',
       answer:
-        'Yes, we regularly host virtual events and provide dedicated rooms for group discussions on various topics. These spaces are designed to foster collaboration and knowledge sharing.',
-    },
-    {
-      question: 'Is there a particular subject I should focus on learning?',
-      answer:
-        'The beauty of Solstice is that you can focus on any subject that interests you. We offer a wide range of topics, so you can choose based on your personal goals and interests.',
-    },
-    {
-      question:
-        'Can I make it a fun group study session by inviting my buddies?',
-      answer:
-        'Absolutely! Solstice encourages collaborative learning. You can easily invite your friends to join your study sessions, making learning both fun and effective.',
+        'Có, bạn có thể thêm các dịch vụ như đồ ăn, nước uống hoặc thiết bị hỗ trợ vào đơn đặt phòng khi hoàn tất quá trình đặt chỗ.',
     },
   ];
   const navigate = useNavigate();
