@@ -42,6 +42,7 @@ import { TypeSingle } from '@/pages/RoomType/TypeSingle';
 import { TypeEvent } from '@/pages/RoomType/TypeEvent';
 import { TypeMeeting } from '@/pages/RoomType/TypeMeeting';
 import { TypeDouble } from '@/pages/RoomType/TypeDouble';
+import { SidebarWrapper } from '@/components/sidebar/sidebar';
 interface ProtectedRouteProps {
   requiredRoles?: Role[]; // Optional prop for role-based protection
 }
@@ -183,6 +184,14 @@ export const router = createBrowserRouter([
     element: (
       <MainLayout>
         <TypeSingle />
+      </MainLayout>
+    ),
+  },
+  {
+    path: '/sidebarTest',
+    element: (
+      <MainLayout>
+        <SidebarWrapper />
       </MainLayout>
     ),
   },
