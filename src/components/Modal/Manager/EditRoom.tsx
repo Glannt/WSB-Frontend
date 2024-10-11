@@ -79,6 +79,12 @@ const EditRoom: React.FC<RoomModalProps> = ({
     resolver: yupResolver(schemaUpdateRoom),
   });
 
+  const [images, setImages] = React.useState<{ file: File; url: string }[]>([]);
+
+  const handleImageUpload = (uploadedImages: { file: File; url: string }[]) => {
+    setImages(uploadedImages); // Cập nhật hình ảnh
+  };
+
   const UpdateMutation = useMutation({
     mutationFn: ({
       roomId,
@@ -97,7 +103,9 @@ const EditRoom: React.FC<RoomModalProps> = ({
     formData.append('price', data.price.toString());
     formData.append('status', data.status?.toString());
     formData.append('listStaffID', data.listStaffID.toString());
-
+    images.forEach((image) => {
+      formData.append('image', image.file); // Chỉ sử dụng roomImg cho nhiều tệp
+    });
     // Assuming you have the roomId from selectedRoom
     const roomId = selectedRoom?.roomId;
 
@@ -254,7 +262,7 @@ const EditRoom: React.FC<RoomModalProps> = ({
                 </div>
 
                 <div className="py-2 px-3">
-                  <UploadImage />
+                  <UploadImage onImagesUpload={handleImageUpload} />
                 </div>
               </ModalBody>
 

@@ -38,57 +38,6 @@ export const ListRoom = () => {
   );
   const [priceRange, setPriceRange] = useState([0, 20000000]);
 
-  // const listings = [
-  //   {
-  //     id: 'D01',
-  //     name: 'Văn phòng S03',
-  //     type: 'Văn phòng riêng',
-  //     building: 'Đà Nẵng City Centre',
-  //     price: 5000000,
-  //     images: [
-  //       'https://images.unsplash.com/photo-1497366754035-f200968a6e72',
-  //       'https://images.unsplash.com/photo-1497366811353-6870744d04b2',
-  //       'https://images.unsplash.com/photo-1524758631624-e2822e304c36',
-  //     ],
-  //   },
-  //   {
-  //     id: 'D02',
-  //     name: 'Văn phòng S04',
-  //     type: 'Văn phòng riêng',
-  //     building: 'Hồ Chí Minh',
-  //     price: 7000000,
-  //     images: [
-  //       'https://images.unsplash.com/photo-1497366754035-f200968a6e72',
-  //       'https://images.unsplash.com/photo-1497366811353-6870744d04b2',
-  //       'https://images.unsplash.com/photo-1524758631624-e2822e304c36',
-  //     ],
-  //   },
-  //   {
-  //     id: 'D03',
-  //     name: 'Phòng Họp 1',
-  //     type: 'Phòng họp',
-  //     building: 'Đà Nẵng City Centre',
-  //     price: 12000000,
-  //     images: [
-  //       'https://images.unsplash.com/photo-1497366754035-f200968a6e72',
-  //       'https://images.unsplash.com/photo-1497366811353-6870744d04b2',
-  //       'https://images.unsplash.com/photo-1524758631624-e2822e304c36',
-  //     ],
-  //   },
-  //   {
-  //     id: 'D04',
-  //     name: 'Phòng Họp 2',
-  //     type: 'Phòng họp',
-  //     building: 'Hồ Chí Minh',
-  //     price: 15000000,
-  //     images: [
-  //       'https://images.unsplash.com/photo-1497366754035-f200968a6e72',
-  //       'https://images.unsplash.com/photo-1497366811353-6870744d04b2',
-  //       'https://images.unsplash.com/photo-1524758631624-e2822e304c36',
-  //     ],
-  //   },
-  // ];
-
   const buildingOptions = [
     { key: 'Hồ Chí Minh', label: 'Hồ Chí Minh' },
     { key: 'Đà Nẵng City Centre', label: 'Đà Nẵng City Centre' },
