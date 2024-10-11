@@ -36,6 +36,12 @@ import { Role } from '@/types/user.type';
 import RoomsList from '@/components/Modal/Manager/testGET';
 import { AdminDashboard } from '@/components/Manager/AdminDashboard';
 import { DashboardManager } from '@/components/Manager/DashboardManager';
+import { BuildingOne } from '@/components/Building/BuildingOne';
+import { BuildingTwo } from '@/components/Building/BuildingTwo';
+import { TypeSingle } from '@/pages/RoomType/TypeSingle';
+import { TypeEvent } from '@/pages/RoomType/TypeEvent';
+import { TypeMeeting } from '@/pages/RoomType/TypeMeeting';
+import { TypeDouble } from '@/pages/RoomType/TypeDouble';
 interface ProtectedRouteProps {
   requiredRoles?: Role[]; // Optional prop for role-based protection
 }
@@ -169,6 +175,54 @@ export const router = createBrowserRouter([
     element: (
       <MainLayout>
         <AboutUs />
+      </MainLayout>
+    ),
+  },
+  {
+    path: 'single-space',
+    element: (
+      <MainLayout>
+        <TypeSingle />
+      </MainLayout>
+    ),
+  },
+  {
+    path: 'double-space',
+    element: (
+      <MainLayout>
+        <TypeDouble />
+      </MainLayout>
+    ),
+  },
+  {
+    path: 'meeting-space',
+    element: (
+      <MainLayout>
+        <TypeMeeting />
+      </MainLayout>
+    ),
+  },
+  {
+    path: 'event-space',
+    element: (
+      <MainLayout>
+        <TypeEvent />
+      </MainLayout>
+    ),
+  },
+  {
+    path: 'building-1',
+    element: (
+      <MainLayout>
+        <BuildingOne />
+      </MainLayout>
+    ),
+  },
+  {
+    path: 'building-2',
+    element: (
+      <MainLayout>
+        <BuildingTwo />
       </MainLayout>
     ),
   },

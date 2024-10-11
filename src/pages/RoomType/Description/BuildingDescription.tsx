@@ -1,18 +1,21 @@
+import { Button } from '@nextui-org/react';
 import React, { useState, useEffect } from 'react';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { useNavigate } from 'react-router';
 
 interface Room {
   name: string;
   utilities: string[];
   image: string;
+  url: string;
 }
 
-const RoomDescription: React.FC = () => {
+const BuildingDescription: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
-
+  const navigate = useNavigate();
   const rooms: Room[] = [
     {
-      name: 'phòng đơn',
+      name: 'Building 1',
       utilities: [
         'Bàn làm việc đơn rộng rãi',
         'Ghế văn phòng thoải mái',
@@ -25,9 +28,10 @@ const RoomDescription: React.FC = () => {
       ],
       image:
         'https://workflow.com.vn/wp-content/uploads/2024/07/b1f293e72e40e53c6d98a043c1cc3148.png',
+      url: '/building-1',
     },
     {
-      name: 'phòng đôi',
+      name: 'Building 2',
       utilities: [
         'Bàn làm việc cho 2 người',
         '2 ghế văn phòng thoải mái',
@@ -40,37 +44,7 @@ const RoomDescription: React.FC = () => {
       ],
       image:
         'https://workflow.com.vn/wp-content/uploads/2024/07/72d7d94d35b0d6bce9ae803e5e5b8975.png',
-    },
-    {
-      name: 'phòng 7 người',
-      utilities: [
-        'Bàn làm việc dài cho 7 người',
-
-        'Wi-Fi tốc độ cao',
-        'Ổ cắm điện và cổng USB riêng',
-        'Ghế văn phòng thoải mái cho cả nhóm',
-        'Màn hình TV cho trình chiếu',
-        'Bảng trắng lớn và bảng ghi chú',
-        'Điều hòa công suất lớn',
-        'Hệ thống âm thanh và microphone',
-      ],
-      image:
-        'https://workflow.com.vn/wp-content/uploads/2024/07/675e66a2542d4618edc4802b0124c59e.jpg',
-    },
-    {
-      name: 'phòng 10 người',
-      utilities: [
-        'Bàn làm việc dài cho 10 người',
-        'Ghế văn phòng cao cấp',
-        'Wi-Fi tốc độ cao',
-        'Điều hòa công suất lớn',
-        'Phòng họp riêng biệt',
-        'Màn hình lớn và máy chiếu',
-        'Ổ cắm điện và cổng USB riêng',
-        'Micro, camera cho hội nghị trực tuyến',
-      ],
-      image:
-        'https://workflow.com.vn/wp-content/uploads/2024/05/z5404832229897_c592108c054d4505476d97f2bbd6f86e-2.png',
+      url: '/building-2',
     },
   ];
 
@@ -95,9 +69,6 @@ const RoomDescription: React.FC = () => {
     <div className="flex justify-between flex-col md:flex-row w-full h-500px bg-white gap-11 shadow-2xl">
       <div className="w-full md:w-1/2 p-8 flex flex-col justify-start items-center bg-white">
         <div className="text-3xl font-bold mb-6 ">
-          <span className="underline decoration-dotted underline-offset-4">
-            Tiện ích
-          </span>
           &nbsp;
           {rooms[currentIndex].name}
         </div>
@@ -131,6 +102,14 @@ const RoomDescription: React.FC = () => {
               ))}
           </div>
         </div>
+        <div className="flex w-full p-4 justify-center">
+          <Button
+            onClick={() => navigate(rooms[currentIndex].url)}
+            className="pl-7 pr-7 pt-5 pb-5 font-semibold text-lg hover:transition hover:duration-500 hover:bg-transparent hover:border hover:border-blackA7 hover:text-black rounded-lg"
+          >
+            Tìm hiểu thêm
+          </Button>
+        </div>
       </div>
 
       <div className="w-full md:w-1/2 relative overflow-hidden">
@@ -149,13 +128,13 @@ const RoomDescription: React.FC = () => {
         </div>
         <button
           onClick={goToPrevious}
-          className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-0 rounded-full p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-0 rounded-full p-2 focus:outline-none "
         >
           <FaChevronLeft className="text-2xl text-gray-800" />
         </button>
         <button
           onClick={goToNext}
-          className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-0 rounded-full p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-0 rounded-full p-2 focus:outline-none "
         >
           <FaChevronRight className="text-2xl text-gray-800" />
         </button>
@@ -173,4 +152,4 @@ const RoomDescription: React.FC = () => {
   );
 };
 
-export default RoomDescription;
+export default BuildingDescription;

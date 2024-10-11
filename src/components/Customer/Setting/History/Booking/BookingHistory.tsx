@@ -27,13 +27,6 @@ import {
   Select,
   SelectItem,
 } from '@nextui-org/react';
-import { PlusIcon } from '../../../../Icons/PlusIcon';
-import { VerticalDotsIcon } from '../../../../Icons/VerticalDotsIcon';
-import { ChevronDownIcon } from '../../../../Icons/ChevronDownIcon';
-import { SearchIcon } from '../../../../Icons/SearchIcon';
-import { capitalize } from '../../../utils';
-import { roomStatuses } from '@/data/dataStatusRoom';
-import { roomTypes } from '../../../../../data/dataRoomType';
 import BookingFilter from './BookingFilter';
 import { statusOptionsBooking } from '@/data/data';
 import BookingTable from './BookingTable';
@@ -41,7 +34,7 @@ import BookingPagination from './BookingPagination';
 import { useQuery } from '@tanstack/react-query';
 import { CustomerOrderBookingHistory, SlotBooking } from '@/types/bookings';
 import { getHistoryBooking } from '@/service/customer.api';
-import { Room } from '@/types/room.type';
+import { AddMoreServices } from '@/components/Modal/Customer/AddMoreServices';
 
 const statusOptions = [
   { name: 'Đang sử dụng', uid: 'using' },
@@ -55,6 +48,7 @@ const columns = [
   { name: 'Phòng', uid: 'room', sortable: true }, // Room name from `room.roomName`
   { name: 'Đơn giá', uid: 'totalPrice', sortable: true }, // Amount for the booking
   { name: 'Thời gian Slot', uid: 'slot', sortable: false }, // Display time slot from `slot.timeStart - slot.timeEnd`
+  { name: 'Dịch vụ', uid: 'services' },
   { name: 'Tình trạng', uid: 'status' }, // Status of the booking
   { name: 'Thêm dịch vụ', uid: 'actions' }, // Actions column for any additional operations
 ];
@@ -72,12 +66,15 @@ const INITIAL_VISIBLE_COLUMNS = [
   'totalPrice',
   'slot',
   'status',
+  'services',
   'actions',
 ];
 
 export default function BookingHistory() {
   const getHistoryBookingApi = async () => {
     const response = await getHistoryBooking();
+    console.log(response.data.data);
+
     return response.data.data;
   };
 
@@ -103,7 +100,17 @@ export default function BookingHistory() {
   });
   const [value, setValue] = React.useState(new Set([]));
   const [page, setPage] = React.useState(1);
-
+  const [isOpenService, setIsOpenServices] = React.useState<boolean>(false);
+  const [selectedBooking, setSelectedBooking] =
+    React.useState<CustomerOrderBookingHistory | null>(null);
+  const openModal = (booking: CustomerOrderBookingHistory) => {
+    setIsOpenServices(true);
+    setSelectedBooking(booking);
+  };
+  const closeModal = () => {
+    setIsOpenServices(false);
+    refetch();
+  };
   const hasSearchFilter = Boolean(filterValue);
 
   const headerColumns = React.useMemo(() => {
@@ -155,8 +162,8 @@ export default function BookingHistory() {
       }
 
       // If checkinDate is the same, compare roomName
-      const firstRoomName = (a.room as Room)?.roomName || '';
-      const secondRoomName = (b.room as Room)?.roomName || '';
+      const firstRoomName = a.roomId || '';
+      const secondRoomName = b.roomId || '';
 
       return sortDescriptor.direction === 'ascending'
         ? firstRoomName.localeCompare(secondRoomName)
@@ -203,6 +210,7 @@ export default function BookingHistory() {
         sortDescriptor={sortDescriptor}
         setSelectedKeys={setSelectedKeys}
         onSortChange={setSortDescriptor}
+        openModal={openModal}
       />
       <BookingPagination
         page={page}
@@ -211,6 +219,14 @@ export default function BookingHistory() {
         onNextPage={onNextPage}
         setPage={setPage}
       />
+      {isOpenService && (
+        <AddMoreServices
+          refetchBooking={refetch}
+          isOpen={isOpenService}
+          onClose={closeModal}
+          booking={selectedBooking}
+        />
+      )}
     </div>
   );
 }

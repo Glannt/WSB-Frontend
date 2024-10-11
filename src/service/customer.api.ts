@@ -22,3 +22,12 @@ export const changeProfile = (
 
 export const getHistoryBooking = () =>
   http.get('/api/customer/history-booking');
+
+export const getService = () => http.get(`/api/get-service-items`);
+
+export const updateServiceBooking = (formdata: FormData) =>
+  http.put('/api/customer/update-service', formdata, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
