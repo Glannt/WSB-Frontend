@@ -329,7 +329,7 @@ export const BookingRoomDetail = () => {
                           <CardBody>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                               {foodServices.map((service) => (
-                                <div className="flex-col">
+                                <div key={service.id} className="flex-col">
                                   <label htmlFor={service.id.toString()}>
                                     <div
                                       key={service.id}
