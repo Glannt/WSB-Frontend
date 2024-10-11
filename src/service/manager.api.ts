@@ -9,7 +9,7 @@ export const AddNewRoom = (formdata: FormData) =>
     },
   });
 
-export const UpdateRoom = (roomId: number | undefined, formData: FormData) =>
+export const UpdateRoom = (roomId: string | undefined, formData: FormData) =>
   http.put(`/api/manager/update-room/${roomId}`, formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
