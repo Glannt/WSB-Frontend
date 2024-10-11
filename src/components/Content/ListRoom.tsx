@@ -1,8 +1,35 @@
 import React, { useState } from 'react';
 import { Select, SelectItem, Slider } from '@nextui-org/react';
 import { ListingCard } from './RoomCard';
+import { getAllRoom } from '@/service/room.api';
+import { useQuery } from '@tanstack/react-query';
+import { ListRooms } from '@/types/roomOverview';
+import { useNavigate } from 'react-router';
 
 export const ListRoom = () => {
+  const getAllRoomApi = async () => {
+    const response = await getAllRoom();
+    console.log(response.data.data);
+
+    return response.data.data;
+  };
+  const {
+    data: rooms = [],
+    isLoading,
+    refetch,
+  } = useQuery<ListRooms[]>({
+    queryKey: ['rooms'],
+    queryFn: getAllRoomApi,
+  });
+
+  const images = [
+    'https://images.unsplash.com/photo-1497366754035-f200968a6e72',
+    'https://images.unsplash.com/photo-1497366811353-6870744d04b2',
+    'https://images.unsplash.com/photo-1524758631624-e2822e304c36',
+  ];
+
+  const navigate = useNavigate();
+
   const [selectedLocation, setSelectedLocation] = useState<Set<string>>(
     new Set([''])
   );
@@ -11,56 +38,56 @@ export const ListRoom = () => {
   );
   const [priceRange, setPriceRange] = useState([0, 20000000]);
 
-  const listings = [
-    {
-      id: 'D01',
-      name: 'Văn phòng S03',
-      type: 'Văn phòng riêng',
-      building: 'Đà Nẵng City Centre',
-      price: 5000000,
-      images: [
-        'https://images.unsplash.com/photo-1497366754035-f200968a6e72',
-        'https://images.unsplash.com/photo-1497366811353-6870744d04b2',
-        'https://images.unsplash.com/photo-1524758631624-e2822e304c36',
-      ],
-    },
-    {
-      id: 'D02',
-      name: 'Văn phòng S04',
-      type: 'Văn phòng riêng',
-      building: 'Hồ Chí Minh',
-      price: 7000000,
-      images: [
-        'https://images.unsplash.com/photo-1497366754035-f200968a6e72',
-        'https://images.unsplash.com/photo-1497366811353-6870744d04b2',
-        'https://images.unsplash.com/photo-1524758631624-e2822e304c36',
-      ],
-    },
-    {
-      id: 'D03',
-      name: 'Phòng Họp 1',
-      type: 'Phòng họp',
-      building: 'Đà Nẵng City Centre',
-      price: 12000000,
-      images: [
-        'https://images.unsplash.com/photo-1497366754035-f200968a6e72',
-        'https://images.unsplash.com/photo-1497366811353-6870744d04b2',
-        'https://images.unsplash.com/photo-1524758631624-e2822e304c36',
-      ],
-    },
-    {
-      id: 'D04',
-      name: 'Phòng Họp 2',
-      type: 'Phòng họp',
-      building: 'Hồ Chí Minh',
-      price: 15000000,
-      images: [
-        'https://images.unsplash.com/photo-1497366754035-f200968a6e72',
-        'https://images.unsplash.com/photo-1497366811353-6870744d04b2',
-        'https://images.unsplash.com/photo-1524758631624-e2822e304c36',
-      ],
-    },
-  ];
+  // const listings = [
+  //   {
+  //     id: 'D01',
+  //     name: 'Văn phòng S03',
+  //     type: 'Văn phòng riêng',
+  //     building: 'Đà Nẵng City Centre',
+  //     price: 5000000,
+  //     images: [
+  //       'https://images.unsplash.com/photo-1497366754035-f200968a6e72',
+  //       'https://images.unsplash.com/photo-1497366811353-6870744d04b2',
+  //       'https://images.unsplash.com/photo-1524758631624-e2822e304c36',
+  //     ],
+  //   },
+  //   {
+  //     id: 'D02',
+  //     name: 'Văn phòng S04',
+  //     type: 'Văn phòng riêng',
+  //     building: 'Hồ Chí Minh',
+  //     price: 7000000,
+  //     images: [
+  //       'https://images.unsplash.com/photo-1497366754035-f200968a6e72',
+  //       'https://images.unsplash.com/photo-1497366811353-6870744d04b2',
+  //       'https://images.unsplash.com/photo-1524758631624-e2822e304c36',
+  //     ],
+  //   },
+  //   {
+  //     id: 'D03',
+  //     name: 'Phòng Họp 1',
+  //     type: 'Phòng họp',
+  //     building: 'Đà Nẵng City Centre',
+  //     price: 12000000,
+  //     images: [
+  //       'https://images.unsplash.com/photo-1497366754035-f200968a6e72',
+  //       'https://images.unsplash.com/photo-1497366811353-6870744d04b2',
+  //       'https://images.unsplash.com/photo-1524758631624-e2822e304c36',
+  //     ],
+  //   },
+  //   {
+  //     id: 'D04',
+  //     name: 'Phòng Họp 2',
+  //     type: 'Phòng họp',
+  //     building: 'Hồ Chí Minh',
+  //     price: 15000000,
+  //     images: [
+  //       'https://images.unsplash.com/photo-1497366754035-f200968a6e72',
+  //       'https://images.unsplash.com/photo-1497366811353-6870744d04b2',
+  //       'https://images.unsplash.com/photo-1524758631624-e2822e304c36',
+  //     ],
+  //   },
+  // ];
 
   const buildingOptions = [
     { key: 'Hồ Chí Minh', label: 'Hồ Chí Minh' },
@@ -89,13 +116,13 @@ export const ListRoom = () => {
   };
 
   // Hàm lọc danh sách phòng
-  const filteredListings = listings.filter((listing) => {
+  const filteredRooms = rooms.filter((room) => {
     const isLocationMatch =
-      selectedLocation.has('') || selectedLocation.has(listing.building);
+      selectedLocation.has('') || selectedLocation.has(room.building);
     const isRoomTypeMatch =
-      selectedRoomType.has('') || selectedRoomType.has(listing.type);
+      selectedRoomType.has('') || selectedRoomType.has(room.roomType);
     const isPriceMatch =
-      listing.price >= priceRange[0] && listing.price <= priceRange[1];
+      room.price >= priceRange[0] && room.price <= priceRange[1];
     return isLocationMatch && isRoomTypeMatch && isPriceMatch;
   });
 
@@ -155,8 +182,8 @@ export const ListRoom = () => {
       {/* Right Panel */}
       <div className="lg:w-full p-6 overflow-y-auto">
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {filteredListings.map((listing) => (
-            <ListingCard key={listing.id} listing={listing} />
+          {filteredRooms.map((room) => (
+            <ListingCard key={room.roomId} images={images} room={room} />
           ))}
         </div>
       </div>

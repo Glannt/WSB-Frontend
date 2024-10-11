@@ -12,7 +12,7 @@ export const Carousel: React.FC<CarouselProps> = ({ images }) => {
 
   const nextSlide = () => {
     setCurrentIndex((prevIndex) =>
-      prevIndex === images.length - 1 ? 0 : prevIndex + 1
+      prevIndex === images?.length - 1 ? 0 : prevIndex + 1
     );
   };
 

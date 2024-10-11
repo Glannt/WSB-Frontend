@@ -33,8 +33,9 @@ import BookingTable from './BookingTable';
 import BookingPagination from './BookingPagination';
 import { useQuery } from '@tanstack/react-query';
 import { CustomerOrderBookingHistory, SlotBooking } from '@/types/bookings';
-import { getHistoryBooking } from '@/service/customer.api';
+import { getHistoryBooking, getService } from '@/service/customer.api';
 import { AddMoreServices } from '@/components/Modal/Customer/AddMoreServices';
+import { Services } from '@/types/service.type';
 
 const statusOptions = [
   { name: 'Đang sử dụng', uid: 'using' },
@@ -71,6 +72,15 @@ const INITIAL_VISIBLE_COLUMNS = [
 ];
 
 export default function BookingHistory() {
+  const getServiceApi = async () => {
+    const response = await getService();
+    return response.data.data;
+  };
+
+  const { data: services = [] } = useQuery<Services[]>({
+    queryKey: ['services'],
+    queryFn: getServiceApi,
+  });
   const getHistoryBookingApi = async () => {
     const response = await getHistoryBooking();
     console.log(response.data.data);
@@ -221,6 +231,7 @@ export default function BookingHistory() {
       />
       {isOpenService && (
         <AddMoreServices
+          services={services}
           refetchBooking={refetch}
           isOpen={isOpenService}
           onClose={closeModal}
