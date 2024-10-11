@@ -25,6 +25,7 @@ interface AddMoreServicesProps {
   onClose: () => void;
   booking: CustomerOrderBookingHistory | null;
   refetchBooking: () => void;
+  services: Services[];
 }
 
 export const AddMoreServices: React.FC<AddMoreServicesProps> = ({
@@ -32,17 +33,8 @@ export const AddMoreServices: React.FC<AddMoreServicesProps> = ({
   onClose,
   booking,
   refetchBooking,
+  services,
 }) => {
-  const getServiceApi = async () => {
-    const response = await getService();
-    return response.data.data;
-  };
-
-  const { data: services = [] } = useQuery<Services[]>({
-    queryKey: ['services'],
-    queryFn: getServiceApi,
-  });
-
   const initialQuantities = React.useMemo(() => {
     const quantities: { [key: string]: number } = {};
     if (booking?.serviceItems) {
@@ -98,7 +90,7 @@ export const AddMoreServices: React.FC<AddMoreServicesProps> = ({
     },
   });
 
-  const [selected, setSelected] = React.useState('photos');
+  const [selected, setSelected] = React.useState('equipments');
   const [quantities, setQuantities] = React.useState<ServiceItems>(
     initialQuantities // Initialize from booking if available
   );
@@ -146,7 +138,7 @@ export const AddMoreServices: React.FC<AddMoreServicesProps> = ({
                 selectedKey={selected}
                 onSelectionChange={(key) => setSelected(key.toString())}
               >
-                <Tab key="photos" title="Thiết bị">
+                <Tab key="equipments" title="Thiết bị">
                   <Card>
                     <CardBody>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -174,9 +166,9 @@ export const AddMoreServices: React.FC<AddMoreServicesProps> = ({
                                   type="number"
                                   label="Số lượng"
                                   placeholder="0"
-                                  value={String(
+                                  defaultValue={String(
                                     quantities[service.serviceId] || 0
-                                  )} // Số lượng tương ứng với từng món
+                                  )}
                                   onChange={(e) =>
                                     handleQuantityChange(
                                       service.serviceId.toString(),
@@ -193,7 +185,7 @@ export const AddMoreServices: React.FC<AddMoreServicesProps> = ({
                     </CardBody>
                   </Card>
                 </Tab>
-                <Tab key="music" title="Đồ ăn">
+                <Tab key="food" title="Đồ ăn">
                   <Card>
                     <CardBody>
                       Ut enim ad minim veniam, quis nostrud exercitation ullamco

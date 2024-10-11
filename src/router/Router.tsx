@@ -50,7 +50,7 @@ function ProtectedRoute({ requiredRoles }: ProtectedRouteProps) {
   const { isAuthenticated, hasRole } = useContext(AppContext);
 
   // Check if user is authenticated
-  if (isAuthenticated) {
+  if (!isAuthenticated) {
     return <Navigate to={path.login} />; // Redirect to login if not authenticated
   }
 
