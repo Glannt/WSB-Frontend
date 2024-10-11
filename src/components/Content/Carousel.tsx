@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
-import { Select, SelectItem, Slider } from '@nextui-org/react';
+import { Image, Select, SelectItem, Slider } from '@nextui-org/react';
 import { useNavigate } from 'react-router';
 
 interface CarouselProps {
@@ -34,7 +34,7 @@ export const Carousel: React.FC<CarouselProps> = ({ images }) => {
           <img
             src={image}
             alt={`Slide ${index + 1}`}
-            className="w-full h-full object-cover"
+            // className="w-full h-full object-cover"
           />
         </div>
       ))}

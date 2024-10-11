@@ -1,21 +1,11 @@
 import React, { useState } from 'react';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
-import { Select, SelectItem, Slider } from '@nextui-org/react';
+import { Button, Select, SelectItem, Slider } from '@nextui-org/react';
 import { useNavigate } from 'react-router';
-import { Carousel } from './Carouel';
+import { Carousel } from './Carousel';
 import { ListRooms } from '@/types/roomOverview';
 
-// interface Listing {
-//   id: string;
-//   name: string;
-//   type: string;
-//   building: string;
-//   price: number;
-//   images: string[];
-// }
-
 interface ListingCardProps {
-  // listing: Listing;
   room: ListRooms;
   images: string[];
 }
@@ -27,7 +17,7 @@ export const ListingCard: React.FC<ListingCardProps> = ({ room, images }) => {
       <Carousel images={images} />
 
       <div
-        onClick={() => navigate('/room-detail/' + room.roomId)}
+        // onClick={() => navigate('/room-detail/' + room.roomId)}
         className="p-4 cursor-pointer"
       >
         <h2 className="text-xl font-bold mb-2">{room.roomName}</h2>
@@ -40,6 +30,12 @@ export const ListingCard: React.FC<ListingCardProps> = ({ room, images }) => {
           </span>
         </div>
       </div>
+      <Button
+        onClick={() => navigate('/room-booking/' + room.roomId)}
+        className="mx-6 px-40 bg-black text-white hover:bg-zinc-800 hover:transition hover:duration-500 hover:translate-y-1 mb-5"
+      >
+        Đặt phòng
+      </Button>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const DescriptionSingleType: React.FC = () => {
+export const DescriptionDoubleType: React.FC = () => {
   return (
     <>
       <div className="grid grid-cols-1 lg:grid-cols-10 gap-8">

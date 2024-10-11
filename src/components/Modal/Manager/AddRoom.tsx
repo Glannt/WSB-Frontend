@@ -44,8 +44,6 @@ export const AddRoom: React.FC<RoomModalProps> = ({
   const [selectedStaff, setSelectedStaff] = React.useState<string[]>([]);
   const getAllStaffApi = async () => {
     const response = await getAllStaff();
-    console.log(response.data.content);
-
     return response.data.content;
   };
   const {
@@ -56,6 +54,13 @@ export const AddRoom: React.FC<RoomModalProps> = ({
     queryKey: ['staffs'],
     queryFn: getAllStaffApi,
   });
+
+  const [images, setImages] = React.useState<{ file: File; url: string }[]>([]);
+
+  const handleImageUpload = (uploadedImages: { file: File; url: string }[]) => {
+    setImages(uploadedImages); // Cập nhật hình ảnh
+  };
+
   const {
     register,
     handleSubmit,
@@ -80,13 +85,18 @@ export const AddRoom: React.FC<RoomModalProps> = ({
     formData.append('buildingId', data.buildingId.toString());
     formData.append('listStaffID', data.listStaffID);
 
+    images.forEach((image) => {
+      formData.append('image', image.file); // Chỉ sử dụng roomImg cho nhiều tệp
+    });
     AddNewRoomMutation.mutate(formData, {
       onSuccess: () => {
         refetchRooms();
         // Close modal or do something on success
         onClose();
       },
-      onError: (error) => {},
+      onError: (error) => {
+        console.log('Add NewRoomMutation error', error);
+      },
     });
   };
   const onSubmit = handleSubmit((data) => {
@@ -153,6 +163,8 @@ export const AddRoom: React.FC<RoomModalProps> = ({
                     onChange={(e) =>
                       handleFieldChange('roomName', e.target.value)
                     }
+                    errorMessage={errors.roomName?.message}
+                    isInvalid={errors.roomName?.message ? true : false}
                   />
                   <Input
                     label="Giá"
@@ -166,6 +178,8 @@ export const AddRoom: React.FC<RoomModalProps> = ({
                     defaultValue={''}
                     {...register('price')}
                     onChange={(e) => handleFieldChange('price', e.target.value)}
+                    errorMessage={errors.price?.message}
+                    isInvalid={errors.price?.message ? true : false}
                   />
                 </div>
                 <div className="flex flex-wrap py-2 px-3 md:flex-nowrap gap-4 w-[960px] justify-evenly">
@@ -205,26 +219,6 @@ export const AddRoom: React.FC<RoomModalProps> = ({
                     ))}
                   </Select>
                 </div>
-                {/* <div className="flex flex-wrap py-2 px-3 md:flex-nowrap gap-4 w-[960px] justify-evenly">
-                  <Select
-                    aria-hidden={false}
-                    label="Nhân viên"
-                    placeholder="Chọn nhân viên phụ trách"
-                    className="max-w-xl"
-                    selectionMode="multiple"
-                    {...register('listStaffID')}
-                    onSelectionChange={(keys) => {
-                      const listStaffID = Array.from(keys) as string[];
-                      handleFieldChange('listStaffID', listStaffID);
-                    }}
-                  >
-                    {staffs.map((staff) => (
-                      <SelectItem key={staff.staffId}>
-                        {staff.fullName}
-                      </SelectItem>
-                    ))}
-                  </Select>
-                </div> */}
                 <div className="flex flex-wrap py-2 px-3 md:flex-nowrap gap-4 w-[960px] justify-evenly">
                   <Select
                     tabIndex={1}
@@ -246,7 +240,7 @@ export const AddRoom: React.FC<RoomModalProps> = ({
                   </Select>
                 </div>
                 <div className="py-2 px-3">
-                  <UploadImage />
+                  <UploadImage onImagesUpload={handleImageUpload} />
                 </div>
               </ModalBody>
 
