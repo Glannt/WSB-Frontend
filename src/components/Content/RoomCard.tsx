@@ -24,7 +24,7 @@ export const ListingCard: React.FC<ListingCardProps> = ({ listing }) => {
       <Carousel images={listing.images} />
 
       <div
-        onClick={() => navigate('/room-detail/' + listing.id)}
+        onClick={() => navigate('/room-booking/' + listing.id)}
         className="p-4 cursor-pointer"
       >
         <h2 className="text-xl font-bold mb-2">{listing.name}</h2>

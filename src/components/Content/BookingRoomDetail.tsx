@@ -1,5 +1,16 @@
 import React, { useState } from 'react';
-import { FaCalendarAlt, FaClock, FaPlus, FaCheck } from 'react-icons/fa';
+import {
+  FaCalendarAlt,
+  FaClock,
+  FaPlus,
+  FaCheck,
+  FaStar,
+  FaWifi,
+  FaParking,
+  FaSwimmingPool,
+  FaCoffee,
+} from 'react-icons/fa';
+import { MdAir, MdTv } from 'react-icons/md';
 import { format } from 'date-fns';
 import { useParams } from 'react-router-dom';
 import { s } from 'vite/dist/node/types.d-aGj9QkWt';
@@ -25,6 +36,7 @@ import {
   Tabs,
   useDisclosure,
 } from '@nextui-org/react';
+import { toInteger } from 'lodash';
 interface Service {
   id: number;
   name: string;
@@ -39,6 +51,38 @@ export const BookingRoomDetail = () => {
   const [showPolicyModal, setShowPolicyModal] = useState<boolean>(false);
   const [policyAgreed, setPolicyAgreed] = useState<boolean>(false);
   const [selectedBase, setSelectedBase] = useState<string>('');
+
+  const similarRooms1 = [
+    {
+      id: 'D01',
+      name: 'Phòng đơn',
+      price: '50',
+      image:
+        'https://images.unsplash.com/photo-1618773928121-c32242e63f39?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
+    },
+    {
+      id: 'D02',
+      name: 'Phòng đôi',
+      price: '80',
+      image:
+        'https://images.unsplash.com/photo-1591088398332-8a7791972843?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1474&q=80',
+    },
+
+    {
+      id: 'D03',
+      name: 'Phòng 7',
+      price: '120',
+      image:
+        'https://images.unsplash.com/photo-1566665797739-1674de7a421a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1474&q=80',
+    },
+    {
+      id: 'D04',
+      name: 'Phòng 10',
+      price: '150',
+      image:
+        'https://images.unsplash.com/photo-1566665797739-1674de7a421a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1474&q=80',
+    },
+  ];
 
   const foodServices = [
     {
@@ -116,18 +160,31 @@ export const BookingRoomDetail = () => {
     );
   };
   const [rooms, setRooms] = useState([
-    { id: 1, name: 'Cozy Single', category: 'single', basePrice: 50 },
-    { id: 2, name: 'Spacious Double', category: 'double', basePrice: 80 },
-    { id: 3, name: 'Meeting Room (7)', category: 'meeting7', basePrice: 120 },
-    { id: 4, name: 'Meeting Room (10)', category: 'meeting10', basePrice: 150 },
+    { id: 'D01', name: 'Cozy Single', category: 'single', basePrice: 50 },
+    { id: 'D02', name: 'Spacious Double', category: 'double', basePrice: 80 },
+    {
+      id: 'D03',
+      name: 'Meeting Room (7)',
+      category: 'meeting7',
+      basePrice: 120,
+    },
+    {
+      id: 'D04',
+      name: 'Meeting Room (10)',
+      category: 'meeting10',
+      basePrice: 150,
+    },
   ]);
-
   const { roomId } = useParams<{ roomId: string }>();
   // console.log(roomId);
-  const room = rooms.find((room) => room.id === Number(roomId));
+  const room = rooms.find((room) => room.id === roomId);
+  const similarRooms = similarRooms1.filter((room) => room.id !== roomId);
+  // console.log(similarRooms);
+
   if (!room) {
     return <div>Phòng không tồn tại</div>;
   }
+
   // console.log(room);
   const roomPrice = room.basePrice;
   const [totals, setTotals] = useState<number>(roomPrice);
@@ -139,7 +196,12 @@ export const BookingRoomDetail = () => {
       );
       // Giả sử `quantities` là một đối tượng quản lý số lượng cho mỗi service theo id
       const quantity = quantities[serviceId] || 1; // Lấy số lượng từ state, mặc định là 1
-      return total + (selectedService ? selectedService.price * quantity : 0);
+
+      return (
+        total +
+        toInteger(selectedTimeSlot.length / 13) * room.basePrice +
+        (selectedService ? selectedService.price * quantity : 0)
+      );
     }, 0);
 
     setTotals(roomPrice + servicesTotal);
@@ -158,6 +220,14 @@ export const BookingRoomDetail = () => {
     setSelectedImage(index);
   };
 
+  const amenities = [
+    { icon: <FaWifi />, name: 'Free Wi-Fi' },
+    { icon: <FaParking />, name: 'Parking' },
+    { icon: <FaSwimmingPool />, name: 'Pool' },
+    { icon: <FaCoffee />, name: 'Coffee Machine' },
+    { icon: <MdAir />, name: 'Air Conditioning' },
+    { icon: <MdTv />, name: 'Smart TV' },
+  ];
   const [selected, setSelected] = React.useState('photos');
   // console.log(selectedTimeSlot);
   // console.log(selectedBase);
@@ -166,8 +236,8 @@ export const BookingRoomDetail = () => {
   // selectedBase !== '' && selectedTimeSlot !== '' && setPolicyAgreed(true);
 
   return (
-    <div className="w-full mx-auto h-[800px] p-8 flex items-center justify-center">
-      <div className="bg-white overflow-hidden w-full m-60 h-full flex">
+    <div className="mx-72 h-full p-8 flex-row items-center justify-center">
+      <div className="bg-white overflow-hidden w-full h-full flex">
         {/* <div className="w-1/2 bg-gray-200">
           <img
             src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
@@ -233,6 +303,10 @@ export const BookingRoomDetail = () => {
                   ))}
                 </Select>
               </div>
+
+              {/* <div className="mb-2 flex justify-end">
+                <div>Giá: {room.basePrice}$/slot</div>
+              </div> */}
             </div>
           </div>
           <div className="mb-6">
@@ -645,6 +719,50 @@ export const BookingRoomDetail = () => {
           >
             <FaCheck className="inline-block mr-2 mb-1" /> Xác nhận
           </button>
+        </div>
+      </div>
+      <div className="flex items-center mb-4">
+        {[1, 2, 3, 4, 5].map((star) => (
+          <FaStar key={star} className="text-yellow-400" />
+        ))}
+        <span className="ml-2">(4.8/5 based on 120 reviews)</span>
+      </div>
+      <p className="text-gray-600 mb-4">
+        Experience luxury and comfort in our spacious king room. Perfect for
+        couples or business travelers seeking a premium stay.
+      </p>
+      <div className="mb-4">
+        <h2 className="text-xl font-semibold mb-2">Amenities</h2>
+        <div className="grid grid-cols-2 gap-2">
+          {amenities.map((amenity, index) => (
+            <div key={index} className="flex items-center">
+              <span className="mr-2">{amenity.icon}</span>
+              <span>{amenity.name}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="mt-12">
+        <h2 className="text-2xl font-bold mb-4">Similar Rooms</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {similarRooms.map((room, index) => (
+            <div
+              key={index}
+              className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105"
+            >
+              <img
+                src={room.image}
+                alt={room.name}
+                className="w-full h-48 object-cover"
+              />
+              <div className="p-4">
+                <h3 className="font-bold text-lg mb-2">{room.name}</h3>
+                <p className="text-gray-600">
+                  Starting from {room.price}$/night
+                </p>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>
