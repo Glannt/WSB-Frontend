@@ -15,7 +15,7 @@ export const TypeRoomCard: React.FC<TypeRoomCardProps> = ({
 }) => {
   return (
     <div className={className}>
-      <Card className="w-96 shadow-xl transition-all">
+      <Card className="w-96 shadow-xl transition-all scale-100">
         <CardBody className="overflow-hidden p-0">
           <Image
             src={url}

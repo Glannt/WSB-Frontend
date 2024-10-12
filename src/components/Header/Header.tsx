@@ -6,7 +6,18 @@ import classNames from 'classnames';
 import { useMutation } from '@tanstack/react-query';
 import { logout } from '@/service/auth.api';
 import { AppContext } from '@/context/app.context';
-import { Button } from '@nextui-org/react';
+import {
+  Button,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+  Link,
+  Navbar,
+  NavbarBrand,
+  NavbarContent,
+  NavbarItem,
+} from '@nextui-org/react';
 import { useNavigate } from 'react-router';
 import path from '@/constants/path';
 export const Header = (props: any) => {
@@ -38,6 +49,7 @@ export const Header = (props: any) => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+
   return (
     <>
       <header
@@ -239,6 +251,169 @@ export const Header = (props: any) => {
           )}
         </div>
       </header>
+      <div className="mx-auto flex justify-between items-center max-w-[1800px]">
+        <Navbar
+          shouldHideOnScroll
+          isBordered
+          classNames={{
+            item: [
+              'flex',
+              'relative',
+              'h-full',
+              'items-center',
+              "data-[active=true]:after:content-['']",
+              'data-[active=true]:after:absolute',
+              'data-[active=true]:after:bottom-0',
+              'data-[active=true]:after:left-0',
+              'data-[active=true]:after:right-0',
+              'data-[active=true]:after:h-[2px]',
+              'data-[active=true]:after:rounded-[2px]',
+              'data-[active=true]:after:bg-primary',
+            ],
+          }}
+        >
+          <NavbarBrand>
+            {/* <AcmeLogo /> */}
+            <span
+              // fullWidth={true}
+              // size="lg"
+              // color="primary"
+              // variant="light"
+              onClick={() => navigate('/')}
+              className="hover:text-violet11 font-bold cursor-pointer"
+            >
+              WSB
+            </span>
+          </NavbarBrand>
+          <NavbarItem isActive={window.location.pathname === '/'}>
+            <Link
+              onClick={() => navigate(path.home)}
+              className="cursor-pointer"
+              aria-current="page"
+            >
+              Trang chủ
+            </Link>
+          </NavbarItem>
+          <NavbarContent className="hidden sm:flex gap-4" justify="center">
+            <Dropdown>
+              <NavbarItem>
+                <DropdownTrigger>
+                  <Button
+                    disableRipple
+                    className="cursor-pointer p-0 bg-transparent data-[hover=true]:bg-transparent"
+                    // endContent={icons.chevron}
+                    radius="sm"
+                    variant="light"
+                    onClick={() => navigate(path.location)}
+                  >
+                    Địa điểm
+                  </Button>
+                </DropdownTrigger>
+              </NavbarItem>
+              <DropdownMenu
+                aria-label="ACME features"
+                className="w-[340px]"
+                itemClasses={{
+                  base: 'gap-4',
+                }}
+              >
+                <DropdownItem
+                  key="autoscaling"
+                  description="Cơ sở 1"
+                  // startContent={icons.scale}
+                >
+                  TP. HCM
+                </DropdownItem>
+                <DropdownItem
+                  key="usage_metrics"
+                  description="Cơ sở 2"
+                  // startContent={icons.activity}
+                >
+                  Hà Nội
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+            <Dropdown>
+              <NavbarItem>
+                <DropdownTrigger>
+                  <Button
+                    disableRipple
+                    className="cursor-pointer p-0 bg-transparent data-[hover=true]:bg-transparent"
+                    // endContent={icons.chevron}
+                    radius="sm"
+                    variant="light"
+                  >
+                    Dịch vụ
+                  </Button>
+                </DropdownTrigger>
+              </NavbarItem>
+              <DropdownMenu
+                aria-label="ACME features"
+                className="w-[340px]"
+                itemClasses={{
+                  base: 'gap-4',
+                }}
+              >
+                <DropdownItem
+                  key="workspaces"
+                  description="Nơi làm việc"
+                  className="cursor-pointer"
+                  onClick={() => navigate(path.rooms)}
+                  // startContent={icons.scale}
+                >
+                  Phòng làm việc
+                </DropdownItem>
+                <DropdownItem
+                  key="amenities"
+                  description="Thiết bị đi kèm"
+                  className="cursor-pointer"
+                  onClick={() => navigate(path.equipments)}
+                  // startContent={icons.activity}
+                >
+                  Thiết bị
+                </DropdownItem>
+                <DropdownItem
+                  key="food"
+                  description="Thức ăn đi kèm"
+                  className="cursor-pointer"
+                  onClick={() => navigate(path.foods)}
+                  // startContent={icons.activity}
+                >
+                  Đồ ăn
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+            <NavbarItem>
+              <Link
+                className="cursor-pointer"
+                onClick={() => navigate(path.aboutUs)}
+                aria-current="page"
+              >
+                về chúng tôi
+              </Link>
+            </NavbarItem>
+            <NavbarItem>
+              <Link
+                color="foreground"
+                className="cursor-pointer"
+                onClick={() => navigate(path.contact)}
+              >
+                Liên hệ
+              </Link>
+            </NavbarItem>
+          </NavbarContent>
+          <NavbarContent justify="end">
+            <NavbarItem className="hidden lg:flex">
+              <Link href="#">Login</Link>
+            </NavbarItem>
+            <NavbarItem>
+              <Button as={Link} color="default" href="#" variant="flat">
+                Sign Up
+              </Button>
+            </NavbarItem>
+          </NavbarContent>
+        </Navbar>
+      </div>
     </>
   );
 };
