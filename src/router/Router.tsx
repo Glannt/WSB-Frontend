@@ -7,9 +7,10 @@ import ProfileEditor from '@/components/ProfileEditor/ProfileEditor';
 import SignUp from '@/components/SignUp/SignUp';
 import { AppContext } from '@/context/app.context';
 import { MainLayout } from '@/layouts/MainLayout';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
 import path from '@/constants/path';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 import { Settings } from '@/components/Customer/Settings';
 import BookingHistory from '@/components/Customer/Setting/History/Booking/BookingHistory';
@@ -68,14 +69,62 @@ function RejectedRoute() {
   return !isAuthenticated ? <Outlet /> : <Navigate to="/profile" />;
 }
 
+function RequireCaptcha() {
+  const [isCaptchaVerified, setIsCaptchaVerified] = useState(false);
+
+  const handleCaptchaChange = () => {
+    setIsCaptchaVerified(true);
+    localStorage.setItem('captchaVerified', 'true'); // Lưu trạng thái xác minh vào localStorage
+    localStorage.setItem(
+      'captchaVerifiedTime',
+      new Date().getTime().toString()
+    ); // Lưu thời gian xác minh
+  };
+  useEffect(() => {
+    // localStorage.removeItem('captchaVerified');
+    // Kiểm tra xem người dùng đã xác minh reCAPTCHA chưa
+    const captchaStatus = localStorage.getItem('captchaVerified');
+    const verifiedTime = localStorage.getItem('captchaVerifiedTime');
+    // console.log(new Date().getTime() - Number(verifiedTime) < 1800000);
+
+    if (
+      captchaStatus === 'true' &&
+      verifiedTime &&
+      new Date().getTime() - Number(verifiedTime) < 1800000
+    ) {
+      setIsCaptchaVerified(true);
+    }
+  }, []);
+  return !isCaptchaVerified ? (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '100vh',
+        backgroundColor: '#f9f9f9',
+      }}
+    >
+      <h2 style={{ color: '#333', marginBottom: '20px' }}>
+        Vui lòng hoàn thành reCAPTCHA để tiếp tục
+      </h2>
+      <ReCAPTCHA
+        sitekey="6LdLoV8qAAAAAF7HWwBph0kufiITsRwjdhgbIU63" // Thay bằng site key từ Google reCAPTCHA
+        onChange={handleCaptchaChange}
+      />
+    </div>
+  ) : (
+    <MainLayout>
+      <HomePage />
+    </MainLayout>
+  );
+}
+
 export const router = createBrowserRouter([
   {
     path: '/',
-    element: (
-      <MainLayout>
-        <HomePage />
-      </MainLayout>
-    ),
+    element: <RequireCaptcha />,
   },
   {
     path: path.rooms,
