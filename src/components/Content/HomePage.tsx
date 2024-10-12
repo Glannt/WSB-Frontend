@@ -13,6 +13,7 @@ export interface CarouselPropsSlider {
   autoSlide?: boolean;
   autoSlideInterval?: number;
 }
+
 export const HomePage: React.FC<CarouselPropsSlider> = ({
   autoSlide = true,
   autoSlideInterval = 3000,
@@ -219,7 +220,6 @@ export const HomePage: React.FC<CarouselPropsSlider> = ({
           </div>
         </div>
       </div>
-
       {/* test */}
     </div>
   );
