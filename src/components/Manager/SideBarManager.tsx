@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { Avatar, Tooltip } from '@nextui-org/react';
 import { useSidebarContext } from '@/layouts/layout-context';
@@ -14,9 +14,24 @@ import { SidebarItem } from '../sidebar/sidebar-item';
 import { SidebarMenu } from '../sidebar/sidebar-menu';
 import { useNavigate } from 'react-router';
 import path from '@/constants/path';
+import { useMutation } from '@tanstack/react-query';
+import { AppContext } from '@/context/app.context';
+import { logout } from '@/service/auth.api';
 
 export const SidebarAdmin = () => {
   const { collapsed, setCollapsed } = useSidebarContext();
+  const { setIsAuthenticated, isAuthenticated } = useContext(AppContext);
+
+  const logoutMutation = useMutation({
+    mutationFn: logout,
+    onSuccess: () => {
+      setIsAuthenticated(false);
+    },
+  });
+  const handleLogout = () => {
+    logoutMutation.mutate();
+    // navigate('/');
+  };
 
   const navigate = useNavigate();
   return (
@@ -60,7 +75,8 @@ export const SidebarAdmin = () => {
               <SidebarItem
                 title="Đăng xuất"
                 icon={<SettingsIcon />}
-                onClick={() => navigate(path.logout)} // Thêm dấu '/' ở đầu để xác định đường dẫn tuyệt đối
+                onClick={handleLogout}
+                // onClick={() => navigate(path.logout)} // Thêm dấu '/' ở đầu để xác định đường dẫn tuyệt đối
               />
             </SidebarMenu>
           </div>
