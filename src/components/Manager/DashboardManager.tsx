@@ -33,9 +33,9 @@ export const DashboardManager = () => {
           //   onMouseEnter={handleMouseEnter}
           //   onMouseLeave={handleMouseLeave}
         >
-          <SidebarAdmin collapse={collapse} hover={isHovered} />
+          <SidebarAdmin />
 
-          <button
+          {/* <button
             className={`absolute top-4 text-black p-2 rounded-full z-20 transition-all duration-300 ease-in-out ${
               collapse ? 'rotate-180 -right-2' : '-right-24'
             }`}
@@ -47,7 +47,7 @@ export const DashboardManager = () => {
             ) : (
               <ChevronRightCircle className="w-6 h-6" />
             )}
-          </button>
+          </button> */}
           {!collapse && (
             <>
               {!isHovered && (

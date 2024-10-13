@@ -14,9 +14,24 @@ import { useNavigate } from 'react-router';
 import path from '@/constants/path';
 import { CollapseItems } from '../sidebar/collapse-items';
 import { BalanceIcon } from '../Icons/sidebar/balance-icon';
-import React from 'react';
+import React, { useContext } from 'react';
+import { logout } from '@/service/auth.api';
+import { useMutation } from '@tanstack/react-query';
+import { AppContext } from '@/context/app.context';
 
 export const SidebarStaff = () => {
+  const { setIsAuthenticated, isAuthenticated } = useContext(AppContext);
+
+  const logoutMutation = useMutation({
+    mutationFn: logout,
+    onSuccess: () => {
+      setIsAuthenticated(false);
+    },
+  });
+  const handleLogout = () => {
+    logoutMutation.mutate();
+    // navigate('/');
+  };
   const { collapsed, setCollapsed } = useSidebarContext();
   const [activeItem, setActiveItem] = React.useState<string | null>('Home');
   const navigate = useNavigate();
@@ -78,8 +93,9 @@ export const SidebarStaff = () => {
                 title="Đăng xuất"
                 icon={<SettingsIcon />}
                 onClick={() => {
+                  handleLogout();
                   setActiveItem('Đăng xuất');
-                  navigate(path.logout);
+                  // navigate(path.logout);
                 }}
               />
             </SidebarMenu>
