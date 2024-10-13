@@ -49,7 +49,7 @@ export const schemaLogin = Yup.object().shape({
 export type SchemaLogin = Yup.InferType<typeof schemaLogin>;
 
 export const schemaAddRoom = Yup.object().shape({
-  buildingId: Yup.string().default('1'),
+  buildingId: Yup.string().default('BD001'),
   roomName: Yup.string().required('Room Name is required'),
   price: Yup.number()
     .positive('Price must be positive')
@@ -57,7 +57,7 @@ export const schemaAddRoom = Yup.object().shape({
   image: Yup.array().of(Yup.mixed().required('Image is required')).optional(),
   status: Yup.string().required('Status is required'),
   roomTypeId: Yup.string().required('Room Type ID is required'),
-  listStaffID: Yup.string().default(''),
+  listStaffID: Yup.array().of(Yup.string().default('')),
 });
 
 export type SchemaAddRoom = Yup.InferType<typeof schemaAddRoom>;
@@ -67,7 +67,7 @@ export const schemaUpdateRoom = Yup.object().shape({
   price: Yup.number().positive('Giá phải dương').required('Thiếu giá phòng'),
   image: Yup.array().of(Yup.mixed().required('Image is required')).optional(),
   status: Yup.string().required('Thiếu trạng thái phòng'),
-  listStaffID: Yup.string().default(''),
+  listStaffID: Yup.array().of(Yup.string().default('')),
 });
 
 export type SchemaUpdateRoom = Yup.InferType<typeof schemaUpdateRoom>;

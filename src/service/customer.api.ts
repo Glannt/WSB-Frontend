@@ -31,3 +31,11 @@ export const updateServiceBooking = (formdata: FormData) =>
       'Content-Type': 'multipart/form-data',
     },
   });
+
+export const getDetailRoom = (roomId: string) =>
+  http.get(`/api/customer/room-detail/${roomId}`);
+
+export const getSimilarType = (roomType: string) =>
+  http.get(`/api/get-room-by-type`, { params: { roomTypeName: roomType } });
+
+export const getAllBuiding = () => http.get(`/api/auth/buildings`);

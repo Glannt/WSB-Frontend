@@ -33,7 +33,7 @@ import Location from '@/components/Content/Location';
 import Contact from '@/Contact/Contact';
 
 import { Role } from '@/types/user.type';
-import RoomsList from '@/components/Modal/Manager/testGET';
+// import RoomsList from '@/components/Modal/Manager/testGET';
 import { AdminDashboard } from '@/components/Manager/AdminDashboard';
 import { DashboardManager } from '@/components/Manager/DashboardManager';
 import { BuildingOne } from '@/components/Building/BuildingOne';
@@ -43,6 +43,8 @@ import { TypeEvent } from '@/pages/RoomType/TypeEvent';
 import { TypeMeeting } from '@/pages/RoomType/TypeMeeting';
 import { TypeDouble } from '@/pages/RoomType/TypeDouble';
 import { SidebarWrapper } from '@/components/sidebar/sidebar';
+import { TestTable } from '@/components/Test/TestTable';
+import { BookingRoomDetailMultiple } from '@/components/Content/BookingMultiple';
 interface ProtectedRouteProps {
   requiredRoles?: Role[]; // Optional prop for role-based protection
 }
@@ -253,14 +255,14 @@ export const router = createBrowserRouter([
         path: 'room-booking/:roomId',
         element: (
           <MainLayout>
-            <BookingRoomDetail />
+            <BookingRoomDetailMultiple />
           </MainLayout>
         ),
         // <BookingRoomDetail />,
       },
       {
         path: 'room-bill',
-        element: <RoomsList />,
+        element: <TestTable />,
       },
       {
         path: path.settings,

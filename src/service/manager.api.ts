@@ -3,7 +3,7 @@ import http from '@/utils/http';
 
 //Room
 export const AddNewRoom = (formdata: FormData) =>
-  http.post('/api/manager/add-new-room', formdata, {
+  http.post('/api/manager/add-new-room-img', formdata, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },

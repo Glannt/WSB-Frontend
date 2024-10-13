@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   FaCalendarAlt,
   FaClock,
@@ -20,6 +20,7 @@ import {
   CardBody,
   DatePicker,
   DateRangePicker,
+  Image,
   Input,
   Modal,
   ModalBody,
@@ -33,52 +34,97 @@ import {
   useDisclosure,
 } from '@nextui-org/react';
 import { toInteger } from 'lodash';
+import {
+  getAllBuiding,
+  getDetailRoom,
+  getService,
+  getSimilarType,
+} from '@/service/customer.api';
+import { ListRooms } from '@/types/roomOverview';
+import { useQuery } from '@tanstack/react-query';
+import { buildingCustomer } from '@/types/building.type';
+import RoomTypeSwiper from './RoomTypeSlider';
+import { Services } from '@/types/service.type';
 interface Service {
   id: number;
   name: string;
   price: number;
   image: string;
 }
-export const BookingRoomDetail = () => {
+
+export const BookingRoomDetailMultiple = () => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [selectedTimeSlot, setSelectedTimeSlot] = useState<string>('');
   const [showServiceModal, setShowServiceModal] = useState<boolean>(false);
-  const [selectedServices, setSelectedServices] = useState<number[]>([]);
+  const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const [showPolicyModal, setShowPolicyModal] = useState<boolean>(false);
   const [policyAgreed, setPolicyAgreed] = useState<boolean>(false);
   const [selectedBase, setSelectedBase] = useState<string>('');
+  const { roomId } = useParams<{ roomId: string }>();
+  const [Buildings, setBuildings] = useState<buildingCustomer[]>([]);
+  const getRoomDetailApi = async () => {
+    if (roomId === undefined) {
+      return null;
+    }
+    const response = await getDetailRoom(roomId);
+    return response.data.data;
+  };
+  const {
+    data: roomDetail,
+    isLoading,
+    refetch,
+  } = useQuery<ListRooms>({
+    queryKey: ['roomDetail', roomId],
+    queryFn: getRoomDetailApi,
+    enabled: !!roomId,
+  });
+  const getAllBuildingApi = async () => {
+    if (roomDetail?.roomType === undefined) {
+      return null;
+    }
+    const response = await getAllBuiding();
+    return response.data.data;
+  };
+  const {
+    data: buildings,
+    // isLoading,
+    // refetch,
+  } = useQuery<buildingCustomer[]>({
+    queryKey: ['buildings'],
+    queryFn: getAllBuildingApi,
+    // enabled: !!roomId,
+  });
+  useEffect(() => {
+    if (buildings) {
+      setBuildings(buildings);
+    }
+  }, [buildings]);
+  const getRoomTypeApi = async () => {
+    if (roomDetail?.roomType === undefined) {
+      return null;
+    }
+    const response = await getSimilarType(roomDetail?.roomType);
+    return response.data.data;
+  };
+  const {
+    data: roomType,
+    // isLoading,
+    // refetch,
+  } = useQuery<ListRooms[]>({
+    queryKey: ['roomType', roomDetail?.roomType],
+    queryFn: getRoomTypeApi,
+    // enabled: !!roomId,
+  });
 
-  const similarRooms1 = [
-    {
-      id: 'D01',
-      name: 'Phòng đơn',
-      price: '50',
-      image:
-        'https://images.unsplash.com/photo-1618773928121-c32242e63f39?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
-    },
-    {
-      id: 'D02',
-      name: 'Phòng đôi',
-      price: '80',
-      image:
-        'https://images.unsplash.com/photo-1591088398332-8a7791972843?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1474&q=80',
-    },
+  const getServiceApi = async () => {
+    const response = await getService();
+    return response.data.data;
+  };
 
-    {
-      id: 'D03',
-      name: 'Phòng 7',
-      price: '120',
-      image:
-        'https://images.unsplash.com/photo-1566665797739-1674de7a421a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1474&q=80',
-    },
-    {
-      id: 'D04',
-      name: 'Phòng 10',
-      price: '150',
-      image:
-        'https://images.unsplash.com/photo-1566665797739-1674de7a421a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1474&q=80',
-    },
-  ];
+  const { data: services = [] } = useQuery<Services[]>({
+    queryKey: ['services'],
+    queryFn: getServiceApi,
+  });
 
   const foodServices = [
     {
@@ -126,7 +172,7 @@ export const BookingRoomDetail = () => {
     }));
   };
 
-  const building = ['Cơ sở 1', 'Cơ sở 2'];
+  // const building = ['Cơ sở 1', 'Cơ sở 2'];
 
   const handleBaseChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedBase(e.target.value);
@@ -148,68 +194,67 @@ export const BookingRoomDetail = () => {
     setShowPolicyModal(!showPolicyModal);
   };
 
-  const handleServiceSelection = (serviceId: number) => {
+  const handleServiceSelection = (serviceId: string) => {
     setSelectedServices((prevServices) =>
       prevServices.includes(serviceId)
         ? prevServices.filter((id) => id !== serviceId)
         : [...prevServices, serviceId]
     );
   };
-  const [rooms, setRooms] = useState([
-    { id: 'D01', name: 'Cozy Single', category: 'single', basePrice: 50 },
-    { id: 'D02', name: 'Spacious Double', category: 'double', basePrice: 80 },
-    {
-      id: 'D03',
-      name: 'Meeting Room (7)',
-      category: 'meeting7',
-      basePrice: 120,
-    },
-    {
-      id: 'D04',
-      name: 'Meeting Room (10)',
-      category: 'meeting10',
-      basePrice: 150,
-    },
-  ]);
-  const { roomId } = useParams<{ roomId: string }>();
-  const room = rooms.find((room) => room.id === roomId);
-  const similarRooms = similarRooms1.filter((room) => room.id !== roomId);
+  // const [rooms, setRooms] = useState([
+  //   { id: 'D01', name: 'Cozy Single', category: 'single', basePrice: 50 },
+  //   { id: 'D02', name: 'Spacious Double', category: 'double', basePrice: 80 },
+  //   {
+  //     id: 'D03',
+  //     name: 'Meeting Room (7)',
+  //     category: 'meeting7',
+  //     basePrice: 120,
+  //   },
+  //   {
+  //     id: 'D04',
+  //     name: 'Meeting Room (10)',
+  //     category: 'meeting10',
+  //     basePrice: 150,
+  //   },
+  // ]);
+  // const { roomId } = useParams<{ roomId: string }>();
+  // const room = rooms.find((room) => room.id === roomId);
+  // const similarRooms = similarRooms1.filter((room) => room.id !== roomId);
 
-  if (!room) {
-    return <div>Phòng không tồn tại</div>;
-  }
+  // if (!room) {
+  //   return <div>Phòng không tồn tại</div>;
+  // }
 
   // console.log(room);
-  const roomPrice = room.basePrice;
-  const [totals, setTotals] = useState<number>(roomPrice);
+  const roomPrice = roomDetail?.price;
+  const [totals, setTotals] = useState<number>(roomPrice!);
 
   const calculateTotalPrice = () => {
     const servicesTotal = selectedServices.reduce((total, serviceId) => {
-      const selectedService = foodServices.find(
-        (service) => service.id === serviceId
+      const selectedService = services.find(
+        (service) => service.serviceId === serviceId
       );
       // Giả sử `quantities` là một đối tượng quản lý số lượng cho mỗi service theo id
-      const quantity = quantities[serviceId] || 1; // Lấy số lượng từ state, mặc định là 1
+      const quantity = quantities[serviceId] || 0; // Lấy số lượng từ state, mặc định là 1
 
       return (
         total +
-        toInteger(selectedTimeSlot.length / 13) * room.basePrice +
+        toInteger(selectedTimeSlot.length / 13) * roomDetail!.price +
         (selectedService ? selectedService.price * quantity : 0)
       );
     }, 0);
 
-    setTotals(roomPrice + servicesTotal);
-    return roomPrice + servicesTotal;
+    setTotals(roomPrice! + servicesTotal);
+    return roomPrice! + servicesTotal;
   };
 
-  const [selectedImage, setSelectedImage] = useState(0);
+  const [selectedImage, setSelectedImage] = useState<number>(0);
+  // React.useEffect(() => {
+  //   if (roomDetail?.roomImg && roomDetail.roomImg.length > 0) {
+  //     setSelectedImage(roomDetail.roomImg[0]);
+  //   }
+  // }, [roomDetail]);
 
-  const roomImages = [
-    'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
-    'https://images.unsplash.com/photo-1611892440504-42a792e24d32?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
-    'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
-    'https://images.unsplash.com/photo-1631049552057-403cdb8f0658?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
-  ];
   const handleImageClick = (index: number) => {
     setSelectedImage(index);
   };
@@ -229,26 +274,34 @@ export const BookingRoomDetail = () => {
       <div className="bg-white overflow-hidden w-full h-full flex">
         <div className="md:w-1/2">
           <div className="relative overflow-hidden rounded-lg shadow-lg my-8">
-            <img
-              src={roomImages[selectedImage]}
-              alt={`Room Image ${selectedImage + 1}`}
-              className="w-full h-[400px] object-cover transition-transform duration-500 ease-in-out transform hover:scale-105"
-            />
+            {roomDetail?.roomImg && roomDetail.roomImg.length > 0 && (
+              <img
+                src={roomDetail.roomImg[selectedImage]} // Safely accessing the selected image
+                alt={`Room Image ${selectedImage + 1}`}
+                className="w-full h-[400px] object-cover transition-transform duration-500 ease-in-out transform hover:scale-105"
+              />
+            )}
           </div>
           <div className="flex mt-4 gap-2 overflow-x-auto">
-            {roomImages.map((image, index) => (
-              <img
-                key={index}
-                src={image}
-                alt={`Thumbnail ${index + 1}`}
-                className={`w-20 h-20 object-cover cursor-pointer rounded-md ${index === selectedImage ? 'ring-2 ring-blue-500' : ''}`}
-                onClick={() => handleImageClick(index)}
-              />
-            ))}
+            {roomDetail?.roomImg && roomDetail.roomImg.length > 0 ? (
+              roomDetail.roomImg.map((image, index) => (
+                <img
+                  key={index}
+                  src={image}
+                  alt={`Thumbnail ${index + 1}`}
+                  className={`w-20 h-20 object-cover cursor-pointer rounded-md ${
+                    index === selectedImage ? 'ring-2 ring-blue-500' : ''
+                  }`}
+                  onClick={() => handleImageClick(index)}
+                />
+              ))
+            ) : (
+              <p>No images available</p> // Fallback if roomImg is undefined or empty
+            )}
           </div>
         </div>
         <div className="w-1/2 p-8 overflow-y-auto">
-          <h2 className="text-3xl font-bold mb-6">{room?.name}</h2>
+          <h2 className="text-3xl font-bold mb-6">{roomDetail?.roomName}</h2>
           <div className="mb-6">
             <div className="relative">
               <div className="w-full flex flex-row flex-wrap gap-4">
@@ -261,9 +314,17 @@ export const BookingRoomDetail = () => {
                   placeholder="Chọn cơ sở..."
                   className="w-full rounded-md appearance-none"
                 >
-                  {building.map((building) => (
-                    <SelectItem key={building}>{building}</SelectItem>
-                  ))}
+                  {Buildings && Buildings.length > 0 ? (
+                    Buildings.map((building, index) => (
+                      <SelectItem key={index} value={building.buildingName}>
+                        {building.buildingName}
+                      </SelectItem>
+                    ))
+                  ) : (
+                    <SelectItem key="no-buildings">
+                      No buildings available
+                    </SelectItem>
+                  )}
                 </Select>
               </div>
             </div>
@@ -339,21 +400,24 @@ export const BookingRoomDetail = () => {
                         <Card>
                           <CardBody>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                              {foodServices.map((service) => (
-                                <div key={service.id} className="flex-col">
-                                  <label htmlFor={service.id.toString()}>
+                              {services.map((service) => (
+                                <div
+                                  key={service.serviceId}
+                                  className="flex-col"
+                                >
+                                  <label htmlFor={service.serviceId.toString()}>
                                     <div
-                                      key={service.id}
+                                      key={service.serviceId}
                                       className="border rounded-lg p-4 flex items-center"
                                     >
                                       <img
-                                        src={service.image}
-                                        alt={service.name}
+                                        // src={service.image}
+                                        // alt={service.name}
                                         className="w-20 h-20 object-cover rounded-md mr-4"
                                       />
                                       <div>
                                         <h4 className="font-semibold">
-                                          {service.name}
+                                          {service.serviceName}
                                         </h4>
                                         <p className="text-gray-600">
                                           ${service.price}
@@ -367,10 +431,12 @@ export const BookingRoomDetail = () => {
                                           type="number"
                                           label="Số lượng"
                                           placeholder="0"
-                                          value={'' + quantities[service.id]} // Số lượng tương ứng với từng món
+                                          value={
+                                            '' + quantities[service.serviceId]
+                                          } // Số lượng tương ứng với từng món
                                           onChange={(e) =>
                                             handleQuantityChange(
-                                              service.id.toString(),
+                                              service.serviceId.toString(),
                                               Number(e.target.value)
                                             )
                                           }
@@ -381,13 +447,15 @@ export const BookingRoomDetail = () => {
                                         />
                                       }
                                       <input
-                                        id={service.id.toString()}
+                                        id={service.serviceId.toString()}
                                         type="checkbox"
                                         checked={selectedServices.includes(
-                                          service.id
+                                          service.serviceId
                                         )}
                                         onChange={() =>
-                                          handleServiceSelection(service.id)
+                                          handleServiceSelection(
+                                            service.serviceId
+                                          )
                                         }
                                         className="ml-auto size-5"
                                       />
@@ -573,25 +641,45 @@ export const BookingRoomDetail = () => {
       </div>
       <div className="mt-12">
         <h2 className="text-2xl font-bold mb-4">Similar Rooms</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {similarRooms.map((room, index) => (
-            <div
-              key={index}
-              className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105"
-            >
-              <img
-                src={room.image}
-                alt={room.name}
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-4">
-                <h3 className="font-bold text-lg mb-2">{room.name}</h3>
-                <p className="text-gray-600">
-                  Starting from {room.price}$/night
-                </p>
-              </div>
+        {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-6"> */}
+        <div className="w-full h-[500px] max-h-[500px]">
+          {/* {roomType && roomType.length > 0 ? (
+            roomType.map((room, index) =>
+              room?.roomImg && room.roomImg.length > 0 ? (
+                <div
+                  key={index}
+                  className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105"
+                >
+                  <Image
+                    src={room.roomImg[0]}
+                    alt={room.roomName}
+                    className="w-full h-48 object-cover"
+                  />
+                  <div className="p-4">
+                    <h3 className="font-bold text-lg mb-2">{room.roomName}</h3>
+                    <p className="text-gray-600">
+                      Starting from {room.price}$/night
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <div key={index} className="p-4 text-center">
+                  <p>No image available</p>
+                </div>
+              )
+            )
+          ) : (
+            <div className="p-4 text-center">
+              <p>No rooms available</p>
             </div>
-          ))}
+          )} */}
+          {roomType && roomType.length > 0 ? (
+            <RoomTypeSwiper roomType={roomType} />
+          ) : (
+            <div className="p-4 text-center">
+              <p></p>
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -4,4 +4,5 @@ export interface Services {
   price: number;
   quantity: number;
   serviceType: string;
+  serviceImg: string[];
 }

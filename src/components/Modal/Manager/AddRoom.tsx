@@ -40,7 +40,7 @@ export const AddRoom: React.FC<RoomModalProps> = ({
   refetchRooms,
 }) => {
   const [valueStatus, setValueStatus] = React.useState(new Set(['available']));
-  const [valueRoomType, setValueRoomType] = React.useState(new Set(['1']));
+  const [valueRoomType, setValueRoomType] = React.useState(new Set(['RT001']));
   const [selectedStaff, setSelectedStaff] = React.useState<string[]>([]);
   const getAllStaffApi = async () => {
     const response = await getAllStaff();
@@ -60,6 +60,8 @@ export const AddRoom: React.FC<RoomModalProps> = ({
   const handleImageUpload = (uploadedImages: { file: File; url: string }[]) => {
     setImages(uploadedImages); // Cập nhật hình ảnh
   };
+
+  console.log(images);
 
   const {
     register,
@@ -81,9 +83,16 @@ export const AddRoom: React.FC<RoomModalProps> = ({
     formData.append('roomName', data.roomName);
     formData.append('price', data.price.toString());
     formData.append('status', data.status);
-    formData.append('roomTypeId', data.roomTypeId.toString());
+    formData.append('roomTypeId', data.roomTypeId);
     formData.append('buildingId', data.buildingId.toString());
-    formData.append('listStaffID', data.listStaffID);
+    // Check if listStaffID exists and append it
+    if (data.listStaffID && data.listStaffID.length > 0) {
+      data.listStaffID.forEach((id) => {
+        formData.append('listStaffID', id); // Append each staff ID
+      });
+    } else {
+      formData.append('listStaffID', ''); // Optional: Send empty value or skip this
+    }
 
     images.forEach((image) => {
       formData.append('image', image.file); // Chỉ sử dụng roomImg cho nhiều tệp
@@ -221,15 +230,22 @@ export const AddRoom: React.FC<RoomModalProps> = ({
                 </div>
                 <div className="flex flex-wrap py-2 px-3 md:flex-nowrap gap-4 w-[960px] justify-evenly">
                   <Select
-                    tabIndex={1}
+                    aria-hidden="false"
+                    aria-multiselectable="true"
+                    aria-errormessage="Lỗi"
                     label="Nhân viên"
                     selectionMode="multiple"
                     placeholder="Chọn nhân viên phụ trách"
                     className="max-w-xl"
                     {...register('listStaffID')}
                     onSelectionChange={(keys) => {
-                      const listStaffID = Array.from(keys).join(',');
-                      handleFieldChange('listStaffID', listStaffID);
+                      // const listStaffID = Array.from(keys).join(',');
+                      // handleFieldChange('listStaffID', listStaffID);
+                      const listStaffID = Array.from(keys); // Store keys as an array
+                      handleFieldChange(
+                        'listStaffID',
+                        JSON.stringify(listStaffID)
+                      );
                     }}
                   >
                     {staffs.map((staff) => (

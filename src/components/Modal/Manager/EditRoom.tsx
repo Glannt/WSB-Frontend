@@ -102,7 +102,13 @@ const EditRoom: React.FC<RoomModalProps> = ({
     formData.append('roomName', data.roomName);
     formData.append('price', data.price.toString());
     formData.append('status', data.status?.toString());
-    formData.append('listStaffID', data.listStaffID.toString());
+    if (data.listStaffID && data.listStaffID.length > 0) {
+      data.listStaffID.forEach((id) => {
+        formData.append('listStaffID', id); // Append each staff ID
+      });
+    } else {
+      formData.append('listStaffID', ''); // Optional: Send empty value or skip this
+    }
     images.forEach((image) => {
       formData.append('image', image.file); // Chỉ sử dụng roomImg cho nhiều tệp
     });
@@ -242,8 +248,13 @@ const EditRoom: React.FC<RoomModalProps> = ({
                     className="max-w-xl"
                     {...register('listStaffID')}
                     onSelectionChange={(keys) => {
-                      const listStaffID = Array.from(keys).join(',');
-                      handleFieldChange('listStaffID', listStaffID);
+                      // const listStaffID = Array.from(keys).join(',');
+                      // handleFieldChange('listStaffID', listStaffID);
+                      const listStaffID = Array.from(keys); // Store keys as an array
+                      handleFieldChange(
+                        'listStaffID',
+                        JSON.stringify(listStaffID)
+                      );
                     }}
                     // defaultSelectedKeys={
                     //   selectedRoom?.staffAtRoom &&

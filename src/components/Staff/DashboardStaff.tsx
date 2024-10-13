@@ -38,7 +38,7 @@ export const DashboardStaff = () => {
             collapse || isHovered ? 'translate-x-0' : '-translate-x-full'
           }`}
         >
-          <SidebarStaff collapse={collapse} hover={isHovered} />
+          <SidebarStaff />
 
           <button
             className={`absolute top-4 text-black p-2 rounded-full z-20 transition-all duration-300 ease-in-out ${

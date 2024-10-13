@@ -1,17 +1,23 @@
+import { Room } from '@/types/room.type';
 import {
   Button,
+  Image,
   Input,
   Modal,
   ModalBody,
   ModalContent,
   ModalFooter,
   ModalHeader,
+  Skeleton,
+  Table,
+  TableBody,
 } from '@nextui-org/react';
+import React from 'react';
 
 interface DetailModalProps {
   isOpen: boolean;
   onClose: () => void;
-  selectedRoom: any;
+  selectedRoom: Room | null;
 }
 
 export const DetailModal: React.FC<DetailModalProps> = ({
@@ -19,6 +25,21 @@ export const DetailModal: React.FC<DetailModalProps> = ({
   onClose,
   selectedRoom,
 }) => {
+  const [loadingImages, setLoadingImages] = React.useState<boolean[]>([]);
+  React.useEffect(() => {
+    if (selectedRoom && selectedRoom.roomImg) {
+      const loadingArray = selectedRoom.roomImg.map(() => true); // Initialize loading state for each image
+      setLoadingImages(loadingArray);
+    }
+  }, [isOpen, selectedRoom]);
+
+  const handleImageLoad = (index: number) => {
+    setLoadingImages((prevState) => {
+      const updatedLoading = [...prevState];
+      updatedLoading[index] = false; // Set image as loaded
+      return updatedLoading;
+    });
+  };
   return (
     <Modal
       backdrop="opaque"
@@ -54,73 +75,29 @@ export const DetailModal: React.FC<DetailModalProps> = ({
       <ModalContent>
         {(onClose) => (
           <>
-            <ModalHeader className="flex flex-col gap-1">
-              Chi tiết phòng
-            </ModalHeader>
+            <ModalHeader className="flex flex-col gap-1">Ảnh phòng</ModalHeader>
             <ModalBody>
-              <div className="flex py-2 px-3 justify-evenly flex-wrap md:flex-nowrap gap-4 outline-none border-0">
+              <div className="flex py-2 px-3 justify-evenly flex-wrap md:flex-nowrap gap-4 outline-none border-0 overflow-y-auto">
                 {' '}
-                {selectedRoom ? (
-                  <>
-                    <Input
-                      isDisabled
-                      autoFocus
-                      label="Tên phòng"
-                      value={selectedRoom.roomName}
-                      variant="bordered"
-                      classNames={{
-                        label: 'text-black/50 dark:text-white/90 pb-2',
-                        input: 'border-0 focus:outline-none focus:border-none',
-                        clearButton: 'pb-4',
-                      }}
-                    />
-                    <Input
-                      isDisabled
-                      label="Giá phòng"
-                      value={selectedRoom.roomPrice.toString()}
-                      variant="bordered"
-                      classNames={{
-                        label: 'text-black/50 dark:text-white/90 pb-2',
-                        input: 'border-0 focus:outline-none focus:border-none',
-                        clearButton: 'pb-4',
-                      }}
-                    />
-                    {/* You can add more inputs for other properties like roomStatus, roomType, employees, etc. */}
-                  </>
+                {selectedRoom!.roomImg.length > 0 ? (
+                  <ul className="flex flex-row gap-4 flex-wrap">
+                    {selectedRoom!.roomImg.map((image, index) => (
+                      <li key={index} className="flex flex-col items-center">
+                        {loadingImages[index] ? (
+                          <Skeleton className="mb-2 w-36 h-36 rounded-xl" />
+                        ) : (
+                          <Image
+                            src={image}
+                            alt={image}
+                            className="object-cover w-36 h-36 rounded-xl"
+                            onLoad={() => handleImageLoad(index)} // Mark image as loaded
+                          />
+                        )}
+                      </li>
+                    ))}
+                  </ul>
                 ) : (
-                  <p>No room selected</p>
-                )}
-              </div>
-              <div className="flex flex-wrap py-2 px-3 md:flex-nowrap gap-4 w-[960px] justify-evenly">
-                {selectedRoom ? (
-                  <>
-                    <Input
-                      isDisabled
-                      autoFocus
-                      label="Tên phòng"
-                      value={selectedRoom.roomStatus}
-                      variant="bordered"
-                      classNames={{
-                        label: 'text-black/50 dark:text-white/90 pb-2',
-                        input: 'border-0 focus:outline-none focus:border-none',
-                        clearButton: 'pb-4',
-                      }}
-                    />
-                    <Input
-                      isDisabled
-                      label="Giá phòng"
-                      value={selectedRoom.roomType}
-                      variant="bordered"
-                      classNames={{
-                        label: 'text-black/50 dark:text-white/90 pb-2',
-                        input: 'border-0 focus:outline-none focus:border-none',
-                        clearButton: 'pb-4',
-                      }}
-                    />
-                    {/* You can add more inputs for other properties like roomStatus, roomType, employees, etc. */}
-                  </>
-                ) : (
-                  <p>No room selected</p>
+                  <p>No images available</p>
                 )}
               </div>
             </ModalBody>
