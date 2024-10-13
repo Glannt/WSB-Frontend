@@ -39,3 +39,16 @@ export const getSimilarType = (roomType: string) =>
   http.get(`/api/get-room-by-type`, { params: { roomTypeName: roomType } });
 
 export const getAllBuiding = () => http.get(`/api/auth/buildings`);
+
+export const createOrderTopUp = (
+  amount: number,
+  userId: string,
+  urlReturn?: string
+) =>
+  http.post('/vnpay/createOrderTopUp', null, {
+    params: {
+      amount,
+      userId,
+      urlReturn,
+    },
+  });
