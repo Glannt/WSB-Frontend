@@ -40,6 +40,7 @@ export const getSimilarType = (roomType: string) =>
 
 export const getAllBuiding = () => http.get(`/api/auth/buildings`);
 
+
 export const createBooking = (body: {
   buildingId: string;
   roomId: string;
@@ -49,3 +50,17 @@ export const createBooking = (body: {
 }) => http.post('/api/customer/create-multi-booking', body);
 
 export const reChargeWallet = () => {};
+
+export const createOrderTopUp = (
+  amount: number,
+  userId: string,
+  urlReturn?: string
+) =>
+  http.post('/vnpay/createOrderTopUp', null, {
+    params: {
+      amount,
+      userId,
+      urlReturn,
+    },
+  });
+
