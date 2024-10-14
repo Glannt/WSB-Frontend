@@ -6,6 +6,7 @@ import {
   ModalFooter,
   ModalHeader,
 } from '@nextui-org/react';
+import { useNavigate } from 'react-router';
 
 interface ConfirmBookingProps {
   showConfirmModal: boolean;
@@ -16,6 +17,7 @@ export const NotEnoughMoneyInWallet: React.FC<ConfirmBookingProps> = ({
   showConfirmModal,
   toggleConfirmModal,
 }) => {
+  const naviage = useNavigate();
   return (
     <>
       {' '}

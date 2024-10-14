@@ -186,8 +186,12 @@ export const createMultiBookingSchema = Yup.object({
   //     return new Date(value) > new Date(checkinDate);
   //   }
   // ),
-  slot: Yup.number()
-    .required('Slot is required')
+  slots: Yup.array()
+    .of(
+      Yup.number()
+        .required('Slot is required')
+        .min(1, 'Slot number must be at least 1')
+    )
     .min(1, 'At least one slot must be selected')
     .max(4, 'No more than 4 slots allowed per booking'),
 });

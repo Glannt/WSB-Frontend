@@ -63,7 +63,10 @@ class Http {
         } else if (url === path.logout) {
           this.accessToken = '';
           clearLS();
-        } else if (url === '/api/customer/manage-profile') {
+        } else if (
+          url === '/api/customer/manage-profile' ||
+          url === '/api/customer/create-booking'
+        ) {
           setCustomerToLS(response.data.data);
         }
         toast.success(response.data.message, {

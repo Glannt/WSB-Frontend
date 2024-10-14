@@ -46,6 +46,9 @@ import { TypeDouble } from '@/pages/RoomType/TypeDouble';
 import { SidebarWrapper } from '@/components/sidebar/sidebar';
 import { TestTable } from '@/components/Test/TestTable';
 import { BookingRoomDetailMultiple } from '@/components/Content/BookingMultiple';
+import { TestBookingRoomDetailMultiple } from '@/components/Content/TestMultipleBooking';
+import { CustomerProvider, useCustomer } from '@/context/customer.context';
+import { setCustomerToLS } from '@/utils/auth';
 interface ProtectedRouteProps {
   requiredRoles?: Role[]; // Optional prop for role-based protection
 }
@@ -60,6 +63,7 @@ function ProtectedRoute({ requiredRoles }: ProtectedRouteProps) {
 
   // Check if user has the required roles
   if (requiredRoles && !hasRole(requiredRoles)) {
+    const { customer } = useCustomer();
     return <Navigate to={path.home} />; // Redirect to home if user doesn't have required role(s)
   }
 
@@ -69,7 +73,7 @@ function ProtectedRoute({ requiredRoles }: ProtectedRouteProps) {
 
 function RejectedRoute() {
   const { isAuthenticated } = useContext(AppContext);
-  return !isAuthenticated ? <Outlet /> : <Navigate to="/profile" />;
+  return !isAuthenticated ? <Outlet /> : <Navigate to="/" />;
 }
 
 function RequireCaptcha() {
@@ -289,7 +293,11 @@ export const router = createBrowserRouter([
 
   {
     path: '',
-    element: <ProtectedRoute />,
+    element: (
+      <CustomerProvider>
+        <ProtectedRoute />
+      </CustomerProvider>
+    ),
     children: [
       {
         path: 'room-detail/:roomId',
@@ -305,6 +313,7 @@ export const router = createBrowserRouter([
         element: (
           <MainLayout>
             <BookingRoomDetailMultiple />
+            {/* <TestBookingRoomDetailMultiple /> */}
           </MainLayout>
         ),
         // <BookingRoomDetail />,
