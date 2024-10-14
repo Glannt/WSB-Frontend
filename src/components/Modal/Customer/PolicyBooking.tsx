@@ -1,12 +1,10 @@
 import { Button } from '@nextui-org/react';
 
-interface PolicyBookingProps {
-  togglePolicyModal: () => void;
-}
+// interface PolicyBookingProps {
+//   togglePolicyModal: () => void;
+// }
 
-export const PolicyBooking: React.FC<PolicyBookingProps> = ({
-  togglePolicyModal,
-}) => {
+export const PolicyBooking: React.FC = () => {
   return (
     <>
       <h3 className="text-2xl font-bold mb-4">
@@ -79,14 +77,14 @@ export const PolicyBooking: React.FC<PolicyBookingProps> = ({
           </ul>
         </li>
       </ul>
-      <Button
+      {/* <Button
         variant="shadow"
         color="success"
         onClick={togglePolicyModal}
         className=" text-white px-4 py-2 rounded-md  transition duration-300 mt-5"
       >
         Close
-      </Button>
+      </Button> */}
     </>
   );
 };

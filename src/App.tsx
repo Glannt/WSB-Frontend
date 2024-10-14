@@ -5,11 +5,15 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { router } from './router/Router';
 import { NextUIProvider } from '@nextui-org/system';
+import { CustomerProvider } from './context/customer.context';
 function App() {
   return (
     <NextUIProvider>
-      <RouterProvider router={router} />
-      <ToastContainer />
+      <CustomerProvider>
+        {' '}
+        <RouterProvider router={router} />
+        <ToastContainer />
+      </CustomerProvider>
     </NextUIProvider>
   );
 }
