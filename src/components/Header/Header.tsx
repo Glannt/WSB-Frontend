@@ -413,12 +413,17 @@ export const Header = (props: any) => {
           {!isAuthenticated && (
             <NavbarContent justify="end" className="mr-10">
               <NavbarItem className="cursor-pointer hidden lg:flex">
-                <Link onClick={() => navigate(path.login)}>Đăng nhập</Link>
+                <Button
+                  className="bg-white text-black py-3 rounded-lg font-semibold hover:bg-black hover:text-white hover:shadow-3xl ease-in-out flex items-center hover:scale-105 transition duration-100 shadow-lg"
+                  onClick={() => navigate(path.login)}
+                >
+                  Đăng nhập
+                </Button>
               </NavbarItem>
               <NavbarItem>
                 <Button
                   onClick={() => navigate(path.register)}
-                  className="cursor-pointer"
+                  className="cursor-pointer bg-black text-white py-3 rounded-lg font-semibold hover:text-white hover:shadow-3xl ease-in-out flex items-center hover:scale-105 transition duration-100 shadow-lg"
                   as={Link}
                   color="default"
                   variant="flat"
