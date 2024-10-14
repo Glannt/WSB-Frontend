@@ -162,3 +162,35 @@ export const schemaUpdateService = Yup.object().shape({
 
 // Type for the form values inferred from the schema
 export type SchemaUpdateService = Yup.InferType<typeof schemaUpdateService>;
+
+export const createMultiBookingSchema = Yup.object({
+  buildingId: Yup.string().required('Cần có cơ sở').min(1, 'Phải chọn 1 cở sở'),
+  roomId: Yup.string()
+    .required('Room ID is required')
+    .min(1, 'Room ID must not be empty'),
+  checkinDate: Yup.string().required('Check-in date is required'),
+  // .matches(
+  //   /^\d{4}-\d{2}-\d{2}$/,
+  //   'Check-in date must be in YYYY-MM-DD format'
+  // ),
+  checkoutDate: Yup.string().required('Check-out date is required'),
+  // .matches(
+  //   /^\d{4}-\d{2}-\d{2}$/,
+  //   'Check-out date must be in YYYY-MM-DD format'
+  // )
+  // .test(
+  //   'is-after-checkin',
+  //   'Check-out date must be after check-in date',
+  //   function (value) {
+  //     const { checkinDate } = this.parent;
+  //     return new Date(value) > new Date(checkinDate);
+  //   }
+  // ),
+  slot: Yup.number()
+    .required('Slot is required')
+    .min(1, 'At least one slot must be selected')
+    .max(4, 'No more than 4 slots allowed per booking'),
+});
+export type SchemacreateMultiBooking = Yup.InferType<
+  typeof createMultiBookingSchema
+>;
