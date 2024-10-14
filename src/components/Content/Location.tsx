@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { FaMapMarkerAlt } from 'react-icons/fa';
+import { useNavigate } from 'react-router';
 
 const Location = () => {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFacility, setSelectedFacility] = useState<{
     id: number;
@@ -22,12 +24,6 @@ const Location = () => {
       name: 'District 3 Coworking',
       address: '456 Vo Van Tan Street, District 3, Ho Chi Minh City',
       map: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.3060219274423!2d-73.98823492346382!3d40.74844097138868!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259a9b3117469%3A0xd134e199a405a163!2sEmpire%20State%20Building!5e0!3m2!1sen!2sus!4v1685158645145!5m2!1sen!2sus',
-    },
-    {
-      id: 3,
-      name: 'District 7 Hub',
-      address: '789 Nguyen Van Linh Parkway, District 7, Ho Chi Minh City',
-      map: 'https://www.gddasdoogle.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.3060219274423!2d-73.98823492346382!3d40.74844097138868!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259a9b3117469%3A0xd134e199a405a163!2sEmpire%20State%20Building!5e0!3m2!1sen!2sus!4v1685158645145!5m2!1sen!2sus',
     },
   ];
 
@@ -88,6 +84,14 @@ const Location = () => {
                   <FaMapMarkerAlt className="mr-2 text-red-500" />
                   {facility.address}
                 </p>
+                <div className="flex justify-end">
+                  <button
+                    className=" bg-black text-white px-2 py-2 rounded-lg transition-colors duration-300"
+                    onClick={() => navigate(`/building-${facility.id}`)}
+                  >
+                    Details
+                  </button>
+                </div>
               </div>
             ))
           ) : (

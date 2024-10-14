@@ -301,7 +301,7 @@ export const Header = (props: any) => {
           </NavbarItem>
           <NavbarContent className="hidden sm:flex gap-4" justify="center">
             <Dropdown>
-              <NavbarItem>
+              <NavbarItem isActive={window.location.pathname === path.location}>
                 <DropdownTrigger>
                   <Button
                     disableRipple
@@ -330,7 +330,7 @@ export const Header = (props: any) => {
                 >
                   TP. HCM
                 </DropdownItem>
-                <DropdownItem
+                {/* <DropdownItem
                   key="usage_metrics"
                   description="Cơ sở 2"
                   onClick={() => navigate(path.location)}
@@ -338,11 +338,15 @@ export const Header = (props: any) => {
                   // startContent={icons.activity}
                 >
                   Hà Nội
-                </DropdownItem>
+                </DropdownItem> */}
               </DropdownMenu>
             </Dropdown>
             <Dropdown>
-              <NavbarItem>
+              <NavbarItem
+                isActive={[path.rooms, path.foods, path.equipments].includes(
+                  window.location.pathname
+                )}
+              >
                 <DropdownTrigger>
                   <Button
                     disableRipple
@@ -391,7 +395,7 @@ export const Header = (props: any) => {
                 </DropdownItem>
               </DropdownMenu>
             </Dropdown>
-            <NavbarItem>
+            <NavbarItem isActive={window.location.pathname === path.aboutUs}>
               <Link
                 className="cursor-pointer text-start"
                 onClick={() => navigate(path.aboutUs)}
@@ -400,7 +404,7 @@ export const Header = (props: any) => {
                 Về chúng tôi
               </Link>
             </NavbarItem>
-            <NavbarItem>
+            <NavbarItem isActive={window.location.pathname === path.contact}>
               <Link
                 color="foreground"
                 className="cursor-pointer"
@@ -413,12 +417,17 @@ export const Header = (props: any) => {
           {!isAuthenticated && (
             <NavbarContent justify="end" className="mr-10">
               <NavbarItem className="cursor-pointer hidden lg:flex">
-                <Link onClick={() => navigate(path.login)}>Đăng nhập</Link>
+                <Button
+                  className="bg-white text-black py-3 rounded-lg font-semibold hover:bg-black hover:text-white hover:shadow-3xl ease-in-out flex items-center hover:scale-105 transition duration-100 shadow-lg"
+                  onClick={() => navigate(path.login)}
+                >
+                  Đăng nhập
+                </Button>
               </NavbarItem>
               <NavbarItem>
                 <Button
                   onClick={() => navigate(path.register)}
-                  className="cursor-pointer"
+                  className="cursor-pointer bg-black text-white py-3 rounded-lg font-semibold hover:text-white hover:shadow-3xl ease-in-out flex items-center hover:scale-105 transition duration-100 shadow-lg"
                   as={Link}
                   color="default"
                   variant="flat"
