@@ -86,7 +86,7 @@ const Location = () => {
                 </p>
                 <div className="flex justify-end">
                   <button
-                    className=" bg-black text-white px-2 py-2 rounded-lg transition-colors duration-300"
+                    className="underline text-black px-2 py-2 rounded-lg transition-colors duration-300"
                     onClick={() => navigate(`/building-${facility.id}`)}
                   >
                     Details
