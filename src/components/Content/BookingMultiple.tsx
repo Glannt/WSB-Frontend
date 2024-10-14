@@ -20,6 +20,7 @@ import {
   CardBody,
   DatePicker,
   DateRangePicker,
+  DateValue,
   Image,
   Input,
   Modal,
@@ -27,6 +28,7 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
+  RangeValue,
   Select,
   SelectItem,
   Tab,
@@ -35,17 +37,25 @@ import {
 } from '@nextui-org/react';
 import { toInteger } from 'lodash';
 import {
+  createBooking,
   getAllBuiding,
   getDetailRoom,
   getService,
   getSimilarType,
 } from '@/service/customer.api';
 import { ListRooms } from '@/types/roomOverview';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { buildingCustomer } from '@/types/building.type';
 import RoomTypeSwiper from './RoomTypeSlider';
 import { Services } from '@/types/service.type';
-interface Service {
+import {
+  createMultiBookingSchema,
+  SchemacreateMultiBooking,
+} from '@/utils/rules';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Building, Building2Icon } from 'lucide-react';
+interface create {
   id: number;
   name: string;
   price: number;
@@ -62,6 +72,7 @@ export const BookingRoomDetailMultiple = () => {
   const [selectedBase, setSelectedBase] = useState<string>('');
   const { roomId } = useParams<{ roomId: string }>();
   const [Buildings, setBuildings] = useState<buildingCustomer[]>([]);
+  const [buildingsMap, setBuildingsMap] = useState<Record<string, string>>({});
   const getRoomDetailApi = async () => {
     if (roomId === undefined) {
       return null;
@@ -94,9 +105,23 @@ export const BookingRoomDetailMultiple = () => {
     queryFn: getAllBuildingApi,
     // enabled: !!roomId,
   });
+  // useEffect(() => {
+  //   if (buildings) {
+  //     setBuildings(buildings);
+  //   }
+  // }, [buildings]);
   useEffect(() => {
-    if (buildings) {
-      setBuildings(buildings);
+    if (buildings && buildings.length > 0) {
+      // Assuming buildings have 'id' as key and 'name' as value
+      const buildingMap = buildings.reduce(
+        (acc, building) => {
+          acc[building.buildingId] = building.buildingName; // or another key-value pair from buildingCustomer type
+          return acc;
+        },
+        {} as Record<string, string>
+      );
+
+      setBuildingsMap(buildingMap);
     }
   }, [buildings]);
   const getRoomTypeApi = async () => {
@@ -126,35 +151,11 @@ export const BookingRoomDetailMultiple = () => {
     queryFn: getServiceApi,
   });
 
-  const foodServices = [
-    {
-      id: 1,
-      name: 'Breakfast Buffet',
-      price: 20,
-      image:
-        'https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
-    },
-    {
-      id: 2,
-      name: 'Lunch Set',
-      price: 25,
-      image:
-        'https://images.unsplash.com/photo-1547592180-85f173990554?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
-    },
-    {
-      id: 3,
-      name: 'Dinner Platter',
-      price: 30,
-      image:
-        'https://images.unsplash.com/photo-1544025162-d76694265947?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1469&q=80',
-    },
-  ];
-
   const timeSlots = [
-    '07:00 - 10:00',
-    '11:00 - 14:00',
-    '15:00 - 18:00',
-    '19:00 - 22:00',
+    { id: 1, value: '07:00 - 10:00' },
+    { id: 2, value: '11:00 - 14:00' },
+    { id: 3, value: '15:00 - 18:00' },
+    { id: 4, value: '19:00 - 22:00' },
   ];
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
@@ -164,6 +165,64 @@ export const BookingRoomDetailMultiple = () => {
     3: 1,
   });
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    getValues,
+    setValue,
+    setError,
+    control,
+  } = useForm<SchemacreateMultiBooking>({
+    resolver: yupResolver(createMultiBookingSchema),
+    // defaultValues: {
+    //   buildingId: '',
+    //   checkinDate: '',
+    //   checkoutDate: '',
+    //   slot: Number([]),
+    // },
+  });
+
+  const CreateBookingMutation = useMutation({
+    mutationFn: (body: SchemacreateMultiBooking) => createBooking(body),
+  });
+  // const CreateBooking = (data: SchemacreateMultiBooking) => {
+  //   CreateBookingMutation.mutate(data, {
+  //     onSuccess: () => {
+  //       console.log('Booking created successfully');
+  //     },
+  //     onError: (error) => {
+  //       console.error('Error creating booking:', error);
+  //     },
+  //   });
+  // };
+  const handleChangeDatePicker = (range: RangeValue<DateValue>) => {
+    const start = range.start;
+    const end = range.end;
+
+    setValue('checkinDate', start.toString()); // Setting check-in date
+    setValue('checkoutDate', end.toString()); // Setting check-out date
+    console.log('date range picker', getValues());
+  };
+  const onSubmit: SubmitHandler<SchemacreateMultiBooking> = (data) => {
+    CreateBookingMutation.mutate(data, {
+      onSuccess: () => {
+        alert('tạo thành công');
+        console.log('Booking created successfully');
+      },
+      onError: (error) => {
+        console.error('Error creating booking:', error);
+        alert('lỗi');
+      },
+    });
+  };
+  const handleFieldChange = (
+    field: keyof SchemacreateMultiBooking,
+    value: any
+  ) => {
+    setValue(field, value);
+    console.log('handle field change', getValues());
+  };
   const handleQuantityChange = (id: string, newQuantity: number) => {
     // calculateTotalPrice();
     setQuantities((prevQuantities) => ({
@@ -171,8 +230,6 @@ export const BookingRoomDetailMultiple = () => {
       [id]: newQuantity, // Cập nhật số lượng của món có id tương ứng
     }));
   };
-
-  // const building = ['Cơ sở 1', 'Cơ sở 2'];
 
   const handleBaseChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedBase(e.target.value);
@@ -201,31 +258,6 @@ export const BookingRoomDetailMultiple = () => {
         : [...prevServices, serviceId]
     );
   };
-  // const [rooms, setRooms] = useState([
-  //   { id: 'D01', name: 'Cozy Single', category: 'single', basePrice: 50 },
-  //   { id: 'D02', name: 'Spacious Double', category: 'double', basePrice: 80 },
-  //   {
-  //     id: 'D03',
-  //     name: 'Meeting Room (7)',
-  //     category: 'meeting7',
-  //     basePrice: 120,
-  //   },
-  //   {
-  //     id: 'D04',
-  //     name: 'Meeting Room (10)',
-  //     category: 'meeting10',
-  //     basePrice: 150,
-  //   },
-  // ]);
-  // const { roomId } = useParams<{ roomId: string }>();
-  // const room = rooms.find((room) => room.id === roomId);
-  // const similarRooms = similarRooms1.filter((room) => room.id !== roomId);
-
-  // if (!room) {
-  //   return <div>Phòng không tồn tại</div>;
-  // }
-
-  // console.log(room);
   const roomPrice = roomDetail?.price;
   const [totals, setTotals] = useState<number>(roomPrice!);
 
@@ -302,320 +334,357 @@ export const BookingRoomDetailMultiple = () => {
         </div>
         <div className="w-1/2 p-8 overflow-y-auto">
           <h2 className="text-3xl font-bold mb-6">{roomDetail?.roomName}</h2>
-          <div className="mb-6">
-            <div className="relative">
+          {/* Form */}
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="mb-6">
+              <div className="relative">
+                <div className="w-full flex flex-row flex-wrap gap-4">
+                  <Select
+                    {...register('buildingId')}
+                    value={selectedBase}
+                    onSelectionChange={(keys) => {
+                      const newBuildingId = Array.from(keys).join('');
+                      handleFieldChange('buildingId', newBuildingId);
+                    }}
+                    key="default"
+                    color="primary"
+                    label="Cơ sở"
+                    placeholder="Chọn cơ sở..."
+                    className="w-full rounded-md appearance-none"
+                    endContent={
+                      <div className="pb-3">
+                        <Building2Icon />
+                      </div>
+                    }
+                  >
+                    {/* {buildingsMap && buildingsMap.length > 0 ? (
+                      buildingsMap.map((building, index) => (
+                        <SelectItem key={index} value={building.buildingName}>
+                          {building.buildingName}
+                        </SelectItem>
+                      ))
+                    ) : (
+                      <SelectItem key="no-buildings">
+                        No buildings available
+                      </SelectItem>
+                    )} */}
+                    {buildingsMap && Object.keys(buildingsMap).length > 0 ? (
+                      Object.entries(buildingsMap).map(
+                        ([id, buildingName], index) => (
+                          <SelectItem key={id} value={buildingName}>
+                            {buildingName}
+                          </SelectItem>
+                        )
+                      )
+                    ) : (
+                      <SelectItem key="no-buildings">
+                        No buildings available
+                      </SelectItem>
+                    )}
+                  </Select>
+                </div>
+              </div>
+            </div>
+            <div className="mb-6">
+              <Controller
+                control={control}
+                name="checkinDate"
+                render={({ field }) => (
+                  <DateRangePicker
+                    label="Ngày đặt"
+                    color="primary"
+                    minValue={parseDate(format(selectedDate, 'yyyy-MM-dd'))}
+                    onChange={(range) => handleChangeDatePicker(range)}
+                    className="w-full"
+                    errorMessage={
+                      errors.checkinDate?.message ? '' : 'lỗi pick date'
+                    }
+                  />
+                )}
+              />
+            </div>
+            <div className="mb-6">
               <div className="w-full flex flex-row flex-wrap gap-4">
                 <Select
-                  value={selectedBase}
-                  onChange={handleBaseChange}
+                  {...register('slot')}
+                  value={selectedTimeSlot}
+                  onChange={handleTimeSlotChange}
+                  onSelectionChange={(keys) => {
+                    const newTimeSlot = Array.from(keys);
+                    handleFieldChange('slot', JSON.stringify(newTimeSlot));
+                  }}
+                  errorMessage={errors.slot?.message ? '' : 'Lỗi select slot'}
                   key="default"
-                  color="default"
-                  label="Cơ sở"
-                  placeholder="Chọn cơ sở..."
+                  color="primary"
+                  label="Thời gian"
+                  placeholder="Chọn thời gian..."
+                  selectionMode="multiple"
                   className="w-full rounded-md appearance-none"
                 >
-                  {Buildings && Buildings.length > 0 ? (
-                    Buildings.map((building, index) => (
-                      <SelectItem key={index} value={building.buildingName}>
-                        {building.buildingName}
-                      </SelectItem>
-                    ))
-                  ) : (
-                    <SelectItem key="no-buildings">
-                      No buildings available
-                    </SelectItem>
-                  )}
+                  {timeSlots.map((slot) => (
+                    <SelectItem key={slot.id}>{slot.value}</SelectItem>
+                  ))}
                 </Select>
               </div>
             </div>
-          </div>
-          <div className="mb-6">
-            <DateRangePicker
-              label="Ngày đặt"
-              minValue={parseDate(format(selectedDate, 'yyyy-MM-dd'))}
-              // defaultValue={{
-              //   start: parseDate('2024-04-01'),
-              //   end: parseDate('2024-04-08'),
-              // }}
-              className="w-full"
-            />
 
-            {/* <DatePicker
-              onChange={handleDateChange}
-              value={parseDate(format(selectedDate, 'yyyy-MM-dd'))}
-              label="Ngày đặt"
-              className="w-full"
-            /> */}
-          </div>
-          <div className="mb-6">
-            <div className="w-full flex flex-row flex-wrap gap-4">
-              <Select
-                value={selectedTimeSlot}
-                onChange={handleTimeSlotChange}
-                key="default"
-                color="default"
-                label="Thời gian"
-                placeholder="Chọn thời gian..."
-                selectionMode="multiple"
-                className="w-full rounded-md appearance-none"
-              >
-                {timeSlots.map((slot) => (
-                  <SelectItem key={slot}>{slot}</SelectItem>
-                ))}
-              </Select>
+            <div className="mb-6">
+              <p className="text-xl font-semibold">Giá ban đầu: ${roomPrice}</p>
             </div>
-          </div>
 
-          <div className="mb-6">
-            <p className="text-xl font-semibold">Giá ban đầu: ${roomPrice}</p>
-          </div>
-
-          <Button
-            className="bg-violet-300 shadow-lg font-bold text-black px-4 py-2 rounded-md hover:bg-violet-500 hover:text-blackA12 transition duration-300 flex items-center mb-6"
-            onPress={onOpen}
-          >
-            <FaPlus className="mr-2" /> Thêm dịch vụ
-          </Button>
-          <Modal
-            onClose={calculateTotalPrice}
-            hideCloseButton={true}
-            scrollBehavior="inside"
-            size="4xl"
-            isOpen={isOpen}
-            onOpenChange={onOpenChange}
-          >
-            <ModalContent>
-              {(onClose) => (
-                <>
-                  <ModalHeader className="flex flex-col gap-1">
-                    Dịch vụ
-                  </ModalHeader>
-                  <ModalBody>
-                    <Tabs
-                      aria-label="Options"
-                      selectedKey={selected}
-                      onSelectionChange={(key) => setSelected(key.toString())}
-                    >
-                      <Tab key="photos" title="Thiết bị">
-                        <Card>
-                          <CardBody>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                              {services.map((service) => (
-                                <div
-                                  key={service.serviceId}
-                                  className="flex-col"
-                                >
-                                  <label htmlFor={service.serviceId.toString()}>
-                                    <div
-                                      key={service.serviceId}
-                                      className="border rounded-lg p-4 flex items-center"
+            <Button
+              className="bg-violet-300 shadow-lg font-bold text-black px-4 py-2 rounded-md hover:bg-violet-500 hover:text-blackA12 transition duration-300 flex items-center mb-6"
+              onPress={onOpen}
+            >
+              <FaPlus className="mr-2" /> Thêm dịch vụ
+            </Button>
+            <Modal
+              onClose={calculateTotalPrice}
+              hideCloseButton={true}
+              scrollBehavior="inside"
+              size="4xl"
+              isOpen={isOpen}
+              onOpenChange={onOpenChange}
+            >
+              <ModalContent>
+                {(onClose) => (
+                  <>
+                    <ModalHeader className="flex flex-col gap-1">
+                      Dịch vụ
+                    </ModalHeader>
+                    <ModalBody>
+                      <Tabs
+                        aria-label="Options"
+                        selectedKey={selected}
+                        onSelectionChange={(key) => setSelected(key.toString())}
+                      >
+                        <Tab key="photos" title="Thiết bị">
+                          <Card>
+                            <CardBody>
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                {services.map((service) => (
+                                  <div
+                                    key={service.serviceId}
+                                    className="flex-col"
+                                  >
+                                    <label
+                                      htmlFor={service.serviceId.toString()}
                                     >
-                                      <img
-                                        // src={service.image}
-                                        // alt={service.name}
-                                        className="w-20 h-20 object-cover rounded-md mr-4"
-                                      />
-                                      <div>
-                                        <h4 className="font-semibold">
-                                          {service.serviceName}
-                                        </h4>
-                                        <p className="text-gray-600">
-                                          ${service.price}
-                                        </p>
-                                      </div>
-                                      {
-                                        <Input
-                                          variant="underlined"
-                                          className="h-12 w-20 ml-auto"
-                                          min={1}
-                                          type="number"
-                                          label="Số lượng"
-                                          placeholder="0"
-                                          value={
-                                            '' + quantities[service.serviceId]
-                                          } // Số lượng tương ứng với từng món
-                                          onChange={(e) =>
-                                            handleQuantityChange(
-                                              service.serviceId.toString(),
-                                              Number(e.target.value)
+                                      <div
+                                        key={service.serviceId}
+                                        className="border rounded-lg p-4 flex items-center"
+                                      >
+                                        <img
+                                          // src={service.image}
+                                          // alt={service.name}
+                                          className="w-20 h-20 object-cover rounded-md mr-4"
+                                        />
+                                        <div>
+                                          <h4 className="font-semibold">
+                                            {service.serviceName}
+                                          </h4>
+                                          <p className="text-gray-600">
+                                            ${service.price}
+                                          </p>
+                                        </div>
+                                        {
+                                          <Input
+                                            variant="underlined"
+                                            className="h-12 w-20 ml-auto"
+                                            min={1}
+                                            type="number"
+                                            label="Số lượng"
+                                            placeholder="0"
+                                            value={
+                                              '' + quantities[service.serviceId]
+                                            } // Số lượng tương ứng với từng món
+                                            onChange={(e) =>
+                                              handleQuantityChange(
+                                                service.serviceId.toString(),
+                                                Number(e.target.value)
+                                              )
+                                            }
+                                            labelPlacement="inside"
+                                            startContent={
+                                              <div className="pointer-events-none flex items-center"></div>
+                                            }
+                                          />
+                                        }
+                                        <input
+                                          id={service.serviceId.toString()}
+                                          type="checkbox"
+                                          checked={selectedServices.includes(
+                                            service.serviceId
+                                          )}
+                                          onChange={() =>
+                                            handleServiceSelection(
+                                              service.serviceId
                                             )
                                           }
-                                          labelPlacement="inside"
-                                          startContent={
-                                            <div className="pointer-events-none flex items-center"></div>
-                                          }
+                                          className="ml-auto size-5"
                                         />
-                                      }
-                                      <input
-                                        id={service.serviceId.toString()}
-                                        type="checkbox"
-                                        checked={selectedServices.includes(
-                                          service.serviceId
-                                        )}
-                                        onChange={() =>
-                                          handleServiceSelection(
-                                            service.serviceId
-                                          )
-                                        }
-                                        className="ml-auto size-5"
-                                      />
-                                    </div>
-                                  </label>
-                                  <div></div>
-                                </div>
-                              ))}
-                            </div>
-                          </CardBody>
-                        </Card>
-                      </Tab>
-                      <Tab key="music" title="Đồ ăn">
-                        <Card>
-                          <CardBody>
-                            Ut enim ad minim veniam, quis nostrud exercitation
-                            ullamco laboris nisi ut aliquip ex ea commodo
-                            consequat. Duis aute irure dolor in reprehenderit in
-                            voluptate velit esse cillum dolore eu fugiat nulla
-                            pariatur.
-                          </CardBody>
-                        </Card>
-                      </Tab>
-                    </Tabs>
-                  </ModalBody>
-                  <ModalFooter>
-                    <Button color="primary" onPress={onClose}>
-                      Đóng
-                    </Button>
-                  </ModalFooter>
-                </>
-              )}
-            </ModalContent>
-          </Modal>
+                                      </div>
+                                    </label>
+                                    <div></div>
+                                  </div>
+                                ))}
+                              </div>
+                            </CardBody>
+                          </Card>
+                        </Tab>
+                        <Tab key="music" title="Đồ ăn">
+                          <Card>
+                            <CardBody>
+                              Ut enim ad minim veniam, quis nostrud exercitation
+                              ullamco laboris nisi ut aliquip ex ea commodo
+                              consequat. Duis aute irure dolor in reprehenderit
+                              in voluptate velit esse cillum dolore eu fugiat
+                              nulla pariatur.
+                            </CardBody>
+                          </Card>
+                        </Tab>
+                      </Tabs>
+                    </ModalBody>
+                    <ModalFooter>
+                      <Button color="primary" onPress={onClose}>
+                        Đóng
+                      </Button>
+                    </ModalFooter>
+                  </>
+                )}
+              </ModalContent>
+            </Modal>
 
-          <div className="mb-6">
-            <p className="text-2xl font-bold">Tổng đơn: ${totals}</p>
-          </div>
+            <div className="mb-6">
+              <p className="text-2xl font-bold">Tổng đơn: ${totals}</p>
+            </div>
 
-          <div className="mb-6 flex items-center">
-            <input
-              type="checkbox"
-              id="policy"
-              checked={policyAgreed}
-              onChange={() => setPolicyAgreed(!policyAgreed)}
-              className="mr-2 rounded-sm"
-            />
-            <label htmlFor="policy" className="text-sm text-gray-700">
-              Tôi đồng ý với{' '}
-              <button
-                onClick={togglePolicyModal}
-                className="text-blue-500 underline"
-              >
-                Chính sách đặt phòng
-              </button>
-            </label>
-          </div>
-          {showPolicyModal && (
-            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-              <div className="bg-white p-8 rounded-lg max-w-2xl w-full">
-                <h3 className="text-2xl font-bold mb-4">
-                  Chính Sách Dịch Vụ Đặt Phòng Làm Việc
-                </h3>
-                <ul>
-                  <li>
-                    <strong>Điều kiện tham gia:</strong>
-                    <ul>
-                      <li>
-                        Người dùng phải từ 13 tuổi trở lên để sử dụng dịch vụ
-                        đặt phòng.
-                      </li>
-                    </ul>
-                  </li>
-
-                  <li>
-                    <strong>Quy định về giá phòng:</strong>
-                    <ul>
-                      <li>
-                        Giá phòng được tính dựa trên giờ thuê, loại phòng và
-                        ngày đặt.
-                      </li>
-                    </ul>
-                  </li>
-
-                  <li>
-                    <strong>Tính năng chính:</strong>
-                    <ul>
-                      <li>Đặt phòng họp trực tuyến thông qua ứng dụng.</li>
-                      <li>Hỗ trợ thanh toán qua bên thứ ba liên kết.</li>
-                    </ul>
-                  </li>
-
-                  <li>
-                    <strong>Quy trình giao dịch:</strong>
-                    <ul>
-                      <li>Đăng ký tài khoản và đăng nhập.</li>
-                      <li>Tham khảo thông tin và chọn phòng phù hợp.</li>
-                      <li>Thực hiện đặt phòng qua hệ thống.</li>
-                      <li>
-                        Nhân viên xác nhận lịch đặt và thông báo tới khách hàng.
-                      </li>
-                      <li>
-                        Khách hàng xác nhận lịch và thanh toán trực tuyến.
-                      </li>
-                    </ul>
-                  </li>
-
-                  <li>
-                    <strong>Quy định về đặt cọc và thanh toán:</strong>
-                    <ul>
-                      <li>
-                        Khách hàng phải đặt cọc 30% trên tổng hóa đơn khi đặt
-                        phòng.
-                      </li>
-                      <li>Sau khi sử dụng dịch vụ, thanh toán phần còn lại.</li>
-                      <li>
-                        Chỉ chấp nhận thanh toán qua hình thức thanh toán trực
-                        tuyến.
-                      </li>
-                      <li>
-                        Đối với hóa đơn trên 5 triệu đồng, hệ thống sẽ yêu cầu
-                        xác nhận trước khi thanh toán.
-                      </li>
-                      <li>
-                        Sau khi đặt cọc, không hoàn tiền nếu hủy đặt phòng.
-                      </li>
-                      <li>
-                        Thời gian đặt phòng tối thiểu là 1 slot (1 tiếng).
-                      </li>
-                    </ul>
-                  </li>
-
-                  <li>
-                    <strong>Các điều kiện khác:</strong>
-                    <ul>
-                      <li>
-                        Khách hàng cần tuân thủ các quy định và điều kiện được
-                        đưa ra từ hệ thống.
-                      </li>
-                    </ul>
-                  </li>
-                </ul>
+            <div className="mb-6 flex items-center">
+              <input
+                type="checkbox"
+                id="policy"
+                checked={policyAgreed}
+                onChange={() => setPolicyAgreed(!policyAgreed)}
+                className="mr-2 rounded-sm"
+              />
+              <label htmlFor="policy" className="text-sm text-gray-700">
+                Tôi đồng ý với{' '}
                 <button
                   onClick={togglePolicyModal}
-                  className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300 mt-5"
+                  className="text-blue-500 underline"
                 >
-                  Close
+                  Chính sách đặt phòng
                 </button>
-              </div>
+              </label>
             </div>
-          )}
-          <button
-            className={`w-full bg-blackA10 text-white px-6 py-3 rounded-md text-lg font-semibold hover:bg-blackA12 hover:scale-105 transition duration-300 ${
-              (!policyAgreed || !selectedBase || !selectedTimeSlot) &&
-              'opacity-50 cursor-not-allowed text-center'
-            }`}
-            disabled={!policyAgreed}
-          >
-            <FaCheck className="inline-block mr-2 mb-1" /> Xác nhận
-          </button>
+            {showPolicyModal && (
+              <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                <div className="bg-white p-8 rounded-lg max-w-2xl w-full">
+                  <h3 className="text-2xl font-bold mb-4">
+                    Chính Sách Dịch Vụ Đặt Phòng Làm Việc
+                  </h3>
+                  <ul>
+                    <li>
+                      <strong>Điều kiện tham gia:</strong>
+                      <ul>
+                        <li>
+                          Người dùng phải từ 13 tuổi trở lên để sử dụng dịch vụ
+                          đặt phòng.
+                        </li>
+                      </ul>
+                    </li>
+
+                    <li>
+                      <strong>Quy định về giá phòng:</strong>
+                      <ul>
+                        <li>
+                          Giá phòng được tính dựa trên giờ thuê, loại phòng và
+                          ngày đặt.
+                        </li>
+                      </ul>
+                    </li>
+
+                    <li>
+                      <strong>Tính năng chính:</strong>
+                      <ul>
+                        <li>Đặt phòng họp trực tuyến thông qua ứng dụng.</li>
+                        <li>Hỗ trợ thanh toán qua bên thứ ba liên kết.</li>
+                      </ul>
+                    </li>
+
+                    <li>
+                      <strong>Quy trình giao dịch:</strong>
+                      <ul>
+                        <li>Đăng ký tài khoản và đăng nhập.</li>
+                        <li>Tham khảo thông tin và chọn phòng phù hợp.</li>
+                        <li>Thực hiện đặt phòng qua hệ thống.</li>
+                        <li>
+                          Nhân viên xác nhận lịch đặt và thông báo tới khách
+                          hàng.
+                        </li>
+                        <li>
+                          Khách hàng xác nhận lịch và thanh toán trực tuyến.
+                        </li>
+                      </ul>
+                    </li>
+
+                    <li>
+                      <strong>Quy định về đặt cọc và thanh toán:</strong>
+                      <ul>
+                        <li>
+                          Khách hàng phải đặt cọc 30% trên tổng hóa đơn khi đặt
+                          phòng.
+                        </li>
+                        <li>
+                          Sau khi sử dụng dịch vụ, thanh toán phần còn lại.
+                        </li>
+                        <li>
+                          Chỉ chấp nhận thanh toán qua hình thức thanh toán trực
+                          tuyến.
+                        </li>
+                        <li>
+                          Đối với hóa đơn trên 5 triệu đồng, hệ thống sẽ yêu cầu
+                          xác nhận trước khi thanh toán.
+                        </li>
+                        <li>
+                          Sau khi đặt cọc, không hoàn tiền nếu hủy đặt phòng.
+                        </li>
+                        <li>
+                          Thời gian đặt phòng tối thiểu là 1 slot (1 tiếng).
+                        </li>
+                      </ul>
+                    </li>
+
+                    <li>
+                      <strong>Các điều kiện khác:</strong>
+                      <ul>
+                        <li>
+                          Khách hàng cần tuân thủ các quy định và điều kiện được
+                          đưa ra từ hệ thống.
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                  <button
+                    onClick={togglePolicyModal}
+                    className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300 mt-5"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            )}
+            <button
+              type="submit"
+              className={`w-full bg-blackA10 text-white px-6 py-3 rounded-md text-lg font-semibold hover:bg-blackA12 hover:scale-105 transition duration-300 ${
+                (!policyAgreed || !selectedTimeSlot) &&
+                'opacity-50 cursor-not-allowed text-center'
+              }`}
+              disabled={!policyAgreed}
+            >
+              <FaCheck className="inline-block mr-2 mb-1" /> Xác nhận
+            </button>
+          </form>
         </div>
       </div>
       <div className="flex items-center mb-4">
