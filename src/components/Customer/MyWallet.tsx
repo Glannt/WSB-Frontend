@@ -1,13 +1,23 @@
 import React, { useState } from 'react';
 import { FaWallet, FaPlus } from 'react-icons/fa';
 import TransactionHistory from './Setting/History/Transaction/TransactionHistory';
+
+import { Button } from '@nextui-org/react';
+import { useNavigate } from 'react-router';
+import path from '@/constants/path';
+import { getWalletByUserId } from '@/service/customer.api';
+import { getProfileFromLS } from '@/utils/auth';
+import { useQuery } from '@tanstack/react-query';
+
 import { useNavigate } from 'react-router';
 
+
 const MyWallet: React.FC = () => {
-  const [balance, setBalance] = useState<number>(1000);
   const [error, setError] = useState<string>('');
   const [isAdding, setIsAdding] = useState<boolean>(false);
+
   const navigate = useNavigate();
+
   // const handleAddFunds = () => {
   //   setIsAdding(true);
   //   setTimeout(() => {
@@ -22,6 +32,23 @@ const MyWallet: React.FC = () => {
   //   }, 1500);
   // };
 
+  const profile = getProfileFromLS();
+  const getWalletByUserIdApi = async () => {
+    const response = await getWalletByUserId(profile.userId);
+    return response.data.data;
+  };
+
+  const { data: wallet } = useQuery<Wallet>({
+    queryKey: ['wallet'],
+    queryFn: getWalletByUserIdApi,
+  });
+
+  const formattedWallet = new Intl.NumberFormat('vi-VN').format(
+    Number(wallet?.amount)
+  );
+  console.log(wallet);
+  // const [balance, setBalance] = useState<number>(0);
+
   return (
     <>
       <div className="max-w-screen-lg mx-auto bg-white shadow-lg rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl">
@@ -32,19 +59,18 @@ const MyWallet: React.FC = () => {
           </div>
           <div className="mt-4">
             <p className="text-sm">Số dư tiện tại</p>
-            <p className="text-4xl font-bold">${balance.toFixed(2)}</p>
+            <p className="text-4xl font-bold">${formattedWallet}</p>
           </div>
           <div className="flex justify-end">
-            <button
+            <Button
               // onClick={handleAddFunds}
               disabled={isAdding}
               className="text-xl bg-blackA12 text-white h-12 p-3 rounded-lg font-semibold hover:bg-white hover:text-black hover:shadow-3xl ease-in-out flex items-center hover:scale-105 transition duration-100 shadow-lg"
-              aria-label="Add funds to your wallet"
               onClick={() => navigate('/top-up')}
             >
               <FaPlus className="mr-2" />
               Nạp tiền
-            </button>
+            </Button>
           </div>
         </div>
       </div>

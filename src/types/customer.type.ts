@@ -14,6 +14,14 @@ export type Wallet = {
   amount: number; // Amount of money in the wallet
 };
 
+export type Transaction = {
+  transactionId: string; // Unique identifier for the transaction
+  date: string; // Date of the transaction (ISO 8601 format)
+  amount: number; // Amount of money in the transaction
+  status: string; // Status of the transaction (e.g., "completed")
+  type: string; // Description of the transaction
+};
+
 export type Customer = {
   userId: string; // Unique identifier for the user
   fullName: string; // Full name of the customer

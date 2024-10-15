@@ -40,6 +40,8 @@ export const getSimilarType = (roomType: string) =>
 
 export const getAllBuiding = () => http.get(`/api/auth/buildings`);
 
+
+
 export const createBooking = (formdata: FormData) =>
   http.post('/api/customer/create-multi-booking', formdata, {
     headers: {
@@ -60,3 +62,10 @@ export const createOrderTopUp = (
       urlReturn,
     },
   });
+
+export const getWalletByUserId = (userId: string) =>
+  http.get(`/api/user/wallet/${userId}`);
+
+export const getTransactionsByUserId = (userId: string) =>
+  http.get(`/api/user/${userId}`);
+
