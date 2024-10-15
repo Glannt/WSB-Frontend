@@ -23,9 +23,14 @@ export interface ServiceItems {
 export interface CustomerOrderBookingHistory {
   bookingId: string;
   checkinDate: string;
+  checkoutDate: string;
   totalPrice: string;
   status: string;
   roomId: string;
   slots: SlotBooking[];
   serviceItems: ServiceItems;
+}
+
+export interface BookedSlots {
+  [date: string]: number[]; // Date as the key (string), and array of numbers as values
 }

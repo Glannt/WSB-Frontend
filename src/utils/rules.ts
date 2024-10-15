@@ -184,10 +184,37 @@ export const createMultiBookingSchema = Yup.object({
   //     return new Date(value) > new Date(checkinDate);
   //   }
   // ),
-  slot: Yup.number()
-    .required('Số lượng là bắt buộc')
-    .min(1, 'Phải chọn ít nhất một slot')
-    .max(4, 'Không được chọn quá 4 slot cho mỗi lần đặt phòng'),
+
+  slots: Yup.array()
+    .of(
+      Yup.number()
+        .required('Slot is required')
+        .min(1, 'Slot number must be at least 1')
+    )
+    .min(1, 'At least one slot must be selected')
+    .max(4, 'No more than 4 slots allowed per booking'),
+  items: Yup.object()
+    .shape({
+      // The 'quantities' object will have dynamic keys (service IDs)
+      quantities: Yup.object()
+        .test(
+          'is-valid-quantities',
+          'Quantities must be valid numbers greater than 0',
+          (quantities) => {
+            // Ensure that all keys in the quantities object are valid service IDs
+            if (!quantities) return true; // If quantities is undefined, skip validation
+
+            return Object.entries(quantities).every(([key, value]) => {
+              // Validate each value is a number and greater than 0
+              return typeof value === 'number' && value >= 1;
+            });
+          }
+        )
+        .optional()
+        .nullable(), // Optional quantities object
+    })
+    .optional()
+    .nullable(), // Optional items
 });
 export type SchemacreateMultiBooking = Yup.InferType<
   typeof createMultiBookingSchema

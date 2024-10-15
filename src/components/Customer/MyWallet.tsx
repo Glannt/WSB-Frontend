@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import { FaWallet, FaPlus } from 'react-icons/fa';
 import TransactionHistory from './Setting/History/Transaction/TransactionHistory';
+
 import { Button } from '@nextui-org/react';
 import { useNavigate } from 'react-router';
 import path from '@/constants/path';
 import { getWalletByUserId } from '@/service/customer.api';
 import { getProfileFromLS } from '@/utils/auth';
 import { useQuery } from '@tanstack/react-query';
-import { Wallet } from '@/types/customer.type';
+
+import { useNavigate } from 'react-router';
+
 
 const MyWallet: React.FC = () => {
   const [error, setError] = useState<string>('');
@@ -63,7 +66,6 @@ const MyWallet: React.FC = () => {
               // onClick={handleAddFunds}
               disabled={isAdding}
               className="text-xl bg-blackA12 text-white h-12 p-3 rounded-lg font-semibold hover:bg-white hover:text-black hover:shadow-3xl ease-in-out flex items-center hover:scale-105 transition duration-100 shadow-lg"
-              // aria-label="Add funds to your wallet"
               onClick={() => navigate('/top-up')}
             >
               <FaPlus className="mr-2" />
