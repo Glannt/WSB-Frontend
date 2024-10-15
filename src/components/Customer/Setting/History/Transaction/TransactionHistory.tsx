@@ -34,6 +34,13 @@ import { SearchIcon } from '../../../../Icons/SearchIcon';
 import { capitalize } from '../../../utils';
 import { roomStatuses } from '@/data/dataStatusRoom';
 import { roomTypes } from '../../../../../data/dataRoomType';
+import TransactionFilter from './TransactionFilter';
+import TransactionTable from './TransactionTable';
+import TransactionPagination from './TransactionPagination';
+import { getTransactionsByUserId } from '@/service/customer.api';
+import { getProfileFromLS } from '@/utils/auth';
+import { useQuery } from '@tanstack/react-query';
+import { Transaction } from '@/types/customer.type';
 
 const statusOptions = [
   { name: 'Đang xử lý', uid: 'pending' },
@@ -41,135 +48,29 @@ const statusOptions = [
   { name: 'Thất bại', uid: 'cancelled' },
 ];
 
-const bookings = [
-  {
-    id: 1,
-    date: '2021-10-10',
-    amount: '$100',
-    status: 'pending',
-    actions: 'lorem ipsum.',
-  },
-  {
-    id: 2,
-    date: '2021-10-10',
-    amount: '$110',
-    status: 'completed',
-    actions: 'abc xyz',
-  },
-  {
-    id: 3,
-    date: '2021-10-10',
-    amount: '$100',
-    status: 'completed',
-    actions: 'abc xyz',
-  },
-  {
-    id: 4,
-    date: '2021-10-10',
-    amount: '$100',
-    status: 'cancelled',
-    actions: 'abc xyz',
-  },
-  {
-    id: 5,
-    date: '2021-10-10',
-    amount: '$100',
-    status: 'pending',
-    actions: 'abc xyz',
-  },
-
-  {
-    id: 6,
-    date: '2021-10-10',
-    amount: '$100',
-    status: 'pending',
-    actions: 'abc xyz',
-  },
-  {
-    id: 7,
-    date: '2021-10-10',
-    amount: '$100',
-    status: 'pending',
-    actions: 'abc xyz',
-  },
-  {
-    id: 8,
-    date: '2021-10-10',
-    amount: '$100',
-    status: 'pending',
-    actions: 'abc xyz',
-  },
-  {
-    id: 9,
-    date: '2021-10-10',
-    amount: '$100',
-    status: 'pending',
-    actions: 'abc xyz',
-  },
-  {
-    id: 10,
-    date: '2021-10-10',
-    amount: '$100',
-    status: 'pending',
-    actions: 'abc xyz',
-  },
-  {
-    id: 11,
-    date: '2021-10-10',
-    amount: '$100',
-    status: 'pending',
-    actions: 'abc xyz',
-  },
-  {
-    id: 12,
-    date: '2021-10-10',
-    amount: '$100',
-    status: 'pending',
-    actions: 'abc xyz',
-  },
-  {
-    id: 13,
-    date: '2021-10-10',
-    amount: '$100',
-    status: 'pending',
-    actions: 'abc xyz',
-  },
-  {
-    id: 14,
-    date: '2021-10-10',
-    amount: '$100',
-    status: 'pending',
-    actions: 'abc xyz',
-  },
-  {
-    id: 15,
-    date: '2021-10-10',
-    amount: '$100',
-    status: 'pending',
-    actions: 'abc xyz',
-  },
-  {
-    id: 16,
-    date: '2021-10-10',
-    amount: '$100',
-    status: 'pending',
-    actions: 'abc xyz',
-  },
-  {
-    id: 17,
-    date: '2021-10-10',
-    amount: '$100',
-    status: 'pending',
-    actions: 'abc xyz',
-  },
-  {
-    id: 18,
-    date: '2021-10-10',
-    amount: '$100',
-    status: 'pending',
-    actions: 'abc xyz',
-  },
-];
+// const bookings = [
+//   {
+//     id: 1,
+//     date: '2021-10-10',
+//     amount: '$100',
+//     status: 'pending',
+//     actions: 'lorem ipsum.',
+//   },
+//   {
+//     id: 2,
+//     date: '2021-10-10',
+//     amount: '$110',
+//     status: 'completed',
+//     actions: 'abc xyz',
+//   },
+//   {
+//     id: 3,
+//     date: '2021-10-10',
+//     amount: '$100',
+//     status: 'completed',
+//     actions: 'abc xyz',
+//   },
+// ];
 
 const columns = [
   { name: 'ID', uid: 'id', sortable: true },
@@ -188,20 +89,21 @@ const statusColorMap: Record<string, ChipProps['color']> = {
   pending: 'warning',
 };
 
-const INITIAL_VISIBLE_COLUMNS = [
-  'id',
-  'date',
-  'amount',
-  'status',
-  'actions',
-  //   'age',
-  //   'email',
-  //   'team',
-];
+const INITIAL_VISIBLE_COLUMNS = ['id', 'date', 'amount', 'status', 'actions'];
 
-type Booking = (typeof bookings)[0];
-
+const profile = getProfileFromLS();
 export default function TransactionHistory() {
+  const getHistoryTransactionApi = async () => {
+    const response = await getTransactionsByUserId(profile.userId);
+    return response.data.data;
+  };
+
+  const { data: transaction = [] } = useQuery<Transaction[]>({
+    queryKey: ['transaction'],
+    queryFn: getHistoryTransactionApi,
+  });
+  // console.log(transaction);
+
   const [filterValue, setFilterValue] = React.useState('');
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
     new Set([])
@@ -229,13 +131,13 @@ export default function TransactionHistory() {
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
-    let filteredUsers = [...bookings];
+    let filteredUsers = transaction;
 
-    if (hasSearchFilter) {
-      filteredUsers = filteredUsers.filter((user) =>
-        user.amount.toLowerCase().includes(filterValue.toLowerCase())
-      );
-    }
+    // if (hasSearchFilter) {
+    //   filteredUsers = filteredUsers.filter((user) =>
+    //     user.amount.toLowerCase().includes(filterValue.toLowerCase())
+    //   );
+    // }
     if (
       statusFilter !== 'all' &&
       Array.from(statusFilter).length !== statusOptions.length
@@ -246,7 +148,7 @@ export default function TransactionHistory() {
     }
 
     return filteredUsers;
-  }, [bookings, filterValue, statusFilter]);
+  }, [transaction, filterValue, statusFilter]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -258,101 +160,15 @@ export default function TransactionHistory() {
   }, [page, filteredItems, rowsPerPage]);
 
   const sortedItems = React.useMemo(() => {
-    return [...items].sort((a: Booking, b: Booking) => {
-      const first = a[sortDescriptor.column as keyof Booking] as number;
-      const second = b[sortDescriptor.column as keyof Booking] as number;
+    return [...items].sort((a: Transaction, b: Transaction) => {
+      const first = a[sortDescriptor.column as keyof Transaction] as number;
+      const second = b[sortDescriptor.column as keyof Transaction] as number;
       const cmp = first < second ? -1 : first > second ? 1 : 0;
       console.log(1, first, second, cmp);
 
       return sortDescriptor.direction === 'descending' ? -cmp : cmp;
     });
   }, [sortDescriptor, items]);
-
-  const renderCell = React.useCallback(
-    (user: Booking, columnKey: React.Key) => {
-      const cellValue = user[columnKey as keyof Booking];
-
-      switch (columnKey) {
-        //   case 'name':
-        //     return (
-        //       <User
-        //         avatarProps={{ radius: 'lg', src: user.avatar }}
-        //         description={user.email}
-        //         name={cellValue}
-        //       >
-        //         {user.email}
-        //       </User>
-        //     );
-        //   case 'role':
-        //     return (
-        //       <div className="flex flex-col">
-        //         <p className="text-bold text-small capitalize">{cellValue}</p>
-        //         <p className="text-bold text-tiny capitalize text-default-400">
-        //           {user.team}
-        //         </p>
-        //       </div>
-        //     );
-        case 'status':
-          return (
-            <Chip
-              className="capitalize"
-              color={statusColorMap[user.status]}
-              size="sm"
-              variant="flat"
-            >
-              {user.status === 'completed' && 'Thành công'}
-              {user.status === 'cancelled' && 'Thất bại'}
-              {user.status === 'pending' && 'Đang xử lý'}
-            </Chip>
-          );
-        case 'actions':
-          return (
-            <div className="relative flex justify-center items-center gap-2 h-10">
-              {user.actions}
-              {/* <Dropdown>
-              <DropdownTrigger>
-                <Button
-                  className={`${user.status === 'finished' ? 'btn-disabled' : ''}`}
-                  size="sm"
-                  variant="light"
-                >
-                  <PlusIcon className="font-bold" />
-                  <VerticalDotsIcon className="text-default-300" />
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu>
-                <DropdownItem>Thêm thiết bị</DropdownItem>
-                <DropdownItem>Thêm đồ ăn, uống</DropdownItem>
-                <DropdownItem>Delete</DropdownItem>
-              </DropdownMenu>
-            </Dropdown> */}
-            </div>
-          );
-        // <div className="relative flex justify-center items-center gap-2">
-        //   <Dropdown>
-        //     <DropdownTrigger>
-        //       <Button
-        //         className={`${user.status === 'finished' ? 'btn-disabled' : ''}`}
-        //         size="sm"
-        //         variant="light"
-        //       >
-        //         <PlusIcon className="font-bold" />
-        //         <VerticalDotsIcon className="text-default-300" />
-        //       </Button>
-        //     </DropdownTrigger>
-        //     <DropdownMenu>
-        //       <DropdownItem>Thêm thiết bị</DropdownItem>
-        //       <DropdownItem>Thêm đồ ăn, uống</DropdownItem>
-        //       {/* <DropdownItem>Delete</DropdownItem> */}
-        //     </DropdownMenu>
-        //   </Dropdown>
-        // </div>
-        default:
-          return cellValue;
-      }
-    },
-    []
-  );
 
   const onNextPage = React.useCallback(() => {
     if (page < pages) {
@@ -383,127 +199,20 @@ export default function TransactionHistory() {
     }
   }, []);
 
-  const onClear = React.useCallback(() => {
-    setFilterValue('');
-    setPage(1);
-  }, []);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const topContent = React.useMemo(() => {
-    return (
-      <div className="flex flex-col gap-1 h-full max-h-screen">
-        <h4 className=" text-xl font-bold mb-0 text-center text-gray-800">
-          Lịch Sử Giao Dịch
-        </h4>
-        <div className="flex justify-end gap-3">
-          {/* <Input
-            isClearable
-            className="w-full sm:max-w-[50%] focus:outline-none bg-blackA2 rounded-xl"
-            placeholder="Search by name..."
-            variant="bordered"
-            startContent={<SearchIcon />}
-            labelPlacement="outside"
-            value={filterValue}
-            onClear={() => onClear()}
-            onValueChange={onSearchChange}
-            classNames={{
-              input: 'border-0 focus:outline-none focus:border-transparent-1',
-            }}
-          /> */}
-          <div className="flex gap-3">
-            <Dropdown>
-              <DropdownTrigger className="hidden sm:flex">
-                <Button
-                  endContent={<ChevronDownIcon className="text-small" />}
-                  variant="flat"
-                >
-                  Trạng thái
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                disallowEmptySelection
-                aria-label="Table Columns"
-                closeOnSelect={false}
-                selectedKeys={statusFilter}
-                selectionMode="multiple"
-                onSelectionChange={setStatusFilter}
-              >
-                {statusOptions.map((status) => (
-                  <DropdownItem key={status.uid} className="capitalize">
-                    {capitalize(status.name)}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
-            <Dropdown>
-              <DropdownTrigger className="hidden sm:flex">
-                <Button
-                  endContent={<ChevronDownIcon className="text-small" />}
-                  variant="flat"
-                >
-                  Cột hiển thị
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                disallowEmptySelection
-                aria-label="Table Columns"
-                closeOnSelect={false}
-                selectedKeys={visibleColumns}
-                selectionMode="multiple"
-                onSelectionChange={setVisibleColumns}
-              >
-                {columns.map((column) => (
-                  <DropdownItem key={column.uid} className="capitalize">
-                    {capitalize(column.name)}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
-            {/* <Button
-              className="rounded-lg hover:scale-105 hover:shadow-xl"
-              color="primary"
-              endContent={<PlusIcon />}
-              onPress={onOpen}
-            >
-              Assign Staff
-            </Button> */}
-          </div>
-        </div>
-        <div className="flex justify-between items-center">
-          <span className="text-default-400 text-small">
-            Tổng {bookings.length} giao dịch
-          </span>
-          <label className="flex items-center text-default-400 text-small">
-            Rows per page:
-            <select
-              className="bg-transparent outline-none text-default-400 text-small rounded-md ml-3"
-              onChange={onRowsPerPageChange}
-            >
-              <option value="5">5</option>
-              <option value="10">10</option>
-              <option value="15">15</option>
-            </select>
-          </label>
-        </div>
-      </div>
-    );
-  }, [
+  const topContent = React.useMemo(() => {}, [
     filterValue,
     statusFilter,
     visibleColumns,
     onSearchChange,
     onRowsPerPageChange,
-    bookings.length,
+    transaction.length,
     hasSearchFilter,
   ]);
 
   const bottomContent = React.useMemo(() => {
     return (
       <div className="py-2 px-2 flex justify-between items-center">
-        {/* <span className="w-[30%] text-small text-default-400">
-          {selectedKeys === 'all'
-            ? 'All items selected'
-            : `${selectedKeys.size} of ${filteredItems.length} selected`}
-        </span> */}
         <Pagination
           isCompact
           showControls
@@ -536,136 +245,51 @@ export default function TransactionHistory() {
   }, [selectedKeys, items.length, page, pages, hasSearchFilter]);
 
   return (
-    <div className="h-full mt-5 ml-5 mr-5">
-      <Table
-        isStriped
-        aria-label="Example table with custom cells, pagination and sorting"
-        isHeaderSticky
-        bottomContent={bottomContent}
-        bottomContentPlacement="outside"
-        classNames={{
-          wrapper: 'max-h-[382px]',
-        }}
+    <div className="h-40 mt-5 ml-5 mr-5">
+      <TransactionFilter
+        transaction={transaction}
+        statusOptions={statusOptions}
+        columns={columns}
+        statusFilter={statusFilter}
+        setStatusFilter={setStatusFilter}
+        visibleColumns={visibleColumns}
+        setVisibleColumns={setVisibleColumns}
+        onRowsPerPageChange={onRowsPerPageChange}
+      />
+      <div className="flex justify-between items-center mt-5 mb-5">
+        <span className="text-default-400 text-small">
+          Tổng {transaction?.length} phòng
+        </span>
+        <label className="flex items-center text-default-400 text-small">
+          Số hàng
+          <select
+            className="bg-transparent outline-none text-default-400 text-small rounded-md ml-3"
+            onChange={onRowsPerPageChange}
+            value={rowsPerPage}
+          >
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+          </select>
+        </label>
+      </div>
+      <TransactionTable
+        headerColumns={headerColumns}
+        items={items}
+        sortedItems={sortedItems}
         selectedKeys={selectedKeys}
-        // selectionMode="multiple"
         sortDescriptor={sortDescriptor}
-        topContent={topContent}
-        topContentPlacement="outside"
-        onSelectionChange={setSelectedKeys}
+        setSelectedKeys={setSelectedKeys}
         onSortChange={setSortDescriptor}
-      >
-        <TableHeader columns={headerColumns}>
-          {(column) => (
-            <TableColumn
-              key={column.uid}
-              align={column.uid === 'actions' ? 'center' : 'start'}
-              allowsSorting={column.sortable}
-            >
-              {column.name}
-            </TableColumn>
-          )}
-        </TableHeader>
-        <TableBody emptyContent={'No users found'} items={sortedItems}>
-          {(item) => (
-            <TableRow key={item.id}>
-              {(columnKey) => (
-                <TableCell>{renderCell(item, columnKey)}</TableCell>
-              )}
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-      <Modal
-        // backdrop="opaque"
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-        placement="top-center"
-        // classNames={{
-        //   backdrop:
-        //     'bg-gradient-to-t from-zinc-900 to-zinc-900/10 backdrop-opacity-20',
-        // }}
-        classNames={{
-          base: 'max-w-[1000px] h-[300px]',
-        }}
-        motionProps={{
-          variants: {
-            enter: {
-              y: 0,
-              opacity: 1,
-              transition: {
-                duration: 0.3,
-                ease: 'easeOut',
-              },
-            },
-            exit: {
-              y: -20,
-              opacity: 0,
-              transition: {
-                duration: 0.2,
-                ease: 'easeIn',
-              },
-            },
-          },
-        }}
-      >
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className="flex flex-col gap-1">
-                Thêm phòng mới
-              </ModalHeader>
-              <ModalBody>
-                <div className="flex py-2 px-3 justify-evenly flex-wrap md:flex-nowrap gap-4">
-                  {' '}
-                  <Input
-                    autoFocus
-                    label="Tên phòng"
-                    placeholder="Nhập tên phòng"
-                    variant="bordered"
-                  />
-                  <Input
-                    label="Giá"
-                    placeholder="Nhập giá phòng"
-                    type="number"
-                    variant="bordered"
-                  />
-                </div>
-                <div className="flex flex-wrap py-2 px-3 md:flex-nowrap gap-4 w-[960px] justify-evenly">
-                  <Select
-                    label="Trạng thái phòng"
-                    className="max-w-xl"
-                    selectedKeys={value}
-                    onSelectionChange={() => setValue(value)}
-                  >
-                    {bookings.map((user) => (
-                      <SelectItem key={user.id}>{user.amount}</SelectItem>
-                    ))}
-                  </Select>
-                  <Select
-                    label="Loại phòng"
-                    placeholder="Chọn loại phòng"
-                    className="max-w-xl"
-                  >
-                    {roomTypes.map((roomTypes) => (
-                      <SelectItem key={roomTypes.key}>
-                        {roomTypes.label}
-                      </SelectItem>
-                    ))}
-                  </Select>
-                </div>
-              </ModalBody>
-              <ModalFooter>
-                <Button color="danger" variant="flat" onPress={onClose}>
-                  Đóng
-                </Button>
-                <Button color="primary" onPress={onClose}>
-                  Tạo
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
+        // openModal={openModal}
+      />
+      <TransactionPagination
+        page={page}
+        pages={pages}
+        onPreviousPage={onPreviousPage}
+        onNextPage={onNextPage}
+        setPage={setPage}
+      />
     </div>
   );
 }

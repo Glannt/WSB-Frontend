@@ -65,3 +65,6 @@ export const createOrderTopUp = (
 
 export const getWalletByUserId = (userId: string) =>
   http.get(`/api/user/wallet/${userId}`);
+
+export const getTransactionsByUserId = (userId: string) =>
+  http.get(`/api/user/${userId}`);
