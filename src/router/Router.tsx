@@ -46,6 +46,7 @@ import { TypeDouble } from '@/pages/RoomType/TypeDouble';
 import { SidebarWrapper } from '@/components/sidebar/sidebar';
 import { TestTable } from '@/components/Test/TestTable';
 import { BookingRoomDetailMultiple } from '@/components/Content/BookingMultiple';
+import TopUpPage from '@/components/Test/TopUp';
 interface ProtectedRouteProps {
   requiredRoles?: Role[]; // Optional prop for role-based protection
 }
@@ -314,6 +315,10 @@ export const router = createBrowserRouter([
         element: <TestTable />,
       },
       {
+        path: 'top-up',
+        element: <TopUpPage />,
+      },
+      {
         path: path.settings,
         element: (
           <MainLayout>
@@ -337,6 +342,7 @@ export const router = createBrowserRouter([
               // </MainLayout>
             ),
           },
+
           {
             path: 'booking-history',
             element: <BookingHistory />,
@@ -344,6 +350,7 @@ export const router = createBrowserRouter([
           {
             path: 'transaction-history',
             element: <MyWallet />,
+            children: [],
           },
           {
             path: 'package-membership',
