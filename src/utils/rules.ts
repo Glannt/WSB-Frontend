@@ -194,6 +194,28 @@ export const createMultiBookingSchema = Yup.object({
     )
     .min(1, 'At least one slot must be selected')
     .max(4, 'No more than 4 slots allowed per booking'),
+  items: Yup.object()
+    .shape({
+      // The 'quantities' object will have dynamic keys (service IDs)
+      quantities: Yup.object()
+        .test(
+          'is-valid-quantities',
+          'Quantities must be valid numbers greater than 0',
+          (quantities) => {
+            // Ensure that all keys in the quantities object are valid service IDs
+            if (!quantities) return true; // If quantities is undefined, skip validation
+
+            return Object.entries(quantities).every(([key, value]) => {
+              // Validate each value is a number and greater than 0
+              return typeof value === 'number' && value >= 1;
+            });
+          }
+        )
+        .optional()
+        .nullable(), // Optional quantities object
+    })
+    .optional()
+    .nullable(), // Optional items
 });
 export type SchemacreateMultiBooking = Yup.InferType<
   typeof createMultiBookingSchema

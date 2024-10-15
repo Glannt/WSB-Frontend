@@ -61,6 +61,8 @@ import { ConfirmBooking } from '../Modal/Customer/ConfirmBooking';
 import { useCustomer } from '@/context/customer.context';
 import path from '@/constants/path';
 import { NotEnoughMoneyInWallet } from '../Modal/Customer/NotEnoughMoneyWallet';
+import { getBookeddSlot, getBookedSlot } from '@/service/room.api';
+import { BookedSlots, SlotBooking } from '@/types/bookings';
 interface create {
   id: number;
   name: string;
@@ -80,11 +82,12 @@ export const BookingRoomDetailMultiple = () => {
   const [policyAgreed, setPolicyAgreed] = useState<boolean>(false);
   const [selectedBase, setSelectedBase] = useState<string>('');
   const { roomId } = useParams<{ roomId: string }>();
-  const [Buildings, setBuildings] = useState<buildingCustomer[]>([]);
+  const [dateCheckIn, setDateCheckIn] = useState<string>('');
+  const [dateCheckOut, setDateCheckOut] = useState<string>('');
   const [buildingsMap, setBuildingsMap] = useState<Record<string, string>>({});
   const { customer, refetch } = useCustomer();
   const [isNotEnoughMoney, setIsNotEnoughMoney] = useState<boolean>(false);
-  // console.log(customer?.wallet.amount);
+
   const navigate = useNavigate();
 
   const toggleConfirmBooking = () => {
@@ -99,6 +102,7 @@ export const BookingRoomDetailMultiple = () => {
       setIsConfirmBooking(!isConfirmBooking);
     }
   };
+
   const getRoomDetailApi = async () => {
     if (roomId === undefined) {
       return null;
@@ -112,9 +116,6 @@ export const BookingRoomDetailMultiple = () => {
     enabled: !!roomId,
   });
   const getAllBuildingApi = async () => {
-    if (roomDetail?.roomType === undefined) {
-      return null;
-    }
     const response = await getAllBuiding();
     return response.data.data;
   };
@@ -126,20 +127,6 @@ export const BookingRoomDetailMultiple = () => {
     queryKey: ['buildings'],
     queryFn: getAllBuildingApi,
   });
-  useEffect(() => {
-    if (buildings && buildings.length > 0) {
-      // Assuming buildings have 'id' as key and 'name' as value
-      const buildingMap = buildings.reduce(
-        (acc, building) => {
-          acc[building.buildingId] = building.buildingName; // or another key-value pair from buildingCustomer type
-          return acc;
-        },
-        {} as Record<string, string>
-      );
-
-      setBuildingsMap(buildingMap);
-    }
-  }, [buildings]);
   const getRoomTypeApi = async () => {
     if (roomDetail?.roomType === undefined) {
       return null;
@@ -175,10 +162,48 @@ export const BookingRoomDetailMultiple = () => {
   ];
 
   const [quantities, setQuantities] = useState<{ [key: string]: number }>({
-    1: 1,
-    2: 1,
-    3: 1,
+    1: 0,
+    2: 0,
+    3: 0,
   });
+  const getBookedSlotApi = async () => {
+    if (roomId === undefined) {
+      return null;
+    }
+    const response = await getBookeddSlot(roomId, dateCheckIn, dateCheckOut);
+    // console.log(response.data.data);
+
+    return response.data.data.bookedSlots;
+  };
+
+  const { data: slots } = useQuery<BookedSlots>({
+    queryKey: ['slots', roomId, dateCheckIn, dateCheckOut],
+    queryFn: getBookedSlotApi, // Pass the function reference, not the invocation
+    enabled: !!roomId && !!dateCheckIn && !!dateCheckOut,
+  });
+  let largestSlotsArray: number[] = [];
+  if (slots) {
+    const slotKeys = Object.keys(slots); // Get all the keys (dates)
+
+    let maxSlotsLength = 0;
+
+    // Iterate over the keys and find the largest slots array
+    slotKeys.forEach((date) => {
+      const currentSlots = slots[date]; // Get the array of slots for the current date
+      if (currentSlots.length > maxSlotsLength) {
+        maxSlotsLength = currentSlots.length; // Update the maximum length
+        largestSlotsArray = currentSlots; // Store the largest slots array
+      }
+    });
+  }
+
+  const initialQuantities = React.useMemo(() => {
+    let initQuantities: { [key: string]: number } = {};
+    selectedServices.forEach((serviceId) => {
+      initQuantities[serviceId] = quantities[serviceId] || 0; // Default to 0 if no quantity exists
+    });
+    return initQuantities;
+  }, [selectedServices, quantities]);
 
   const {
     register,
@@ -187,6 +212,7 @@ export const BookingRoomDetailMultiple = () => {
     getValues,
     setValue,
     setError,
+    reset,
     control,
   } = useForm<SchemacreateMultiBooking>({
     resolver: yupResolver(createMultiBookingSchema),
@@ -196,8 +222,12 @@ export const BookingRoomDetailMultiple = () => {
       checkinDate: '',
       checkoutDate: '',
       slots: [],
+      items: {
+        quantities: initialQuantities || {}, // Đặt initialQuantities vào defaultValues
+      },
     },
   });
+
   const calculateTotalPrice = () => {
     const selectedSlots = getValues().slots || [];
     const { checkinDate, checkoutDate } = getValues();
@@ -216,7 +246,10 @@ export const BookingRoomDetailMultiple = () => {
       );
 
       const quantity = quantities[serviceId] || 0;
-      return total + (selectedService ? selectedService.price * quantity : 0);
+      return (
+        total +
+        (selectedService ? selectedService.price * numberOfDays * quantity : 0)
+      );
     }, 0);
     const totalPrice = roomPriceTotal + servicesTotal;
     setTotals(totalPrice);
@@ -244,9 +277,11 @@ export const BookingRoomDetailMultiple = () => {
     if (data.slots && data.slots.length > 0) {
       data.slots.forEach((slot, index) => {
         formData.append(`slots`, slot.toString());
-        console.log(slot);
       });
     }
+    Object.entries(initialQuantities).forEach(([serviceId, quantity]) => {
+      formData.append(`items[${serviceId}]`, quantity.toString()); // This creates items[serviceId]=quantity
+    });
     CreateBookingMutation.mutate(formData, {
       onSuccess: () => {
         console.log('Booking created successfully');
@@ -261,6 +296,8 @@ export const BookingRoomDetailMultiple = () => {
     const end = range.end;
     setValue('checkinDate', start.toString()); // Setting check-in date
     setValue('checkoutDate', end.toString()); // Setting check-out date
+    setDateCheckIn(start.toString());
+    setDateCheckOut(end.toString());
   };
   const onSubmit = (data: SchemacreateMultiBooking) => {
     const totalBookingMoney = calculateTotalPrice();
@@ -268,8 +305,6 @@ export const BookingRoomDetailMultiple = () => {
       customer.wallet.amount === undefined ||
       customer.wallet.amount < totalBookingMoney
     ) {
-      console.log('alooo');
-
       setIsNotEnoughMoney(true);
       // return;
     } else {
@@ -385,14 +420,15 @@ export const BookingRoomDetailMultiple = () => {
                         </div>
                       }
                     >
-                      {buildingsMap && Object.keys(buildingsMap).length > 0 ? (
-                        Object.entries(buildingsMap).map(
-                          ([id, buildingName], index) => (
-                            <SelectItem key={id} value={buildingName}>
-                              {buildingName}
-                            </SelectItem>
-                          )
-                        )
+                      {buildings && buildings.length > 0 ? (
+                        buildings.map((building) => (
+                          <SelectItem
+                            key={building.buildingId}
+                            value={building.buildingName}
+                          >
+                            {building.buildingName}
+                          </SelectItem>
+                        ))
                       ) : (
                         <SelectItem key="no-buildings">
                           No buildings available
@@ -448,7 +484,12 @@ export const BookingRoomDetailMultiple = () => {
                         className="w-full rounded-md appearance-none"
                       >
                         {timeSlots.map((slot) => (
-                          <SelectItem key={slot.id}>{slot.value}</SelectItem>
+                          <SelectItem
+                            isDisabled={largestSlotsArray.includes(slot.id)}
+                            key={slot.id}
+                          >
+                            {slot.value}
+                          </SelectItem>
                         ))}
                       </Select>
                     )}

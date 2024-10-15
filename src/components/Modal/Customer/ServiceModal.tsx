@@ -36,7 +36,23 @@ const ServiceModal: React.FC<ServiceModalProps> = ({
   calculateTotalPrice,
 }) => {
   const [selected, setSelected] = React.useState<string>('photos');
+  const [serviceEquipments, setServiceEquipments] = React.useState<Services[]>(
+    []
+  );
+  const [serviceFoods, setServiceFoods] = React.useState<Services[]>([]);
+  React.useEffect(() => {
+    if (services.length > 0) {
+      const equipments = services.filter(
+        (service) => service.serviceType === 'Thiết bị'
+      );
+      const foods = services.filter(
+        (service) => service.serviceType === 'Đồ ăn'
+      );
 
+      setServiceEquipments(equipments);
+      setServiceFoods(foods);
+    }
+  }, [services]);
   return (
     <Modal
       onClose={calculateTotalPrice}
@@ -58,7 +74,7 @@ const ServiceModal: React.FC<ServiceModalProps> = ({
               >
                 <Tab key="photos" title="Thiết bị">
                   <ServiceList
-                    services={services}
+                    services={serviceEquipments}
                     quantities={quantities}
                     selectedServices={selectedServices}
                     handleServiceSelection={handleServiceSelection}
@@ -66,14 +82,13 @@ const ServiceModal: React.FC<ServiceModalProps> = ({
                   />
                 </Tab>
                 <Tab key="music" title="Đồ ăn">
-                  <Card>
-                    <CardBody>
-                      Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                      laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                      irure dolor in reprehenderit in voluptate velit esse
-                      cillum dolore eu fugiat nulla pariatur.
-                    </CardBody>
-                  </Card>
+                  <ServiceList
+                    services={serviceFoods}
+                    quantities={quantities}
+                    selectedServices={selectedServices}
+                    handleServiceSelection={handleServiceSelection}
+                    handleQuantityChange={handleQuantityChange}
+                  />
                 </Tab>
               </Tabs>
             </ModalBody>

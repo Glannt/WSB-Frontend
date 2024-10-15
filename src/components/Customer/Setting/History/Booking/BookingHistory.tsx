@@ -45,7 +45,8 @@ const statusOptions = [
 
 const columns = [
   { name: 'ID', uid: 'bookingId', sortable: true }, // Based on bookingId field
-  { name: 'Thời gian', uid: 'checkinDate', sortable: true }, // Date of booking
+  { name: 'Thời gian bắt đầu sử dụng', uid: 'checkinDate', sortable: true }, // Date of booking
+  { name: 'Thời gian hoàn thành', uid: 'checkoutDate', sortable: true },
   { name: 'Phòng', uid: 'room', sortable: true }, // Room name from `room.roomName`
   { name: 'Đơn giá', uid: 'totalPrice', sortable: true }, // Amount for the booking
   { name: 'Thời gian Slot', uid: 'slot', sortable: false }, // Display time slot from `slot.timeStart - slot.timeEnd`
@@ -63,6 +64,7 @@ const statusColorMap: Record<string, ChipProps['color']> = {
 const INITIAL_VISIBLE_COLUMNS = [
   'bookingId',
   'checkinDate',
+  'checkoutDate',
   'room',
   'totalPrice',
   'slot',
