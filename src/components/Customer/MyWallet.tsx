@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { FaWallet, FaPlus } from 'react-icons/fa';
 import TransactionHistory from './Setting/History/Transaction/TransactionHistory';
+import { useNavigate } from 'react-router';
 
 const MyWallet: React.FC = () => {
   const [balance, setBalance] = useState<number>(1000);
   const [error, setError] = useState<string>('');
   const [isAdding, setIsAdding] = useState<boolean>(false);
-
+  const navigate = useNavigate();
   // const handleAddFunds = () => {
   //   setIsAdding(true);
   //   setTimeout(() => {
@@ -39,6 +40,7 @@ const MyWallet: React.FC = () => {
               disabled={isAdding}
               className="text-xl bg-blackA12 text-white h-12 p-3 rounded-lg font-semibold hover:bg-white hover:text-black hover:shadow-3xl ease-in-out flex items-center hover:scale-105 transition duration-100 shadow-lg"
               aria-label="Add funds to your wallet"
+              onClick={() => navigate('/top-up')}
             >
               <FaPlus className="mr-2" />
               Nạp tiền

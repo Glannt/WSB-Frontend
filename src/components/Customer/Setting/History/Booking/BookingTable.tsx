@@ -158,7 +158,7 @@ const BookingTable: React.FC<BookingTableProps> = ({
       sortDescriptor={sortDescriptor}
       onSelectionChange={setSelectedKeys}
       onSortChange={onSortChange}
-      className="h-[300px] max-h-[300px] overflow-y-auto"
+      className="h-[330px] max-h-[330px] overflow-y-auto"
     >
       <TableHeader columns={headerColumns}>
         {(column) => (
