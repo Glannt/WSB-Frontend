@@ -8,9 +8,7 @@ import path from '@/constants/path';
 import { getWalletByUserId } from '@/service/customer.api';
 import { getProfileFromLS } from '@/utils/auth';
 import { useQuery } from '@tanstack/react-query';
-
-import { useNavigate } from 'react-router';
-
+import { Wallet } from '@/types/customer.type';
 
 const MyWallet: React.FC = () => {
   const [error, setError] = useState<string>('');

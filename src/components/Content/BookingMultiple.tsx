@@ -87,7 +87,7 @@ export const BookingRoomDetailMultiple = () => {
   const [buildingsMap, setBuildingsMap] = useState<Record<string, string>>({});
   const { customer, refetch } = useCustomer();
   const [isNotEnoughMoney, setIsNotEnoughMoney] = useState<boolean>(false);
-
+  const [isDateSelected, setIsDateSelected] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const toggleConfirmBooking = () => {
@@ -298,6 +298,9 @@ export const BookingRoomDetailMultiple = () => {
     setValue('checkoutDate', end.toString()); // Setting check-out date
     setDateCheckIn(start.toString());
     setDateCheckOut(end.toString());
+    if (range) {
+      setIsDateSelected(true);
+    }
   };
   const onSubmit = (data: SchemacreateMultiBooking) => {
     const totalBookingMoney = calculateTotalPrice();
@@ -461,7 +464,7 @@ export const BookingRoomDetailMultiple = () => {
                     name="slots"
                     render={({ field: { onChange, value } }) => (
                       <Select
-                        // {...register('slots')}
+                        isDisabled={!isDateSelected}
                         value={selectedTimeSlot}
                         onChange={handleTimeSlotChange}
                         onSelectionChange={(keys) => {
