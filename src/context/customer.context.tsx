@@ -94,8 +94,6 @@ export const CustomerProvider = ({ children }: { children: ReactNode }) => {
   const getProfileUser = async () => {
     const response = await getUser();
     const data = response.data.data;
-    console.log(data);
-
     setCustomerToLS(data); // Update local storage when new data is fetched
     return data;
   };

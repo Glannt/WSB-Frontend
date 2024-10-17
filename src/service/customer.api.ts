@@ -48,16 +48,10 @@ export const createBooking = (formdata: FormData) =>
   });
 export const reChargeWallet = () => {};
 
-export const createOrderTopUp = (
-  amount: number,
-  userId: string,
-  urlReturn?: string
-) =>
-  http.post('/vnpay/createOrderTopUp', null, {
-    params: {
-      amount,
-      userId,
-      urlReturn,
+export const createOrderTopUp = (formdata: FormData) =>
+  http.post('/vnpay/createOrderTopUp', formdata, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
     },
   });
 

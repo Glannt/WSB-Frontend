@@ -22,35 +22,52 @@ import {
 } from '@nextui-org/react';
 import { SearchIcon } from '../Icons/SearchIcon';
 import { PlusIcon } from '../Icons/PlusIcon';
-import {
-  bookings,
-  columnsBooking,
-  statusOptionsBooking,
-} from '@/data/dataBookings'; // Import dữ liệu bookings
 import { EyeIcon } from '../Icons/EyeIcon';
 import { EditIcon } from '../Icons/EditIcon';
 import { DeleteIcon } from '../Icons/DeleteIcon';
 import { ChevronDownIcon } from '../Icons/ChevronDownIcon';
 import { capitalize } from '../AdminService/utils';
+import StaffBookingFilter from './StaffBookingFilter';
+import StaffBookingTable from './StaffBookingTable';
+import { getOrderBooking } from '@/service/staff.api';
+import { useQuery } from '@tanstack/react-query';
+import {
+  BookingStaffTable,
+  columnsBooking,
+  statusOptionsBooking,
+} from '@/types/bookings';
+import RoomPagination from '../AdminService/RoomPagination';
 
 const statusColorMap: Record<string, ChipProps['color']> = {
   available: 'success',
   maintenance: 'danger',
   // vacation: 'warning',
 };
-type Booking = (typeof bookings)[0];
+// type Booking = (typeof bookings)[0];
 const INITIAL_VISIBLE_COLUMNS = [
   'bookingID', // Unique identifier for each booking
   'roomId', // Identifier for the booked room
-  'userId', // Identifier for the user who made the booking
-  'startDate', // Start date of the booking
-  'endDate', // End date of the booking
+  'checkinDate',
+  'checkoutDate',
+  'customerId', // Identifier for the user who made the booking
+  'slots', // Start date of the booking
+  'totalPrice', // End date of the booking
   'status', // Current status of the booking (e.g., confirmed, cancelled)
   'actions', // Actions like view, edit, or delete the booking
 ];
 
 export default function StaffBookings() {
-  // Assuming you have an initial bookings state
+  const getStaffBookingApi = async (): Promise<BookingStaffTable[]> => {
+    const response = await getOrderBooking();
+    console.log(response.data.data);
+
+    return response.data.data;
+  };
+
+  const { data: orderBookings = [], refetch } = useQuery<BookingStaffTable[]>({
+    queryKey: ['orderBookings'],
+    queryFn: getStaffBookingApi,
+  });
   //filter
   const [filterValue, setFilterValue] = React.useState('');
   const hasSearchFilter = Boolean(filterValue);
@@ -84,7 +101,7 @@ export default function StaffBookings() {
   //statusFilter
   const [statusFilter, setStatusFilter] = React.useState<Selection>('all');
   const filteredItems = React.useMemo(() => {
-    let filteredBookings = [...bookings];
+    let filteredBookings = [...orderBookings];
 
     if (hasSearchFilter) {
       filteredBookings = filteredBookings.filter((booking) =>
@@ -101,7 +118,7 @@ export default function StaffBookings() {
     }
 
     return filteredBookings;
-  }, [bookings, filterValue, statusFilter]);
+  }, [orderBookings, filterValue, statusFilter]);
   //rowsPerPage
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [page, setPage] = React.useState(1);
@@ -136,13 +153,17 @@ export default function StaffBookings() {
 
   //sort
   const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
-    column: 'age',
+    column: 'roomId',
     direction: 'ascending',
   });
   const sortedItems = React.useMemo(() => {
-    return [...items].sort((a: Booking, b: Booking) => {
-      const first = a[sortDescriptor.column as keyof Booking] as number;
-      const second = b[sortDescriptor.column as keyof Booking] as number;
+    return [...items].sort((a: BookingStaffTable, b: BookingStaffTable) => {
+      const first = a[
+        sortDescriptor.column as keyof BookingStaffTable
+      ] as number;
+      const second = b[
+        sortDescriptor.column as keyof BookingStaffTable
+      ] as number;
       const cmp = first < second ? -1 : first > second ? 1 : 0;
       return sortDescriptor.direction === 'descending' ? -cmp : cmp;
     });
@@ -152,8 +173,9 @@ export default function StaffBookings() {
   const [valueRoomType, setValueRoomType] = React.useState(new Set(['single']));
 
   const [isDetails, setIsDetails] = useState<boolean>(false);
-  const [selectedRoom, setSelectedRoom] = React.useState<Booking | null>(null);
-  const openDetail = (booking: Booking) => {
+  const [selectedRoom, setSelectedRoom] =
+    React.useState<BookingStaffTable | null>(null);
+  const openDetail = (booking: BookingStaffTable) => {
     setIsDetails(true);
     setSelectedRoom(booking);
   };
@@ -170,7 +192,7 @@ export default function StaffBookings() {
   };
 
   const [isOpenEdit, setIsOpenEdit] = useState<boolean>(false);
-  const openEdit = (room: Booking) => {
+  const openEdit = (room: BookingStaffTable) => {
     setIsOpenEdit(true);
     setSelectedRoom(room);
   };
@@ -178,240 +200,53 @@ export default function StaffBookings() {
     setIsOpenEdit(false);
   };
 
-  const renderCell = React.useCallback(
-    (booking: Booking, columnKey: React.Key): React.ReactNode => {
-      const cellValue = booking[columnKey as keyof Booking];
-      switch (columnKey) {
-        case 'bookingID':
-          return booking.id; // Render Booking ID
-        case 'roomId':
-          return `Room #${booking.roomId}`; // Render Room ID
-        case 'userId':
-          return `User #${booking.userId}`; // Render User ID
-        case 'startDate':
-          return booking.startDate.toLocaleString(); // Format and render Start Date
-        case 'endDate':
-          return booking.endDate.toLocaleString(); // Format and render End Date
-        case 'status':
-          return (
-            <Chip
-              className="capitalize"
-              color={statusColorMap[booking.status]} // Map status to colors
-              size="sm"
-              variant="flat"
-            >
-              {String(cellValue)}
-            </Chip>
-          );
-        case 'actions':
-          return (
-            <div className="relative flex justify-center gap-5">
-              <Tooltip content="Chi tiết">
-                <span
-                  onClick={() => openDetail(booking)}
-                  className="text-lg text-default-400 cursor-pointer active:opacity-50"
-                >
-                  <EyeIcon />
-                </span>
-              </Tooltip>
-              <Tooltip content="Chỉnh sửa">
-                <span
-                  onClick={() => openEdit(booking)}
-                  className="text-lg text-default-400 cursor-pointer active:opacity-50"
-                >
-                  <EditIcon />
-                </span>
-              </Tooltip>
-              <Tooltip color="danger" content="Xóa">
-                <span className="text-lg text-danger cursor-pointer active:opacity-50">
-                  <DeleteIcon />
-                </span>
-              </Tooltip>
-            </div>
-          );
-        default:
-          return String(cellValue);
-      }
-    },
-    []
-  );
-
-  const topContent = React.useMemo(() => {
-    return (
-      <div className="flex flex-col gap-4 h-full max-h-screen">
-        <div className="flex justify-between gap-3 items-end">
-          <Input
-            isClearable
-            className="w-full sm:max-w-[50%] focus:outline-none bg-blackA2 rounded-xl"
-            placeholder="Tìm kiếm bằng tên..."
-            variant="bordered"
-            startContent={<SearchIcon />}
-            labelPlacement="outside"
-            value={filterValue}
-            onClear={() => onClear()}
-            onValueChange={onSearchChange}
-            classNames={{
-              input: 'border-0 focus:outline-none focus:border-transparent-1',
-            }}
-          />
-          <div className="flex gap-3">
-            <Dropdown>
-              <DropdownTrigger className="hidden sm:flex">
-                <Button
-                  endContent={<ChevronDownIcon className="text-small" />}
-                  variant="flat"
-                >
-                  Trạng thái
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                disallowEmptySelection
-                aria-label="Table Columns"
-                closeOnSelect={false}
-                selectedKeys={statusFilter}
-                selectionMode="multiple"
-                onSelectionChange={setStatusFilter}
-              >
-                {statusOptionsBooking.map((status) => (
-                  <DropdownItem key={status.uid} className="capitalize">
-                    {capitalize(status.name)}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
-            <Dropdown>
-              <DropdownTrigger className="hidden sm:flex">
-                <Button
-                  endContent={<ChevronDownIcon className="text-small" />}
-                  variant="flat"
-                >
-                  Cột
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                disallowEmptySelection
-                aria-label="Table Columns"
-                closeOnSelect={false}
-                selectedKeys={visibleColumns}
-                selectionMode="multiple"
-                onSelectionChange={setVisibleColumns}
-              >
-                {columnsBooking.map((column) => (
-                  <DropdownItem key={column.uid} className="capitalize">
-                    {capitalize(column.name)}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
-          </div>
-        </div>
-        <div className="flex justify-between items-center">
-          <span className="text-default-400 text-small">
-            Tổng {bookings.length} phòng
-          </span>
-          <label className="flex items-center text-default-400 text-small">
-            Số hàng
-            <select
-              className="bg-transparent outline-none text-default-400 text-small rounded-md ml-3"
-              onChange={onRowsPerPageChange}
-            >
-              <option value="5">5</option>
-              <option value="10">10</option>
-              <option value="15">15</option>
-            </select>
-          </label>
-        </div>
-      </div>
-    );
-  }, [
-    filterValue,
-    statusFilter,
-    visibleColumns,
-    onSearchChange,
-    onRowsPerPageChange,
-    bookings.length,
-    hasSearchFilter,
-  ]);
-
-  const bottomContent = React.useMemo(() => {
-    return (
-      <div className="py-2 px-2 flex justify-between items-center">
-        {/* <span className="w-[30%] text-small text-default-400">
-           {selectedKeys === 'all'
-             ? 'All items selected'
-             : `${selectedKeys.size} of ${filteredItems.length} selected`}
-         </span> */}
-        <Pagination
-          isCompact
-          showControls
-          showShadow
-          color="primary"
-          page={page}
-          total={pages}
-          onChange={setPage}
-        />
-        <div className="hidden sm:flex w-[30%] justify-end gap-2">
-          <Button
-            isDisabled={pages === 1}
-            size="sm"
-            variant="flat"
-            onPress={onPreviousPage}
-          >
-            Trước
-          </Button>
-          <Button
-            isDisabled={pages === 1}
-            size="sm"
-            variant="flat"
-            onPress={onNextPage}
-          >
-            Sau
-          </Button>
-        </div>
-      </div>
-    );
-  }, [selectedKeys, items.length, page, pages, hasSearchFilter]);
-
   return (
     <div className="h-full mt-12 ml-5 mr-5">
-      <Table
-        isStriped
-        aria-label="Example table with custom cells, pagination and sorting"
-        isHeaderSticky
-        bottomContent={bottomContent}
-        bottomContentPlacement="outside"
-        classNames={{
-          wrapper: 'max-h-[470px]',
-        }}
-        selectedKeys={selectedKeys}
-        // selectionMode="multiple"
+      <StaffBookingFilter
+        filterValue={filterValue}
+        statusFilter={statusFilter}
+        visibleColumns={visibleColumns}
+        statusOptions={statusOptionsBooking}
+        columns={columnsBooking}
+        onSearchChange={onSearchChange}
+        onClear={() => onClear()}
+        setStatusFilter={setStatusFilter}
+        setVisibleColumns={setVisibleColumns}
+      />
+      <div className="flex justify-between items-center mt-5 mb-5">
+        <span className="text-default-400 text-small">
+          {/* Tổng {rooms?.length} phòng */}
+        </span>
+        <label className="flex items-center text-default-400 text-small">
+          Số hàng
+          <select
+            className="bg-transparent outline-none text-default-400 text-small rounded-md ml-3"
+            onChange={onRowsPerPageChange}
+            value={rowsPerPage}
+          >
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+          </select>
+        </label>
+      </div>
+      <StaffBookingTable
+        sortedItems={sortedItems}
+        headerColumns={headerColumns}
         sortDescriptor={sortDescriptor}
-        topContent={topContent}
-        topContentPlacement="outside"
-        onSelectionChange={setSelectedKeys}
+        selectedKeys={selectedKeys} // Handle selection logic
+        setSelectedKeys={setSelectedKeys} // Selection handler
         onSortChange={setSortDescriptor}
-      >
-        <TableHeader columns={headerColumns}>
-          {(column) => (
-            <TableColumn
-              key={column.uid}
-              align={column.uid === 'actions' ? 'center' : 'start'}
-              allowsSorting={column.sortable}
-            >
-              {column.name}
-            </TableColumn>
-          )}
-        </TableHeader>
-        <TableBody emptyContent={'No users found'} items={sortedItems}>
-          {(item) => (
-            <TableRow key={item.id}>
-              {(columnKey) => (
-                <TableCell>{renderCell(item, columnKey)} </TableCell>
-              )}
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
+        // onEdit={openEdit}
+        // onDelete={openDelete}
+      />
+      <RoomPagination
+        page={page}
+        pages={pages}
+        onPreviousPage={onPreviousPage}
+        onNextPage={onNextPage}
+        onChange={setPage}
+      />
     </div>
   );
 }

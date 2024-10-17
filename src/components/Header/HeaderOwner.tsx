@@ -22,7 +22,7 @@ import {
 import { useNavigate } from 'react-router';
 import path from '@/constants/path';
 import { getRoleName } from '@/utils/auth';
-export const Header = (props: any) => {
+export const HeaderOwner = (props: any) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate();
   const roleName = getRoleName();
@@ -54,6 +54,7 @@ export const Header = (props: any) => {
   }, []);
 
   const chevron = <ChevronDownIcon fill="currentColor" />;
+  console.log(roleName);
 
   return (
     <>
@@ -229,48 +230,19 @@ export const Header = (props: any) => {
               </Link>
             </NavbarItem>
             {/* Manager */}
-            {roleName.toUpperCase() === 'MANAGER' && (
-              <NavbarItem
-                isActive={window.location.pathname === path.manager}
-                className="mx-10"
+
+            <NavbarItem
+              isActive={window.location.pathname === path.staff}
+              className="mx-10"
+            >
+              <Link
+                color="foreground"
+                className="cursor-pointer text-start hover:text-violet11 hover:bg-violet3 focus:shadow-violet7 block select-none rounded-[4px] px-4 py-2 text-[15px] font-medium leading-none no-underline outline-none"
+                onClick={() => navigate(path.staff)}
               >
-                <Link
-                  color="foreground"
-                  className="cursor-pointer text-start hover:text-violet11 hover:bg-violet3 focus:shadow-violet7 block select-none rounded-[4px] px-4 py-2 text-[15px] font-medium leading-none no-underline outline-none"
-                  onClick={() => navigate(path.manager)}
-                >
-                  Trang quản lý
-                </Link>
-              </NavbarItem>
-            )}
-            {roleName === 'STAFF' && (
-              <NavbarItem
-                isActive={window.location.pathname === path.staff}
-                className="mx-10"
-              >
-                <Link
-                  color="foreground"
-                  className="cursor-pointer text-start hover:text-violet11 hover:bg-violet3 focus:shadow-violet7 block select-none rounded-[4px] px-4 py-2 text-[15px] font-medium leading-none no-underline outline-none"
-                  onClick={() => navigate(path.staff)}
-                >
-                  Trang nhân viên
-                </Link>
-              </NavbarItem>
-            )}
-            {roleName === 'OWNER' && (
-              <NavbarItem
-                isActive={window.location.pathname === path.staff}
-                className="mx-10"
-              >
-                <Link
-                  color="foreground"
-                  className="cursor-pointer text-start hover:text-violet11 hover:bg-violet3 focus:shadow-violet7 block select-none rounded-[4px] px-4 py-2 text-[15px] font-medium leading-none no-underline outline-none"
-                  onClick={() => navigate(path.staff)}
-                >
-                  Trang chủ sở hữu
-                </Link>
-              </NavbarItem>
-            )}
+                Trang chủ sở hữu
+              </Link>
+            </NavbarItem>
           </NavbarContent>
           {!isAuthenticated && (
             <NavbarContent justify="end" className="mr-10">

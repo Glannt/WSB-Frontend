@@ -34,3 +34,34 @@ export interface CustomerOrderBookingHistory {
 export interface BookedSlots {
   [date: string]: number[]; // Date as the key (string), and array of numbers as values
 }
+
+export interface BookingStaffTable {
+  bookingId: string;
+  roomId: string;
+  checkinDate: string;
+  checkoutDate: string;
+  slots: SlotBooking[];
+  customerId: string;
+  totalPrice: number;
+  status: string;
+  serviceItems: ServiceItems;
+}
+export const columnsBooking = [
+  { name: 'Mã Đặt Phòng', uid: 'bookingId', sortable: true },
+  { name: 'Mã Phòng', uid: 'roomId', sortable: true },
+  { name: 'Ngày Nhận Phòng', uid: 'checkinDate', sortable: true },
+  { name: 'Ngày Trả Phòng', uid: 'checkoutDate', sortable: true },
+  { name: 'Khách Hàng', uid: 'customerId', sortable: true },
+  { name: 'Tổng Giá', uid: 'totalPrice', sortable: true },
+  { name: 'Trạng Thái', uid: 'status', sortable: true },
+  { name: 'Dịch Vụ', uid: 'serviceItems' },
+  { name: 'Ca Đặt Phòng', uid: 'slots' },
+  { name: 'Actions', uid: 'actions' },
+];
+
+export const statusOptionsBooking = [
+  { name: 'đang tới', uid: 'UPCOMING' },
+  { name: 'sử dụng xong', uid: 'FINISHED' },
+  { name: 'đã hủy', uid: 'CANCELLED' },
+  { name: 'đang sử dụng', uid: 'USING' },
+];

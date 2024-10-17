@@ -17,7 +17,7 @@ export const NotEnoughMoneyInWallet: React.FC<ConfirmBookingProps> = ({
   showConfirmModal,
   toggleConfirmModal,
 }) => {
-  const naviage = useNavigate();
+  const navigate = useNavigate();
   return (
     <>
       {' '}
@@ -31,14 +31,16 @@ export const NotEnoughMoneyInWallet: React.FC<ConfirmBookingProps> = ({
                   <Button
                     className="w-40"
                     color="primary"
-                    onClick={toggleConfirmModal}
+                    onClick={() => navigate('/top-up')}
                   >
                     Nạp tiền
                   </Button>
                   <Button
                     className="w-40"
                     color="danger"
-                    onClick={toggleConfirmModal}
+                    onClick={() => {
+                      toggleConfirmModal;
+                    }}
                   >
                     Đóng
                   </Button>

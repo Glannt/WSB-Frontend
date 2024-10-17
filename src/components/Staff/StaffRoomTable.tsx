@@ -31,7 +31,6 @@ interface RoomTableProps {
 const statusColorMap: Record<string, ChipProps['color']> = {
   available: 'success',
   maintenance: 'danger',
-  // vacation: 'warning',
 };
 const StaffRoomTable: React.FC<RoomTableProps> = ({
   sortedItems,
@@ -47,9 +46,22 @@ const StaffRoomTable: React.FC<RoomTableProps> = ({
     (room: RoomOverView, columnKey: React.Key) => {
       const cellValue = room[columnKey as keyof RoomOverView];
       // Hàm lấy tên loại phòng từ ID
+      const translateStatusToVietnamese = (status: string): string => {
+        switch (status.toLowerCase()) {
+          case 'available':
+            return 'Có thể sử dụng';
+          case 'maintenance':
+            return 'Bảo trì';
+          default:
+            return 'Không xác định'; // Default case for unknown status
+        }
+      };
+
       switch (columnKey) {
         case 'roomId':
           return <span>{room.roomId}</span>;
+        case 'roomName':
+          return <span>{room.roomName}</span>;
 
         case 'roomStatus':
           return (
@@ -60,8 +72,10 @@ const StaffRoomTable: React.FC<RoomTableProps> = ({
               variant="flat"
             >
               {typeof cellValue === 'object'
-                ? JSON.stringify(cellValue)
-                : cellValue}
+                ? JSON.stringify(
+                    translateStatusToVietnamese(room.roomStatus.toLowerCase())
+                  )
+                : translateStatusToVietnamese(room.roomStatus.toLowerCase())}
             </Chip>
           );
         case 'actions':
