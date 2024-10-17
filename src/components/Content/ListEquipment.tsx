@@ -12,6 +12,9 @@ import {
   FaChevronRight,
 } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
+import { getService } from '@/service/customer.api';
+import { useQuery } from '@tanstack/react-query';
+import { Services } from '@/types/service.type';
 
 // Define types for equipment items
 interface EquipmentItem {
@@ -30,94 +33,23 @@ const equipmentTypes: string[] = [
   'Safety',
 ];
 
-const dummyEquipment: EquipmentItem[] = [
-  {
-    id: 1,
-    name: 'Laptop',
-    type: 'Electronics',
-    description: 'High-performance laptop for professionals',
-    image:
-      'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80',
-  },
-  {
-    id: 2,
-    name: 'Drill',
-    type: 'Tools',
-    description: 'Cordless drill with multiple speed settings',
-    image:
-      'https://images.unsplash.com/photo-1504148455328-c376907d081c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
-  },
-  {
-    id: 3,
-    name: 'Forklift',
-    type: 'Machinery',
-    description: 'Electric forklift for warehouse operations',
-    image:
-      'https://images.unsplash.com/photo-1504811519131-4a4d61afa507?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
-  },
-  {
-    id: 4,
-    name: 'Printer',
-    type: 'Office',
-    description: 'All-in-one printer with scanning capabilities',
-    image:
-      'https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
-  },
-  {
-    id: 5,
-    name: 'Safety Helmet',
-    type: 'Safety',
-    description: 'Hard hat for construction site protection',
-    image:
-      'https://images.unsplash.com/photo-1581092160562-40aa08e78837?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
-  },
-  {
-    id: 6,
-    name: 'Desktop Computer',
-    type: 'Electronics',
-    description: 'Powerful workstation for graphic design',
-    image:
-      'https://images.unsplash.com/photo-1547082299-de196ea013d6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
-  },
-  {
-    id: 7,
-    name: 'Circular Saw',
-    type: 'Tools',
-    description: 'Professional-grade circular saw for woodworking',
-    image:
-      'https://images.unsplash.com/photo-1572981779307-38b8cabb2407?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1632&q=80',
-  },
-  {
-    id: 8,
-    name: 'Conveyor Belt',
-    type: 'Machinery',
-    description: 'Industrial conveyor system for material handling',
-    image:
-      'https://images.unsplash.com/photo-1596443686812-2f45229eebc3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80',
-  },
-  {
-    id: 9,
-    name: 'Ergonomic Chair',
-    type: 'Office',
-    description: 'Adjustable office chair for optimal comfort',
-    image:
-      'https://images.unsplash.com/photo-1589384267710-7a170981ca78?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
-  },
-  {
-    id: 10,
-    name: 'Fire Extinguisher',
-    type: 'Safety',
-    description: 'Multi-purpose fire extinguisher for emergencies',
-    image:
-      'https://images.unsplash.com/photo-1596720226872-556eda5983dc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80',
-  },
-];
-
 const EquipmentList: React.FC = () => {
+  const getServiceApi = async () => {
+    const response = await getService();
+    return response.data.data;
+  };
+  const {
+    data: services = [],
+    isLoading: isLoadingServices,
+    refetch: refetchServices,
+  } = useQuery<Services[]>({
+    queryKey: ['services'],
+    queryFn: getServiceApi,
+  });
+
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
-  const [filteredEquipment, setFilteredEquipment] =
-    useState<EquipmentItem[]>(dummyEquipment);
+  const [filteredEquipment, setFilteredEquipment] = useState<Services[]>([]);
   const [error, setError] = useState<string>('');
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const searchBarRef = useRef<HTMLDivElement>(null);
@@ -143,26 +75,26 @@ const EquipmentList: React.FC = () => {
     filterEquipment();
   }, [searchTerm, selectedTypes]);
 
+  useEffect(() => {
+    setFilteredEquipment(services);
+  }, [services]);
+
   const filterEquipment = () => {
-    let filtered = dummyEquipment;
+    let filtered = services;
 
     if (searchTerm) {
       filtered = filtered.filter((item) =>
-        item.name.toLowerCase().includes(searchTerm.toLowerCase())
+        item.serviceName.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
     if (selectedTypes.length > 0) {
-      filtered = filtered.filter((item) => selectedTypes.includes(item.type));
+      filtered = filtered.filter((item) =>
+        selectedTypes.includes(item.serviceType)
+      );
     }
 
     setFilteredEquipment(filtered);
-
-    if (filtered.length === 0) {
-      setError('No equipment found. Please try a different search or filter.');
-    } else {
-      setError('');
-    }
   };
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
@@ -170,11 +102,11 @@ const EquipmentList: React.FC = () => {
     setSearchTerm(value);
 
     if (value.length > 0) {
-      const suggestionList = dummyEquipment
+      const suggestionList = services
         .filter((item) =>
-          item.name.toLowerCase().startsWith(value.toLowerCase())
+          item.serviceName.toLowerCase().startsWith(value.toLowerCase())
         )
-        .map((item) => item.name);
+        .map((item) => item.serviceName);
       setSuggestions(suggestionList);
     } else {
       setSuggestions([]);
@@ -212,6 +144,10 @@ const EquipmentList: React.FC = () => {
       );
     };
 
+    if (isLoadingServices) {
+      return <p>Loading...</p>;
+    }
+
     return (
       <div className="relative w-full h-48 overflow-hidden rounded-t-lg">
         <AnimatePresence initial={false}>
@@ -248,7 +184,7 @@ const EquipmentList: React.FC = () => {
         <div ref={searchBarRef} className="flex items-center mb-4">
           <input
             type="text"
-            placeholder="Search equipment..."
+            placeholder="Tìm thiết bị..."
             className="border border-gray-300 rounded-lg p-2 mr-2 w-full"
             value={searchTerm}
             onChange={handleSearch}
@@ -292,11 +228,11 @@ const EquipmentList: React.FC = () => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {filteredEquipment.map((item) => (
-          <div key={item.id} className="border rounded-lg shadow-lg">
-            <ImageSlider images={[item.image]} />
+          <div key={item.serviceId} className="border rounded-lg shadow-lg">
+            <ImageSlider images={[item.serviceImg]} />
             <div className="p-4">
-              <h3 className="text-xl font-bold">{item.name}</h3>
-              <p className="text-gray-600">{item.description}</p>
+              <h3 className="text-xl font-bold">{item.serviceName}</h3>
+              <p className="text-gray-600">{}</p>
             </div>
           </div>
         ))}
