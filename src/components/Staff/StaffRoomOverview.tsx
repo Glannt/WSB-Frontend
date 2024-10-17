@@ -39,15 +39,15 @@ import { EditIcon } from '../Icons/EditIcon';
 import { DeleteIcon } from '../Icons/DeleteIcon';
 // import AdminRoomModal from '../Modal/Manager/AdminRoomModal';
 import { capitalize } from '../AdminService/utils';
-import {
-  columnsRoomOverview,
-  roomsData,
-  statusOptions,
-} from '@/data/dataRoomOverview';
+import { roomsData, statusOptions } from '@/data/dataRoomOverview';
 import RoomFilters from '../AdminService/RoomFilter';
 import RoomTable from '../AdminService/RoomTable';
 import RoomPagination from '../AdminService/RoomPagination';
 import RoomStaffFilters from './RoomStaffFilter';
+import { columnsRoomOverview, RoomOverView } from '@/types/room.type';
+import { getAllRoomOverView } from '@/service/staff.api';
+import { useQuery } from '@tanstack/react-query';
+import StaffRoomTable from './StaffRoomTable';
 
 const statusColorMap: Record<string, string> = {
   available: 'green', // Color for available rooms
@@ -56,17 +56,23 @@ const statusColorMap: Record<string, string> = {
 };
 
 const INITIAL_VISIBLE_COLUMNS = [
-  'id', // Room ID
-  'roomName', // Room Name
-  'roomType', // Room Type
+  'roomId', // Room ID
   'roomStatus', // Room Status
-  'createdAt', // Created At
   'actions', // Actions
 ];
 
-type RoomOverView = (typeof roomsData)[0];
-
 export default function StaffRoomOverview() {
+  const getAllRoomOverviewAPi = async (): Promise<RoomOverView[]> => {
+    const response = await getAllRoomOverView();
+    console.log(response.data.data);
+
+    return response.data.data;
+  };
+
+  const { data: roomsOverview = [], refetch } = useQuery<RoomOverView[]>({
+    queryKey: ['roomsOverview'],
+    queryFn: getAllRoomOverviewAPi,
+  });
   //filter
   const [filterValue, setFilterValue] = React.useState('');
   const hasSearchFilter = Boolean(filterValue);
@@ -100,11 +106,11 @@ export default function StaffRoomOverview() {
   //statusFilter
   const [statusFilter, setStatusFilter] = React.useState<Selection>('all');
   const filteredItems = React.useMemo(() => {
-    let filteredRooms = [...roomsData];
+    let filteredRooms = [...roomsOverview];
 
     if (hasSearchFilter) {
       filteredRooms = filteredRooms.filter((room) =>
-        room.roomName.toLowerCase().includes(filterValue.toLowerCase())
+        room.roomId.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
     if (
@@ -117,7 +123,7 @@ export default function StaffRoomOverview() {
     }
 
     return filteredRooms;
-  }, [roomsData, filterValue, statusFilter]);
+  }, [roomsOverview, filterValue, statusFilter]);
   //rowsPerPage
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [page, setPage] = React.useState(1);
@@ -152,14 +158,24 @@ export default function StaffRoomOverview() {
 
   //sort
   const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
-    column: 'age',
+    column: 'roomId',
     direction: 'ascending',
   });
   const sortedItems = React.useMemo(() => {
-    return [...items].sort((a: Room, b: Room) => {
-      const first = a[sortDescriptor.column as keyof Room] as number;
-      const second = b[sortDescriptor.column as keyof Room] as number;
-      const cmp = first < second ? -1 : first > second ? 1 : 0;
+    return [...items].sort((a: RoomOverView, b: RoomOverView) => {
+      const first = a[sortDescriptor.column as keyof RoomOverView];
+      const second = b[sortDescriptor.column as keyof RoomOverView];
+
+      let cmp = 0;
+
+      // Determine if we're comparing numbers or strings
+      if (typeof first === 'number' && typeof second === 'number') {
+        cmp = first - second; // Numeric comparison
+      } else {
+        cmp = first.localeCompare(second); // String comparison
+      }
+
+      // Reverse comparison if sorting in descending order
       return sortDescriptor.direction === 'descending' ? -cmp : cmp;
     });
   }, [sortDescriptor, items]);
@@ -168,8 +184,10 @@ export default function StaffRoomOverview() {
   const [valueRoomType, setValueRoomType] = React.useState(new Set(['single']));
 
   const [isDetails, setIsDetails] = useState<boolean>(false);
-  const [selectedRoom, setSelectedRoom] = React.useState<Room | null>(null);
-  const openDetail = (room: Room) => {
+  const [selectedRoom, setSelectedRoom] = React.useState<RoomOverView | null>(
+    null
+  );
+  const openDetail = (room: RoomOverView) => {
     setIsDetails(true);
     setSelectedRoom(room);
   };
@@ -186,7 +204,7 @@ export default function StaffRoomOverview() {
   };
 
   const [isOpenEdit, setIsOpenEdit] = useState<boolean>(false);
-  const openEdit = (room: Room) => {
+  const openEdit = (room: RoomOverView) => {
     setIsOpenEdit(true);
     setSelectedRoom(room);
   };
@@ -198,18 +216,9 @@ export default function StaffRoomOverview() {
     (room: RoomOverView, columnKey: React.Key): React.ReactNode => {
       const cellValue = room[columnKey as keyof RoomOverView];
       switch (columnKey) {
-        case 'id':
+        case 'roomId':
           return <span>{String(cellValue)}</span>; // Display Room ID
-        case 'roomName':
-          return <div className="flex flex-col">{room.roomName}</div>;
-        case 'roomType':
-          return (
-            <div className="flex flex-col">
-              <p className="text-bold text-small capitalize">
-                {String(cellValue)}
-              </p>
-            </div>
-          );
+
         case 'roomStatus':
           return (
             <Chip
@@ -221,22 +230,18 @@ export default function StaffRoomOverview() {
               {String(cellValue)}
             </Chip>
           );
-        case 'createdAt':
-          return <span>{new Date(cellValue).toLocaleDateString()}</span>; // Format the created date
+
         case 'actions':
           return (
             <div className="relative flex justify-center gap-5">
               <Tooltip content="Chi tiết">
-                <span
-                  onClick={() => openDetail(room)}
-                  className="text-lg text-default-400 cursor-pointer active:opacity-50"
-                >
+                <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
                   <EyeIcon />
                 </span>
               </Tooltip>
               <Tooltip content="Chỉnh sửa">
                 <span
-                  onClick={() => openEdit(room)}
+                  // onClick={() => openEdit(room)}
                   className="text-lg text-default-400 cursor-pointer active:opacity-50"
                 >
                   <EditIcon />
@@ -442,7 +447,7 @@ export default function StaffRoomOverview() {
         statusFilter={statusFilter}
         visibleColumns={visibleColumns}
         statusOptions={statusOptions}
-        // columns={columnsRoom}
+        columns={headerColumns}
         onSearchChange={onSearchChange}
         onClear={() => onClear()}
         setStatusFilter={setStatusFilter}
@@ -466,14 +471,14 @@ export default function StaffRoomOverview() {
           </select>
         </label>
       </div>
-      <RoomTable
+      <StaffRoomTable
         sortedItems={sortedItems}
         headerColumns={headerColumns}
         sortDescriptor={sortDescriptor}
         selectedKeys={selectedKeys} // Handle selection logic
         setSelectedKeys={setSelectedKeys} // Selection handler
         onSortChange={setSortDescriptor}
-        onEdit={openEdit}
+        // onEdit={openEdit}
         // onDelete={openDelete}
       />
       <RoomPagination

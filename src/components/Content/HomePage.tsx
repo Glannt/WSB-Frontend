@@ -8,6 +8,9 @@ import HeroSection from './heroSection';
 import RoomDescription from '../HomepageContent/RoomDecription';
 import { useNavigate } from 'react-router';
 import path from '@/constants/path';
+import { getUser } from '@/service/customer.api';
+import { setCustomerToLS } from '@/utils/auth';
+import { useQuery } from '@tanstack/react-query';
 
 export interface CarouselPropsSlider {
   autoSlide?: boolean;
@@ -18,6 +21,18 @@ export const HomePage: React.FC<CarouselPropsSlider> = ({
   autoSlide = true,
   autoSlideInterval = 3000,
 }) => {
+  useEffect(() => {
+    getProfileUser();
+  }, []);
+  const getProfileUser = async () => {
+    const response = await getUser();
+    const customerData = response.data.data;
+    setCustomerToLS(customerData); // Save customer to local storage
+    console.log(customerData);
+
+    return customerData;
+  };
+
   const slides = [
     {
       url: 'https://stylishclub.pt/wp-content/uploads/2023/05/stylish-club-blog-post-the-future-of-worsapce-design-banner-1024x683.jpg',
