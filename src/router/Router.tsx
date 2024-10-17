@@ -48,29 +48,85 @@ import { TestTable } from '@/components/Test/TestTable';
 import { BookingRoomDetailMultiple } from '@/components/Content/BookingMultiple';
 import TopUpPage from '@/components/Test/TopUp';
 import { TestBookingRoomDetailMultiple } from '@/components/Content/TestMultipleBooking';
-import { CustomerProvider, useCustomer } from '@/context/customer.context';
+import {
+  CustomerContext,
+  CustomerProvider,
+  useCustomer,
+} from '@/context/customer.context';
 import { setCustomerToLS } from '@/utils/auth';
+import { getUser } from '@/service/customer.api';
+import { useQuery } from '@tanstack/react-query';
+import { Customer } from '@/types/customer.type';
 interface ProtectedRouteProps {
   requiredRoles?: Role[]; // Optional prop for role-based protection
 }
 
-function ProtectedRoute({ requiredRoles }: ProtectedRouteProps) {
+// function ProtectedRoute({ requiredRoles }: ProtectedRouteProps) {
+//   const { isAuthenticated, hasRole } = useContext(AppContext);
+//   const { customer, refetch } = useCustomer();
+//   // Check if user is authenticated
+//   if (!isAuthenticated) {
+//     return <Navigate to={path.login} />; // Redirect to login if not authenticated
+//   }
+
+//   // Check if user has the required roles
+//   if (requiredRoles && !hasRole(requiredRoles)) {
+//     // const { customer } = useCustomer();
+//      const getProfileUser = async () => {
+//     const response = await getUser();
+//     // console.log(response.data);
+
+//     return response.data.data;
+//   };
+//   const { data: dataCustomer, refetch } = useQuery<Customer>({
+//     queryKey: ['customer'],
+//     queryFn: getProfileUser,
+//     enabled: !customer
+//   });
+//   const customer = setCustomerToLS(customer);
+//     return <Navigate to={path.home} />; // Redirect to home if user doesn't have required role(s)
+//   }
+
+//   // Render nested routes if authenticated and authorized
+//   return <Outlet />;
+// }
+
+const ProtectedRoute = ({ requiredRoles }: ProtectedRouteProps) => {
   const { isAuthenticated, hasRole } = useContext(AppContext);
+  const { customer, refetch } = useCustomer(); // Get customer and refetch from context
 
-  // Check if user is authenticated
+  // Check if the user is authenticated
   if (!isAuthenticated) {
-    return <Navigate to={path.login} />; // Redirect to login if not authenticated
+    return <Navigate to={path.login} />; // Redirect to login page if not authenticated
   }
 
-  // Check if user has the required roles
+  // Fetch customer profile data if needed (i.e., when roles are required)
+  const getProfileUser = async () => {
+    const response = await getUser();
+    const customerData = response.data.data;
+    setCustomerToLS(customerData); // Save customer to local storage
+    return customerData;
+  };
+
+  const { data: fetchedCustomer, isLoading } = useQuery({
+    queryKey: ['customer'],
+    queryFn: getProfileUser,
+    enabled: !customer, // Fetch data only if customer is not already in context
+  });
+
+  // If still loading customer profile, show a loading state
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  // Check if the user has the required role(s)
   if (requiredRoles && !hasRole(requiredRoles)) {
-    const { customer } = useCustomer();
-    return <Navigate to={path.home} />; // Redirect to home if user doesn't have required role(s)
+    return <Navigate to={path.home} />; // Redirect to home if the user lacks roles
   }
 
-  // Render nested routes if authenticated and authorized
+  // If authenticated and has the required roles, render the nested route
   return <Outlet />;
-}
+};
 
 function RejectedRoute() {
   const { isAuthenticated } = useContext(AppContext);
