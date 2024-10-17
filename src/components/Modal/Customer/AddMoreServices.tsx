@@ -199,14 +199,14 @@ export const AddMoreServices: React.FC<AddMoreServicesProps> = ({
               <Button
                 color="primary"
                 type="submit"
-                className="hover:transtion hover:duration-500 shadow-md"
+                className="hover:transition hover:duration-500 shadow-md"
               >
                 Đặt thêm
               </Button>
               <Button
                 color="danger"
                 onPress={onClose}
-                className="hover:transtion hover:duration-500 shadow-md"
+                className="hover:transition hover:duration-500 shadow-md"
               >
                 Đóng
               </Button>

@@ -36,6 +36,7 @@ import { CustomerOrderBookingHistory, SlotBooking } from '@/types/bookings';
 import { getHistoryBooking, getService } from '@/service/customer.api';
 import { AddMoreServices } from '@/components/Modal/Customer/AddMoreServices';
 import { Services } from '@/types/service.type';
+import { ConfirmCancelBooking } from '@/components/Modal/Customer/ConfirmCancelBooking';
 
 const statusOptions = [
   { name: 'Đang sử dụng', uid: 'using' },
@@ -110,7 +111,8 @@ export default function BookingHistory() {
     column: 'checkinDate',
     direction: 'ascending',
   });
-  const [value, setValue] = React.useState(new Set([]));
+  const [isCancelBooking, setIsCancelBooking] = React.useState<boolean>(false);
+
   const [page, setPage] = React.useState(1);
   const [isOpenService, setIsOpenServices] = React.useState<boolean>(false);
   const [selectedBooking, setSelectedBooking] =
@@ -121,6 +123,15 @@ export default function BookingHistory() {
   };
   const closeModal = () => {
     setIsOpenServices(false);
+    refetch();
+  };
+
+  const openCancel = (booking: CustomerOrderBookingHistory) => {
+    setIsCancelBooking(true);
+    setSelectedBooking(booking);
+  };
+  const closeCancel = () => {
+    setIsCancelBooking(false);
     refetch();
   };
   const hasSearchFilter = Boolean(filterValue);
@@ -223,6 +234,7 @@ export default function BookingHistory() {
         setSelectedKeys={setSelectedKeys}
         onSortChange={setSortDescriptor}
         openModal={openModal}
+        openCancel={openCancel}
       />
       <BookingPagination
         page={page}
@@ -238,6 +250,14 @@ export default function BookingHistory() {
           isOpen={isOpenService}
           onClose={closeModal}
           booking={selectedBooking}
+        />
+      )}
+      {isCancelBooking && (
+        <ConfirmCancelBooking
+          showConfirmCancleBooking={isCancelBooking}
+          booking={selectedBooking}
+          onClose={closeCancel}
+          refetchBooking={refetch}
         />
       )}
     </div>

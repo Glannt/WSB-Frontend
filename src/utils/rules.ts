@@ -226,3 +226,9 @@ export const schemaTopUp = Yup.object().shape({
     .min(10000, 'Số tiền phải ít nhất là 10,000 VND'),
 });
 export type SchemaTopUp = Yup.InferType<typeof schemaTopUp>;
+
+export const schemaCancelBooking = Yup.object().shape({
+  bookingId: Yup.string(),
+});
+
+export type SchemaCancelBooking = Yup.InferType<typeof schemaCancelBooking>;

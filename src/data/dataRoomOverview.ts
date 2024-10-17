@@ -1,3 +1,5 @@
+import { Room } from '@/types/room.type';
+
 export const columnsRoomOverview = [
   { uid: 'id', name: 'Room ID', sortable: true },
   { uid: 'roomName', name: 'Room Name', sortable: true },
@@ -13,7 +15,7 @@ export const statusOptions = [
   { name: 'Maintenance', uid: 'maintenance' },
 ];
 
-export const roomsData: Room[] = [
+export const roomsData = [
   {
     id: 1,
     roomName: 'Room 101',

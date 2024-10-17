@@ -121,8 +121,8 @@ export const BookingRoomDetailMultiple = () => {
   };
   const {
     data: buildings,
-    // isLoading,
-    // refetch,
+    isLoading: isLoadingBuildings,
+    refetch: refetchBuildings,
   } = useQuery<buildingCustomer[]>({
     queryKey: ['buildings'],
     queryFn: getAllBuildingApi,
@@ -136,8 +136,8 @@ export const BookingRoomDetailMultiple = () => {
   };
   const {
     data: roomType,
-    // isLoading,
-    // refetch,
+    isLoading: isLoadingRoomType,
+    refetch: refetchRoomType,
   } = useQuery<ListRooms[]>({
     queryKey: ['roomType', roomDetail?.roomType],
     queryFn: getRoomTypeApi,
@@ -149,7 +149,11 @@ export const BookingRoomDetailMultiple = () => {
     return response.data.data;
   };
 
-  const { data: services = [] } = useQuery<Services[]>({
+  const {
+    data: services = [],
+    isLoading: isLoadingServices,
+    refetch: refetchServices,
+  } = useQuery<Services[]>({
     queryKey: ['services'],
     queryFn: getServiceApi,
   });
@@ -176,7 +180,11 @@ export const BookingRoomDetailMultiple = () => {
     return response.data.data.bookedSlots;
   };
 
-  const { data: slots } = useQuery<BookedSlots>({
+  const {
+    data: slots,
+    isLoading: isLoadingSlot,
+    refetch: refetchSlots,
+  } = useQuery<BookedSlots>({
     queryKey: ['slots', roomId, dateCheckIn, dateCheckOut],
     queryFn: getBookedSlotApi, // Pass the function reference, not the invocation
     enabled: !!roomId && !!dateCheckIn && !!dateCheckOut,
@@ -264,7 +272,10 @@ export const BookingRoomDetailMultiple = () => {
     mutationFn: (formData: FormData) => createBooking(formData),
   });
 
-  const handleCreateBooking = (data: SchemacreateMultiBooking) => {
+  const handleCreateBooking = (
+    data: SchemacreateMultiBooking,
+    refetch: () => void
+  ) => {
     const formData = new FormData();
     if (roomId === undefined) {
       return Promise.reject(new Error('Room ID is undefined'));
@@ -285,6 +296,11 @@ export const BookingRoomDetailMultiple = () => {
     CreateBookingMutation.mutate(formData, {
       onSuccess: () => {
         console.log('Booking created successfully');
+        refetch();
+        refetchBuildings();
+        refetchRoomType();
+        refetchServices();
+        refetchSlots();
       },
       onError: (error) => {
         console.error('Error creating booking:', error);
@@ -311,7 +327,7 @@ export const BookingRoomDetailMultiple = () => {
       setIsNotEnoughMoney(true);
       // return;
     } else {
-      handleCreateBooking(data);
+      handleCreateBooking(data, refetch);
     }
   };
   const handleFieldChange = (

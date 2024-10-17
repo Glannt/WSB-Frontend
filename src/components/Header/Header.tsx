@@ -54,6 +54,7 @@ export const Header = (props: any) => {
   }, []);
 
   const chevron = <ChevronDownIcon fill="currentColor" />;
+  console.log(roleName);
 
   return (
     <>
@@ -229,7 +230,7 @@ export const Header = (props: any) => {
               </Link>
             </NavbarItem>
             {/* Manager */}
-            {roleName === 'MANAGER' && (
+            {roleName.toUpperCase() === 'MANAGER' && (
               <NavbarItem
                 isActive={window.location.pathname === path.manager}
                 className="mx-10"

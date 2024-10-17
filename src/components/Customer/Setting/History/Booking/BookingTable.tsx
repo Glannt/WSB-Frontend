@@ -30,6 +30,7 @@ interface BookingTableProps {
   sortDescriptor: SortDescriptor;
   onSortChange: (descriptor: SortDescriptor) => void;
   openModal: (booking: CustomerOrderBookingHistory) => void;
+  openCancel: (booking: CustomerOrderBookingHistory) => void;
 }
 
 const statusColorMap: Record<string, ChipProps['color']> = {
@@ -56,6 +57,7 @@ const BookingTable: React.FC<BookingTableProps> = ({
   setSelectedKeys,
   onSortChange,
   openModal,
+  openCancel,
 }) => {
   const renderCell = React.useCallback(
     (booking: CustomerOrderBookingHistory, columnKey: React.Key) => {
@@ -80,7 +82,7 @@ const BookingTable: React.FC<BookingTableProps> = ({
             <div className="flex flex-col">
               <p className="text-bold text-sm capitalize">{booking.roomId}</p>
               <p className="text-bold text-sm capitalize text-default-400">
-                {booking.totalPrice} USD
+                {booking.totalPrice} VND
               </p>
             </div>
           ) : (
@@ -124,7 +126,7 @@ const BookingTable: React.FC<BookingTableProps> = ({
               <Dropdown>
                 <DropdownTrigger>
                   <Button
-                    className={`${booking.status === 'finished' ? 'btn-disabled' : ''}`}
+                    className={`${booking.status === 'FINISHED' || booking.status === 'CANCELLED' ? 'btn-disabled' : ''}`}
                     size="sm"
                     variant="light"
                   >
@@ -133,9 +135,11 @@ const BookingTable: React.FC<BookingTableProps> = ({
                 </DropdownTrigger>
                 <DropdownMenu>
                   <DropdownItem onClick={() => openModal(booking)}>
-                    Thêm dịch vụ
+                    Chỉnh sửa dịch vụ
                   </DropdownItem>
-                  <DropdownItem>Thay đổi dịch vụ</DropdownItem>
+                  <DropdownItem onClick={() => openCancel(booking)}>
+                    Hủy dịch vụ
+                  </DropdownItem>
                 </DropdownMenu>
               </Dropdown>
             </div>
@@ -158,6 +162,11 @@ const BookingTable: React.FC<BookingTableProps> = ({
       sortDescriptor={sortDescriptor}
       onSelectionChange={setSelectedKeys}
       onSortChange={onSortChange}
+      // disabledKeys={items
+      //   .filter(
+      //     (item) => item.status === 'CANCELLED' || item.status === 'FINISHED'
+      //   )
+      //   .map((item) => item.bookingId)}
       className="h-[330px] max-h-[330px] overflow-y-auto"
     >
       <TableHeader columns={headerColumns}>
