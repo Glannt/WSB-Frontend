@@ -60,6 +60,7 @@ const TransactionTable: React.FC<BookingTableProps> = ({
   // console.log(
   //   'aaaaaaaa ' + items.find((item) => item.transactionId === '1')?.type
   // );
+  console.log(items.at(0)?.time);
 
   const renderCell = React.useCallback(
     (user: Transaction, columnKey: React.Key) => {
@@ -70,6 +71,16 @@ const TransactionTable: React.FC<BookingTableProps> = ({
           return (
             <div className="relative flex items-center gap-2 h-10">
               {user.transactionId}
+            </div>
+          );
+        case 'date':
+          return (
+            <div className="relative flex items-center gap-2 h-10">
+              {new Date(user.time).toLocaleDateString('vi-VN', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+              })}
             </div>
           );
         case 'status':

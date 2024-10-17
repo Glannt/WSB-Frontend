@@ -16,7 +16,7 @@ export type Wallet = {
 
 export type Transaction = {
   transactionId: string; // Unique identifier for the transaction
-  date: string; // Date of the transaction (ISO 8601 format)
+  time: string; // Date of the transaction (ISO 8601 format)
   amount: number; // Amount of money in the transaction
   status: string; // Status of the transaction (e.g., "completed")
   type: string; // Description of the transaction
