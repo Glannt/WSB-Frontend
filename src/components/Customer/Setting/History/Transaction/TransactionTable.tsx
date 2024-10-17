@@ -23,7 +23,7 @@ import { Column } from '@/types/room.type';
 import { Transaction } from '@/types/customer.type';
 
 interface BookingTableProps {
-  headerColumns: Column[];
+  headerColumns: any[];
   items: Transaction[];
   sortedItems: Transaction[];
   selectedKeys: Selection;
@@ -57,30 +57,21 @@ const TransactionTable: React.FC<BookingTableProps> = ({
   onSortChange,
   // openModal,
 }) => {
+  // console.log(
+  //   'aaaaaaaa ' + items.find((item) => item.transactionId === '1')?.type
+  // );
+
   const renderCell = React.useCallback(
     (user: Transaction, columnKey: React.Key) => {
       const cellValue = user[columnKey as keyof Transaction];
 
       switch (columnKey) {
-        //   case 'name':
-        //     return (
-        //       <User
-        //         avatarProps={{ radius: 'lg', src: user.avatar }}
-        //         description={user.email}
-        //         name={cellValue}
-        //       >
-        //         {user.email}
-        //       </User>
-        //     );
-        //   case 'role':
-        //     return (
-        //       <div className="flex flex-col">
-        //         <p className="text-bold text-small capitalize">{cellValue}</p>
-        //         <p className="text-bold text-tiny capitalize text-default-400">
-        //           {user.team}
-        //         </p>
-        //       </div>
-        //     );
+        case 'id':
+          return (
+            <div className="relative flex items-center gap-2 h-10">
+              {user.transactionId}
+            </div>
+          );
         case 'status':
           return (
             <Chip
@@ -94,27 +85,11 @@ const TransactionTable: React.FC<BookingTableProps> = ({
               {user.status === 'pending' && 'Đang xử lý'}
             </Chip>
           );
-        case 'type':
+
+        case 'actions':
           return (
             <div className="relative flex justify-center items-center gap-2 h-10">
               {user.type}
-              {/* <Dropdown>
-                    <DropdownTrigger>
-                      <Button
-                        className={`${user.status === 'finished' ? 'btn-disabled' : ''}`}
-                        size="sm"
-                        variant="light"
-                      >
-                        <PlusIcon className="font-bold" />
-                        <VerticalDotsIcon className="text-default-300" />
-                      </Button>
-                    </DropdownTrigger>
-                    <DropdownMenu>
-                      <DropdownItem>Thêm thiết bị</DropdownItem>
-                      <DropdownItem>Thêm đồ ăn, uống</DropdownItem>
-                      <DropdownItem>Delete</DropdownItem>
-                    </DropdownMenu>
-                  </Dropdown> */}
             </div>
           );
         default:

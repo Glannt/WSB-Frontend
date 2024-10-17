@@ -80,7 +80,7 @@ const columns = [
   //   { name: 'TEAM', uid: 'team' },
   //   { name: 'EMAIL', uid: 'email' },
   { name: 'Tình Trạng', uid: 'status' },
-  { name: 'Nội dung', uid: 'actions' },
+  { name: 'Loại', uid: 'actions' },
 ];
 
 const statusColorMap: Record<string, ChipProps['color']> = {
@@ -102,6 +102,107 @@ export default function TransactionHistory() {
     queryKey: ['transaction'],
     queryFn: getHistoryTransactionApi,
   });
+
+  // const fakedata = [
+  //   {
+  //     transactionId: 'abababa',
+  //     date: '2021-10-10',
+  //     amount: 100000,
+  //     status: 'completed',
+  //     type: 'Nạp tiền',
+  //   },
+  //   {
+  //     transactionId: 'abababa',
+  //     date: '2021-10-10',
+  //     amount: 100000,
+  //     status: 'completed',
+  //     type: 'Nạp tiền',
+  //   },
+  //   {
+  //     transactionId: 'abababa',
+  //     date: '2021-10-10',
+  //     amount: 100000,
+  //     status: 'completed',
+  //     type: 'Nạp tiền',
+  //   },
+  //   {
+  //     transactionId: 'abababa',
+  //     date: '2021-10-10',
+  //     amount: 100000,
+  //     status: 'completed',
+  //     type: 'Nạp tiền',
+  //   },
+  //   {
+  //     transactionId: 'abababa',
+  //     date: '2021-10-10',
+  //     amount: 100000,
+  //     status: 'completed',
+  //     type: 'Nạp tiền',
+  //   },
+  //   {
+  //     transactionId: 'abababa',
+  //     date: '2021-10-10',
+  //     amount: 100000,
+  //     status: 'completed',
+  //     type: 'Nạp tiền',
+  //   },
+  //   {
+  //     transactionId: 'abababa',
+  //     date: '2021-10-10',
+  //     amount: 100000,
+  //     status: 'completed',
+  //     type: 'Nạp tiền',
+  //   },
+  //   {
+  //     transactionId: 'abababa',
+  //     date: '2021-10-10',
+  //     amount: 100000,
+  //     status: 'completed',
+  //     type: 'Nạp tiền',
+  //   },
+  //   {
+  //     transactionId: 'abababa',
+  //     date: '2021-10-10',
+  //     amount: 100000,
+  //     status: 'completed',
+  //     type: 'Nạp tiền',
+  //   },
+  //   {
+  //     transactionId: 'abababa',
+  //     date: '2021-10-10',
+  //     amount: 100000,
+  //     status: 'completed',
+  //     type: 'Nạp tiền',
+  //   },
+  //   {
+  //     transactionId: 'abababa',
+  //     date: '2021-10-10',
+  //     amount: 100000,
+  //     status: 'completed',
+  //     type: 'Nạp tiền',
+  //   },
+  //   {
+  //     transactionId: 'abababa',
+  //     date: '2021-10-10',
+  //     amount: 100000,
+  //     status: 'completed',
+  //     type: 'Nạp tiền',
+  //   },
+  //   {
+  //     transactionId: 'abababa',
+  //     date: '2021-10-10',
+  //     amount: 200000,
+  //     status: 'completed',
+  //     type: 'Nạp tiền',
+  //   },
+  //   {
+  //     transactionId: 'abababa',
+  //     date: '2021-10-10',
+  //     amount: 100000,
+  //     status: 'completed',
+  //     type: 'Nạp tiền',
+  //   },
+  // ];
   // console.log(transaction);
 
   const [filterValue, setFilterValue] = React.useState('');
@@ -256,23 +357,6 @@ export default function TransactionHistory() {
         setVisibleColumns={setVisibleColumns}
         onRowsPerPageChange={onRowsPerPageChange}
       />
-      <div className="flex justify-between items-center mt-5 mb-5">
-        <span className="text-default-400 text-small">
-          Tổng {transaction?.length} phòng
-        </span>
-        <label className="flex items-center text-default-400 text-small">
-          Số hàng
-          <select
-            className="bg-transparent outline-none text-default-400 text-small rounded-md ml-3"
-            onChange={onRowsPerPageChange}
-            value={rowsPerPage}
-          >
-            <option value="5">5</option>
-            <option value="10">10</option>
-            <option value="15">15</option>
-          </select>
-        </label>
-      </div>
       <TransactionTable
         headerColumns={headerColumns}
         items={items}
