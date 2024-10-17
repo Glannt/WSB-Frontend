@@ -310,7 +310,7 @@ export const router = createBrowserRouter([
         // <BookingRoomDetail />,
       },
       {
-        path: 'room-booking/:roomId',
+        path: 'room-booking/:roomBuilding/:roomId',
         element: (
           <MainLayout>
             <BookingRoomDetailMultiple />

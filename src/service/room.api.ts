@@ -8,12 +8,14 @@ export const getBookedSlot = (roomId: string, checkInDate: string) =>
   });
 
 export const getBookeddSlot = (
+  buildingId: string,
   roomId: string,
   checkinDate: string,
   checkoutDate: string
 ) =>
   http.get(`/api/check-booked-slot-each-date`, {
     params: {
+      buildingId: buildingId,
       roomId: roomId,
       checkinDate: checkinDate,
       checkoutDate: checkoutDate,

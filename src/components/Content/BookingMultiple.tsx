@@ -81,7 +81,10 @@ export const BookingRoomDetailMultiple = () => {
   const [showPolicyModal, setShowPolicyModal] = useState<boolean>(false);
   const [policyAgreed, setPolicyAgreed] = useState<boolean>(false);
   const [selectedBase, setSelectedBase] = useState<string>('');
-  const { roomId } = useParams<{ roomId: string }>();
+  const { roomId, roomBuilding } = useParams<{
+    roomId: string;
+    roomBuilding: string;
+  }>();
   const [dateCheckIn, setDateCheckIn] = useState<string>('');
   const [dateCheckOut, setDateCheckOut] = useState<string>('');
   const [buildingsMap, setBuildingsMap] = useState<Record<string, string>>({});
@@ -102,7 +105,15 @@ export const BookingRoomDetailMultiple = () => {
       setIsConfirmBooking(!isConfirmBooking);
     }
   };
-
+  const buildingOptions = [
+    { key: 'BD001', label: 'FPT WorkSpace' },
+    { key: 'BD002', label: 'FPT NVH' },
+  ];
+  const selectBuilding = buildingOptions.filter(
+    (building) => building.label === roomBuilding
+  );
+  const selectedBuildingKey =
+    selectBuilding.length > 0 ? selectBuilding[0].key : null;
   const getRoomDetailApi = async () => {
     if (roomId === undefined) {
       return null;
@@ -174,8 +185,13 @@ export const BookingRoomDetailMultiple = () => {
     if (roomId === undefined) {
       return null;
     }
-    const response = await getBookeddSlot(roomId, dateCheckIn, dateCheckOut);
-    // console.log(response.data.data);
+    const response = await getBookeddSlot(
+      getValues().buildingId,
+      roomId,
+      dateCheckIn,
+      dateCheckOut
+    );
+    console.log(response.data.data);
 
     return response.data.data.bookedSlots;
   };
@@ -185,7 +201,7 @@ export const BookingRoomDetailMultiple = () => {
     isLoading: isLoadingSlot,
     refetch: refetchSlots,
   } = useQuery<BookedSlots>({
-    queryKey: ['slots', roomId, dateCheckIn, dateCheckOut],
+    queryKey: ['slots', selectedBase, roomId, dateCheckIn, dateCheckOut],
     queryFn: getBookedSlotApi, // Pass the function reference, not the invocation
     enabled: !!roomId && !!dateCheckIn && !!dateCheckOut,
   });
@@ -225,7 +241,7 @@ export const BookingRoomDetailMultiple = () => {
   } = useForm<SchemacreateMultiBooking>({
     resolver: yupResolver(createMultiBookingSchema),
     defaultValues: {
-      buildingId: '',
+      buildingId: selectedBuildingKey || '',
       roomId: roomId,
       checkinDate: '',
       checkoutDate: '',
@@ -281,6 +297,7 @@ export const BookingRoomDetailMultiple = () => {
       return Promise.reject(new Error('Room ID is undefined'));
     }
     formData.append('buildingId', data.buildingId);
+
     formData.append('roomId', roomId);
     formData.append('checkinDate', data.checkinDate);
     formData.append('checkoutDate', data.checkoutDate);
@@ -335,8 +352,11 @@ export const BookingRoomDetailMultiple = () => {
     value: any
   ) => {
     setValue(field, value);
-    console.log(getValues(field));
+    console.log(getValues());
   };
+  console.log(roomBuilding);
+
+  console.log(selectBuilding);
   const handleQuantityChange = (id: string, newQuantity: number) => {
     setQuantities((prevQuantities) => ({
       ...prevQuantities,
@@ -420,13 +440,14 @@ export const BookingRoomDetailMultiple = () => {
               <div className="mb-6">
                 <div className="relative">
                   <div className="w-full flex flex-row flex-wrap gap-4">
-                    <Select
+                    {/* <Select
                       {...register('buildingId')}
                       value={selectedBase}
                       onSelectionChange={(keys) => {
                         const newBuildingId = Array.from(keys).join('');
                         handleFieldChange('buildingId', newBuildingId);
                         setIsSelectedBuilding(true);
+                        setSelectedBase(newBuildingId);
                       }}
                       key="default"
                       color="primary"
@@ -453,7 +474,19 @@ export const BookingRoomDetailMultiple = () => {
                           No buildings available
                         </SelectItem>
                       )}
-                    </Select>
+                    </Select> */}
+                    <Input
+                      {...register('buildingId')}
+                      label="Cơ sở"
+                      size="md"
+                      isReadOnly
+                      value={roomBuilding}
+                      color="primary"
+                      onChange={() =>
+                        handleFieldChange('buildingId', selectedBuildingKey)
+                      }
+                      className="text-2xl"
+                    />
                   </div>
                 </div>
               </div>
@@ -461,6 +494,7 @@ export const BookingRoomDetailMultiple = () => {
                 <DateRangePicker
                   label="Ngày đặt"
                   color="primary"
+                  // isDisabled={getValues().buildingId ? false : true}
                   minValue={parseDate(format(selectedDate, 'yyyy-MM-dd'))}
                   onChange={(range) => {
                     handleChangeDatePicker(range);
