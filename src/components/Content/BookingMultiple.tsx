@@ -613,15 +613,13 @@ export const BookingRoomDetailMultiple = () => {
               <button
                 type="submit"
                 className={`w-full bg-blackA10 text-white px-6 py-3 rounded-md text-lg font-semibold hover:bg-blackA12 hover:scale-105 transition duration-300 ${
-                  (!policyAgreed ||
-                    !isSelectedBuilding ||
-                    !isSelectedDate ||
-                    !selectedTimeSlot) &&
+                  (!policyAgreed || !isSelectedDate || !selectedTimeSlot) &&
                   'opacity-50 cursor-not-allowed text-center'
                 }`}
                 disabled={
                   !policyAgreed || !z || !isSelectedDate || !selectedTimeSlot
                 }
+
                 onClick={toggleConfirmBooking}
               >
                 <FaCheck className="inline-block mr-2 mb-1" /> Xác nhận

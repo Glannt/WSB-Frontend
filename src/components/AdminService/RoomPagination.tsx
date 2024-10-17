@@ -20,6 +20,8 @@ const RoomPagination: React.FC<RoomPaginationProps> = ({
       <Pagination
         isCompact
         showControls
+        showShadow
+        initialPage={1}
         page={page}
         total={pages}
         onChange={onChange}
