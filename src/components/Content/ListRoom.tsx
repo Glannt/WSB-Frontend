@@ -61,6 +61,8 @@ export const ListRoom = () => {
   const handlePriceRangeChange = (value: number | number[]) => {
     // Ensure that `priceRange` is always an array
     const updatedRange = Array.isArray(value) ? value : [value];
+    console.log(updatedRange);
+
     setPriceRange(updatedRange);
   };
 
@@ -101,7 +103,9 @@ export const ListRoom = () => {
     const matchesRoomType =
       selectedRoomTypes.length === 0 ||
       selectedRoomTypes.includes(room.roomType);
-    return matchesLocation && matchesRoomType;
+    const isPriceMatch =
+      room.price >= priceRange[0] && room.price <= priceRange[1];
+    return matchesLocation && matchesRoomType && isPriceMatch;
   });
 
   return (

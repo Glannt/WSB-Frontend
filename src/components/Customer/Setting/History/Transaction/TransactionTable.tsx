@@ -24,7 +24,7 @@ import { Transaction } from '@/types/customer.type';
 
 interface BookingTableProps {
   headerColumns: Column[];
-  items: any[];
+  items: Transaction[];
   sortedItems: Transaction[];
   selectedKeys: Selection;
   setSelectedKeys: (keys: Selection) => void;
@@ -153,7 +153,7 @@ const TransactionTable: React.FC<BookingTableProps> = ({
         items={sortedItems}
       >
         {items.map((item) => (
-          <TableRow key={item.bookingId}>
+          <TableRow key={item.transactionId}>
             {(columnKey) => (
               <TableCell key={columnKey}>
                 {renderCell(item, columnKey)}
