@@ -22,6 +22,12 @@ export const statusOptionsBooking = [
   { name: 'Sắp tới', uid: 'upcoming' },
 ];
 
+export const statusOptionsTransaction = [
+  { name: 'Đang xử lý', uid: 'using' },
+  { name: 'Thành công', uid: 'finished' },
+  { name: 'Thất bại', uid: 'upcoming' },
+];
+
 const users = [
   {
     id: 1,

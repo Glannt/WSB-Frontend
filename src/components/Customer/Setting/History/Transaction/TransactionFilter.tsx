@@ -10,7 +10,7 @@ import {
 import { Column, Room, StatusOption } from '@/types/room.type';
 import { ChevronDownIcon } from '@/components/Icons/ChevronDownIcon';
 import { capitalize } from '@/components/Customer/utils';
-import { statusOptionsBooking } from '@/data/data';
+import { statusOptionsBooking, statusOptionsTransaction } from '@/data/data';
 import { Transaction } from '@/types/customer.type';
 
 interface BookingFiltersProps {
@@ -125,30 +125,6 @@ const TransactionFilter: React.FC<BookingFiltersProps> = ({
                 endContent={<ChevronDownIcon className="text-small" />}
                 variant="flat"
               >
-                Trạng thái
-              </Button>
-            </DropdownTrigger>
-            <DropdownMenu
-              disallowEmptySelection
-              aria-label="Table Columns"
-              closeOnSelect={false}
-              selectedKeys={statusFilter}
-              selectionMode="multiple"
-              onSelectionChange={setStatusFilter}
-            >
-              {statusOptionsBooking.map((status) => (
-                <DropdownItem key={status.uid} className="capitalize">
-                  {capitalize(status.name)}
-                </DropdownItem>
-              ))}
-            </DropdownMenu>
-          </Dropdown>
-          <Dropdown>
-            <DropdownTrigger className="hidden sm:flex">
-              <Button
-                endContent={<ChevronDownIcon className="text-small" />}
-                variant="flat"
-              >
                 Cột hiển thị
               </Button>
             </DropdownTrigger>
@@ -171,10 +147,10 @@ const TransactionFilter: React.FC<BookingFiltersProps> = ({
       </div>
       <div className="flex justify-between items-center">
         <span className="text-default-400 text-small">
-          Tổng {transaction.length} đơn
+          Tổng {transaction.length} giao dịch
         </span>
         <label className="flex items-center text-default-400 text-small">
-          Rows per page:
+          Số hàng:
           <select
             className="bg-transparent outline-none text-default-400 text-small rounded-md ml-3"
             onChange={onRowsPerPageChange}
