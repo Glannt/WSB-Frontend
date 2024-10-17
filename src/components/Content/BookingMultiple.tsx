@@ -620,10 +620,7 @@ export const BookingRoomDetailMultiple = () => {
                   'opacity-50 cursor-not-allowed text-center'
                 }`}
                 disabled={
-                  !policyAgreed ||
-                  !isSelectedBuilding ||
-                  !isSelectedDate ||
-                  !selectedTimeSlot
+                  !policyAgreed || !z || !isSelectedDate || !selectedTimeSlot
                 }
                 onClick={toggleConfirmBooking}
               >

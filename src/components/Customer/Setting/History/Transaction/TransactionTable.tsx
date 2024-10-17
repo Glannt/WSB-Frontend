@@ -34,7 +34,7 @@ interface BookingTableProps {
 }
 
 const statusColorMap: Record<string, ChipProps['color']> = {
-  using: 'success',
+  completed: 'success',
   FINISHED: 'primary',
   UPCOMING: 'warning',
 };
