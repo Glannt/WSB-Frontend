@@ -616,7 +616,10 @@ export const BookingRoomDetailMultiple = () => {
                   (!policyAgreed || !isSelectedDate || !selectedTimeSlot) &&
                   'opacity-50 cursor-not-allowed text-center'
                 }`}
-                disabled={!policyAgreed || !isSelectedDate || !selectedTimeSlot}
+                disabled={
+                  !policyAgreed || !z || !isSelectedDate || !selectedTimeSlot
+                }
+
                 onClick={toggleConfirmBooking}
               >
                 <FaCheck className="inline-block mr-2 mb-1" /> Xác nhận

@@ -12,6 +12,7 @@ import { useCustomer } from '@/context/customer.context';
 import { getProfileFromLS } from '@/utils/auth';
 import path from '@/constants/path';
 import { motion } from 'framer-motion';
+import { log } from 'console';
 interface FormData {
   fullName: string;
   email: string;
@@ -63,6 +64,7 @@ const ProfileEditor: React.FC = () => {
     },
   });
   const profile = getProfileFromLS();
+  console.log(profile);
 
   const updateProfile = useMutation({
     mutationFn: async (data: Omit<Customer, 'wallet' | 'roleName'>) =>
