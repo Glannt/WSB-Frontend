@@ -215,7 +215,7 @@ export default function TransactionHistory() {
   const [statusFilter, setStatusFilter] = React.useState<Selection>('all');
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
-    column: 'age',
+    column: 'id',
     direction: 'ascending',
   });
   const [value, setValue] = React.useState(new Set([]));
@@ -247,7 +247,11 @@ export default function TransactionHistory() {
         Array.from(statusFilter).includes(user.status)
       );
     }
-
+    filteredUsers = filteredUsers.sort((a, b) => {
+      const firstCreationTime = new Date(a.time).getTime();
+      const secondCreationTime = new Date(b.time).getTime();
+      return secondCreationTime - firstCreationTime; // Mới nhất trước
+    });
     return filteredUsers;
   }, [transaction, filterValue, statusFilter]);
 
@@ -262,10 +266,22 @@ export default function TransactionHistory() {
 
   const sortedItems = React.useMemo(() => {
     return [...items].sort((a: Transaction, b: Transaction) => {
-      const first = a[sortDescriptor.column as keyof Transaction] as number;
-      const second = b[sortDescriptor.column as keyof Transaction] as number;
-      const cmp = first < second ? -1 : first > second ? 1 : 0;
-      console.log(1, first, second, cmp);
+      const first = a[sortDescriptor.column as keyof Transaction];
+
+      const second = b[sortDescriptor.column as keyof Transaction];
+
+      let cmp = 0;
+
+      // Determine if we're comparing numbers or strings
+
+      if (typeof first === 'number' && typeof second === 'number') {
+        cmp = first - second; // Numeric comparison
+      } else if (typeof first === 'string' && typeof second === 'string') {
+        cmp = first.localeCompare(second); // String comparison
+      }
+
+      // Reverse comparison if sorting in descending order
+      console.log(sortDescriptor.direction === 'descending' ? -1 : 1);
 
       return sortDescriptor.direction === 'descending' ? -cmp : cmp;
     });
