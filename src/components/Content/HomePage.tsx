@@ -28,8 +28,6 @@ export const HomePage: React.FC<CarouselPropsSlider> = ({
     const response = await getUser();
     const customerData = response.data.data;
     setCustomerToLS(customerData); // Save customer to local storage
-    console.log(customerData);
-
     return customerData;
   };
 

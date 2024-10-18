@@ -114,7 +114,7 @@ export const ListRoom = () => {
         {/* Left Panel */}
         <div className="flex">
           <div className="w-1/5 mb-auto mt-10 ml-40 mr-20 ">
-            <div className="flex justify-start items-stretch lg:w-full p-6 bg-gradient-to-r from-white to-blue-200 bg-opacity-60 flex-col gap-y-20 border border-gray-300 rounded-xl pb-[400px]">
+            <div className="flex justify-start items-stretch lg:w-full p-6 bg-gradient-to-r from-white to-blue-50 shadow-lg shadow-black-100 bg-opacity-60 flex-col gap-y-20 border border-gray-300 rounded-xl pb-[450px]">
               <Select
                 label="Địa điểm"
                 placeholder="Chọn địa điểm"
@@ -167,12 +167,18 @@ export const ListRoom = () => {
             </div>
           </div>
           <Divider orientation="vertical" className="py-10 h-[800px]" />
-          <div className="w-3/5 h-[800px] overflow-y-auto scrollbar-hide ml-16">
+          <div className="w-4/5 h-[800px] overflow-y-auto scrollbar-hide ml-16">
             {/* Right Panel */}
-            <div className="lg:w-full p-6">
-              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2">
+            <div className="lg:w-full p-4">
+              <div className="grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                 {filteredRooms.map((room) => (
-                  <ListingCard key={room.roomId} images={images} room={room} />
+                  <div className="rounded-xl bg-white shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out transform hover:scale-105">
+                    <ListingCard
+                      key={room.roomId}
+                      images={images}
+                      room={room}
+                    />
+                  </div>
                 ))}
               </div>
             </div>

@@ -12,10 +12,9 @@ import { Column, Room, StatusOption } from '@/types/room.type';
 import { ChevronDownIcon } from '../Icons/ChevronDownIcon';
 import { SearchIcon } from '../Icons/SearchIcon';
 import { PlusIcon } from '../Icons/PlusIcon';
-import { Staff } from '@/types/staff.type';
 
-interface StaffFiltersProps {
-  staffs?: Staff[];
+interface RoomFiltersProps {
+  rooms?: Room[];
   filterValue: string;
   statusFilter: Selection;
   visibleColumns: Selection;
@@ -23,13 +22,12 @@ interface StaffFiltersProps {
   columns: Column[];
   onSearchChange: (value: string) => void;
   onClear: () => void;
-  onAddStaff: () => void;
   setStatusFilter: (keys: Selection) => void;
   setVisibleColumns: (keys: Selection) => void;
 }
 
-const StaffFilter: React.FC<StaffFiltersProps> = ({
-  staffs,
+const StaffBookingFilter: React.FC<RoomFiltersProps> = ({
+  rooms,
   filterValue,
   statusFilter,
   visibleColumns,
@@ -37,7 +35,6 @@ const StaffFilter: React.FC<StaffFiltersProps> = ({
   columns,
   onSearchChange,
   onClear,
-  onAddStaff,
   setStatusFilter,
   setVisibleColumns,
 }) => {
@@ -83,12 +80,9 @@ const StaffFilter: React.FC<StaffFiltersProps> = ({
             ))}
           </DropdownMenu>
         </Dropdown>
-        <Button color="primary" endContent={<PlusIcon />} onClick={onAddStaff}>
-          Thêm nhân viên
-        </Button>
       </div>
     </div>
   );
 };
 
-export default StaffFilter;
+export default StaffBookingFilter;

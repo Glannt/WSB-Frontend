@@ -51,8 +51,6 @@ class Http {
     this.instance.interceptors.response.use(
       (response) => {
         const { url } = response.config;
-        console.log(url);
-
         if (url === path.authLogin || url === path.authRegister) {
           // this.accessToken = (response.data as AuthResponse).data.access_token;
           this.accessToken = response.data.access_token;
@@ -68,7 +66,6 @@ class Http {
           url === '/api/customer/create-booking'
         ) {
           setCustomerToLS(response.data.data);
-          console.log('setCustomer');
         }
         toast.success(response.data.message, {
           autoClose: 3000,

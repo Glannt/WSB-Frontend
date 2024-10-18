@@ -57,6 +57,7 @@ import { setCustomerToLS } from '@/utils/auth';
 import { getUser } from '@/service/customer.api';
 import { useQuery } from '@tanstack/react-query';
 import { Customer } from '@/types/customer.type';
+import ReturnPage from '@/components/Test/ReturnPage';
 interface ProtectedRouteProps {
   requiredRoles?: Role[]; // Optional prop for role-based protection
 }
@@ -255,34 +256,34 @@ export const router = createBrowserRouter([
       },
     ],
   },
-  // {
-  //   path: path.staff,
-  //   element: <ProtectedRoute requiredRoles={['STAFF']} />,
-  //   children: [
-  //     {
-  //       path: path.staff,
-  //       element: <DashboardStaff />,
-  //       children: [
-  //         {
-  //           path: path.staffRooms,
-  //           element: <StaffRoomOverview />,
-  //         },
-  //         {
-  //           path: path.staffBooking,
-  //           element: <StaffBookings />,
-  //         },
-  //         {
-  //           path: '',
-  //           element: <StaffWelComeback />,
-  //         },
-  //         {
-  //           path: path.staffProfile,
-  //           element: <StaffProfile />,
-  //         },
-  //       ],
-  //     },
-  //   ],
-  // },
+  {
+    path: path.staff,
+    element: <ProtectedRoute requiredRoles={['STAFF']} />,
+    children: [
+      {
+        path: path.staff,
+        element: <DashboardStaff />,
+        children: [
+          {
+            path: path.staffRooms,
+            element: <StaffRoomOverview />,
+          },
+          {
+            path: path.staffBooking,
+            element: <StaffBookings />,
+          },
+          {
+            path: '',
+            element: <StaffWelComeback />,
+          },
+          {
+            path: path.staffProfile,
+            element: <StaffProfile />,
+          },
+        ],
+      },
+    ],
+  },
   {
     path: path.aboutUs,
     element: (
@@ -357,6 +358,10 @@ export const router = createBrowserRouter([
     ),
     children: [
       {
+        path: 'vnpay-return',
+        element: <ReturnPage />,
+      },
+      {
         path: 'room-detail/:roomId',
         element: (
           <MainLayout>
@@ -424,28 +429,28 @@ export const router = createBrowserRouter([
         ],
       },
       //ko phân quyền staff tạm thời
-      {
-        path: path.staff,
-        element: <DashboardStaff />,
-        children: [
-          {
-            path: path.staffRooms,
-            element: <StaffRoomOverview />,
-          },
-          {
-            path: path.staffBooking,
-            element: <StaffBookings />,
-          },
-          {
-            path: '',
-            element: <StaffWelComeback />,
-          },
-          {
-            path: path.staffProfile,
-            element: <StaffProfile />,
-          },
-        ],
-      },
+      // {
+      //   path: path.staff,
+      //   element: <DashboardStaff />,
+      //   children: [
+      //     {
+      //       path: path.staffRooms,
+      //       element: <StaffRoomOverview />,
+      //     },
+      //     {
+      //       path: path.staffBooking,
+      //       element: <StaffBookings />,
+      //     },
+      //     {
+      //       path: '',
+      //       element: <StaffWelComeback />,
+      //     },
+      //     {
+      //       path: path.staffProfile,
+      //       element: <StaffProfile />,
+      //     },
+      //   ],
+      // },
     ],
   },
 

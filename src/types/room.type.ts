@@ -60,11 +60,13 @@ export const columnsRoom = [
 
 export interface RoomOverView {
   roomId: string;
+  roomName: string;
   roomStatus: string;
 }
 
 export const columnsRoomOverview = [
   { uid: 'roomId', name: 'Mã phòng', sortable: true },
+  { uid: 'roomName', name: 'Tên phòng', sortable: true },
   { uid: 'roomStatus', name: 'Trạng thái phòng', sortable: true },
   { uid: 'actions', name: 'Hành động', sortable: false },
 ];

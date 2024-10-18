@@ -41,20 +41,76 @@ const TopUpPage = () => {
     },
   });
   const topUpMutation = useMutation({
-    mutationFn: (data: SchemaTopUp) =>
-      createOrderTopUp(data.amount, profile?.userId, 'http://localhost:3000/'),
+    mutationFn: (formdata: FormData) => createOrderTopUp(formdata),
   });
 
-  const handleTopUpMuation = async (data: SchemaTopUp) => {
-    try {
-      await topUpMutation.mutate(data, {
-        onSuccess: (response) => {
-          window.location.href = response.data;
+  // const handleTopUpMuation = async (data: SchemaTopUp) => {
+  //   const formdata = new FormData();
+  //   if (data.amount === undefined)
 
+  //   formdata.append('amount', data.amount);
+  //   formdata.append('userId', profile.userId);
+  //   formdata.append('urlReturn', 'localhost:3000/');
+  //   try {
+  //     await topUpMutation.mutate(data, {
+  //       onSuccess: (response) => {
+  //         window.location.href = response.data;
+
+  //         console.log('Top-up successfully');
+  //       },
+  //       onError: (error) => {
+  //         console.log('Error:', error);
+  //       },
+  //     });
+  //   } catch (error) {
+  //     setError('amount', {
+  //       type: 'manual',
+  //       message: 'Something went wrong. Please try again.',
+  //     });
+  //   }
+  // };
+
+  // const onSubmit = (data: SchemaTopUp) => {
+  //   handleTopUpMuation(data);
+  // };
+  const [isProcessing, setIsProcessing] = useState(false);
+  const handleTopUpMutation = async (data: SchemaTopUp) => {
+    if (isProcessing) return; // Prevent duplicate submission
+    setIsProcessing(true);
+    const formData = new FormData();
+
+    // Ensure amount is valid before appending
+    if (data.amount !== undefined && data.amount !== null) {
+      formData.append('amount', String(data.amount)); // Convert amount to string if necessary
+    } else {
+      setError('amount', {
+        type: 'manual',
+        message: 'Amount is required.',
+      });
+      return; // Exit the function if amount is invalid
+    }
+    console.log(profile.userId);
+
+    formData.append('userId', profile.userId); // Append userId from profile
+    // formData.append(
+    //   'urlReturn',
+    //   'http://localhost:8080/vnpay/return/orderReturn'
+    // ); // Append return URL
+
+    try {
+      // Use mutation and handle the result with onSuccess/onError callbacks
+      setLoading(true);
+      await topUpMutation.mutate(formData, {
+        onSuccess: (response) => {
+          window.location.href = response.data; // Redirect on success
           console.log('Top-up successfully');
         },
         onError: (error) => {
-          console.log('Error:', error);
+          console.log('Error:', error); // Log error if mutation fails
+          setError('amount', {
+            type: 'manual',
+            message: 'Failed to process the top-up. Please try again.',
+          });
         },
       });
     } catch (error) {
@@ -62,20 +118,21 @@ const TopUpPage = () => {
         type: 'manual',
         message: 'Something went wrong. Please try again.',
       });
+    } finally {
+      setLoading(false); // Reset loading state
     }
   };
 
+  // Submit handler for form
   const onSubmit = (data: SchemaTopUp) => {
-    handleTopUpMuation(data);
+    handleTopUpMutation(data);
   };
-
   const handleDenominationClick = (value: string) => {
     // setMoney(numericAmount);
     // setValue('amount', numericAmount);
     setMoney(value);
     const numericAmount = Number(value.replace(/\./g, ''));
     setValue('amount', numericAmount);
-    console.log('Numeric amount:', numericAmount);
 
     setLoading(true);
     setTimeout(() => setLoading(false), 1500);

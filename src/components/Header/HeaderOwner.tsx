@@ -22,14 +22,10 @@ import {
 import { useNavigate } from 'react-router';
 import path from '@/constants/path';
 import { getRoleName } from '@/utils/auth';
-import { useCustomer } from '@/context/customer.context';
-import { FaWallet, FaPlus } from 'react-icons/fa';
-export const Header = (props: any) => {
+export const HeaderOwner = (props: any) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate();
   const roleName = getRoleName();
-  const { customer } = useCustomer();
-
   const { setIsAuthenticated, isAuthenticated } = useContext(AppContext);
   const logoutMutation = useMutation({
     mutationFn: logout,
@@ -56,17 +52,13 @@ export const Header = (props: any) => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
-  const formattedWallet = new Intl.NumberFormat('vi-VN').format(
-    Number(customer?.wallet?.amount)
-  );
+
   const chevron = <ChevronDownIcon fill="currentColor" />;
-  const removeQuotes = (str: string) => {
-    return str.replace(/['"]+/g, ''); // Removes both single and double quotes
-  };
-  const roleNameRemoveQuotes = removeQuotes(roleName);
+  console.log(roleName);
+
   return (
     <>
-      <div className="mx-auto flex justify-between items-center shadow-lg shadow-gray-300">
+      <div className="mx-auto flex justify-between items-center">
         <Navbar
           className="h-24"
           maxWidth="full"
@@ -133,7 +125,7 @@ export const Header = (props: any) => {
               </NavbarItem>
               <DropdownMenu
                 aria-label="ACME features"
-                className="w-[240px]"
+                className="w-[340px]"
                 itemClasses={{
                   base: 'gap-4',
                 }}
@@ -142,6 +134,7 @@ export const Header = (props: any) => {
                   key="autoscaling"
                   description="Cơ sở 1"
                   onClick={() => navigate(path.location)}
+
                   // startContent={icons.scale}
                 >
                   TP. HCM
@@ -237,48 +230,19 @@ export const Header = (props: any) => {
               </Link>
             </NavbarItem>
             {/* Manager */}
-            {roleNameRemoveQuotes.toUpperCase() === 'MANAGER' && (
-              <NavbarItem
-                isActive={window.location.pathname === path.manager}
-                className="mx-10"
+
+            <NavbarItem
+              isActive={window.location.pathname === path.staff}
+              className="mx-10"
+            >
+              <Link
+                color="foreground"
+                className="cursor-pointer text-start hover:text-violet11 hover:bg-violet3 focus:shadow-violet7 block select-none rounded-[4px] px-4 py-2 text-[15px] font-medium leading-none no-underline outline-none"
+                onClick={() => navigate(path.staff)}
               >
-                <Link
-                  color="foreground"
-                  className="cursor-pointer text-start hover:text-violet11 hover:bg-violet3 focus:shadow-violet7 block select-none rounded-[4px] px-4 py-2 text-[15px] font-medium leading-none no-underline outline-none"
-                  onClick={() => navigate(path.manager)}
-                >
-                  Trang quản lý
-                </Link>
-              </NavbarItem>
-            )}
-            {roleNameRemoveQuotes === 'STAFF' && (
-              <NavbarItem
-                isActive={window.location.pathname === path.staff}
-                className="mx-10"
-              >
-                <Link
-                  color="foreground"
-                  className="cursor-pointer text-start hover:text-violet11 hover:bg-violet3 focus:shadow-violet7 block select-none rounded-[4px] px-4 py-2 text-[15px] font-medium leading-none no-underline outline-none"
-                  onClick={() => navigate(path.staff)}
-                >
-                  Trang nhân viên
-                </Link>
-              </NavbarItem>
-            )}
-            {roleNameRemoveQuotes === 'OWNER' && (
-              <NavbarItem
-                isActive={window.location.pathname === path.staff}
-                className="mx-10"
-              >
-                <Link
-                  color="foreground"
-                  className="cursor-pointer text-start hover:text-violet11 hover:bg-violet3 focus:shadow-violet7 block select-none rounded-[4px] px-4 py-2 text-[15px] font-medium leading-none no-underline outline-none"
-                  onClick={() => navigate(path.staff)}
-                >
-                  Trang chủ sở hữu
-                </Link>
-              </NavbarItem>
-            )}
+                Trang chủ sở hữu
+              </Link>
+            </NavbarItem>
           </NavbarContent>
           {!isAuthenticated && (
             <NavbarContent justify="end" className="mr-10">
@@ -313,23 +277,11 @@ export const Header = (props: any) => {
                     className="transition-transform"
                     color="secondary"
                     name="Jason Hughes"
-                    size="lg"
+                    size="sm"
                     src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
                   />
                 </DropdownTrigger>
                 <DropdownMenu aria-label="Profile Actions" variant="flat">
-                  <DropdownItem
-                    key="wallet"
-                    className="row-span-1 cursor-pointer"
-                    startContent={<FaWallet className="text-lg mr-2" />}
-                    endContent={
-                      <span className="text-violet-400 font-semibold">
-                        {formattedWallet} VNĐ
-                      </span>
-                    }
-                  >
-                    <span className="text-gray-800">Ví:</span>
-                  </DropdownItem>
                   <DropdownItem
                     key="settings"
                     className="row-span-1 cursor-pointer"
@@ -337,7 +289,6 @@ export const Header = (props: any) => {
                   >
                     Cài đặt chung
                   </DropdownItem>
-
                   <DropdownItem
                     key="logout"
                     className="row-span-1 cursor-pointer"

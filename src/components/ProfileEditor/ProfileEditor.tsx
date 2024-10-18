@@ -7,12 +7,13 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { changeProfile } from '@/service/customer.api';
 import { Customer, phoneCodes } from '@/types/customer.type';
-import { Input } from '@nextui-org/react';
+import { DatePicker, Image, Input, Link } from '@nextui-org/react';
 import { useCustomer } from '@/context/customer.context';
 import { getProfileFromLS } from '@/utils/auth';
 import path from '@/constants/path';
 import { motion } from 'framer-motion';
 import { log } from 'console';
+import { parseDate } from '@internationalized/date';
 interface FormData {
   fullName: string;
   email: string;
@@ -29,7 +30,9 @@ interface ShowPassword {
 
 const ProfileEditor: React.FC = () => {
   const { customer, refetch } = useCustomer();
-
+  const [dateOfBirth, setDateOfBirth] = useState<string>(
+    customer?.dateOfBirth!
+  );
   const [formData, setFormData] = useState<FormData>({
     fullName: customer?.fullName ?? '',
     email: customer?.email ?? '',
@@ -52,6 +55,7 @@ const ProfileEditor: React.FC = () => {
     register,
     handleSubmit,
     setValue,
+    getValues,
     formState: { errors },
     reset,
   } = useForm<Customer>({
@@ -64,8 +68,6 @@ const ProfileEditor: React.FC = () => {
     },
   });
   const profile = getProfileFromLS();
-  console.log(profile);
-
   const updateProfile = useMutation({
     mutationFn: async (data: Omit<Customer, 'wallet' | 'roleName'>) =>
       changeProfile(profile.username, data),
@@ -81,7 +83,13 @@ const ProfileEditor: React.FC = () => {
   });
 
   const handleInputChange = (field: keyof Customer, value: any) => {
+    // if (field === dateOfBirth) {
+    //   setDateOfBirth(value);
+    //   console.log(getValues().dateOfBirth);
+    // }
     setValue(field, value);
+    console.log(getValues().dateOfBirth);
+
     setIsModified(true);
   };
 
@@ -130,12 +138,13 @@ const ProfileEditor: React.FC = () => {
         initial="hidden"
         animate="visible"
       >
-        <div className="flex flex-col gap-4 h-auto max-h-screen mx-auto p-6 bg-white shadow-lg rounded-lg w-[1200px] mt-20">
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-            <div className="flex flex-col md:flex-row md:space-x-4 h-auto">
-              <div className="w-full md:w-2/3 space-y-6">
+        <div className="flex flex-col justify-center items-stretch gap-4 h-[500px] max-h-screen mx-auto p-6 bg-[#fcfcfc] shadow-lg shadow-violet-500/70 rounded-lg w-[1200px] mt-20">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-12">
+            <div className="flex flex-col md:flex-row md:space-x-4 h-auto ">
+              <div className="w-full md:w-2/3 space-y-12">
                 <Input
                   isClearable
+                  size="lg"
                   isRequired
                   label="Họ và tên"
                   {...register('fullName', {
@@ -145,18 +154,23 @@ const ProfileEditor: React.FC = () => {
                   onChange={(e) =>
                     handleInputChange('fullName', e.target.value)
                   }
+                  isInvalid={errors.fullName?.message ? true : false}
                   errorMessage={errors.fullName?.message}
                 />
                 <Input
                   label="Email"
                   type="email"
+                  isRequired
+                  size="lg"
                   {...register('email', { required: 'Email is required' })}
                   onChange={(e) => handleInputChange('email', e.target.value)}
                   errorMessage={errors.email?.message}
                 />
                 <Input
                   label="Số điện thoại"
+                  isRequired
                   type="tel"
+                  size="lg"
                   {...register('phoneNumber', {
                     required: 'Phone number is required',
                   })}
@@ -165,53 +179,56 @@ const ProfileEditor: React.FC = () => {
                   }
                   errorMessage={errors.phoneNumber?.message}
                 />
-                <Input
+                <DatePicker
+                  className="w-full"
+                  size="lg"
                   label="Ngày sinh"
-                  type="date"
-                  {...register('dateOfBirth', {
-                    required: 'Date of birth is required',
-                  })}
-                  value={dayjs(customer?.dateOfBirth).format('YYYY-MM-DD')}
-                  onChange={(e) =>
-                    handleInputChange('dateOfBirth', e.target.value)
+                  defaultValue={parseDate(
+                    new Date(dateOfBirth).toISOString().slice(0, 10)
+                  )} // ensure value is a Date object
+                  onChange={
+                    (dateValue) =>
+                      handleInputChange('dateOfBirth', dateValue.toString()) // Format to YYYY-MM-DD
                   }
+                  isInvalid={errors.dateOfBirth?.message ? true : false}
                   errorMessage={errors.dateOfBirth?.message}
                 />
               </div>
               <div className="w-full md:w-1/3 mt-6 md:mt-0">
                 <div className="text-center">
-                  <img
-                    src={formData.avatar}
-                    alt="User Avatar"
-                    className="w-32 h-32 mx-auto rounded-full object-cover"
-                  />
-                  <label
+                  <div className="mx-auto w-36 h-36 border border-black rounded-full">
+                    <Image
+                      src={formData.avatar}
+                      alt="User Avatar"
+                      className="w-34 h-34 mx-auto rounded-full object-cover border"
+                    />
+                  </div>
+
+                  {/* <label
                     htmlFor="avatar"
-                    className="mt-2 cursor-pointer inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none"
-                  >
-                    <FaUpload className="mr-2" />
-                    Thay ảnh đại diện
-                  </label>
-                  <input
+                    className="mt-2 cursor-pointer inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-lg font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none"
+                  ></label> */}
+                  <Input
+                    label="Thay ảnh đại diện"
                     type="file"
                     id="avatar"
                     name="avatar"
+                    startContent={<FaUpload className="mr-2" />}
                     onChange={handleAvatarChange}
-                    className="hidden"
-                    accept="image/*"
+                    className="mt-2 cursor-pointer text-lg font-medium text-black rounded-md shadow-lg bg-transparent hover:bg-gray-100 opacity-90 transition duration-300"
                   />
                 </div>
-                <div className="px-8 flex items-center justify-between">
+                <div className="px-8 flex items-center justify-between my-14">
                   <div className="flex items-center space-x-2">
-                    <FaLock className="text-black text-sm" />
-                    <span className="text-sm text-gray-700">Mật khẩu</span>
+                    <FaLock className="text-black text-lg" />
+                    <span className="text-gray-700 text-lg">Mật khẩu</span>
                   </div>
-                  <a
+                  <Link
                     onClick={() => navigate(path.settings + '/change-password')}
-                    className="cursor-pointer px-4 py-2 border border-gray-300 rounded-sm shadow-sm text-sm font-medium text-black bg-white hover:bg-gray-50"
+                    className="cursor-pointer px-4 py-2 border border-gray-300 rounded-sm shadow-sm font-medium text-black bg-white hover:bg-gray-50 text-lg"
                   >
                     Đổi mật khẩu
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
