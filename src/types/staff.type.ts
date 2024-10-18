@@ -1,5 +1,5 @@
 export interface Staff {
-  userId: string;
+  staffId: string;
   fullName: string;
   phoneNumber: string;
   dateOfBirth: string;
@@ -10,14 +10,14 @@ export interface Staff {
   status: string;
 }
 export const columnsStaff = [
-  { name: 'Mã nhân viên', uid: 'userId', sortable: true },
-  { name: 'Họ và tên', uid: 'fullName', sortable: true },
-  { name: 'Ca làm việc', uid: 'workShift', sortable: true },
-  { name: 'Số điện thoại', uid: 'phoneNumber', sortable: true },
+  { name: 'Staff ID', uid: 'staffId', sortable: true },
+  { name: 'Full Name', uid: 'fullName', sortable: true },
+  { name: 'Work Shift', uid: 'workShift', sortable: true },
+  { name: 'Phone Number', uid: 'phoneNumber', sortable: true },
   { name: 'Email', uid: 'email', sortable: true },
-  { name: 'Ngày làm việc', uid: 'workDays', sortable: true },
-  { name: 'Trạng thái', uid: 'status', sortable: true },
-  { name: 'Hành động', uid: 'actions' },
+  { name: 'Work Days', uid: 'workDays', sortable: true },
+  { name: 'Status ', uid: 'status', sortable: true },
+  { name: 'Actions', uid: 'actions' },
 ];
 
 export const columnWorkShift = [

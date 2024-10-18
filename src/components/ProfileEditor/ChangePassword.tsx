@@ -12,7 +12,7 @@ import { useMutation } from '@tanstack/react-query';
 import { Input } from '@nextui-org/react';
 import { EyeSlashFilledIcon } from '../Icons/EyeSlashFilledIcon';
 import { EyeFilledIcon } from '../Icons/EyeFilledIcon';
-import { motion } from 'framer-motion';
+
 const ChangePassword: React.FC = () => {
   const [currentPassword, setCurrentPassword] = useState<string>('');
   const [newPassword, setNewPassword] = useState<string>('');
@@ -42,7 +42,7 @@ const ChangePassword: React.FC = () => {
     ) => {
       // Convert data to FormData before passing to changePassword
       const formData = new FormData();
-      formData.append('newpassword', data.newPassword); // Assuming the API expects newPassword in FormData
+      formData.append('newPassword', data.newPassword); // Assuming the API expects newPassword in FormData
       console.log(profile.username, data.newPassword);
 
       // Call the API function with username and formData
@@ -92,136 +92,125 @@ const ChangePassword: React.FC = () => {
     setValue(field, value);
   };
   return (
-    <div className="inset-0 flex items-center justify-center h-[550px]">
-      <motion.div
-        className=""
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5, ease: 'easeInOut' }}
-      >
-        <div className="bg-blue-50 rounded-xl shadow-2xl shadow-blue-200 p-8 w-[800px] max-w-3xl gap-6 h-auto max-h-screen mx-auto">
-          <h2 className="text-3xl font-bold mb-10 text-center text-gray-800">
-            Đổi mật khẩu
-          </h2>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
-            <div className="">
-              <Input
-                label=" Mật khẩu hiện tại"
-                labelPlacement="outside"
-                placeholder="Nhập mật khẩu hiện tại"
-                size="lg"
-                variant="bordered"
-                type={showCurrentPassword ? 'text' : 'password'}
-                className="max-w-auto"
-                radius="sm"
-                {...register('currentPassword')}
-                onChange={(e) =>
-                  handleChangeField('currentPassword', e.target.value)
-                }
-                endContent={
-                  <button
-                    className="focus:outline-none"
-                    type="button"
-                    onClick={() => togglePasswordVisibility('current')}
-                    aria-label="toggle password visibility"
-                  >
-                    {showCurrentPassword ? (
-                      <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
-                    ) : (
-                      <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
-                    )}
-                  </button>
-                }
-              />
-            </div>
-            <div>
-              <Input
-                label="Mật khẩu mới"
-                labelPlacement="outside"
-                placeholder="Nhập mật khẩu mới"
-                variant="bordered"
-                size="lg"
-                type={showNewPassword ? 'text' : 'password'}
-                className="max-w-auto"
-                radius="sm"
-                {...register('newPassword')}
-                onChange={(e) =>
-                  handleChangeField('newPassword', e.target.value)
-                }
-                errorMessage={errors.newPassword?.message}
-                endContent={
-                  <button
-                    className="focus:outline-none"
-                    type="button"
-                    onClick={() => togglePasswordVisibility('new')}
-                    aria-label="toggle password visibility"
-                  >
-                    {showNewPassword ? (
-                      <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
-                    ) : (
-                      <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
-                    )}
-                  </button>
-                }
-              />
-            </div>
-            {/* confirm new Password */}
-            <div>
-              <Input
-                label="Xác nhận mật khẩu"
-                labelPlacement="outside"
-                placeholder="Nhập lại mật khẩu mới"
-                size="lg"
-                variant="bordered"
-                type={showConfirmPassword ? 'text' : 'password'}
-                className="max-w-auto"
-                radius="sm"
-                onChange={(e) =>
-                  handleChangeField('confirmPassword', e.target.value)
-                }
-                isInvalid={errors.confirmPassword ? true : false}
-                errorMessage={errors.confirmPassword?.message}
-                endContent={
-                  <button
-                    className="focus:outline-none"
-                    type="button"
-                    onClick={() => togglePasswordVisibility('confirm')}
-                    aria-label="toggle password visibility"
-                  >
-                    {showConfirmPassword ? (
-                      <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
-                    ) : (
-                      <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
-                    )}
-                  </button>
-                }
-              />
-            </div>
-            <div className="flex justify-between">
-              <span
-                onClick={() => navigate(path.settings + '/edit-profile')}
-                className="bg-black text-white rounded-md flex justify-center items-center w-32 cursor-pointer"
-              >
-                Trở về
-              </span>
-              <button
-                type="submit"
-                className="w-32 bg-black text-white py-2 px-4 rounded-md hover:bg-blackA12 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 transition-all duration-200 flex items-center justify-center"
-                disabled={isLoading}
-              >
-                {isLoading ? (
-                  <>
-                    <AiOutlineLoading3Quarters className="animate-spin mr-2" />
-                    Đang thay đổi...
-                  </>
-                ) : (
-                  'Lưu thay đổi'
-                )}
-              </button>
-            </div>
-          </form>
-        </div>
-      </motion.div>
+    <div className="inset-0 flex items-center justify-center">
+      {/* <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 to-gray-700 p-4"> */}
+      <div className="bg-white rounded-lg shadow-xl p-8 w-full max-w-2xl gap-4 h-auto max-h-screen mx-auto w-382px">
+        <h2 className="text-3xl font-bold mb-10 text-center text-gray-800">
+          Đổi mật khẩu
+        </h2>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
+          <div>
+            <Input
+              label=" Mật khẩu hiện tại"
+              labelPlacement="outside"
+              placeholder="Nhập mật khẩu hiện tại"
+              variant="bordered"
+              type={showCurrentPassword ? 'text' : 'password'}
+              className="max-w-auto"
+              radius="sm"
+              {...register('currentPassword')}
+              onChange={(e) =>
+                handleChangeField('currentPassword', e.target.value)
+              }
+              endContent={
+                <button
+                  className="focus:outline-none"
+                  type="button"
+                  onClick={() => togglePasswordVisibility('current')}
+                  aria-label="toggle password visibility"
+                >
+                  {showCurrentPassword ? (
+                    <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                  ) : (
+                    <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                  )}
+                </button>
+              }
+            />
+          </div>
+          <div>
+            <Input
+              label="Mật khẩu mới"
+              labelPlacement="outside"
+              placeholder="Nhập mật khẩu mới"
+              variant="bordered"
+              type={showNewPassword ? 'text' : 'password'}
+              className="max-w-auto"
+              radius="sm"
+              {...register('newPassword')}
+              onChange={(e) => handleChangeField('newPassword', e.target.value)}
+              errorMessage={errors.newPassword?.message}
+              endContent={
+                <button
+                  className="focus:outline-none"
+                  type="button"
+                  onClick={() => togglePasswordVisibility('new')}
+                  aria-label="toggle password visibility"
+                >
+                  {showNewPassword ? (
+                    <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                  ) : (
+                    <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                  )}
+                </button>
+              }
+            />
+          </div>
+          {/* confirm new Password */}
+          <div>
+            <Input
+              label="Xác nhận mật khẩu"
+              labelPlacement="outside"
+              placeholder="Nhập lại mật khẩu mới"
+              variant="bordered"
+              type={showConfirmPassword ? 'text' : 'password'}
+              className="max-w-auto"
+              radius="sm"
+              onChange={(e) =>
+                handleChangeField('confirmPassword', e.target.value)
+              }
+              isInvalid={errors.confirmPassword ? true : false}
+              errorMessage={errors.confirmPassword?.message}
+              endContent={
+                <button
+                  className="focus:outline-none"
+                  type="button"
+                  onClick={() => togglePasswordVisibility('confirm')}
+                  aria-label="toggle password visibility"
+                >
+                  {showConfirmPassword ? (
+                    <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                  ) : (
+                    <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                  )}
+                </button>
+              }
+            />
+          </div>
+          <div className="flex justify-between">
+            <span
+              onClick={() => navigate(path.settings + '/edit-profile')}
+              className="bg-black text-white rounded-md flex justify-center items-center w-32 cursor-pointer"
+            >
+              Trở về
+            </span>
+            <button
+              type="submit"
+              className="w-32 bg-black text-white py-2 px-4 rounded-md hover:bg-blackA12 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 transition-all duration-200 flex items-center justify-center"
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <>
+                  <AiOutlineLoading3Quarters className="animate-spin mr-2" />
+                  Đang thay đổi...
+                </>
+              ) : (
+                'Lưu thay đổi'
+              )}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

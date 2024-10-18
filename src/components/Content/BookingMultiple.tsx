@@ -126,18 +126,18 @@ export const BookingRoomDetailMultiple = () => {
     queryFn: getRoomDetailApi,
     enabled: !!roomId,
   });
-  // const getAllBuildingApi = async () => {
-  //   const response = await getAllBuiding();
-  //   return response.data.data;
-  // };
-  // const {
-  //   data: buildings,
-  //   isLoading: isLoadingBuildings,
-  //   refetch: refetchBuildings,
-  // } = useQuery<buildingCustomer[]>({
-  //   queryKey: ['buildings'],
-  //   queryFn: getAllBuildingApi,
-  // });
+  const getAllBuildingApi = async () => {
+    const response = await getAllBuiding();
+    return response.data.data;
+  };
+  const {
+    data: buildings,
+    isLoading: isLoadingBuildings,
+    refetch: refetchBuildings,
+  } = useQuery<buildingCustomer[]>({
+    queryKey: ['buildings'],
+    queryFn: getAllBuildingApi,
+  });
   const getRoomTypeApi = async () => {
     if (roomDetail?.roomType === undefined) {
       return null;
@@ -186,12 +186,12 @@ export const BookingRoomDetailMultiple = () => {
       return null;
     }
     const response = await getBookeddSlot(
-      selectedBuildingKey || '',
+      getValues().buildingId,
       roomId,
       dateCheckIn,
       dateCheckOut
     );
-    console.log('booked slot', response.data.data);
+    console.log(response.data.data);
 
     return response.data.data.bookedSlots;
   };
@@ -201,7 +201,7 @@ export const BookingRoomDetailMultiple = () => {
     isLoading: isLoadingSlot,
     refetch: refetchSlots,
   } = useQuery<BookedSlots>({
-    queryKey: ['slots', selectedBuildingKey, roomId, dateCheckIn, dateCheckOut],
+    queryKey: ['slots', selectedBase, roomId, dateCheckIn, dateCheckOut],
     queryFn: getBookedSlotApi, // Pass the function reference, not the invocation
     enabled: !!roomId && !!dateCheckIn && !!dateCheckOut,
   });
@@ -314,6 +314,7 @@ export const BookingRoomDetailMultiple = () => {
       onSuccess: () => {
         console.log('Booking created successfully');
         refetch();
+        refetchBuildings();
         refetchRoomType();
         refetchServices();
         refetchSlots();
