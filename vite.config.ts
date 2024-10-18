@@ -12,4 +12,18 @@ export default defineConfig({
     },
   },
   base: process.env.PUBLIC_URL,
+  optimizeDeps: {
+    include: ['tailwind-merge'],
+  },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8080', // Your Spring Boot backend URL
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/api/, ''), // If necessary, adjust path
+      },
+    },
+    port: 3000, // You can set the dev server port here
+  },
 });

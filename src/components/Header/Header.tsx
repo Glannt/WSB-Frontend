@@ -1,162 +1,338 @@
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
-import * as Avatar from '@radix-ui/react-avatar';
+// import * as Avatar from '@radix-ui/react-avatar';
 import * as NavigationMenu from '@radix-ui/react-navigation-menu';
-import ModeToggle from '../ModeToggle/ModeToggle';
-import { CaretDownIcon } from '@radix-ui/react-icons';
-import React, { forwardRef } from 'react';
+import { CaretDownIcon, ChevronDownIcon } from '@radix-ui/react-icons';
+import React, { forwardRef, useContext, useEffect, useState } from 'react';
 import classNames from 'classnames';
+import { useMutation } from '@tanstack/react-query';
+import { logout } from '@/service/auth.api';
+import { AppContext } from '@/context/app.context';
+import {
+  Button,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+  Link,
+  Navbar,
+  NavbarBrand,
+  NavbarContent,
+  NavbarItem,
+  Avatar,
+} from '@nextui-org/react';
+import { useNavigate } from 'react-router';
+import path from '@/constants/path';
+import { getRoleName } from '@/utils/auth';
 export const Header = (props: any) => {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const navigate = useNavigate();
+  const roleName = getRoleName();
+  const { setIsAuthenticated, isAuthenticated } = useContext(AppContext);
+  const logoutMutation = useMutation({
+    mutationFn: logout,
+    onSuccess: () => {
+      setIsAuthenticated(false);
+    },
+  });
+  const handleLogout = () => {
+    logoutMutation.mutate();
+    // navigate('/');
+  };
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  const chevron = <ChevronDownIcon fill="currentColor" />;
+
   return (
     <>
-      <header className="bg-[#51a7bf] text-white p-6 shadow-md rounded-md sticky top-0 z-10">
-        <div className="container mx-auto flex justify-between items-center">
-          <div className="text-xl font-bold">
-            <a href="/" className="hover:text-gray-300">
+      <div className="mx-auto flex justify-between items-center">
+        <Navbar
+          className="h-24"
+          maxWidth="full"
+          isBordered
+          classNames={{
+            item: [
+              'flex',
+              'relative',
+              'h-full',
+              'items-center',
+              "data-[active=true]:after:content-['']",
+              'data-[active=true]:after:absolute',
+              'data-[active=true]:after:bottom-0',
+              'data-[active=true]:after:left-0',
+              'data-[active=true]:after:right-0',
+              'data-[active=true]:after:h-[2px]',
+              'data-[active=true]:after:rounded-[2px]',
+              'data-[active=true]:after:bg-primary',
+            ],
+          }}
+        >
+          <NavbarBrand>
+            {/* <AcmeLogo /> */}
+            <span
+              // fullWidth={true}
+              // size="lg"
+              // color="primary"
+              // variant="light"
+              onClick={() => navigate('/')}
+              className="ml-10 text-4xl hover:text-violet11 font-bold cursor-pointer"
+            >
               WSB
-            </a>
-          </div>
-          <ModeToggle
-            className="absolute right-9 top-9 md:right-8 md:top-9
-        "
-          />
-          <NavigationMenu.Root className="relative z-[1] flex w-screen justify-center">
-            <NavigationMenu.List className="center shadow-blackA4 m-0 flex list-none p-1">
-              <NavigationMenu.Item>
-                <NavigationMenu.Trigger className="text-white hover:text-violet11 hover:bg-violet3 focus:shadow-violet7 group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none focus:shadow-[0_0_0_2px]">
-                  Địa điểm{' '}
-                  <CaretDownIcon
-                    className="text-violet10 relative top-[1px] transition-transform duration-[250] ease-in group-data-[state=open]:-rotate-180"
-                    aria-hidden
-                  />
-                </NavigationMenu.Trigger>
-                <NavigationMenu.Content className="data-[motion=from-start]:animate-enterFromLeft data-[motion=from-end]:animate-enterFromRight data-[motion=to-start]:animate-exitToLeft data-[motion=to-end]:animate-exitToRight absolute top-0 left-0 w-full sm:w-auto">
-                  <ul className="m-0 grid list-none gap-x-[10px] p-[22px] sm:w-[300px] sm:grid-flow-col sm:grid-rows-2">
-                    <ListItem className="row-span-1" href="" title="Cơ sở 1">
-                      {' '}
-                    </ListItem>
-                    <ListItem className="row-span-1" href="" title="Cơ sở 2">
-                      {' '}
-                    </ListItem>
-                  </ul>
-                </NavigationMenu.Content>
-              </NavigationMenu.Item>
+            </span>
+          </NavbarBrand>
+          <NavbarItem
+            isActive={window.location.pathname === '/'}
+            className="mx-10"
+          >
+            <Link
+              onClick={() => navigate(path.home)}
+              className="cursor-pointer text-start hover:text-violet11 hover:bg-violet3 focus:shadow-violet7 block select-none rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none no-underline outline-none"
+              aria-current="page"
+            >
+              Trang chủ
+            </Link>
+          </NavbarItem>
+          <NavbarContent className="hidden sm:flex gap-4" justify="center">
+            <Dropdown>
+              <NavbarItem
+                isActive={window.location.pathname === path.location}
+                className="mx-10"
+              >
+                <DropdownTrigger className="hover:bg-violet3  group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none">
+                  <Button
+                    disableRipple
+                    className="cursor-pointer p-0 bg-transparent data-[hover=true]:bg-transparent hover:text-violet11 hover:bg-violet3 focus:shadow-violet7"
+                    endContent={chevron}
+                    radius="sm"
+                    variant="light"
+                  >
+                    Địa điểm
+                  </Button>
+                </DropdownTrigger>
+              </NavbarItem>
+              <DropdownMenu
+                aria-label="ACME features"
+                className="w-[340px]"
+                itemClasses={{
+                  base: 'gap-4',
+                }}
+              >
+                <DropdownItem
+                  key="autoscaling"
+                  description="Cơ sở 1"
+                  onClick={() => navigate(path.location)}
 
-              <NavigationMenu.Item>
-                <NavigationMenu.Trigger className="text-white hover:text-violet11 hover:bg-violet3 focus:shadow-violet7 group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none focus:shadow-[0_0_0_2px]">
-                  Dịch vụ{' '}
-                  <CaretDownIcon
-                    className="text-violet10 relative top-[1px] transition-transform duration-[250] ease-in group-data-[state=open]:-rotate-180"
-                    aria-hidden
-                  />
-                </NavigationMenu.Trigger>
-                <NavigationMenu.Content className="absolute top-0 left-0 w-full sm:w-auto">
-                  <ul className="m-0 grid list-none gap-x-[10px] p-[22px] sm:w-[600px] sm:grid-flow-col sm:grid-rows-3">
-                    <ListItem title="Phòng làm việc" href="">
-                      Build high-quality, accessible design systems and web
-                      apps.
-                    </ListItem>
-                    <ListItem title="Đồ ăn " href="">
-                      A quick tutorial to get you up and running with Radix
-                      Primitives.
-                    </ListItem>
-                  </ul>
-                </NavigationMenu.Content>
-              </NavigationMenu.Item>
-
-              <NavigationMenu.Item className="">
-                <NavigationMenu.Link
-                  className="text-white hover:text-violet11 hover:bg-violet3 focus:shadow-violet7 block select-none rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none no-underline outline-none focus:shadow-[0_0_0_2px]"
-                  href=""
+                  // startContent={icons.scale}
                 >
-                  Liên hệ
-                </NavigationMenu.Link>
-              </NavigationMenu.Item>
+                  TP. HCM
+                </DropdownItem>
+                {/* <DropdownItem
+                  key="usage_metrics"
+                  description="Cơ sở 2"
+                  onClick={() => navigate(path.location)}
 
-              <NavigationMenu.Indicator className="data-[state=visible]:animate-fadeIn data-[state=hidden]:animate-fadeOut top-full z-[1] flex h-[10px] items-end justify-center overflow-hidden transition-[width,transform_250ms_ease]">
-                <div className="relative top-[70%] h-[10px] w-[10px] rotate-[45deg] rounded-tl-[2px] bg-white" />
-              </NavigationMenu.Indicator>
-            </NavigationMenu.List>
-
-            <div className="perspective-[2000px] absolute top-full left-0 flex w-full justify-evenly">
-              <NavigationMenu.Viewport className="data-[state=open]:animate-scaleIn data-[state=closed]:animate-scaleOut relative mt-[10px] h-[var(--radix-navigation-menu-viewport-height)] w-full origin-[top_center] overflow-hidden rounded-[6px] bg-white transition-[width,_height] duration-300 sm:w-[var(--radix-navigation-menu-viewport-width)]" />
-            </div>
-          </NavigationMenu.Root>
-          <NavigationMenu.Root className="relative z-[1] w-auto flex justify-end">
-            <NavigationMenu.List className="center shadow-blackA4 m-0 flex list-none p-1">
-              <NavigationMenu.Item>
-                <NavigationMenu.Trigger className="text-white hover:text-violet11 focus:shadow-violet7 group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none focus:shadow-[0_0_0_2px]">
-                  <Avatar.Root className="bg-blackA1 inline-flex h-[45px] w-[45px] select-none items-center justify-center overflow-hidden rounded-full align-middle">
-                    <Avatar.Image
-                      className="h-full w-full rounded-[inherit] object-cover"
-                      src="https://images.unsplash.com/photo-1492633423870-43d1cd2775eb?&w=128&h=128&dpr=2&q=80"
-                      alt="Colm Tuite"
-                    />
-                    <Avatar.Fallback
-                      className="text-violet11 leading-1 flex h-full w-full items-center bg-white justify-center text-[15px] font-medium"
-                      delayMs={200}
-                    >
-                      CT
-                    </Avatar.Fallback>
-                  </Avatar.Root>{' '}
-                  <CaretDownIcon
-                    className="text-violet10 relative top-[1px] transition-transform duration-[250] ease-in group-data-[state=open]:-rotate-180"
-                    aria-hidden
+                  // startContent={icons.activity}
+                >
+                  Hà Nội
+                </DropdownItem> */}
+              </DropdownMenu>
+            </Dropdown>
+            <Dropdown>
+              <NavbarItem
+                isActive={[path.rooms, path.foods, path.equipments].includes(
+                  window.location.pathname
+                )}
+                className="mx-10 "
+              >
+                <DropdownTrigger className=" group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none outline-none">
+                  <Button
+                    disableRipple
+                    className="cursor-pointer p-0 bg-transparent data-[hover=true]:bg-transparent hover:text-violet11 hover:bg-violet3 focus:shadow-violet7 "
+                    endContent={chevron}
+                    radius="sm"
+                    variant="light"
+                  >
+                    Dịch vụ
+                  </Button>
+                </DropdownTrigger>
+              </NavbarItem>
+              <DropdownMenu
+                aria-label="ACME features"
+                className="w-[340px]"
+                itemClasses={{
+                  base: 'gap-4',
+                }}
+              >
+                <DropdownItem
+                  key="workspaces"
+                  description="Nơi làm việc"
+                  className="cursor-pointer"
+                  onClick={() => navigate(path.rooms)}
+                  // startContent={icons.scale}
+                >
+                  Phòng làm việc
+                </DropdownItem>
+                <DropdownItem
+                  key="amenities"
+                  description="Thiết bị đi kèm"
+                  className="cursor-pointer"
+                  onClick={() => navigate(path.equipments)}
+                  // startContent={icons.activity}
+                >
+                  Thiết bị
+                </DropdownItem>
+                <DropdownItem
+                  key="food"
+                  description="Thức ăn đi kèm"
+                  className="cursor-pointer text-start"
+                  onClick={() => navigate(path.foods)}
+                  // startContent={icons.activity}
+                >
+                  Đồ ăn
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+            <NavbarItem
+              isActive={window.location.pathname === path.aboutUs}
+              className="mx-10"
+            >
+              <Link
+                className="cursor-pointer text-start hover:text-violet11 hover:bg-violet3 focus:shadow-violet7 block select-none rounded-[4px] px-3 py-2 text-[15px] font-medium leading-none no-underline outline-none"
+                onClick={() => navigate(path.aboutUs)}
+                aria-current="page"
+              >
+                Về chúng tôi
+              </Link>
+            </NavbarItem>
+            <NavbarItem
+              isActive={window.location.pathname === path.contact}
+              className="mx-10"
+            >
+              <Link
+                color="foreground"
+                className="cursor-pointer text-start hover:text-violet11 hover:bg-violet3 focus:shadow-violet7 block select-none rounded-[4px] px-4 py-2 text-[15px] font-medium leading-none no-underline outline-none"
+                onClick={() => navigate(path.contact)}
+              >
+                Liên hệ
+              </Link>
+            </NavbarItem>
+            {/* Manager */}
+            {roleName.toUpperCase() === 'MANAGER' && (
+              <NavbarItem
+                isActive={window.location.pathname === path.manager}
+                className="mx-10"
+              >
+                <Link
+                  color="foreground"
+                  className="cursor-pointer text-start hover:text-violet11 hover:bg-violet3 focus:shadow-violet7 block select-none rounded-[4px] px-4 py-2 text-[15px] font-medium leading-none no-underline outline-none"
+                  onClick={() => navigate(path.manager)}
+                >
+                  Trang quản lý
+                </Link>
+              </NavbarItem>
+            )}
+            {roleName === 'STAFF' && (
+              <NavbarItem
+                isActive={window.location.pathname === path.staff}
+                className="mx-10"
+              >
+                <Link
+                  color="foreground"
+                  className="cursor-pointer text-start hover:text-violet11 hover:bg-violet3 focus:shadow-violet7 block select-none rounded-[4px] px-4 py-2 text-[15px] font-medium leading-none no-underline outline-none"
+                  onClick={() => navigate(path.staff)}
+                >
+                  Trang nhân viên
+                </Link>
+              </NavbarItem>
+            )}
+            {roleName === 'OWNER' && (
+              <NavbarItem
+                isActive={window.location.pathname === path.staff}
+                className="mx-10"
+              >
+                <Link
+                  color="foreground"
+                  className="cursor-pointer text-start hover:text-violet11 hover:bg-violet3 focus:shadow-violet7 block select-none rounded-[4px] px-4 py-2 text-[15px] font-medium leading-none no-underline outline-none"
+                  onClick={() => navigate(path.staff)}
+                >
+                  Trang chủ sở hữu
+                </Link>
+              </NavbarItem>
+            )}
+          </NavbarContent>
+          {!isAuthenticated && (
+            <NavbarContent justify="end" className="mr-10">
+              <NavbarItem className="cursor-pointer hidden lg:flex">
+                <Button
+                  className="bg-white text-black py-3 rounded-lg font-semibold hover:bg-black hover:text-white hover:shadow-3xl ease-in-out flex items-center hover:scale-105 transition duration-100 shadow-lg"
+                  onClick={() => navigate(path.login)}
+                >
+                  Đăng nhập
+                </Button>
+              </NavbarItem>
+              <NavbarItem>
+                <Button
+                  onClick={() => navigate(path.register)}
+                  className="cursor-pointer bg-black text-white py-3 rounded-lg font-semibold hover:text-white hover:shadow-3xl ease-in-out flex items-center hover:scale-105 transition duration-100 shadow-lg"
+                  as={Link}
+                  color="default"
+                  variant="flat"
+                >
+                  Đăng ký
+                </Button>
+              </NavbarItem>
+            </NavbarContent>
+          )}
+          {isAuthenticated && (
+            <NavbarContent as="div" justify="end" className="mr-10">
+              <Dropdown placement="bottom-end">
+                <DropdownTrigger>
+                  <Avatar
+                    isBordered
+                    as="button"
+                    className="transition-transform"
+                    color="secondary"
+                    name="Jason Hughes"
+                    size="sm"
+                    src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
                   />
-                </NavigationMenu.Trigger>
-                <NavigationMenu.Content className="data-[motion=from-start]:animate-enterFromLeft data-[motion=from-end]:animate-enterFromRight data-[motion=to-start]:animate-exitToLeft data-[motion=to-end]:animate-exitToRight absolute top-0 left-0 w-full sm:w-auto">
-                  <ul className="m-0 mr-10 grid list-none gap-x-[10px] pl-[10px] p-[22px] sm:w-[200px] sm:grid-flow-col sm:grid-rows-3">
-                    <ListItem
-                      className="row-span-1"
-                      href=""
-                      title=" Edit Profile"
-                    >
-                      {' '}
-                    </ListItem>
-                    <ListItem className="row-span-1" href="" title="Settings">
-                      {' '}
-                    </ListItem>
-                    <ListItem className="row-span-1" href="" title="Logout">
-                      {' '}
-                    </ListItem>
-                  </ul>
-                </NavigationMenu.Content>
-              </NavigationMenu.Item>
-              <NavigationMenu.Indicator className="data-[state=visible]:animate-fadeIn data-[state=hidden]:animate-fadeOut top-full z-[1] flex h-[10px] items-end justify-center overflow-hidden transition-[width,transform_250ms_ease]">
-                <div className="relative top-[70%] h-[10px] w-[10px] rotate-[45deg] rounded-tl-[2px] bg-white" />
-              </NavigationMenu.Indicator>
-            </NavigationMenu.List>
-            <div className="perspective-[2000px] absolute top-full left-0 flex w-[152%] justify-evenly">
-              <NavigationMenu.Viewport className="data-[state=open]:animate-scaleIn data-[state=closed]:animate-scaleOut relative mt-[5px] h-[var(--radix-navigation-menu-viewport-height)] w-full origin-[top_center] overflow-hidden rounded-[6px] bg-white transition-[width,_height] duration-300 sm:w-[var(--radix-navigation-menu-viewport-width)]" />
-            </div>
-          </NavigationMenu.Root>
-        </div>
-      </header>
+                </DropdownTrigger>
+                <DropdownMenu aria-label="Profile Actions" variant="flat">
+                  <DropdownItem
+                    key="settings"
+                    className="row-span-1 cursor-pointer"
+                    onClick={() => navigate(path.settings + '/edit-profile')}
+                  >
+                    Cài đặt chung
+                  </DropdownItem>
+                  <DropdownItem
+                    key="logout"
+                    className="row-span-1 cursor-pointer"
+                    // href="/logout"
+                    title="Đăng xuất"
+                    onClick={handleLogout}
+                    color="danger"
+                  >
+                    Đăng xuất
+                  </DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
+            </NavbarContent>
+          )}
+        </Navbar>
+      </div>
     </>
   );
 };
-interface ListItemProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
-  className?: string;
-  children: React.ReactNode;
-  title: string;
-}
-const ListItem = forwardRef<HTMLAnchorElement, ListItemProps>(
-  ({ className, children, title, ...props }, forwardedRef) => (
-    <li>
-      <NavigationMenu.Link asChild>
-        <a
-          className={classNames(
-            'focus:shadow-[0_0_0_2px] focus:shadow-violet7 hover:bg-mauve3 block select-none rounded-[6px] p-1 text-[15px] leading-none no-underline outline-none transition-colors',
-            className
-          )}
-          {...props}
-          ref={forwardedRef}
-        >
-          <div className="text-violet12 mb-[5px] font-medium leading-[1.2]">
-            {title}
-          </div>
-          <p className="text-mauve11 leading-[1.4]">{children}</p>
-        </a>
-      </NavigationMenu.Link>
-    </li>
-  )
-);
