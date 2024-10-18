@@ -526,7 +526,7 @@ export default function ManageStaff() {
 
     if (hasSearchFilter) {
       filteredStaffs = filteredStaffs?.filter((staff) =>
-        staff.staffId.toLowerCase().includes(filterValue.toLowerCase())
+        staff.userId.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
     if (
@@ -538,8 +538,8 @@ export default function ManageStaff() {
       );
     }
     filteredStaffs = filteredStaffs.sort((a, b) => {
-      const firstStaffID = a.staffId;
-      const secondStaffID = b.staffId;
+      const firstStaffID = a.userId;
+      const secondStaffID = b.userId;
       return firstStaffID.localeCompare(secondStaffID); // Mới nhất trước
     });
     return filteredStaffs;

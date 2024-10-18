@@ -22,6 +22,7 @@ const TransactionPagination: React.FC<BookingPaginationProps> = ({
         isCompact
         showControls
         showShadow
+        initialPage={1}
         color="primary"
         page={page}
         total={pages}
