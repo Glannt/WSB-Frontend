@@ -40,7 +40,19 @@ const ProfileEditor: React.FC = () => {
     dateOfBirth: customer?.dateOfBirth ?? '',
     avatar: '',
   });
+  const [image, setImage] = React.useState<{ file: File; url: string }>();
 
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const fileInput = event.target.files;
+    if (fileInput && fileInput.length > 0) {
+      const file = fileInput[0];
+      const url = URL.createObjectURL(file); // Tạo URL tạm thời cho file đã tải lên
+
+      // Bạn có thể gọi một hàm khác để xử lý việc tải lên hình ảnh
+      // ví dụ: setUploadedImages({ file, url });
+      console.log({ file, url }); // Xem thông tin file
+    }
+  };
   const [showPassword, setShowPassword] = useState<ShowPassword>({
     current: false,
     new: false,
@@ -100,6 +112,7 @@ const ProfileEditor: React.FC = () => {
       reader.onloadend = () => {
         setFormData({ ...formData, avatar: reader.result as string });
         setIsModified(true);
+        // setImage(reader.result)
       };
       reader.readAsDataURL(file);
     }
@@ -200,7 +213,7 @@ const ProfileEditor: React.FC = () => {
                     <Image
                       src={formData.avatar}
                       alt="User Avatar"
-                      className="w-34 h-34 mx-auto rounded-full object-cover border"
+                      className="w-[150px] h-[115px] mx-auto rounded-full object-cover border"
                     />
                   </div>
 
@@ -214,7 +227,7 @@ const ProfileEditor: React.FC = () => {
                     id="avatar"
                     name="avatar"
                     startContent={<FaUpload className="mr-2" />}
-                    onChange={handleAvatarChange}
+                    onChange={handleImageUpload}
                     className="mt-2 cursor-pointer text-lg font-medium text-black rounded-md shadow-lg bg-transparent hover:bg-gray-100 opacity-90 transition duration-300"
                   />
                 </div>
