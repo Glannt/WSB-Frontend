@@ -20,6 +20,9 @@ const path = {
   aboutUs: '/about-us',
   location: '/location',
   contact: '/contact',
+  owner: '/owner',
+  manageBuilding: '/owner/manage-building',
+  manageAccount: '/owner/manage-account',
 };
 
 export default path;

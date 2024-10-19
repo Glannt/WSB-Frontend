@@ -6,7 +6,7 @@ import { Button } from '@nextui-org/react';
 import { useNavigate } from 'react-router';
 import path from '@/constants/path';
 import { getWalletByUserId } from '@/service/customer.api';
-import { getProfileFromLS } from '@/utils/auth';
+import { getCustomerFromLS, getProfileFromLS } from '@/utils/auth';
 import { useQuery } from '@tanstack/react-query';
 import { Wallet } from '@/types/customer.type';
 
@@ -30,21 +30,12 @@ const MyWallet: React.FC = () => {
   //   }, 1500);
   // };
 
-  const profile = getProfileFromLS();
-  const getWalletByUserIdApi = async () => {
-    const response = await getWalletByUserId(profile.userId);
-    return response.data.data;
-  };
-
-  const { data: wallet } = useQuery<Wallet>({
-    queryKey: ['wallet'],
-    queryFn: getWalletByUserIdApi,
-  });
+  const wallet = getCustomerFromLS().wallet;
 
   const formattedWallet = new Intl.NumberFormat('vi-VN').format(
     Number(wallet?.amount)
   );
-  console.log(wallet);
+
   // const [balance, setBalance] = useState<number>(0);
 
   return (
@@ -57,7 +48,7 @@ const MyWallet: React.FC = () => {
           </div>
           <div className="mt-4">
             <p className="text-sm">Số dư tiện tại</p>
-            <p className="text-4xl font-bold">${formattedWallet}</p>
+            <p className="text-4xl font-bold">{formattedWallet} VND</p>
           </div>
           <div className="flex justify-end">
             <Button

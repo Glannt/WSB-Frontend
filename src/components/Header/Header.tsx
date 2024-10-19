@@ -267,13 +267,13 @@ export const Header = (props: any) => {
             )}
             {roleNameRemoveQuotes === 'OWNER' && (
               <NavbarItem
-                isActive={window.location.pathname === path.staff}
+                isActive={window.location.pathname === path.owner}
                 className="mx-10"
               >
                 <Link
                   color="foreground"
                   className="cursor-pointer text-start hover:text-violet11 hover:bg-violet3 focus:shadow-violet7 block select-none rounded-[4px] px-4 py-2 text-[15px] font-medium leading-none no-underline outline-none"
-                  onClick={() => navigate(path.staff)}
+                  onClick={() => navigate(path.owner)}
                 >
                   Trang chủ sở hữu
                 </Link>
@@ -319,6 +319,9 @@ export const Header = (props: any) => {
                 </DropdownTrigger>
                 <DropdownMenu aria-label="Profile Actions" variant="flat">
                   <DropdownItem
+                    onClick={() =>
+                      navigate(path.settings + '/transaction-history')
+                    }
                     key="wallet"
                     className="row-span-1 cursor-pointer"
                     startContent={<FaWallet className="text-lg mr-2" />}
