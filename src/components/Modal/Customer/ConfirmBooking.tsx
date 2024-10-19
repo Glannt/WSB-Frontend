@@ -39,7 +39,10 @@ export const ConfirmBooking: React.FC<ConfirmBookingProps> = ({
                   <Button
                     className="w-40"
                     color="danger"
-                    onClick={toggleConfirmModal}
+                    onClick={() => {
+                      toggleConfirmModal;
+                      window.location.reload();
+                    }}
                   >
                     Đóng
                   </Button>

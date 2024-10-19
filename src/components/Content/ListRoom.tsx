@@ -167,7 +167,7 @@ export const ListRoom = () => {
             </div>
           </div>
           <Divider orientation="vertical" className="py-10 h-[800px]" />
-          <div className="w-4/5 h-[800px] overflow-y-auto scrollbar-hide ml-16">
+          <div className="w-4/5 h-[900px] overflow-y-auto scrollbar-hide ml-16">
             {/* Right Panel */}
             <div className="lg:w-full p-4">
               <div className="grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">

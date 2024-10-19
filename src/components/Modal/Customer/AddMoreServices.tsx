@@ -19,6 +19,7 @@ import { getService, updateServiceBooking } from '@/service/customer.api';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { schemaUpdateService, SchemaUpdateService } from '@/utils/rules';
+import { ConfirmAddServices } from './ConfirmAddServices';
 
 interface AddMoreServicesProps {
   isOpen: boolean;
@@ -35,6 +36,7 @@ export const AddMoreServices: React.FC<AddMoreServicesProps> = ({
   refetchBooking,
   services,
 }) => {
+  const [isModified, setIsModified] = React.useState<boolean>(false);
   const initialQuantities = React.useMemo(() => {
     const quantities: { [key: string]: number } = {};
     if (booking?.serviceItems) {
@@ -83,7 +85,9 @@ export const AddMoreServices: React.FC<AddMoreServicesProps> = ({
     onSuccess: () => {
       console.log('Service update successful');
       refetchBooking();
-      onClose(); // Close the modal on success
+
+      // onClose(); // Close the modal on success
+      setIsServiceSummary(true);
     },
     onError: (error) => {
       console.error('Error updating services:', error);
@@ -101,6 +105,7 @@ export const AddMoreServices: React.FC<AddMoreServicesProps> = ({
       ...prevQuantities,
       [id]: Math.max(newQuantity, 0), // Update quantity for selected service
     }));
+    setIsModified(true);
   };
   console.log(quantities);
 
@@ -119,6 +124,12 @@ export const AddMoreServices: React.FC<AddMoreServicesProps> = ({
     });
     // Perform mutation
     UpdateServiceMutation.mutate(formData);
+  };
+  const [isServiceSummary, setIsServiceSummary] =
+    React.useState<boolean>(false);
+  const toggleServiceSummary = () => {
+    setIsServiceSummary(false);
+    onClose();
   };
   return (
     <>
@@ -197,6 +208,7 @@ export const AddMoreServices: React.FC<AddMoreServicesProps> = ({
             </ModalBody>
             <ModalFooter>
               <Button
+                isDisabled={!isModified}
                 color="primary"
                 type="submit"
                 className="hover:transition hover:duration-500 shadow-md"
@@ -214,6 +226,14 @@ export const AddMoreServices: React.FC<AddMoreServicesProps> = ({
           </form>
         </ModalContent>
       </Modal>
+      {isServiceSummary && (
+        <ConfirmAddServices
+          showConfirmModal={isServiceSummary}
+          toggleConfirmModal={toggleServiceSummary}
+          booking={booking}
+          services={services}
+        />
+      )}
     </>
   );
 };

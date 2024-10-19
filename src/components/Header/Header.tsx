@@ -18,6 +18,8 @@ import {
   NavbarContent,
   NavbarItem,
   Avatar,
+  Divider,
+  DropdownSection,
 } from '@nextui-org/react';
 import { useNavigate } from 'react-router';
 import path from '@/constants/path';
@@ -29,7 +31,7 @@ export const Header = (props: any) => {
   const navigate = useNavigate();
   const roleName = getRoleName();
   const { customer } = useCustomer();
-
+  const [wallet, setWallet] = useState<string>('0');
   const { setIsAuthenticated, isAuthenticated } = useContext(AppContext);
   const logoutMutation = useMutation({
     mutationFn: logout,
@@ -56,9 +58,17 @@ export const Header = (props: any) => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
-  const formattedWallet = new Intl.NumberFormat('vi-VN').format(
-    Number(customer?.wallet?.amount)
-  );
+  useEffect(() => {
+    if (customer?.wallet?.amount !== undefined) {
+      const formattedWallet = new Intl.NumberFormat('vi-VN').format(
+        Number(customer.wallet.amount)
+      );
+      setWallet(formattedWallet);
+    } else {
+      setWallet('0'); // Nếu không có customer, đặt giá trị là '0'
+    }
+  }, [customer]);
+
   const chevron = <ChevronDownIcon fill="currentColor" />;
   const removeQuotes = (str: string) => {
     return str.replace(/['"]+/g, ''); // Removes both single and double quotes
@@ -317,37 +327,46 @@ export const Header = (props: any) => {
                     src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
                   />
                 </DropdownTrigger>
-                <DropdownMenu aria-label="Profile Actions" variant="flat">
-                  <DropdownItem
-                    key="wallet"
-                    className="row-span-1 cursor-pointer"
-                    startContent={<FaWallet className="text-lg mr-2" />}
-                    endContent={
-                      <span className="text-violet-400 font-semibold">
-                        {formattedWallet} VNĐ
-                      </span>
-                    }
-                  >
-                    <span className="text-gray-800">Ví:</span>
-                  </DropdownItem>
-                  <DropdownItem
-                    key="settings"
-                    className="row-span-1 cursor-pointer"
-                    onClick={() => navigate(path.settings + '/edit-profile')}
-                  >
-                    Cài đặt chung
-                  </DropdownItem>
+                <DropdownMenu
+                  aria-label="Profile Actions"
+                  variant="flat"
+                  className="p-4"
+                >
+                  <DropdownSection showDivider>
+                    <DropdownItem
+                      showDivider
+                      key="wallet"
+                      className="row-span-1 cursor-pointer"
+                      startContent={<FaWallet className="text-lg mr-2" />}
+                      endContent={
+                        <span className="text-violet-400 font-semibold text-lg">
+                          {wallet} VNĐ
+                        </span>
+                      }
+                    >
+                      <span className="text-gray-800">Ví:</span>
+                    </DropdownItem>
+                    {/* <Divider className="p-1" /> */}
+                    <DropdownItem
+                      showDivider
+                      key="settings"
+                      className="row-span-1 cursor-pointer text-lg pt-2 pb-2"
+                      onClick={() => navigate(path.settings + '/edit-profile')}
+                    >
+                      Cài đặt chung
+                    </DropdownItem>
 
-                  <DropdownItem
-                    key="logout"
-                    className="row-span-1 cursor-pointer"
-                    // href="/logout"
-                    title="Đăng xuất"
-                    onClick={handleLogout}
-                    color="danger"
-                  >
-                    Đăng xuất
-                  </DropdownItem>
+                    <DropdownItem
+                      key="logout"
+                      className="row-span-1 cursor-pointer text-lg pt-2 pb-2"
+                      // href="/logout"
+                      title="Đăng xuất"
+                      onClick={handleLogout}
+                      color="danger"
+                    >
+                      Đăng xuất
+                    </DropdownItem>
+                  </DropdownSection>
                 </DropdownMenu>
               </Dropdown>
             </NavbarContent>
