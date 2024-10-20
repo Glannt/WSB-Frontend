@@ -21,15 +21,17 @@ export const HomePage: React.FC<CarouselPropsSlider> = ({
   autoSlide = false,
   autoSlideInterval = 3000,
 }) => {
-  useEffect(() => {
-    getProfileUser();
-  }, []);
   const getProfileUser = async () => {
     const response = await getUser();
     const customerData = response.data.data;
+
     setCustomerToLS(customerData); // Save customer to local storage
     return customerData;
   };
+
+  useEffect(() => {
+    getProfileUser();
+  }, []);
 
   const slides = [
     {

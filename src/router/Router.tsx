@@ -58,6 +58,8 @@ import { getUser } from '@/service/customer.api';
 import { useQuery } from '@tanstack/react-query';
 import { Customer } from '@/types/customer.type';
 import ReturnPage from '@/components/Test/ReturnPage';
+import { DashboardOwner } from '@/components/Owner/DashboardOwner';
+import ManageBuildings from '@/components/Owner/ManageBuildings';
 interface ProtectedRouteProps {
   requiredRoles?: Role[]; // Optional prop for role-based protection
 }
@@ -257,6 +259,30 @@ export const router = createBrowserRouter([
     ],
   },
   {
+    path: path.owner,
+    element: <ProtectedRoute requiredRoles={['OWNER']} />,
+    children: [
+      {
+        path: path.owner,
+        element: <DashboardOwner />,
+        children: [
+          {
+            path: path.manageBuilding,
+            element: <ManageBuildings />,
+          },
+          {
+            path: path.manageAccount,
+            element: <ManageStaff />,
+          },
+          {
+            path: '',
+            element: <AdminDashboard />,
+          },
+        ],
+      },
+    ],
+  },
+  {
     path: path.staff,
     element: <ProtectedRoute requiredRoles={['STAFF']} />,
     children: [
@@ -284,6 +310,7 @@ export const router = createBrowserRouter([
       },
     ],
   },
+
   {
     path: path.aboutUs,
     element: (
