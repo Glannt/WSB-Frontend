@@ -62,7 +62,7 @@ export const getTransactionsByUserId = (userId: string) =>
   http.get(`/api/user/${userId}`);
 
 export const cancelBooking = (formData: FormData) =>
-  http.put('/api/customer/cancel-booking', formData, {
+  http.post('/api/customer/cancel-booking', formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },

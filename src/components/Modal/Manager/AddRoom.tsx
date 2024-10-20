@@ -249,7 +249,7 @@ export const AddRoom: React.FC<RoomModalProps> = ({
                     }}
                   >
                     {staffs.map((staff) => (
-                      <SelectItem key={staff.userId}>
+                      <SelectItem key={staff.staffId}>
                         {staff.fullName}
                       </SelectItem>
                     ))}

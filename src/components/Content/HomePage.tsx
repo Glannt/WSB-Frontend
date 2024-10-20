@@ -18,7 +18,7 @@ export interface CarouselPropsSlider {
 }
 
 export const HomePage: React.FC<CarouselPropsSlider> = ({
-  autoSlide = true,
+  autoSlide = false,
   autoSlideInterval = 3000,
 }) => {
   const getProfileUser = async () => {
@@ -35,26 +35,25 @@ export const HomePage: React.FC<CarouselPropsSlider> = ({
 
   const slides = [
     {
-      url: 'https://stylishclub.pt/wp-content/uploads/2023/05/stylish-club-blog-post-the-future-of-worsapce-design-banner-1024x683.jpg',
+      url: 'https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2620&q=80',
     },
     {
-      url: 'https://images.inc.com/uploaded_files/image/1920x1080/getty_517610514_353435.jpg',
+      url: 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2670&q=80',
     },
     {
-      url: 'https://www.workdesign.com/wp-content/uploads/2021/04/shutterstock_682694722-scaled-e1619719883125.jpg',
+      url: 'https://images.unsplash.com/photo-1661961112951-f2bfd1f253ce?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2672&q=80',
     },
 
     {
-      url: 'https://boweninteriors.com.au/wp-content/uploads/2022/06/Blog-5.jpg',
+      url: 'https://images.unsplash.com/photo-1512756290469-ec264b7fbf87?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2253&q=80',
     },
     {
-      url: 'https://studioasa.in/wp-content/uploads/2024/02/Bringing-the-Greens-Inside-the-Workspace.jpg',
+      url: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2671&q=80',
     },
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isInteracting, setIsInteracting] = useState(false);
-  const navigate = useNavigate();
 
   const prevSlide = () => {
     const isFirstSlide = currentIndex === 0;
@@ -82,13 +81,12 @@ export const HomePage: React.FC<CarouselPropsSlider> = ({
 
     return () => clearInterval(slideInterval);
   }, [autoSlide, autoSlideInterval, currentIndex, isInteracting]);
-
   return (
-    <div>
-      <div className="max-w-[1400px] h-[780px] w-screen m-auto gap-10 py-16 relative group z[-5]">
+    <>
+      <div className="max-w-[1400px] h-[780px] w-full m-auto py-16 px-4 relative group z[-5]">
         <div
           style={{ backgroundImage: `url(${slides[currentIndex].url})` }}
-          className="w-full h-full rounded-2xl bg-center bg-cover duration-500 my-0 mx-0"
+          className="w-full h-full rounded-2xl bg-center bg-cover duration-500 my-0"
         ></div>
         {/* Left Arrow */}
         <div className="hidden group-hover:block absolute top-[50%] -translate-x-0 translate-y-[-50%] left-5 text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer">
@@ -203,35 +201,55 @@ export const HomePage: React.FC<CarouselPropsSlider> = ({
               </div>
             </div>
           </div>
-
-          {/* Card 2 */}
-          <div className="rounded-lg border-solid border-2 border-sky-500 p-4 max-w-[240px]">
-            <div className="flex items-center gap-3">
-              <img
-                className="w-16 h-16 rounded-full"
-                src="https://images.unsplash.com/photo-1607346256330-dee7af15f7c5?&w=64&h=64&dpr=2&q=70&crop=focalpoint&fp-x=0.67&fp-y=0.5&fp-z=1.4&fit=crop"
-                alt="Teodros Girmay"
-              />
-              <div>
-                <h3 className="font-bold">Teodros Girmay</h3>
-                <p className="text-gray-600">Engineering</p>
-              </div>
-            </div>
+          <div className="rounded-lg border-solid border-2 border-sky-500 w-82">
+            <Box maxWidth="700px">
+              <Card size="3">
+                <Inset clip="padding-box" side="top" pb="current">
+                  <img
+                    src="https://images.unsplash.com/photo-1617050318658-a9a3175e34cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
+                    alt="Bold typography"
+                    style={{
+                      display: 'block',
+                      objectFit: 'cover',
+                      width: '100%',
+                      height: 140,
+                      backgroundColor: 'var(--gray-5)',
+                    }}
+                  />
+                </Inset>
+                <Text asChild>
+                  <h2 className="font-bold text-lg">Quick Start</h2>
+                </Text>
+                <Text as="div" color="gray" size="2">
+                  Start building your next project in minutes
+                </Text>
+              </Card>
+            </Box>
           </div>
-
-          {/* Card 3 */}
-          <div className="rounded-lg border-solid border-2 border-blackA4 p-4 max-w-[240px]">
-            <div className="flex items-center gap-3">
-              <img
-                className="w-16 h-16 rounded-full"
-                src="https://images.unsplash.com/photo-1607346256330-dee7af15f7c5?&w=64&h=64&dpr=2&q=70&crop=focalpoint&fp-x=0.67&fp-y=0.5&fp-z=1.4&fit=crop"
-                alt="Teodros Girmay"
-              />
-              <div>
-                <h3 className="font-bold">Teodros Girmay</h3>
-                <p className="text-gray-600">Engineering</p>
-              </div>
-            </div>
+          <div className="rounded-lg border-solid border-2 border-sky-500 w-82">
+            <Box maxWidth="500px">
+              <Card size="3">
+                <Inset clip="padding-box" side="top" pb="current">
+                  <img
+                    src="https://images.unsplash.com/photo-1617050318658-a9a3175e34cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
+                    alt="Bold typography"
+                    style={{
+                      display: 'block',
+                      objectFit: 'cover',
+                      width: '100%',
+                      height: 140,
+                      backgroundColor: 'var(--gray-5)',
+                    }}
+                  />
+                </Inset>
+                <Text asChild>
+                  <h2 className="font-bold text-lg">Quick Start</h2>
+                </Text>
+                <Text as="div" color="gray" size="2">
+                  Start building your next project in minutes
+                </Text>
+              </Card>
+            </Box>
           </div>
         </div>
       </div>

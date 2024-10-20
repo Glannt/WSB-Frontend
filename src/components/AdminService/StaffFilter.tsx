@@ -12,10 +12,9 @@ import { Column, Room, StatusOption } from '@/types/room.type';
 import { ChevronDownIcon } from '../Icons/ChevronDownIcon';
 import { SearchIcon } from '../Icons/SearchIcon';
 import { PlusIcon } from '../Icons/PlusIcon';
-import { Staff } from '@/types/staff.type';
 
 interface StaffFiltersProps {
-  staffs?: Staff[];
+  staffs?: Room[];
   filterValue: string;
   statusFilter: Selection;
   visibleColumns: Selection;

@@ -1,3 +1,6 @@
+import React, { useState } from 'react';
+import { MoonIcon, SunIcon } from '@radix-ui/react-icons';
+
 import { ThemeProvider, useTheme } from '@/components/theme-provider';
 
 import { Outlet, RouterProvider } from 'react-router';

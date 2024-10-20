@@ -52,8 +52,6 @@ const StaffTable: React.FC<RoomTableProps> = ({
       return cellValue.join(', ');
     }
     switch (columnKey) {
-      case 'userId':
-        return <span>{staff.userId}</span>;
       case 'fullName':
         return (
           <User
@@ -181,7 +179,7 @@ const StaffTable: React.FC<RoomTableProps> = ({
       </TableHeader>
       <TableBody emptyContent={'No rooms found'} items={sortedItems}>
         {(item) => (
-          <TableRow key={item.userId}>
+          <TableRow key={item.staffId}>
             {(columnKey) => (
               <TableCell>{renderCell(item, columnKey)} </TableCell>
             )}

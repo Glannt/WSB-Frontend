@@ -51,7 +51,10 @@ export const PolicyBooking: React.FC = () => {
         <li>
           <strong>Quy định về đặt cọc và thanh toán:</strong>
           <ul>
-            <li>Khách hàng phải trả trước 100% hóa đơn khi đặt phòng.</li>
+            <li>
+              Khách hàng phải đặt cọc 30% trên tổng hóa đơn khi đặt phòng.
+            </li>
+            <li>Sau khi sử dụng dịch vụ, thanh toán phần còn lại.</li>
             <li>
               Chỉ chấp nhận thanh toán qua hình thức thanh toán trực tuyến.
             </li>
@@ -59,15 +62,8 @@ export const PolicyBooking: React.FC = () => {
               Đối với hóa đơn trên 5 triệu đồng, hệ thống sẽ yêu cầu xác nhận
               trước khi thanh toán.
             </li>
-            <li>
-              Sau khi đặt cọc, trước ngày nhận phòng làm việc 24h chỉ hoàn 50%
-              số tiền trên tổng hóa đơn nếu hủy đặt phòng.
-            </li>
-            <li>
-              Sau khi đặt cọc, trước ngày nhận phòng làm việc 6h sẽ không hoàn
-              tiền nếu hủy đặt phòng.
-            </li>
-            <li>Thời gian đặt phòng tối thiểu là 1 slot (3 tiếng).</li>
+            <li>Sau khi đặt cọc, không hoàn tiền nếu hủy đặt phòng.</li>
+            <li>Thời gian đặt phòng tối thiểu là 1 slot (1 tiếng).</li>
           </ul>
         </li>
 
