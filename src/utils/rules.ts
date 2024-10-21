@@ -75,6 +75,14 @@ export const schemaUpdateRoom = Yup.object().shape({
 
 export type SchemaUpdateRoom = Yup.InferType<typeof schemaUpdateRoom>;
 
+export const schemaUpdateBuilding = Yup.object().shape({
+  buildingName: Yup.string().required('Tên tòa nhà là bắt buộc'),
+  buildingLocation: Yup.string().required('Địa chỉ là bắt buộc'),
+  phoneContact: Yup.string().required('Liên hệ là bắt buộc'),
+});
+
+export type SchemaUpdateBuilding = Yup.InferType<typeof schemaUpdateBuilding>;
+
 export const schemaAddStaff = Yup.object().shape({
   fullName: Yup.string()
     .required('Họ tên là bắt buộc')
