@@ -13,6 +13,17 @@ export interface AddRoomResponse {
   message: string;
   status: string;
 }
+export interface Details {
+  roomId: string | undefined;
+  slots?: number[] | undefined;
+  buildingId: string;
+  checkinDate: string;
+  checkoutDate: string;
+}
+
+export interface InitialQuantities {
+  [key: string]: number;
+}
 
 export interface Column {
   uid: string; // Unique identifier for the column, used as the key

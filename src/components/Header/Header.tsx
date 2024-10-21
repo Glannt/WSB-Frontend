@@ -339,7 +339,12 @@ export const Header = (props: any) => {
                       className="row-span-1 cursor-pointer"
                       startContent={<FaWallet className="text-lg mr-2" />}
                       endContent={
-                        <span className="text-violet-400 font-semibold text-lg">
+                        <span
+                          onClick={() =>
+                            navigate(path.settings + '/transaction-history')
+                          }
+                          className="text-violet-400 font-semibold text-lg"
+                        >
                           {wallet} VNĐ
                         </span>
                       }

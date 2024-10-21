@@ -22,7 +22,11 @@ export const NotEnoughMoneyInWallet: React.FC<ConfirmBookingProps> = ({
     <>
       {' '}
       {showConfirmModal && (
-        <Modal isOpen={showConfirmModal} className="h-40">
+        <Modal
+          hideCloseButton={true}
+          isOpen={showConfirmModal}
+          className="h-40"
+        >
           <ModalContent>
             {(onClose) => (
               <>
@@ -39,7 +43,7 @@ export const NotEnoughMoneyInWallet: React.FC<ConfirmBookingProps> = ({
                     className="w-40"
                     color="danger"
                     onClick={() => {
-                      toggleConfirmModal;
+                      toggleConfirmModal();
                     }}
                   >
                     Đóng
