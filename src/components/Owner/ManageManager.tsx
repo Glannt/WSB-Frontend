@@ -11,40 +11,50 @@ import BuildingFilter from './BuildingFilter';
 import BuildingTable from './BuildingTable';
 import BuildingPagination from './BuildingPagination';
 import { Building } from '@/types/building.type';
-import { getAllBuilding } from '@/service/owner.api';
+import { getAllBuilding, getAllManagers } from '@/service/owner.api';
 import EditBuilding from './EditBuilding';
 import { DeleteBuilding } from './DeleteBuilding';
 import AddBuilding from './AddBuilding';
+import { Manager } from '@/types/manager.type';
+import ManagerFilter from './ManagerFilter';
+import ManagerTable from './ManagerTable';
+import ManagerPagination from './ManagerPagination';
+import { DeleteManager } from './DeleteManager';
+import AddManager from './AddManager';
 
 export const columnsBuilding = [
-  { name: 'ID', uid: 'buildingId', sortable: true },
-
-  { name: 'Tên cơ sở', uid: 'buildingName', sortable: true },
-  { name: 'Địa chỉ', uid: 'location', sortable: true },
-  { name: 'Liên lạc', uid: 'phoneContact', sortable: true },
+  { name: 'ID', uid: 'userId', sortable: true },
+  { name: 'Tên quản lý', uid: 'fullName', sortable: true },
+  { name: 'Email', uid: 'email', sortable: true },
+  { name: 'Số điện thoại', uid: 'phoneNumber', sortable: true },
+  { name: 'Ngày sinh', uid: 'dateOfBirth', sortable: true },
+  { name: 'Cơ sở', uid: 'buildingId', sortable: true },
   { name: 'Actions', uid: 'actions' },
 ];
 
 const INITIAL_VISIBLE_COLUMNS = [
-  'buildingName',
-  'location',
-  'phoneContact',
+  'fullName',
+  'email',
+  'phoneNumber',
+  'buildingId',
   'actions',
 ];
-export default function ManageBuildings() {
-  const getAllBuildingsApi = async () => {
-    const response = await getAllBuilding();
-    return response.data.data;
+export default function ManageManager() {
+  const getAllManagersApi = async () => {
+    const response = await getAllManagers();
+    return response.data.content;
   };
 
   const {
-    data: buildings = [],
+    data: managers = [],
     isLoading,
     refetch,
-  } = useQuery<Building[]>({
-    queryKey: ['buildings'],
-    queryFn: getAllBuildingsApi,
+  } = useQuery<Manager[]>({
+    queryKey: ['managers'],
+    queryFn: getAllManagersApi,
   });
+  console.log(managers);
+
   const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]));
   const [filterValue, setFilterValue] = useState('');
   const [statusFilter, setStatusFilter] = useState<Selection>('all');
@@ -54,30 +64,24 @@ export default function ManageBuildings() {
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
-    column: 'buildingName',
+    column: 'fullName',
     direction: 'ascending',
   });
   const [isOpenAdd, setIsOpenAdd] = useState<boolean>(false);
   const [isOpenEdit, setIsOpenEdit] = useState<boolean>(false);
   const [isDeleteRoom, setIsDeleteRoom] = useState<boolean>(false);
-  const [selectedRoom, setSelectedRoom] = useState<Building | null>(null);
+  const [selectedRoom, setSelectedRoom] = useState<Manager | null>(null);
   const headerColumns = React.useMemo(() => {
     if (visibleColumns === 'all') return columnsBuilding;
     return columnsBuilding.filter((column) =>
       Array.from(visibleColumns).includes(column.uid)
     );
   }, [visibleColumns]);
-  const hasSearchFilter = Boolean(filterValue);
   const filteredRooms = useMemo(() => {
-    let filteredRooms = buildings;
+    let filteredRooms = managers;
 
-    if (hasSearchFilter) {
-      filteredRooms = filteredRooms?.filter((building) =>
-        building.buildingName.toLowerCase().includes(filterValue.toLowerCase())
-      );
-    }
     return filteredRooms;
-  }, [filterValue, buildings, statusFilter]);
+  }, [filterValue, managers, statusFilter]);
 
   const paginatedRooms = useMemo(() => {
     const start = (page - 1) * rowsPerPage;
@@ -109,8 +113,8 @@ export default function ManageBuildings() {
 
   const sortedItems = useMemo(() => {
     return [...paginatedRooms].sort((a, b) => {
-      const first = a[sortDescriptor.column as keyof Building];
-      const second = b[sortDescriptor.column as keyof Building];
+      const first = a[sortDescriptor.column as keyof Manager];
+      const second = b[sortDescriptor.column as keyof Manager];
 
       // Đảm bảo các giá trị so sánh là chuỗi hoặc số
       if (typeof first === 'string' && typeof second === 'string') {
@@ -149,18 +153,18 @@ export default function ManageBuildings() {
     refetch();
   };
 
-  const openEdit = (building: Building) => {
-    setIsOpenEdit(true);
-    setSelectedRoom(building);
-  };
+  //   const openEdit = (building: Building) => {
+  //     setIsOpenEdit(true);
+  //     setSelectedRoom(building);
+  //   };
   const closeEdit = () => {
     setIsOpenEdit(false);
     refetch();
   };
 
-  const openDelete = (building: Building) => {
+  const openDelete = (manager: Manager) => {
     setIsDeleteRoom(true);
-    setSelectedRoom(building);
+    setSelectedRoom(manager);
   };
   const closeDelete = () => {
     setIsDeleteRoom(false);
@@ -168,8 +172,8 @@ export default function ManageBuildings() {
 
   return (
     <div className="h-full mt-12 ml-5 mr-5">
-      <BuildingFilter
-        buildings={buildings}
+      <ManagerFilter
+        // buildings={managers}
         filterValue={filterValue}
         statusFilter={statusFilter}
         visibleColumns={visibleColumns}
@@ -177,14 +181,14 @@ export default function ManageBuildings() {
         columns={columnsBuilding}
         onSearchChange={onSearchChange}
         onClear={() => onClear()}
-        onAddRoom={openAdd} // Add Room handler
+        onAddManager={openAdd} // Add Room handler
         setStatusFilter={setStatusFilter}
         setVisibleColumns={setVisibleColumns}
         onRowsPerPageChange={onRowsPerPageChange}
       />
       <div className="flex justify-between items-center mt-5 mb-5">
         <span className="text-default-400 text-small">
-          Tổng {buildings?.length} cơ sở
+          Tổng {managers?.length} quản lý
         </span>
         <label className="flex items-center text-default-400 text-small">
           Số hàng
@@ -199,17 +203,17 @@ export default function ManageBuildings() {
           </select>
         </label>
       </div>
-      <BuildingTable
+      <ManagerTable
         sortedItems={sortedItems}
         headerColumns={headerColumns}
         sortDescriptor={sortDescriptor}
         selectedKeys={selectedKeys} // Handle selection logic
         setSelectedKeys={setSelectedKeys} // Selection handler
         onSortChange={setSortDescriptor}
-        onEdit={openEdit}
+        // onEdit={openEdit}
         onDelete={openDelete}
       />
-      <BuildingPagination
+      <ManagerPagination
         page={page}
         pages={pages}
         onPreviousPage={onPreviousPage}
@@ -217,14 +221,14 @@ export default function ManageBuildings() {
         onChange={setPage}
       />
       {isOpenAdd && (
-        <AddBuilding
+        <AddManager
           isOpen={isOpenAdd}
           onClose={closeAdd}
           refetchRooms={refetch}
         />
       )}
 
-      {isOpenEdit && (
+      {/* {isOpenEdit && (
         <EditBuilding
           isOpen={isOpenEdit}
           onClose={closeEdit}
@@ -232,9 +236,9 @@ export default function ManageBuildings() {
           setSelectedRoom={setSelectedRoom}
           refetchRooms={refetch}
         />
-      )}
+      )} */}
       {isDeleteRoom && (
-        <DeleteBuilding
+        <DeleteManager
           isOpen={isDeleteRoom}
           onClose={closeDelete}
           selectedDeleteBuilding={selectedRoom}

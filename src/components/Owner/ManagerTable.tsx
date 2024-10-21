@@ -18,65 +18,67 @@ import { EditIcon } from '../Icons/EditIcon';
 import { DeleteIcon } from '../Icons/DeleteIcon';
 import React from 'react';
 import { Building } from '@/types/building.type';
+import { Manager } from '@/types/manager.type';
 
 interface RoomTableProps {
-  sortedItems: Building[];
+  sortedItems: Manager[];
   headerColumns: Column[];
   sortDescriptor: SortDescriptor;
   selectedKeys: Selection;
   setSelectedKeys: (keys: Selection) => void;
   onSortChange: (descriptor: SortDescriptor) => void;
-  onEdit: (building: Building) => void;
-  onDelete: (building: Building) => void;
+  //   onEdit: (manager: Manager) => void;
+  onDelete: (manager: Manager) => void;
 }
 const statusColorMap: Record<string, ChipProps['color']> = {
   available: 'success',
   maintenance: 'danger',
   // vacation: 'warning',
 };
-const BuildingTable: React.FC<RoomTableProps> = ({
+const ManagerTable: React.FC<RoomTableProps> = ({
   sortedItems,
   headerColumns,
   sortDescriptor,
   selectedKeys,
   setSelectedKeys,
   onSortChange,
-  onEdit,
+  //   onEdit,
   onDelete,
 }) => {
   const renderCell = React.useCallback(
-    (building: Building, columnKey: React.Key) => {
-      const cellValue = building[columnKey as keyof Building];
+    (manager: Manager, columnKey: React.Key) => {
+      const cellValue = manager[columnKey as keyof Manager];
       switch (columnKey) {
-        case 'buildingName':
-          return (
-            <User
-              // avatarProps={{ radius: 'lg', src: room.avatar }}
-              // description={room.email}
-              name={
-                typeof cellValue === 'object'
-                  ? JSON.stringify(cellValue)
-                  : cellValue
-              }
-            >
-              {building.buildingName}
-            </User>
-          );
-        case 'location':
-          return (
-            <span
-            // avatarProps={{ radius: 'lg', src: room.avatar }}
-            // description={room.email}
-            >
-              {building.buildingLocation}
-            </span>
-          );
+        // case 'buildingName':
+        //   return (
+        //     <User
+        //       // avatarProps={{ radius: 'lg', src: room.avatar }}
+        //       // description={room.email}
+        //       name={
+        //         typeof cellValue === 'object'
+        //           ? JSON.stringify(cellValue)
+        //           : cellValue
+        //       }
+        //     >
+        //       {manager.fullName}
+        //     </User>
+        //   );
+        // case 'location':
+        //   return (
+        //     <span
+        //     // avatarProps={{ radius: 'lg', src: room.avatar }}
+        //     // description={room.email}
+        //     >
+        //       {manager.buildingId}
+        //     </span>
+        //   );
+
         case 'actions':
           return (
             <div className="relative flex justify-center gap-5">
               <Tooltip content="Chi tiết">
                 <span
-                  // onClick={() => openDetail(room)}
+                  //   onClick={() => openDetail(room)}
                   className="text-lg text-default-400 cursor-pointer active:opacity-50"
                 >
                   <EyeIcon />
@@ -85,7 +87,7 @@ const BuildingTable: React.FC<RoomTableProps> = ({
               <Tooltip content="Chỉnh sửa">
                 <span
                   onClick={() => {
-                    onEdit(building);
+                    // onEdit(manager);
                   }}
                   className="text-lg text-default-400 cursor-pointer active:opacity-50"
                 >
@@ -94,7 +96,7 @@ const BuildingTable: React.FC<RoomTableProps> = ({
               </Tooltip>
               <Tooltip color="danger" content="Xóa">
                 <span
-                  onClick={() => onDelete(building)}
+                  onClick={() => onDelete(manager)}
                   className="text-lg text-danger cursor-pointer active:opacity-50"
                 >
                   <DeleteIcon />
@@ -103,13 +105,10 @@ const BuildingTable: React.FC<RoomTableProps> = ({
             </div>
           );
         default:
-          return (
-            <span>
-              {typeof cellValue === 'object'
-                ? JSON.stringify(cellValue)
-                : cellValue}
-            </span>
-          );
+          // Default case for simple values like strings or numbers
+          return typeof cellValue === 'string' || typeof cellValue === 'number'
+            ? cellValue
+            : 'N/A';
       }
     },
     []
@@ -136,7 +135,7 @@ const BuildingTable: React.FC<RoomTableProps> = ({
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent={'Không có cơ sở'} items={sortedItems}>
+      <TableBody emptyContent={'Không có quản lý nào'} items={sortedItems}>
         {(item) => (
           <TableRow key={item.buildingId}>
             {(columnKey) => (
@@ -149,4 +148,4 @@ const BuildingTable: React.FC<RoomTableProps> = ({
   );
 };
 
-export default BuildingTable;
+export default ManagerTable;

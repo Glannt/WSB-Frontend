@@ -60,6 +60,7 @@ import { Customer } from '@/types/customer.type';
 import ReturnPage from '@/components/Test/ReturnPage';
 import { DashboardOwner } from '@/components/Owner/DashboardOwner';
 import ManageBuildings from '@/components/Owner/ManageBuildings';
+import ManageManager from '@/components/Owner/ManageManager';
 interface ProtectedRouteProps {
   requiredRoles?: Role[]; // Optional prop for role-based protection
 }
@@ -272,7 +273,7 @@ export const router = createBrowserRouter([
           },
           {
             path: path.manageAccount,
-            element: <ManageStaff />,
+            element: <ManageManager />,
           },
           {
             path: '',
