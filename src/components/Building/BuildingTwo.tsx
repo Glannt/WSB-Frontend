@@ -14,7 +14,7 @@ export const BuildingTwo: React.FC = () => {
 
   return (
     <div className="container">
-      <h1 className="text-8xl text-center">Building 2</h1>
+      <h1 className="text-8xl text-center">District 3 Coworking</h1>
       <SliderBuilding images={images} />
       <div className="mt-1">
         <div className="flex flex-col lg:flex-row gap-10">

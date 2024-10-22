@@ -202,7 +202,7 @@ export const Header = (props: any) => {
                   onClick={() => navigate(path.location)}
                   // startContent={icons.scale}
                 >
-                  TP. HCM
+                  <span className="text-lg font-semibold">TP. HCM</span>
                 </DropdownItem>
                 {/* <DropdownItem
                   key="usage_metrics"
@@ -244,32 +244,37 @@ export const Header = (props: any) => {
                 <DropdownItem
                   showDivider
                   key="workspaces"
-                  description="Nơi làm việc"
-                  className="cursor-pointer"
+                  // description="Nơi làm việc"
+                  className="cursor-pointer text-[30px] font-semibold pt-2 pb-3"
                   onClick={() => navigate(path.rooms)}
                   // startContent={icons.scale}
+                  // title="Phòng làm việc"
+                  classNames={{
+                    title: 'text-[50px] pt-2 pb-2',
+                    base: 'pt-3 pb-3',
+                  }}
                 >
-                  Phòng làm việc
+                  <span className="text-lg font-semibold">Phòng làm việc</span>
                 </DropdownItem>
                 <DropdownItem
                   showDivider
                   key="amenities"
-                  description="Thiết bị đi kèm"
-                  className="cursor-pointer"
+                  // description="Thiết bị đi kèm"
+                  className="cursor-pointer pt-2 pb-3"
                   onClick={() => navigate(path.equipments)}
                   // startContent={icons.activity}
                 >
-                  Thiết bị
+                  <span className="text-lg font-semibold">Thiết bị</span>
                 </DropdownItem>
                 <DropdownItem
                   showDivider
                   key="food"
-                  description="Thức ăn đi kèm"
-                  className="cursor-pointer text-start text-lg"
+                  // description="Thức ăn đi kèm"
+                  className="cursor-pointer text-start text-lg pt-2 pb-3"
                   onClick={() => navigate(path.foods)}
                   // startContent={icons.activity}
                 >
-                  Đồ ăn
+                  <span className="text-lg font-semibold">Đồ ăn</span>
                 </DropdownItem>
               </DropdownMenu>
             </Dropdown>
@@ -418,6 +423,7 @@ export const Header = (props: any) => {
                       </div>
                     </DropdownItem>
                     <DropdownItem
+                      showDivider
                       key="logout"
                       className="row-span-1 cursor-pointer text-lg pt-3 pb-3"
                       // href="/logout"
@@ -425,7 +431,7 @@ export const Header = (props: any) => {
                       color="danger"
                       startContent={<span className="text-lg">Đăng xuất</span>}
                     ></DropdownItem>
-                    <DropdownItem closeOnSelect={false}>
+                    <DropdownItem closeOnSelect={false} className="pt-3 pb-3">
                       <ThemeSwitcher />
                     </DropdownItem>
                   </DropdownSection>

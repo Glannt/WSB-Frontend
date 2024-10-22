@@ -7,7 +7,6 @@ import {
   ModalHeader,
 } from '@nextui-org/react';
 import { useNavigate } from 'react-router';
-
 interface ConfirmBookingProps {
   showConfirmModal: boolean;
   toggleConfirmModal: () => void;
@@ -23,9 +22,13 @@ export const NotEnoughMoneyInWallet: React.FC<ConfirmBookingProps> = ({
       {' '}
       {showConfirmModal && (
         <Modal
+          size="lg"
           hideCloseButton={true}
           isOpen={showConfirmModal}
-          className="h-40"
+          className="h-auto"
+          classNames={{
+            header: 'text-[20px]',
+          }}
         >
           <ModalContent>
             {(onClose) => (

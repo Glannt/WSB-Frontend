@@ -1,5 +1,9 @@
 import { useCustomer } from '@/context/customer.context';
-import { createBooking, getService } from '@/service/customer.api';
+import {
+  createBooking,
+  getService,
+  getWalletByUserId,
+} from '@/service/customer.api';
 import { Details, InitialQuantities } from '@/types/room.type';
 import { Services } from '@/types/service.type';
 import {
@@ -17,6 +21,8 @@ import {
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { SchemacreateMultiBooking } from '@/utils/rules';
 import { UseFormHandleSubmit } from 'react-hook-form';
+import { Wallet } from '@/types/customer.type';
+import { getProfileFromLS } from '@/utils/auth';
 
 interface ConfirmBookingProps {
   totals: number;
@@ -43,9 +49,18 @@ export const ConfirmBooking: React.FC<ConfirmBookingProps> = ({
   refetchServices,
   refetchSlots,
 }) => {
+  const profile = getProfileFromLS();
   const { customer, refetch } = useCustomer();
+  const getWalletByUserIdApi = async () => {
+    const response = await getWalletByUserId(profile.userId);
+    return response.data.data;
+  };
 
-  console.log('chi tiếttttt' + details);
+  const { data: wallet } = useQuery<Wallet>({
+    queryKey: ['wallet'],
+    queryFn: getWalletByUserIdApi,
+  });
+  // console.log('chi tiếttttt' + details);
   console.log(initialQuantities);
   const CreateBookingMutation = useMutation({
     mutationFn: (formData: FormData) => createBooking(formData),
@@ -53,7 +68,7 @@ export const ConfirmBooking: React.FC<ConfirmBookingProps> = ({
 
   const handleCreateBooking = (
     data: SchemacreateMultiBooking,
-    refetch: () => void
+    refetchCreateBooking: () => void
   ) => {
     const formData = new FormData();
     if (details.roomId === undefined) {
@@ -83,8 +98,8 @@ export const ConfirmBooking: React.FC<ConfirmBookingProps> = ({
     CreateBookingMutation.mutate(formData, {
       onSuccess: (response) => {
         console.log('Booking created successfully');
-
         refetch();
+        refetchCreateBooking();
         refetchRoomType();
         refetchServices();
         refetchSlots();
@@ -97,11 +112,9 @@ export const ConfirmBooking: React.FC<ConfirmBookingProps> = ({
   const onSubmit = (data: SchemacreateMultiBooking) => {
     const totalBookingMoney = totals;
     if (
-      !customer ||
-      !customer.wallet ||
-      customer.wallet.amount === undefined ||
-      customer.wallet.amount === null ||
-      customer.wallet.amount < totalBookingMoney
+      wallet?.amount === undefined ||
+      wallet?.amount === null ||
+      wallet?.amount < totalBookingMoney
     ) {
       setIsNotEnoughMoney(true);
       // return;
@@ -112,10 +125,10 @@ export const ConfirmBooking: React.FC<ConfirmBookingProps> = ({
   };
   const formatted = new Intl.NumberFormat('vi-VN').format(Number(totals));
   const formattedCurrent = new Intl.NumberFormat('vi-VN').format(
-    Number(customer?.wallet.amount)
+    Number(wallet?.amount)
   );
   const formattedRemaining = new Intl.NumberFormat('vi-VN').format(
-    Number((customer?.wallet?.amount ?? 0) - totals)
+    Number((wallet?.amount ?? 0) - totals)
   );
 
   const slot = [
@@ -160,14 +173,14 @@ export const ConfirmBooking: React.FC<ConfirmBookingProps> = ({
         <Modal
           hideCloseButton={true}
           isOpen={showConfirmModal}
-          className="h-auto w-[500px]"
+          className="h-auto w-[600px]"
         >
           <ModalContent>
             {(onClose) => (
               <>
                 <ModalHeader>Xác nhận đặt phòng</ModalHeader>
 
-                <ModalBody>
+                <ModalBody className="text-lg">
                   <p className="flex">
                     <span className="mr-24">
                       <strong>Phòng:</strong> {details?.roomId}

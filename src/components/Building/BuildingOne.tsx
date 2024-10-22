@@ -14,7 +14,7 @@ export const BuildingOne: React.FC = () => {
 
   return (
     <div className="container">
-      <h1 className="text-8xl text-center">Building 1</h1>
+      <h1 className="text-8xl text-center">District 1 Workspace</h1>
       <SliderBuilding images={images} />
       <div className="mt-1">
         <div className="flex flex-col lg:flex-row gap-10">

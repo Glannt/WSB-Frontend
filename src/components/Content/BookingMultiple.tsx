@@ -42,6 +42,7 @@ import {
   getDetailRoom,
   getService,
   getSimilarType,
+  getWalletByUserId,
 } from '@/service/customer.api';
 import { ListRooms } from '@/types/roomOverview';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -67,6 +68,8 @@ import {
   CustomerOrderBooking,
   SlotBooking,
 } from '@/types/bookings';
+import { getProfileFromLS } from '@/utils/auth';
+import { Wallet } from '@/types/customer.type';
 interface create {
   id: number;
   name: string;
@@ -100,14 +103,24 @@ export const BookingRoomDetailMultiple = () => {
   const confirmBooking = () => {
     setIsConfirmBooking(!isConfirmBooking);
   };
+  const profile = getProfileFromLS();
+  const getWalletByUserIdApi = async () => {
+    const response = await getWalletByUserId(profile.userId);
+    return response.data.data;
+  };
+
+  const { data: wallet } = useQuery<Wallet>({
+    queryKey: ['wallet'],
+    queryFn: getWalletByUserIdApi,
+  });
 
   const toggleConfirmBooking = () => {
-    if (customer?.wallet.amount === undefined) {
+    if (wallet?.amount === undefined) {
       navigate(path.home);
       throw new Error('Bạn mất định dạng');
     }
     const totalBookingMoney = calculateTotalPrice();
-    if (customer?.wallet.amount < totalBookingMoney) {
+    if (wallet?.amount < totalBookingMoney) {
       setIsNotEnoughMoney(!isNotEnoughMoney);
     } else {
       setIsConfirmBooking(!isConfirmBooking);
@@ -551,7 +564,9 @@ export const BookingRoomDetailMultiple = () => {
             </div>
 
             <div className="mb-6">
-              <p className="text-xl font-semibold">Giá ban đầu: ${roomPrice}</p>
+              <p className="text-xl font-semibold">
+                Giá ban đầu: {roomPrice} VNĐ
+              </p>
             </div>
 
             <Button
