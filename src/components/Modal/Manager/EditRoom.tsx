@@ -265,7 +265,7 @@ const EditRoom: React.FC<RoomModalProps> = ({
                     selectedKeys={valueStaffAtRoom}
                   >
                     {staffs.map((staff) => (
-                      <SelectItem key={staff.staffId}>
+                      <SelectItem key={staff.userId}>
                         {staff.fullName}
                       </SelectItem>
                     ))}

@@ -1,3 +1,4 @@
+import { BookingStatus } from '@/types/bookings';
 import type { UseFormGetValues, RegisterOptions } from 'react-hook-form';
 import * as Yup from 'yup';
 
@@ -241,6 +242,19 @@ export const schemaCancelBooking = Yup.object().shape({
 
 export type SchemaCancelBooking = Yup.InferType<typeof schemaCancelBooking>;
 
+
+export const updateOrderStatusSchema = Yup.object().shape({
+  bookingId: Yup.string()
+    .required('Booking ID is required') // Kiểm tra chuỗi bookingId
+    .matches(/^[a-zA-Z0-9-_]+$/, 'Invalid Booking ID format'), // Có thể thêm ràng buộc khác nếu cần (ví dụ: chỉ chấp nhận ký tự chữ và số)
+
+  status: Yup.string().required(),
+});
+
+export type SchemaUpdateOrderStatusSchema = Yup.InferType<
+  typeof updateOrderStatusSchema
+>;
+
 export const schemaCreateAccount = Yup.object().shape({
   userName: Yup.string()
     .required('Username là bắt buộc')
@@ -257,3 +271,4 @@ export const schemaCreateAccount = Yup.object().shape({
 });
 
 export type SchemaCreateAccount = Yup.InferType<typeof schemaCreateAccount>;
+

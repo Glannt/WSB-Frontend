@@ -1,14 +1,23 @@
 import React, { useState } from 'react';
 import { FaWallet, FaPlus } from 'react-icons/fa';
-import TransactionHistory from './Setting/History/Transaction/TransactionHistory';
+// import TransactionHistory from './Setting/History/Transaction/TransactionHistory';
 
 import { Button } from '@nextui-org/react';
 import { useNavigate } from 'react-router';
 import path from '@/constants/path';
-import { getWalletByUserId } from '@/service/customer.api';
+
+import {
+  getTransactionsByUserId,
+  getWalletByUserId,
+} from '@/service/customer.api';
+
+
+
 import { getCustomerFromLS, getProfileFromLS } from '@/utils/auth';
+
 import { useQuery } from '@tanstack/react-query';
-import { Wallet } from '@/types/customer.type';
+import { Transaction, Wallet } from '@/types/customer.type';
+import { TransactionHistory } from './Setting/History/Transaction/TransactionHistory';
 
 const MyWallet: React.FC = () => {
   const [error, setError] = useState<string>('');
@@ -30,7 +39,34 @@ const MyWallet: React.FC = () => {
   //   }, 1500);
   // };
 
-  const wallet = getCustomerFromLS().wallet;
+
+  const getHistoryTransactionApi = async () => {
+    const response = await getTransactionsByUserId(profile.userId);
+    return response.data.data;
+  };
+
+  const {
+    data: transaction = [],
+    isLoading: IsTransactionLoading,
+    refetch,
+  } = useQuery<Transaction[]>({
+    queryKey: ['transaction'],
+    queryFn: getHistoryTransactionApi,
+  });
+
+  const profile = getProfileFromLS();
+  const getWalletByUserIdApi = async () => {
+    const response = await getWalletByUserId(profile.userId);
+    return response.data.data;
+  };
+
+  const { data: wallet } = useQuery<Wallet>({
+    queryKey: ['wallet'],
+    queryFn: getWalletByUserIdApi,
+  });
+
+  //const wallet = getCustomerFromLS().wallet;
+
 
   const formattedWallet = new Intl.NumberFormat('vi-VN').format(
     Number(wallet?.amount)
@@ -63,7 +99,10 @@ const MyWallet: React.FC = () => {
           </div>
         </div>
       </div>
-      <TransactionHistory />
+      <TransactionHistory
+        transaction={transaction}
+        refetchTransaction={refetch}
+      />
     </>
   );
 };

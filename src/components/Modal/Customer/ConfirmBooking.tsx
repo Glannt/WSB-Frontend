@@ -3,6 +3,10 @@ import { getService } from '@/service/customer.api';
 import { Details, InitialQuantities } from '@/types/room.type';
 import { Services } from '@/types/service.type';
 import {
+  CustomerOrderBooking,
+  CustomerOrderBookingHistory,
+} from '@/types/bookings';
+import {
   Button,
   Modal,
   ModalBody,
@@ -18,6 +22,7 @@ interface ConfirmBookingProps {
   details: Details;
   showConfirmModal: boolean;
   toggleConfirmModal: () => void;
+  //selectedBooking: CustomerOrderBooking | null | undefined;
 }
 
 export const ConfirmBooking: React.FC<ConfirmBookingProps> = ({
@@ -26,7 +31,9 @@ export const ConfirmBooking: React.FC<ConfirmBookingProps> = ({
   details,
   showConfirmModal,
   toggleConfirmModal,
+  //selectedBooking,
 }) => {
+
   const { customer, refetch } = useCustomer();
 
   console.log('chi tiếttttt' + details);
@@ -73,19 +80,23 @@ export const ConfirmBooking: React.FC<ConfirmBookingProps> = ({
     queryFn: getServiceApi,
   });
 
+
   return (
     <>
       {' '}
       {showConfirmModal && (
+
         <Modal
           hideCloseButton={true}
           isOpen={showConfirmModal}
-          className="h-fit"
+          className="h-auto w-[500px]"
         >
+
           <ModalContent>
             {(onClose) => (
               <>
                 <ModalHeader>Xác nhận đặt phòng</ModalHeader>
+
                 <ModalBody>
                   <p className="flex">
                     <span className="mr-24">
@@ -142,6 +153,7 @@ export const ConfirmBooking: React.FC<ConfirmBookingProps> = ({
                   <p>
                     <strong>Số dư còn lại</strong> {formattedRemaining} VND
                   </p>
+
                 </ModalBody>
 
                 <ModalFooter className="flex justify-between">

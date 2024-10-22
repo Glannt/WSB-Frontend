@@ -31,6 +31,7 @@ interface BookingTableProps {
   sortDescriptor: SortDescriptor;
   onSortChange: (descriptor: SortDescriptor) => void;
   // openModal: (booking: CustomerOrderBookingHistory) => void;
+  // isLoading: boolean;
 }
 
 const statusColorMap: Record<string, ChipProps['color']> = {
@@ -55,6 +56,7 @@ const TransactionTable: React.FC<BookingTableProps> = ({
   sortDescriptor,
   setSelectedKeys,
   onSortChange,
+  // isLoading,
   // openModal,
 }) => {
   // console.log(
@@ -113,42 +115,45 @@ const TransactionTable: React.FC<BookingTableProps> = ({
     []
   );
   return (
-    <Table
-      isStriped
-      aria-label="Room table"
-      isHeaderSticky
-      selectedKeys={selectedKeys}
-      sortDescriptor={sortDescriptor}
-      onSelectionChange={setSelectedKeys}
-      onSortChange={onSortChange}
-      className="h-[300px] max-h-[300px] overflow-y-auto"
-    >
-      <TableHeader columns={headerColumns}>
-        {(column) => (
-          <TableColumn
-            key={column.uid}
-            align={column.uid === 'actions' ? 'center' : 'start'}
-            allowsSorting={column.sortable}
-          >
-            {column.name}
-          </TableColumn>
-        )}
-      </TableHeader>
-      <TableBody
-        emptyContent={'Không lịch sử giao dịch nào'}
-        items={sortedItems}
+    <>
+      {/* {isLoading && <div>Loading....</div>} */}
+      <Table
+        isStriped
+        aria-label="Room table"
+        isHeaderSticky
+        selectedKeys={selectedKeys}
+        sortDescriptor={sortDescriptor}
+        onSelectionChange={setSelectedKeys}
+        onSortChange={onSortChange}
+        className="h-[300px] max-h-[300px] overflow-y-auto"
       >
-        {items.map((item) => (
-          <TableRow key={item.transactionId}>
-            {(columnKey) => (
-              <TableCell key={columnKey}>
-                {renderCell(item, columnKey)}
-              </TableCell>
-            )}
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+        <TableHeader columns={headerColumns}>
+          {(column) => (
+            <TableColumn
+              key={column.uid}
+              align={column.uid === 'actions' ? 'center' : 'start'}
+              allowsSorting={column.sortable}
+            >
+              {column.name}
+            </TableColumn>
+          )}
+        </TableHeader>
+        <TableBody
+          emptyContent={'Không lịch sử giao dịch nào'}
+          items={sortedItems}
+        >
+          {items.map((item) => (
+            <TableRow key={item.transactionId}>
+              {(columnKey) => (
+                <TableCell key={columnKey}>
+                  {renderCell(item, columnKey)}
+                </TableCell>
+              )}
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </>
   );
 };
 
