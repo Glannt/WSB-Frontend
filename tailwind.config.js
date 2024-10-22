@@ -205,6 +205,130 @@ module.exports = {
     }),
     nextui({
       addCommonColors: true,
+      layout: {
+        dividerWeight: '1px',
+        disabledOpacity: '0.5', // opacity-[0.3]
+        radius: {
+          small: '2px', // rounded-small
+          medium: '4px', // rounded-medium
+          large: '6px', // rounded-large
+        },
+        borderWidth: {
+          small: '1px', // border-small
+          medium: '1px', // border-medium
+          large: '2px', // border-large
+        },
+      },
+      themes: {
+        light: {
+          colors: {
+            background: '#FDF7FF', // A soft light purple for background
+            foreground: '#000000', // Black text on light theme
+            primary: {
+              50: '#f4e6ff',
+              100: '#e3ccff',
+              200: '#d1b3ff',
+              300: '#b980ff',
+              400: '#a34cff',
+              500: '#8c19ff', // Default primary color
+              600: '#7b00e6',
+              700: '#6a00cc',
+              800: '#5800b3',
+              900: '#470099',
+              DEFAULT: '#8c19ff', // Default purple color
+              foreground: '#ffffff',
+            },
+          },
+          layout: {
+            hoverOpacity: 0.8,
+            boxShadow: {
+              small:
+                '0px 0px 5px 0px rgb(0 0 0 / 0.02), 0px 2px 10px 0px rgb(0 0 0 / 0.06), 0px 0px 1px 0px rgb(0 0 0 / 0.3)',
+              medium:
+                '0px 0px 15px 0px rgb(0 0 0 / 0.03), 0px 2px 30px 0px rgb(0 0 0 / 0.08), 0px 0px 1px 0px rgb(0 0 0 / 0.3)',
+              large:
+                '0px 0px 30px 0px rgb(0 0 0 / 0.04), 0px 30px 60px 0px rgb(0 0 0 / 0.12), 0px 0px 1px 0px rgb(0 0 0 / 0.3)',
+            },
+          },
+        },
+        dark: {
+          colors: {
+            background: '#0D001A', // Deep dark purple/black for background
+            foreground: '#ffffff', // White text for readability
+            primary: {
+              50: '#3B096C',
+              100: '#520F83',
+              200: '#7318A2',
+              300: '#9823C2',
+              400: '#c031e2',
+              500: '#DD62ED', // Bright purple as the primary color
+              600: '#F182F6',
+              700: '#FCADF9',
+              800: '#FDD5F9',
+              900: '#FEECFE',
+              DEFAULT: '#DD62ED',
+              foreground: '#ffffff',
+            },
+          },
+          layout: {
+            hoverOpacity: 0.9, // Applied as opacity-[value] when the component is hovered
+            disabledOpacity: 0.3, // Lower opacity for disabled components
+            radius: {
+              small: '6px',
+              medium: '8px',
+              large: '10px',
+            },
+            borderWidth: {
+              small: '1px',
+              medium: '2px',
+              large: '3px',
+            },
+            boxShadow: {
+              small:
+                '0px 0px 5px 0px rgb(0 0 0 / 0.05), 0px 2px 10px 0px rgb(0 0 0 / 0.2), inset 0px 0px 1px 0px rgb(255 255 255 / 0.15)', // Light inner and outer shadows for a modern feel
+              medium:
+                '0px 0px 15px 0px rgb(0 0 0 / 0.06), 0px 2px 30px 0px rgb(0 0 0 / 0.22), inset 0px 0px 1px 0px rgb(255 255 255 / 0.15)',
+              large:
+                '0px 0px 30px 0px rgb(0 0 0 / 0.07), 0px 30px 60px 0px rgb(0 0 0 / 0.26), inset 0px 0px 1px 0px rgb(255 255 255 / 0.15)', // Darker shadows for larger components
+            },
+          },
+        },
+        'purple-dark': {
+          extend: 'dark', // <- inherit default values from dark theme
+          colors: {
+            background: '#0D001A',
+            foreground: '#ffffff',
+            primary: {
+              50: '#3B096C',
+              100: '#520F83',
+              200: '#7318A2',
+              300: '#9823C2',
+              400: '#c031e2',
+              500: '#DD62ED',
+              600: '#F182F6',
+              700: '#FCADF9',
+              800: '#FDD5F9',
+              900: '#FEECFE',
+              DEFAULT: '#DD62ED',
+              foreground: '#ffffff',
+            },
+            focus: '#F182F6',
+          },
+          layout: {
+            disabledOpacity: '0.3',
+            radius: {
+              small: '4px',
+              medium: '6px',
+              large: '8px',
+            },
+            borderWidth: {
+              small: '1px',
+              medium: '2px',
+              large: '3px',
+            },
+          },
+        },
+      },
     }),
     flowbite,
   ],

@@ -108,7 +108,8 @@ const AddBuilding: React.FC<RoomModalProps> = ({
       classNames={{
         backdrop:
           'bg-gradient-to-t from-zinc-900 to-zinc-900/10 backdrop-opacity-20',
-        base: 'max-w-[1000px] h-[600px]',
+        base: 'max-w-[1000px] h-auto',
+        header: 'text-2xl',
       }}
       motionProps={{
         variants: {
@@ -143,11 +144,12 @@ const AddBuilding: React.FC<RoomModalProps> = ({
                   <Input
                     isClearable
                     autoFocus
+                    size="lg"
                     label="Tên cơ sở"
                     placeholder="Nhập tên cơ sở"
                     variant="bordered"
                     classNames={{
-                      label: 'text-black/50 dark:text-white/90 pb-2',
+                      label: 'text-black/50 dark:text-white/90 pb-2 text-lg',
                       input: 'border-0 focus:outline-none focus:border-none',
                       clearButton: 'pb-4',
                     }}
@@ -163,8 +165,9 @@ const AddBuilding: React.FC<RoomModalProps> = ({
                     label="Địa chỉ"
                     placeholder="Nhập địa chỉ"
                     variant="bordered"
+                    size="lg"
                     classNames={{
-                      label: 'text-black/50 dark:text-white/90 pb-2',
+                      label: 'text-black/50 dark:text-white/90 pb-2 text-lg',
                       input: 'border-0',
                     }}
                     defaultValue={
@@ -181,8 +184,9 @@ const AddBuilding: React.FC<RoomModalProps> = ({
                     label="Số điện thoại"
                     placeholder="Nhập số điện thoại"
                     variant="bordered"
+                    size="lg"
                     classNames={{
-                      label: 'text-black/50 dark:text-white/90 pb-2',
+                      label: 'text-black/50 dark:text-white/90 pb-2 text-lg',
                       input: 'border-0',
                     }}
                     defaultValue={

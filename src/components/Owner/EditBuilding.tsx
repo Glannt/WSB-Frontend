@@ -99,6 +99,7 @@ const EditBuilding: React.FC<RoomModalProps> = ({
   });
 
   const handleFieldChange = (field: keyof SchemaUpdateBuilding, value: any) => {
+    setIsDisable(false);
     if (selectedRoom && setSelectedRoom) {
       setValue(field, value);
       setSelectedRoom({
@@ -107,6 +108,7 @@ const EditBuilding: React.FC<RoomModalProps> = ({
       });
     }
   };
+  const [isDisable, setIsDisable] = React.useState<boolean>(true);
 
   return (
     <Modal
@@ -117,7 +119,7 @@ const EditBuilding: React.FC<RoomModalProps> = ({
       classNames={{
         backdrop:
           'bg-gradient-to-t from-zinc-900 to-zinc-900/10 backdrop-opacity-20',
-        base: 'max-w-[1000px] h-[600px]',
+        base: 'max-w-[1000px] h-auto',
       }}
       motionProps={{
         variants: {
@@ -151,12 +153,13 @@ const EditBuilding: React.FC<RoomModalProps> = ({
                 <div className="flex py-2 px-3 justify-evenly flex-wrap md:flex-nowrap gap-4 outline-none border-0">
                   <Input
                     isClearable
+                    size="lg"
                     autoFocus
                     label="Tên cơ sở"
                     placeholder="Nhập tên cơ sở"
                     variant="bordered"
                     classNames={{
-                      label: 'text-black/50 dark:text-white/90 pb-2',
+                      label: 'text-black/50 dark:text-white/90 pb-2 text-lg',
                       input: 'border-0 focus:outline-none focus:border-none',
                       clearButton: 'pb-4',
                     }}
@@ -170,10 +173,11 @@ const EditBuilding: React.FC<RoomModalProps> = ({
                   />
                   <Input
                     label="Địa chỉ"
+                    size="lg"
                     placeholder="Nhập địa chỉ"
                     variant="bordered"
                     classNames={{
-                      label: 'text-black/50 dark:text-white/90 pb-2',
+                      label: 'text-black/50 dark:text-white/90 pb-2 text-lg',
                       input: 'border-0',
                     }}
                     defaultValue={
@@ -188,10 +192,11 @@ const EditBuilding: React.FC<RoomModalProps> = ({
                 <div className="flex flex-wrap py-2 px-3 md:flex-nowrap gap-4 w-[960px] justify-evenly">
                   <Input
                     label="Số điện thoại"
+                    size="lg"
                     placeholder="Nhập số điện thoại"
                     variant="bordered"
                     classNames={{
-                      label: 'text-black/50 dark:text-white/90 pb-2',
+                      label: 'text-black/50 dark:text-white/90 pb-2 text-lg',
                       input: 'border-0',
                     }}
                     defaultValue={
@@ -209,7 +214,7 @@ const EditBuilding: React.FC<RoomModalProps> = ({
                 <Button color="danger" variant="flat" onPress={onClose}>
                   Đóng
                 </Button>
-                <Button color="primary" type="submit">
+                <Button color="primary" type="submit" isDisabled={isDisable}>
                   {'Hoàn thành'}
                 </Button>
               </ModalFooter>

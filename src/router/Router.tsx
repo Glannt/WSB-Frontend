@@ -14,7 +14,7 @@ import ReCAPTCHA from 'react-google-recaptcha';
 
 import { Settings } from '@/components/Customer/Settings';
 import BookingHistory from '@/components/Customer/Setting/History/Booking/BookingHistory';
-import TransactionHistory from '@/components/Customer/Setting/History/Transaction/TransactionHistory';
+// import TransactionHistory from '@/components/Customer/Setting/History/Transaction/TransactionHistory';
 import MyWallet from '@/components/Customer/MyWallet';
 import PackageMembership from '@/components/Customer/PackageMembership';
 import ChangePassword from '@/components/ProfileEditor/ChangePassword';
@@ -61,6 +61,7 @@ import ReturnPage from '@/components/Test/ReturnPage';
 import { DashboardOwner } from '@/components/Owner/DashboardOwner';
 import ManageBuildings from '@/components/Owner/ManageBuildings';
 import ManageManager from '@/components/Owner/ManageManager';
+import { ManagerWelComeback } from '@/components/Manager/WelcombackManager';
 interface ProtectedRouteProps {
   requiredRoles?: Role[]; // Optional prop for role-based protection
 }
@@ -276,8 +277,12 @@ export const router = createBrowserRouter([
             element: <ManageManager />,
           },
           {
-            path: '',
+            path: 'dashboard',
             element: <AdminDashboard />,
+          },
+          {
+            path: '',
+            element: <ManagerWelComeback />,
           },
         ],
       },
