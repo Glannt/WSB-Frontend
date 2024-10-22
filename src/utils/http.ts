@@ -15,14 +15,14 @@ import {
 import { omit } from 'lodash';
 import { User } from '@/types/user.type';
 import { useCustomer } from '@/context/customer.context';
-
+import dotenv from 'dotenv';
 class Http {
   instance: AxiosInstance;
   private accessToken;
   constructor() {
     this.accessToken = getAccessTokenFromLS();
     this.instance = axios.create({
-      baseURL: 'http://localhost:8080',
+      baseURL: process.env.REACT_BACKEND_URL,
       timeout: 10000,
       headers: {
         'Content-Type': 'application/json',
