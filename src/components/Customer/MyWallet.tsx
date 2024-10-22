@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
 import { FaWallet, FaPlus } from 'react-icons/fa';
-import TransactionHistory from './Setting/History/Transaction/TransactionHistory';
+// import TransactionHistory from './Setting/History/Transaction/TransactionHistory';
 
 import { Button } from '@nextui-org/react';
 import { useNavigate } from 'react-router';
 import path from '@/constants/path';
-import { getWalletByUserId } from '@/service/customer.api';
+import {
+  getTransactionsByUserId,
+  getWalletByUserId,
+} from '@/service/customer.api';
 import { getProfileFromLS } from '@/utils/auth';
 import { useQuery } from '@tanstack/react-query';
-import { Wallet } from '@/types/customer.type';
+import { Transaction, Wallet } from '@/types/customer.type';
+import { TransactionHistory } from './Setting/History/Transaction/TransactionHistory';
 
 const MyWallet: React.FC = () => {
   const [error, setError] = useState<string>('');
@@ -29,6 +33,20 @@ const MyWallet: React.FC = () => {
   //     setIsAdding(false);
   //   }, 1500);
   // };
+
+  const getHistoryTransactionApi = async () => {
+    const response = await getTransactionsByUserId(profile.userId);
+    return response.data.data;
+  };
+
+  const {
+    data: transaction = [],
+    isLoading: IsTransactionLoading,
+    refetch,
+  } = useQuery<Transaction[]>({
+    queryKey: ['transaction'],
+    queryFn: getHistoryTransactionApi,
+  });
 
   const profile = getProfileFromLS();
   const getWalletByUserIdApi = async () => {
@@ -72,7 +90,10 @@ const MyWallet: React.FC = () => {
           </div>
         </div>
       </div>
-      <TransactionHistory />
+      <TransactionHistory
+        transaction={transaction}
+        refetchTransaction={refetch}
+      />
     </>
   );
 };

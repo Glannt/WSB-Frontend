@@ -62,7 +62,11 @@ import { useCustomer } from '@/context/customer.context';
 import path from '@/constants/path';
 import { NotEnoughMoneyInWallet } from '../Modal/Customer/NotEnoughMoneyWallet';
 import { getBookeddSlot, getBookedSlot } from '@/service/room.api';
-import { BookedSlots, SlotBooking } from '@/types/bookings';
+import {
+  BookedSlots,
+  CustomerOrderBooking,
+  SlotBooking,
+} from '@/types/bookings';
 interface create {
   id: number;
   name: string;
@@ -191,8 +195,6 @@ export const BookingRoomDetailMultiple = () => {
       dateCheckIn,
       dateCheckOut
     );
-    console.log('booked slot', response.data.data);
-
     return response.data.data.bookedSlots;
   };
 
@@ -284,6 +286,8 @@ export const BookingRoomDetailMultiple = () => {
     throw new Error('Bạn mất định dạng');
   } else {
   }
+  const [selectedBooking, setSelectedBooking] =
+    React.useState<CustomerOrderBooking | null>(null);
   const CreateBookingMutation = useMutation({
     mutationFn: (formData: FormData) => createBooking(formData),
   });
@@ -311,8 +315,20 @@ export const BookingRoomDetailMultiple = () => {
       formData.append(`items[${serviceId}]`, quantity.toString()); // This creates items[serviceId]=quantity
     });
     CreateBookingMutation.mutate(formData, {
-      onSuccess: () => {
+      onSuccess: (response) => {
         console.log('Booking created successfully');
+        if (response.data.data) {
+          setSelectedBooking({
+            bookingId: response.data.data.bookingId,
+            checkinDate: response.data.data.checkinDate,
+            checkoutDate: response.data.data.checkoutDate,
+            totalPrice: response.data.data.totalPrice,
+            status: response.data.data.status,
+            room: response.data.data.room, // Ensure this is of type Room
+            slots: response.data.data.slots, // Ensure this is of type SlotBooking[]
+            items: response.data.data.items,
+          });
+        }
         refetch();
         refetchRoomType();
         refetchServices();
@@ -323,6 +339,9 @@ export const BookingRoomDetailMultiple = () => {
       },
     });
   };
+  React.useEffect(() => {
+    console.log('Updated selected booking:', selectedBooking);
+  }, [selectedBooking]);
   const handleChangeDatePicker = (range: RangeValue<DateValue>) => {
     const start = range.start;
     const end = range.end;
@@ -351,11 +370,7 @@ export const BookingRoomDetailMultiple = () => {
     value: any
   ) => {
     setValue(field, value);
-    console.log(getValues());
   };
-  console.log(roomBuilding);
-
-  console.log(selectBuilding);
   const handleQuantityChange = (id: string, newQuantity: number) => {
     setQuantities((prevQuantities) => ({
       ...prevQuantities,
@@ -625,6 +640,7 @@ export const BookingRoomDetailMultiple = () => {
               <ConfirmBooking
                 showConfirmModal={isConfirmBooking}
                 toggleConfirmModal={toggleConfirmBooking}
+                selectedBooking={selectedBooking}
               />
             )}
             {isNotEnoughMoney && !isConfirmBooking && (

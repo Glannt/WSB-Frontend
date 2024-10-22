@@ -20,14 +20,16 @@ import { isAxiosUnprocessableEntityError } from '@/utils/utils';
 import { AppContext } from '@/context/app.context';
 import path from '@/constants/path';
 import { getProfileFromLS } from '@/utils/auth';
+import { useCustomer } from '@/context/customer.context';
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadings, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { setIsAuthenticated, setProfile, profile } = useContext(AppContext);
+  const { refetch, isLoading } = useCustomer();
   const {
     register,
     handleSubmit,
@@ -50,6 +52,7 @@ const Login = () => {
           setIsAuthenticated(true);
           // setProfile(getProfileFromLS());
           // console.log(profile);
+          refetch();
           navigate('/');
         },
         onError: (error) => {
@@ -187,11 +190,11 @@ const Login = () => {
           <button
             type="submit"
             className={` w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-bold text-white  hover:text-gray-300 bg-blackA11 hover:bg-blackA12 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
-              isLoading ? 'opacity-75 cursor-not-allowed' : ''
+              isLoadings ? 'opacity-75 cursor-not-allowed' : ''
             }`}
-            disabled={isLoading}
+            disabled={isLoadings}
           >
-            {isLoading ? (
+            {isLoadings ? (
               <>
                 <BiLoaderAlt className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" />
                 Đang xử lý...

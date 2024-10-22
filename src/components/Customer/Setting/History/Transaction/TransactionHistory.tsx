@@ -48,30 +48,6 @@ const statusOptions = [
   { name: 'Thất bại', uid: 'cancelled' },
 ];
 
-// const bookings = [
-//   {
-//     id: 1,
-//     date: '2021-10-10',
-//     amount: '$100',
-//     status: 'pending',
-//     actions: 'lorem ipsum.',
-//   },
-//   {
-//     id: 2,
-//     date: '2021-10-10',
-//     amount: '$110',
-//     status: 'completed',
-//     actions: 'abc xyz',
-//   },
-//   {
-//     id: 3,
-//     date: '2021-10-10',
-//     amount: '$100',
-//     status: 'completed',
-//     actions: 'abc xyz',
-//   },
-// ];
-
 const columns = [
   { name: 'ID', uid: 'id', sortable: true },
   { name: 'Thời gian', uid: 'date', sortable: true },
@@ -92,118 +68,21 @@ const statusColorMap: Record<string, ChipProps['color']> = {
 const INITIAL_VISIBLE_COLUMNS = ['id', 'date', 'amount', 'status', 'actions'];
 
 const profile = getProfileFromLS();
-export default function TransactionHistory() {
-  const getHistoryTransactionApi = async () => {
-    const response = await getTransactionsByUserId(profile.userId);
-    return response.data.data;
-  };
-
-  const { data: transaction = [] } = useQuery<Transaction[]>({
-    queryKey: ['transaction'],
-    queryFn: getHistoryTransactionApi,
+interface TransactionHistoryProps {
+  transaction: Transaction[];
+  refetchTransaction: () => void;
+}
+export const TransactionHistory: React.FC<TransactionHistoryProps> = ({
+  transaction,
+  refetchTransaction,
+}) => {
+  const [transactionList, setTransactionList] = React.useState<Transaction[]>(
+    []
+  );
+  React.useEffect(() => {
+    // refetchTransaction();
+    setTransactionList(transaction);
   });
-
-  // const fakedata = [
-  //   {
-  //     transactionId: 'abababa',
-  //     date: '2021-10-10',
-  //     amount: 100000,
-  //     status: 'completed',
-  //     type: 'Nạp tiền',
-  //   },
-  //   {
-  //     transactionId: 'abababa',
-  //     date: '2021-10-10',
-  //     amount: 100000,
-  //     status: 'completed',
-  //     type: 'Nạp tiền',
-  //   },
-  //   {
-  //     transactionId: 'abababa',
-  //     date: '2021-10-10',
-  //     amount: 100000,
-  //     status: 'completed',
-  //     type: 'Nạp tiền',
-  //   },
-  //   {
-  //     transactionId: 'abababa',
-  //     date: '2021-10-10',
-  //     amount: 100000,
-  //     status: 'completed',
-  //     type: 'Nạp tiền',
-  //   },
-  //   {
-  //     transactionId: 'abababa',
-  //     date: '2021-10-10',
-  //     amount: 100000,
-  //     status: 'completed',
-  //     type: 'Nạp tiền',
-  //   },
-  //   {
-  //     transactionId: 'abababa',
-  //     date: '2021-10-10',
-  //     amount: 100000,
-  //     status: 'completed',
-  //     type: 'Nạp tiền',
-  //   },
-  //   {
-  //     transactionId: 'abababa',
-  //     date: '2021-10-10',
-  //     amount: 100000,
-  //     status: 'completed',
-  //     type: 'Nạp tiền',
-  //   },
-  //   {
-  //     transactionId: 'abababa',
-  //     date: '2021-10-10',
-  //     amount: 100000,
-  //     status: 'completed',
-  //     type: 'Nạp tiền',
-  //   },
-  //   {
-  //     transactionId: 'abababa',
-  //     date: '2021-10-10',
-  //     amount: 100000,
-  //     status: 'completed',
-  //     type: 'Nạp tiền',
-  //   },
-  //   {
-  //     transactionId: 'abababa',
-  //     date: '2021-10-10',
-  //     amount: 100000,
-  //     status: 'completed',
-  //     type: 'Nạp tiền',
-  //   },
-  //   {
-  //     transactionId: 'abababa',
-  //     date: '2021-10-10',
-  //     amount: 100000,
-  //     status: 'completed',
-  //     type: 'Nạp tiền',
-  //   },
-  //   {
-  //     transactionId: 'abababa',
-  //     date: '2021-10-10',
-  //     amount: 100000,
-  //     status: 'completed',
-  //     type: 'Nạp tiền',
-  //   },
-  //   {
-  //     transactionId: 'abababa',
-  //     date: '2021-10-10',
-  //     amount: 200000,
-  //     status: 'completed',
-  //     type: 'Nạp tiền',
-  //   },
-  //   {
-  //     transactionId: 'abababa',
-  //     date: '2021-10-10',
-  //     amount: 100000,
-  //     status: 'completed',
-  //     type: 'Nạp tiền',
-  //   },
-  // ];
-  // console.log(transaction);
 
   const [filterValue, setFilterValue] = React.useState('');
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
@@ -232,7 +111,7 @@ export default function TransactionHistory() {
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
-    let filteredUsers = transaction;
+    let filteredUsers = transactionList;
 
     // if (hasSearchFilter) {
     //   filteredUsers = filteredUsers.filter((user) =>
@@ -253,7 +132,7 @@ export default function TransactionHistory() {
       return secondCreationTime - firstCreationTime; // Mới nhất trước
     });
     return filteredUsers;
-  }, [transaction, filterValue, statusFilter]);
+  }, [transactionList, filterValue, statusFilter]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -382,6 +261,7 @@ export default function TransactionHistory() {
         setSelectedKeys={setSelectedKeys}
         onSortChange={setSortDescriptor}
         // openModal={openModal}
+        // isLoading={IsTransactionLoading}
       />
       <TransactionPagination
         page={page}
@@ -392,4 +272,4 @@ export default function TransactionHistory() {
       />
     </div>
   );
-}
+};

@@ -23,14 +23,15 @@ import {
 } from '@nextui-org/react';
 import { useNavigate } from 'react-router';
 import path from '@/constants/path';
-import { getRoleName } from '@/utils/auth';
+import { getProfileFromLS, getRoleName } from '@/utils/auth';
 import { useCustomer } from '@/context/customer.context';
 import { FaWallet, FaPlus } from 'react-icons/fa';
 export const Header = (props: any) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate();
-  const roleName = getRoleName();
-  const { customer } = useCustomer();
+  const [roleName, setRoleName] = useState<string>('');
+  const profile = getProfileFromLS();
+  const { customer, isLoading } = useCustomer();
   const [wallet, setWallet] = useState<string>('0');
   const { setIsAuthenticated, isAuthenticated } = useContext(AppContext);
   const logoutMutation = useMutation({
@@ -41,6 +42,7 @@ export const Header = (props: any) => {
   });
   const handleLogout = () => {
     logoutMutation.mutate();
+
     // navigate('/');
   };
   useEffect(() => {
@@ -59,6 +61,11 @@ export const Header = (props: any) => {
     };
   }, []);
   useEffect(() => {
+    if (profile !== null) {
+      setRoleName(profile.roleName);
+    }
+  });
+  useEffect(() => {
     if (customer?.wallet?.amount !== undefined) {
       const formattedWallet = new Intl.NumberFormat('vi-VN').format(
         Number(customer.wallet.amount)
@@ -76,6 +83,11 @@ export const Header = (props: any) => {
   const roleNameRemoveQuotes = removeQuotes(roleName);
   return (
     <>
+      {isLoading && (
+        <>
+          <div>Loadings</div>
+        </>
+      )}
       <div className="mx-auto flex justify-between items-center shadow-lg shadow-gray-300">
         <Navbar
           className="h-24"
@@ -194,6 +206,7 @@ export const Header = (props: any) => {
                 }}
               >
                 <DropdownItem
+                  showDivider
                   key="workspaces"
                   description="Nơi làm việc"
                   className="cursor-pointer"
@@ -203,6 +216,7 @@ export const Header = (props: any) => {
                   Phòng làm việc
                 </DropdownItem>
                 <DropdownItem
+                  showDivider
                   key="amenities"
                   description="Thiết bị đi kèm"
                   className="cursor-pointer"
@@ -212,9 +226,10 @@ export const Header = (props: any) => {
                   Thiết bị
                 </DropdownItem>
                 <DropdownItem
+                  showDivider
                   key="food"
                   description="Thức ăn đi kèm"
-                  className="cursor-pointer text-start"
+                  className="cursor-pointer text-start text-lg"
                   onClick={() => navigate(path.foods)}
                   // startContent={icons.activity}
                 >
@@ -346,7 +361,6 @@ export const Header = (props: any) => {
                     >
                       <span className="text-gray-800">Ví:</span>
                     </DropdownItem>
-                    {/* <Divider className="p-1" /> */}
                     <DropdownItem
                       showDivider
                       key="settings"
