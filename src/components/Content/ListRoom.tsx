@@ -5,6 +5,8 @@ import { getAllRoom } from '@/service/room.api';
 import { useQuery } from '@tanstack/react-query';
 import { ListRooms } from '@/types/roomOverview';
 import { useNavigate } from 'react-router';
+import { buildingCustomer } from '@/types/building.type';
+import { getAllBuiding } from '@/service/customer.api';
 
 export const ListRoom = () => {
   const getAllRoomApi = async () => {
@@ -38,10 +40,23 @@ export const ListRoom = () => {
   // );
   const [priceRange, setPriceRange] = useState([0, 20000000]);
 
-  const buildingOptions = [
-    { key: 'BD001', label: 'FPT WorkSpace' },
-    { key: 'BD002', label: 'FPT NVH' },
-  ];
+  const getAllBuidingApi = async () => {
+    const response = await getAllBuiding();
+    return response.data.data;
+  };
+
+  const { data: buildings, isLoading: isLoadingBuildings } = useQuery<
+    buildingCustomer[]
+  >({
+    queryKey: ['buildings'],
+    queryFn: getAllBuidingApi,
+  });
+
+  const buildingOptions =
+    buildings?.map((building) => ({
+      key: building.buildingId,
+      label: building.buildingName,
+    })) || [];
 
   const roomTypeOptions = [
     { key: 'Văn phòng riêng', label: 'Văn phòng riêng' },
