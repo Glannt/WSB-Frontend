@@ -617,7 +617,7 @@ export const BookingRoomDetailMultiple = () => {
               disabled={!policyAgreed || !isSelectedDate || !selectedTimeSlot}
               onClick={toggleConfirmBooking}
             >
-              <FaCheck className="inline-block mr-2 mb-1" /> Xác nhận
+              <FaCheck className="inline-block mr-2 mb-1" /> Đặt phòng
             </button>
           </div>
           {isConfirmBooking && !isNotEnoughMoney && (

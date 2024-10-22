@@ -33,6 +33,7 @@ import { SidebarItem } from '../sidebar/sidebar-item';
 import { SettingsIcon } from '../Icons/sidebar/settings-icon';
 import { AccountsIcon } from '../Icons/sidebar/accounts-icon';
 import { CollapseDropdownItems } from '../sidebar/collapse-dropdown-items';
+import ThemeSwitcher from '../ModeToggle/SwitchTheme';
 export const Header = (props: any) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate();
@@ -399,7 +400,7 @@ export const Header = (props: any) => {
                         </span>
                       }
                     >
-                      <span className="text-gray-800 text-lg">Ví:</span>
+                      <span className=" text-lg">Ví:</span>
                     </DropdownItem>
                     <DropdownItem
                       showDivider
@@ -424,6 +425,9 @@ export const Header = (props: any) => {
                       color="danger"
                       startContent={<span className="text-lg">Đăng xuất</span>}
                     ></DropdownItem>
+                    <DropdownItem closeOnSelect={false}>
+                      <ThemeSwitcher />
+                    </DropdownItem>
                   </DropdownSection>
                 </DropdownMenu>
               </Dropdown>
