@@ -97,6 +97,10 @@ export const BookingRoomDetailMultiple = () => {
   const [isDateSelected, setIsDateSelected] = useState<boolean>(false);
   const navigate = useNavigate();
 
+  const confirmBooking = () => {
+    setIsConfirmBooking(!isConfirmBooking);
+  };
+
   const toggleConfirmBooking = () => {
     if (customer?.wallet.amount === undefined) {
       navigate(path.home);
@@ -109,13 +113,30 @@ export const BookingRoomDetailMultiple = () => {
       setIsConfirmBooking(!isConfirmBooking);
     }
   };
-  const buildingOptions = [
-    { key: 'BD001', label: 'FPT WorkSpace' },
-    { key: 'BD002', label: 'FPT NVH' },
-  ];
+
+  const getAllBuidingApi = async () => {
+    const response = await getAllBuiding();
+    return response.data.data;
+  };
+
+  const { data: buildings, isLoading: isLoadingBuildings } = useQuery<
+    buildingCustomer[]
+  >({
+    queryKey: ['buildings'],
+    queryFn: getAllBuidingApi,
+  });
+
+  const buildingOptions =
+    buildings?.map((building) => ({
+      key: building.buildingId,
+      label: building.buildingName,
+    })) || [];
+
   const selectBuilding = buildingOptions.filter(
     (building) => building.label === roomBuilding
   );
+  // console.log('selectBuilding', selectBuilding);
+
   const selectedBuildingKey =
     selectBuilding.length > 0 ? selectBuilding[0].key : null;
   const getRoomDetailApi = async () => {
@@ -125,6 +146,7 @@ export const BookingRoomDetailMultiple = () => {
     const response = await getDetailRoom(roomId);
     return response.data.data;
   };
+
   const { data: roomDetail, isLoading } = useQuery<ListRooms>({
     queryKey: ['roomDetail', roomId],
     queryFn: getRoomDetailApi,
@@ -302,6 +324,10 @@ export const BookingRoomDetailMultiple = () => {
     }
     formData.append('buildingId', data.buildingId);
 
+    console.log('selectedBuildingKey nè', selectedBuildingKey);
+
+    console.log('buildingId nè', data.buildingId);
+
     formData.append('roomId', roomId);
     formData.append('checkinDate', data.checkinDate);
     formData.append('checkoutDate', data.checkoutDate);
@@ -314,6 +340,7 @@ export const BookingRoomDetailMultiple = () => {
     Object.entries(initialQuantities).forEach(([serviceId, quantity]) => {
       formData.append(`items[${serviceId}]`, quantity.toString()); // This creates items[serviceId]=quantity
     });
+
     CreateBookingMutation.mutate(formData, {
       onSuccess: (response) => {
         console.log('Booking created successfully');
@@ -339,9 +366,15 @@ export const BookingRoomDetailMultiple = () => {
       },
     });
   };
-  React.useEffect(() => {
-    console.log('Updated selected booking:', selectedBooking);
-  }, [selectedBooking]);
+
+
+  const data = getValues(); // Use getValues() to get the form data
+  const details = {
+    ...data,
+    roomId: roomId,
+  };
+
+
   const handleChangeDatePicker = (range: RangeValue<DateValue>) => {
     const start = range.start;
     const end = range.end;
@@ -365,6 +398,8 @@ export const BookingRoomDetailMultiple = () => {
       handleCreateBooking(data, refetch);
     }
   };
+  setValue('buildingId', selectedBuildingKey || '');
+
   const handleFieldChange = (
     field: keyof SchemacreateMultiBooking,
     value: any
@@ -496,9 +531,7 @@ export const BookingRoomDetailMultiple = () => {
                       isReadOnly
                       value={roomBuilding}
                       color="primary"
-                      onChange={() =>
-                        handleFieldChange('buildingId', selectedBuildingKey)
-                      }
+                      // onChange={() => handleFieldChange('buildingId', selectedBuildingKey)}
                       className="text-2xl"
                     />
                   </div>
@@ -638,9 +671,12 @@ export const BookingRoomDetailMultiple = () => {
             </div>
             {isConfirmBooking && !isNotEnoughMoney && (
               <ConfirmBooking
+                totals={totals}
+                initialQuantities={initialQuantities}
+                details={details}
                 showConfirmModal={isConfirmBooking}
                 toggleConfirmModal={toggleConfirmBooking}
-                selectedBooking={selectedBooking}
+               // selectedBooking={selectedBooking}
               />
             )}
             {isNotEnoughMoney && !isConfirmBooking && (

@@ -76,6 +76,14 @@ export const schemaUpdateRoom = Yup.object().shape({
 
 export type SchemaUpdateRoom = Yup.InferType<typeof schemaUpdateRoom>;
 
+export const schemaUpdateBuilding = Yup.object().shape({
+  buildingName: Yup.string().required('Tên tòa nhà là bắt buộc'),
+  buildingLocation: Yup.string().required('Địa chỉ là bắt buộc'),
+  phoneContact: Yup.string().required('Liên hệ là bắt buộc'),
+});
+
+export type SchemaUpdateBuilding = Yup.InferType<typeof schemaUpdateBuilding>;
+
 export const schemaAddStaff = Yup.object().shape({
   fullName: Yup.string()
     .required('Họ tên là bắt buộc')
@@ -234,6 +242,7 @@ export const schemaCancelBooking = Yup.object().shape({
 
 export type SchemaCancelBooking = Yup.InferType<typeof schemaCancelBooking>;
 
+
 export const updateOrderStatusSchema = Yup.object().shape({
   bookingId: Yup.string()
     .required('Booking ID is required') // Kiểm tra chuỗi bookingId
@@ -245,3 +254,21 @@ export const updateOrderStatusSchema = Yup.object().shape({
 export type SchemaUpdateOrderStatusSchema = Yup.InferType<
   typeof updateOrderStatusSchema
 >;
+
+export const schemaCreateAccount = Yup.object().shape({
+  userName: Yup.string()
+    .required('Username là bắt buộc')
+    .min(5, 'Độ dài từ 5 đến 50 ký tự')
+    .max(50, 'Độ dài từ 5 đến 50 ký tự'),
+  password: Yup.string()
+    .required('Mật khẩu là bắt buộc')
+    .min(6, 'Mật khẩu phải có ít nhất 6 ký tự'),
+  confirm_password: Yup.string()
+    .required('Xác nhận mật khẩu là bắt buộc')
+    .oneOf([Yup.ref('password')], 'Mật khẩu không khớp'),
+  role: Yup.string().default('MANAGER'),
+  buildingId: Yup.string().required('ID tòa nhà là bắt buộc'),
+});
+
+export type SchemaCreateAccount = Yup.InferType<typeof schemaCreateAccount>;
+

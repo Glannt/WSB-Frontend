@@ -1,3 +1,7 @@
+import { useCustomer } from '@/context/customer.context';
+import { getService } from '@/service/customer.api';
+import { Details, InitialQuantities } from '@/types/room.type';
+import { Services } from '@/types/service.type';
 import {
   CustomerOrderBooking,
   CustomerOrderBookingHistory,
@@ -10,92 +14,146 @@ import {
   ModalFooter,
   ModalHeader,
 } from '@nextui-org/react';
+import { useQuery } from '@tanstack/react-query';
 
 interface ConfirmBookingProps {
+  totals: number;
+  initialQuantities: InitialQuantities;
+  details: Details;
   showConfirmModal: boolean;
   toggleConfirmModal: () => void;
-  selectedBooking: CustomerOrderBooking | null | undefined;
+  //selectedBooking: CustomerOrderBooking | null | undefined;
 }
 
 export const ConfirmBooking: React.FC<ConfirmBookingProps> = ({
+  totals,
+  initialQuantities,
+  details,
   showConfirmModal,
   toggleConfirmModal,
-  selectedBooking,
+  //selectedBooking,
 }) => {
-  console.log(selectedBooking);
-  const newBooking = selectedBooking
-    ? {
-        bookingId: selectedBooking.bookingId,
-        checkinDate: selectedBooking.checkinDate,
-        checkoutDate: selectedBooking.checkoutDate,
-        totalPrice: selectedBooking.totalPrice,
-        status: selectedBooking.status,
-        room: selectedBooking.room, // Ensure this is of type Room
-        slots: selectedBooking.slots, // Ensure this is of type SlotBooking[]
-        items: selectedBooking.items, // Ensure this is of type ServiceItems
-      }
-    : null;
+
+  const { customer, refetch } = useCustomer();
+
+  console.log('chi tiếttttt' + details);
+  console.log(initialQuantities);
+
+  const formatted = new Intl.NumberFormat('vi-VN').format(Number(totals));
+  const formattedCurrent = new Intl.NumberFormat('vi-VN').format(
+    Number(customer?.wallet.amount)
+  );
+  const formattedRemaining = new Intl.NumberFormat('vi-VN').format(
+    Number((customer?.wallet?.amount ?? 0) - totals)
+  );
+
+  const slot = [
+    {
+      label: '7:00 - 10:00',
+      value: 1,
+    },
+    {
+      label: '11:00 - 14:00',
+      value: 2,
+    },
+    {
+      label: '15:00 - 18:00',
+      value: 3,
+    },
+    {
+      label: '19:00 - 22:00',
+      value: 4,
+    },
+  ];
+
+  const getServiceApi = async () => {
+    const response = await getService();
+    return response.data.data;
+  };
+
+  const {
+    data: services = [],
+    isLoading: isLoadingServices,
+    refetch: refetchServices,
+  } = useQuery<Services[]>({
+    queryKey: ['services'],
+    queryFn: getServiceApi,
+  });
+
+
   return (
     <>
       {' '}
       {showConfirmModal && (
-        <Modal isOpen={showConfirmModal} className="h-auto w-[500px]">
+
+        <Modal
+          hideCloseButton={true}
+          isOpen={showConfirmModal}
+          className="h-auto w-[500px]"
+        >
+
           <ModalContent>
             {(onClose) => (
               <>
                 <ModalHeader>Xác nhận đặt phòng</ModalHeader>
 
                 <ModalBody>
-                  Bạn đã đặt phòng thành công
-                  <h3>Thông tin đặt phòng</h3>
-                  {newBooking ? (
-                    <ul>
-                      <li>
-                        <strong>Cơ sở:</strong> {newBooking.bookingId}
-                      </li>
-                      <li>
-                        <strong>Ngày nhận phòng:</strong>{' '}
-                        {newBooking.checkinDate}
-                      </li>
-                      <li>
-                        <strong>Ngày trả phòng:</strong>{' '}
-                        {newBooking.checkoutDate}
-                      </li>
-                      <li>
-                        <strong>Tổng giá:</strong> {newBooking.totalPrice} VND
-                      </li>
-                      <li>
-                        <strong>Trạng thái:</strong> {newBooking.status}
-                      </li>
-                      <li>
-                        <strong>Phòng:</strong> {newBooking.room.roomName}
-                      </li>
-                      <li>
-                        <strong>Dịch vụ đã chọn:</strong>
-                        <ul>
-                          {Object.entries(newBooking.items).map(
-                            ([serviceId, quantity]) => (
-                              <li key={serviceId}>
-                                {serviceId} (x{quantity})
-                              </li>
-                            )
-                          )}
-                        </ul>
-                      </li>
-                      <li>
-                        <strong>Các khung giờ đã chọn:</strong>
-                        <ul>
-                          {newBooking.slots.map((slot) => (
-                            <li key={slot.timeSlotId}>
-                              {slot.timeStart} - {slot.timeEnd}
-                            </li>
-                          ))}
-                        </ul>
-                      </li>
-                    </ul>
-                  ) : (
-                    <p>Không có thông tin đặt phòng.</p>
-                  )}
+                  <p className="flex">
+                    <span className="mr-24">
+                      <strong>Phòng:</strong> {details?.roomId}
+                    </span>
+                    <span>
+                      <strong>Cơ sở:</strong> {details.buildingId}
+                    </span>
+                  </p>
+                  <p>
+                    {details?.checkinDate === details?.checkoutDate ? (
+                      <>
+                        <strong>Thời gian:</strong> {details?.checkinDate}
+                      </>
+                    ) : (
+                      <>
+                        <strong>Thời gian:</strong> {details?.checkinDate} -{' '}
+                        {details?.checkoutDate}
+                      </>
+                    )}
+                  </p>
+                  <div className="flex">
+                    <p className="mr-24">
+                      <strong>Slot:</strong>{' '}
+                      {slot.map((item) => (
+                        <p key={item.value}>
+                          {(details?.slots ?? []).includes(item.value)
+                            ? item.label
+                            : ''}
+                        </p>
+                      ))}
+                    </p>
+                    <p>
+                      <strong>Dịch vụ:</strong>{' '}
+                      {Object.entries(initialQuantities).map(([key, value]) => {
+                        const serviceName =
+                          services.find((service) => service.serviceId == key)
+                            ?.serviceName || key;
+                        return (
+                          <p key={key}>
+                            {serviceName}: {value}
+                          </p>
+                        );
+                      })}
+                    </p>
+                  </div>
+                  <hr />
+                  <p>
+                    <strong>Số dư hiện tại:</strong> {formattedCurrent} VND
+                  </p>
+                  <p>
+                    <strong>Tổng giá:</strong> {formatted} VND
+                  </p>
+                  <p>
+                    <strong>Số dư còn lại</strong> {formattedRemaining} VND
+                  </p>
+
                 </ModalBody>
 
                 <ModalFooter className="flex justify-between">
