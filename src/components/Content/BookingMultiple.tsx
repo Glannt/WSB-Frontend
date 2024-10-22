@@ -310,71 +310,59 @@ export const BookingRoomDetailMultiple = () => {
   }
   const [selectedBooking, setSelectedBooking] =
     React.useState<CustomerOrderBooking | null>(null);
-  const CreateBookingMutation = useMutation({
-    mutationFn: (formData: FormData) => createBooking(formData),
-  });
+  // const CreateBookingMutation = useMutation({
+  //   mutationFn: (formData: FormData) => createBooking(formData),
+  // });
 
-  const handleCreateBooking = (
-    data: SchemacreateMultiBooking,
-    refetch: () => void
-  ) => {
-    const formData = new FormData();
-    if (roomId === undefined) {
-      return Promise.reject(new Error('Room ID is undefined'));
-    }
-    formData.append('buildingId', data.buildingId);
+  // const handleCreateBooking = (
+  //   data: SchemacreateMultiBooking,
+  //   refetch: () => void
+  // ) => {
+  //   const formData = new FormData();
+  //   if (roomId === undefined) {
+  //     return Promise.reject(new Error('Room ID is undefined'));
+  //   }
+  //   formData.append('buildingId', data.buildingId);
 
-    console.log('selectedBuildingKey nè', selectedBuildingKey);
+  //   console.log('selectedBuildingKey nè', selectedBuildingKey);
 
-    console.log('buildingId nè', data.buildingId);
+  //   console.log('buildingId nè', data.buildingId);
 
-    formData.append('roomId', roomId);
-    formData.append('checkinDate', data.checkinDate);
-    formData.append('checkoutDate', data.checkoutDate);
-    // Append slots array (handle as multiple values)
-    if (data.slots && data.slots.length > 0) {
-      data.slots.forEach((slot, index) => {
-        formData.append(`slots`, slot.toString());
-      });
-    }
-    Object.entries(initialQuantities).forEach(([serviceId, quantity]) => {
-      formData.append(`items[${serviceId}]`, quantity.toString()); // This creates items[serviceId]=quantity
-    });
+  //   formData.append('roomId', roomId);
+  //   formData.append('checkinDate', data.checkinDate);
+  //   formData.append('checkoutDate', data.checkoutDate);
+  //   // Append slots array (handle as multiple values)
+  //   if (data.slots && data.slots.length > 0) {
+  //     data.slots.forEach((slot, index) => {
+  //       formData.append(`slots`, slot.toString());
+  //     });
+  //   }
+  //   Object.entries(initialQuantities).forEach(([serviceId, quantity]) => {
+  //     formData.append(`items[${serviceId}]`, quantity.toString()); // This creates items[serviceId]=quantity
+  //   });
 
-    CreateBookingMutation.mutate(formData, {
-      onSuccess: (response) => {
-        console.log('Booking created successfully');
-        if (response.data.data) {
-          setSelectedBooking({
-            bookingId: response.data.data.bookingId,
-            checkinDate: response.data.data.checkinDate,
-            checkoutDate: response.data.data.checkoutDate,
-            totalPrice: response.data.data.totalPrice,
-            status: response.data.data.status,
-            room: response.data.data.room, // Ensure this is of type Room
-            slots: response.data.data.slots, // Ensure this is of type SlotBooking[]
-            items: response.data.data.items,
-          });
-        }
-        refetch();
-        refetchRoomType();
-        refetchServices();
-        refetchSlots();
-      },
-      onError: (error) => {
-        console.error('Error creating booking:', error);
-      },
-    });
-  };
+  //   CreateBookingMutation.mutate(formData, {
+  //     onSuccess: (response) => {
+  //       console.log('Booking created successfully');
 
+  //       refetch();
+  //       refetchRoomType();
+  //       refetchServices();
+  //       refetchSlots();
+  //     },
+  //     onError: (error) => {
+  //       console.error('Error creating booking:', error);
+  //     },
+  //   });
+  // };
 
   const data = getValues(); // Use getValues() to get the form data
+
   const details = {
     ...data,
     roomId: roomId,
   };
-
-
+  console.log('details', details);
   const handleChangeDatePicker = (range: RangeValue<DateValue>) => {
     const start = range.start;
     const end = range.end;
@@ -386,18 +374,18 @@ export const BookingRoomDetailMultiple = () => {
       setIsDateSelected(true);
     }
   };
-  const onSubmit = (data: SchemacreateMultiBooking) => {
-    const totalBookingMoney = calculateTotalPrice();
-    if (
-      customer.wallet.amount === undefined ||
-      customer.wallet.amount < totalBookingMoney
-    ) {
-      setIsNotEnoughMoney(true);
-      // return;
-    } else {
-      handleCreateBooking(data, refetch);
-    }
-  };
+  // const onSubmit = (data: SchemacreateMultiBooking) => {
+  //   const totalBookingMoney = calculateTotalPrice();
+  //   if (
+  //     customer.wallet.amount === undefined ||
+  //     customer.wallet.amount < totalBookingMoney
+  //   ) {
+  //     setIsNotEnoughMoney(true);
+  //     // return;
+  //   } else {
+  //     handleCreateBooking(data, refetch);
+  //   }
+  // };
   setValue('buildingId', selectedBuildingKey || '');
 
   const handleFieldChange = (
@@ -484,208 +472,177 @@ export const BookingRoomDetailMultiple = () => {
         <div className="w-1/2 p-8 overflow-y-auto">
           <h2 className="text-3xl font-bold mb-6">{roomDetail?.roomName}</h2>
           {/* Form */}
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div>
-              <div className="mb-6">
-                <div className="relative">
-                  <div className="w-full flex flex-row flex-wrap gap-4">
-                    {/* <Select
-                      {...register('buildingId')}
-                      value={selectedBase}
-                      onSelectionChange={(keys) => {
-                        const newBuildingId = Array.from(keys).join('');
-                        handleFieldChange('buildingId', newBuildingId);
-                        setIsSelectedBuilding(true);
-                        setSelectedBase(newBuildingId);
-                      }}
-                      key="default"
-                      color="primary"
-                      label="Cơ sở"
-                      placeholder="Chọn cơ sở..."
-                      className="w-full rounded-md appearance-none"
-                      endContent={
-                        <div className="pb-3">
-                          <Building2Icon className="text-blue-200" />
-                        </div>
-                      }
-                    >
-                      {buildings && buildings.length > 0 ? (
-                        buildings.map((building) => (
-                          <SelectItem
-                            key={building.buildingId}
-                            value={building.buildingName}
-                          >
-                            {building.buildingName}
-                          </SelectItem>
-                        ))
-                      ) : (
-                        <SelectItem key="no-buildings">
-                          No buildings available
-                        </SelectItem>
-                      )}
-                    </Select> */}
-                    <Input
-                      {...register('buildingId')}
-                      label="Cơ sở"
-                      size="md"
-                      isReadOnly
-                      value={roomBuilding}
-                      color="primary"
-                      // onChange={() => handleFieldChange('buildingId', selectedBuildingKey)}
-                      className="text-2xl"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="mb-6">
-                <DateRangePicker
-                  label="Ngày đặt"
-                  color="primary"
-                  // isDisabled={getValues().buildingId ? false : true}
-                  minValue={parseDate(format(selectedDate, 'yyyy-MM-dd'))}
-                  onChange={(range) => {
-                    handleChangeDatePicker(range);
-                    setIsSelectedDate(true);
-                    calculateTotalPrice();
-                  }}
-                  className="w-full"
-                  errorMessage={
-                    errors.checkinDate?.message ? '' : 'lỗi pick date'
-                  }
-                />
-              </div>
-              <div className="mb-6">
+          {/* <form onSubmit={handleSubmit(onSubmit)}> */}
+          <div>
+            <div className="mb-6">
+              <div className="relative">
                 <div className="w-full flex flex-row flex-wrap gap-4">
-                  <Controller
-                    control={control}
-                    name="slots"
-                    render={({ field: { onChange, value } }) => (
-                      <Select
-                        isDisabled={!isDateSelected}
-                        value={selectedTimeSlot}
-                        onChange={handleTimeSlotChange}
-                        onSelectionChange={(keys) => {
-                          // const newTimeSlot = Array.from(keys);
-                          // handleFieldChange('slots', newTimeSlot.map(Number));
-                          const newTimeSlot = Array.from(keys).map((key) =>
-                            Number(key)
-                          );
-                          handleFieldChange('slots', newTimeSlot); // Send the array of numbers
-                          calculateTotalPrice();
-                        }}
-                        errorMessage={
-                          errors.slots?.message ? '' : 'Lỗi select slot'
-                        }
-                        key="default"
-                        color="primary"
-                        label="Thời gian"
-                        placeholder="Chọn thời gian..."
-                        selectionMode="multiple"
-                        className="w-full rounded-md appearance-none"
-                      >
-                        {timeSlots.map((slot) => (
-                          <SelectItem
-                            isDisabled={largestSlotsArray.includes(slot.id)}
-                            key={slot.id}
-                          >
-                            {slot.value}
-                          </SelectItem>
-                        ))}
-                      </Select>
-                    )}
+                  <Input
+                    {...register('buildingId')}
+                    label="Cơ sở"
+                    size="md"
+                    isReadOnly
+                    value={roomBuilding}
+                    color="primary"
+                    // onChange={() => handleFieldChange('buildingId', selectedBuildingKey)}
+                    className="text-2xl"
                   />
                 </div>
               </div>
-
-              <div className="mb-6">
-                <p className="text-xl font-semibold">
-                  Giá ban đầu: ${roomPrice}
-                </p>
-              </div>
-
-              <Button
-                className="bg-violet-300 shadow-lg font-bold text-black px-4 py-2 rounded-md hover:bg-violet-500 hover:text-blackA12 transition duration-300 flex items-center mb-6"
-                onPress={toggleServiceModal}
-              >
-                <FaPlus className="mr-2" /> Thêm dịch vụ
-              </Button>
-              <ServiceModal
-                isOpen={showServiceModal}
-                onOpenChange={setShowServiceModal}
-                services={services}
-                quantities={quantities}
-                selectedServices={selectedServices}
-                handleServiceSelection={handleServiceSelection}
-                handleQuantityChange={handleQuantityChange}
-                calculateTotalPrice={calculateTotalPrice}
-              />
-
-              <div className="mb-6">
-                <p className="text-2xl font-bold">Tổng đơn: ${totals}</p>
-              </div>
-
-              <div className="mb-6 flex items-center">
-                <input
-                  type="checkbox"
-                  id="policy"
-                  checked={policyAgreed}
-                  onChange={() => setPolicyAgreed(!policyAgreed)}
-                  className="mr-2 rounded-sm"
-                />
-                <label htmlFor="policy" className="text-sm text-gray-700">
-                  Tôi đồng ý với{' '}
-                  <button
-                    onClick={togglePolicyModal}
-                    className="text-blue-500 underline"
-                  >
-                    Chính sách đặt phòng
-                  </button>
-                </label>
-              </div>
-              {showPolicyModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                  <div className="bg-white p-8 rounded-lg max-w-2xl w-full">
-                    <PolicyBooking />
-                    <Button
-                      variant="shadow"
-                      color="success"
-                      onClick={togglePolicyModal}
-                      className=" text-white px-4 py-2 rounded-md  transition duration-300 mt-5"
-                    >
-                      Close
-                    </Button>
-                  </div>
-                </div>
-              )}
-              <button
-                type="submit"
-                className={`w-full bg-blackA10 text-white px-6 py-3 rounded-md text-lg font-semibold hover:bg-blackA12 hover:scale-105 transition duration-300 ${
-                  (!policyAgreed || !isSelectedDate || !selectedTimeSlot) &&
-                  'opacity-50 cursor-not-allowed text-center'
-                }`}
-                disabled={!policyAgreed || !isSelectedDate || !selectedTimeSlot}
-                onClick={toggleConfirmBooking}
-              >
-                <FaCheck className="inline-block mr-2 mb-1" /> Xác nhận
-              </button>
             </div>
-            {isConfirmBooking && !isNotEnoughMoney && (
-              <ConfirmBooking
-                totals={totals}
-                initialQuantities={initialQuantities}
-                details={details}
-                showConfirmModal={isConfirmBooking}
-                toggleConfirmModal={toggleConfirmBooking}
-               // selectedBooking={selectedBooking}
+            <div className="mb-6">
+              <DateRangePicker
+                label="Ngày đặt"
+                color="primary"
+                // isDisabled={getValues().buildingId ? false : true}
+                minValue={parseDate(format(selectedDate, 'yyyy-MM-dd'))}
+                onChange={(range) => {
+                  handleChangeDatePicker(range);
+                  setIsSelectedDate(true);
+                  calculateTotalPrice();
+                }}
+                className="w-full"
+                errorMessage={
+                  errors.checkinDate?.message ? '' : 'lỗi pick date'
+                }
               />
-            )}
-            {isNotEnoughMoney && !isConfirmBooking && (
-              <NotEnoughMoneyInWallet
-                showConfirmModal={isNotEnoughMoney}
-                toggleConfirmModal={toggleConfirmBooking}
+            </div>
+            <div className="mb-6">
+              <div className="w-full flex flex-row flex-wrap gap-4">
+                <Controller
+                  control={control}
+                  name="slots"
+                  render={({ field: { onChange, value } }) => (
+                    <Select
+                      isDisabled={!isDateSelected}
+                      value={selectedTimeSlot}
+                      onChange={handleTimeSlotChange}
+                      onSelectionChange={(keys) => {
+                        // const newTimeSlot = Array.from(keys);
+                        // handleFieldChange('slots', newTimeSlot.map(Number));
+                        const newTimeSlot = Array.from(keys).map((key) =>
+                          Number(key)
+                        );
+                        handleFieldChange('slots', newTimeSlot); // Send the array of numbers
+                        calculateTotalPrice();
+                      }}
+                      errorMessage={
+                        errors.slots?.message ? '' : 'Lỗi select slot'
+                      }
+                      key="default"
+                      color="primary"
+                      label="Thời gian"
+                      placeholder="Chọn thời gian..."
+                      selectionMode="multiple"
+                      className="w-full rounded-md appearance-none"
+                    >
+                      {timeSlots.map((slot) => (
+                        <SelectItem
+                          isDisabled={largestSlotsArray.includes(slot.id)}
+                          key={slot.id}
+                        >
+                          {slot.value}
+                        </SelectItem>
+                      ))}
+                    </Select>
+                  )}
+                />
+              </div>
+            </div>
+
+            <div className="mb-6">
+              <p className="text-xl font-semibold">Giá ban đầu: ${roomPrice}</p>
+            </div>
+
+            <Button
+              className="bg-violet-300 shadow-lg font-bold text-black px-4 py-2 rounded-md hover:bg-violet-500 hover:text-blackA12 transition duration-300 flex items-center mb-6"
+              onPress={toggleServiceModal}
+            >
+              <FaPlus className="mr-2" /> Thêm dịch vụ
+            </Button>
+            <ServiceModal
+              isOpen={showServiceModal}
+              onOpenChange={setShowServiceModal}
+              services={services}
+              quantities={quantities}
+              selectedServices={selectedServices}
+              handleServiceSelection={handleServiceSelection}
+              handleQuantityChange={handleQuantityChange}
+              calculateTotalPrice={calculateTotalPrice}
+            />
+
+            <div className="mb-6">
+              <p className="text-2xl font-bold">Tổng đơn: ${totals}</p>
+            </div>
+
+            <div className="mb-6 flex items-center">
+              <input
+                type="checkbox"
+                id="policy"
+                checked={policyAgreed}
+                onChange={() => setPolicyAgreed(!policyAgreed)}
+                className="mr-2 rounded-sm"
               />
+              <label htmlFor="policy" className="text-sm text-gray-700">
+                Tôi đồng ý với{' '}
+                <button
+                  onClick={togglePolicyModal}
+                  className="text-blue-500 underline"
+                >
+                  Chính sách đặt phòng
+                </button>
+              </label>
+            </div>
+            {showPolicyModal && (
+              <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                <div className="bg-white p-8 rounded-lg max-w-2xl w-full">
+                  <PolicyBooking />
+                  <Button
+                    variant="shadow"
+                    color="success"
+                    onClick={togglePolicyModal}
+                    className=" text-white px-4 py-2 rounded-md  transition duration-300 mt-5"
+                  >
+                    Close
+                  </Button>
+                </div>
+              </div>
             )}
-          </form>
+            <button
+              // type="submit"
+              className={`w-full bg-blackA10 text-white px-6 py-3 rounded-md text-lg font-semibold hover:bg-blackA12 hover:scale-105 transition duration-300 ${
+                (!policyAgreed || !isSelectedDate || !selectedTimeSlot) &&
+                'opacity-50 cursor-not-allowed text-center'
+              }`}
+              disabled={!policyAgreed || !isSelectedDate || !selectedTimeSlot}
+              onClick={toggleConfirmBooking}
+            >
+              <FaCheck className="inline-block mr-2 mb-1" /> Xác nhận
+            </button>
+          </div>
+          {isConfirmBooking && !isNotEnoughMoney && (
+            <ConfirmBooking
+              totals={totals}
+              initialQuantities={initialQuantities}
+              details={details}
+              showConfirmModal={isConfirmBooking}
+              toggleConfirmModal={toggleConfirmBooking}
+              // onSubmit={onSubmit}
+              setIsNotEnoughMoney={setIsNotEnoughMoney}
+              handleSubmit={handleSubmit}
+              refetchRoomType={refetchRoomType}
+              refetchServices={refetchServices}
+              refetchSlots={refetchSlots}
+              // selectedBooking={selectedBooking}
+            />
+          )}
+          {isNotEnoughMoney && !isConfirmBooking && (
+            <NotEnoughMoneyInWallet
+              showConfirmModal={isNotEnoughMoney}
+              toggleConfirmModal={toggleConfirmBooking}
+            />
+          )}
+          {/* </form> */}
         </div>
       </div>
       <div className="flex items-center mb-4">

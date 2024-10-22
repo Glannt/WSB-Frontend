@@ -1,5 +1,5 @@
 import { useCustomer } from '@/context/customer.context';
-import { getService } from '@/service/customer.api';
+import { createBooking, getService } from '@/service/customer.api';
 import { Details, InitialQuantities } from '@/types/room.type';
 import { Services } from '@/types/service.type';
 import {
@@ -14,7 +14,9 @@ import {
   ModalFooter,
   ModalHeader,
 } from '@nextui-org/react';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { SchemacreateMultiBooking } from '@/utils/rules';
+import { UseFormHandleSubmit } from 'react-hook-form';
 
 interface ConfirmBookingProps {
   totals: number;
@@ -22,7 +24,11 @@ interface ConfirmBookingProps {
   details: Details;
   showConfirmModal: boolean;
   toggleConfirmModal: () => void;
-  //selectedBooking: CustomerOrderBooking | null | undefined;
+  handleSubmit: UseFormHandleSubmit<SchemacreateMultiBooking>;
+  refetchRoomType: () => void;
+  refetchServices: () => void;
+  refetchSlots: () => void;
+  setIsNotEnoughMoney: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const ConfirmBooking: React.FC<ConfirmBookingProps> = ({
@@ -31,14 +37,79 @@ export const ConfirmBooking: React.FC<ConfirmBookingProps> = ({
   details,
   showConfirmModal,
   toggleConfirmModal,
-  //selectedBooking,
+  setIsNotEnoughMoney,
+  handleSubmit,
+  refetchRoomType,
+  refetchServices,
+  refetchSlots,
 }) => {
-
   const { customer, refetch } = useCustomer();
 
   console.log('chi tiếttttt' + details);
   console.log(initialQuantities);
+  const CreateBookingMutation = useMutation({
+    mutationFn: (formData: FormData) => createBooking(formData),
+  });
 
+  const handleCreateBooking = (
+    data: SchemacreateMultiBooking,
+    refetch: () => void
+  ) => {
+    const formData = new FormData();
+    if (details.roomId === undefined) {
+      return Promise.reject(new Error('Room ID is undefined'));
+    }
+    console.log('data', data);
+
+    formData.append('buildingId', data.buildingId);
+
+    console.log('selectedBuildingKey nè', data.buildingId);
+
+    console.log('buildingId nè', data.buildingId);
+
+    formData.append('roomId', data.roomId);
+    formData.append('checkinDate', data.checkinDate);
+    formData.append('checkoutDate', data.checkoutDate);
+    // Append slots array (handle as multiple values)
+    if (data.slots && data.slots.length > 0) {
+      data.slots.forEach((slot, index) => {
+        formData.append(`slots`, slot.toString());
+      });
+    }
+    Object.entries(initialQuantities).forEach(([serviceId, quantity]) => {
+      formData.append(`items[${serviceId}]`, quantity.toString()); // This creates items[serviceId]=quantity
+    });
+
+    CreateBookingMutation.mutate(formData, {
+      onSuccess: (response) => {
+        console.log('Booking created successfully');
+
+        refetch();
+        refetchRoomType();
+        refetchServices();
+        refetchSlots();
+      },
+      onError: (error) => {
+        console.error('Error creating booking:', error);
+      },
+    });
+  };
+  const onSubmit = (data: SchemacreateMultiBooking) => {
+    const totalBookingMoney = totals;
+    if (
+      !customer ||
+      !customer.wallet ||
+      customer.wallet.amount === undefined ||
+      customer.wallet.amount === null ||
+      customer.wallet.amount < totalBookingMoney
+    ) {
+      setIsNotEnoughMoney(true);
+      // return;
+    } else {
+      handleCreateBooking(data, refetch);
+      window.location.reload();
+    }
+  };
   const formatted = new Intl.NumberFormat('vi-VN').format(Number(totals));
   const formattedCurrent = new Intl.NumberFormat('vi-VN').format(
     Number(customer?.wallet.amount)
@@ -74,24 +145,21 @@ export const ConfirmBooking: React.FC<ConfirmBookingProps> = ({
   const {
     data: services = [],
     isLoading: isLoadingServices,
-    refetch: refetchServices,
+    refetch: refetchServicess,
   } = useQuery<Services[]>({
     queryKey: ['services'],
     queryFn: getServiceApi,
   });
 
-
   return (
     <>
       {' '}
       {showConfirmModal && (
-
         <Modal
           hideCloseButton={true}
           isOpen={showConfirmModal}
           className="h-auto w-[500px]"
         >
-
           <ModalContent>
             {(onClose) => (
               <>
@@ -153,28 +221,30 @@ export const ConfirmBooking: React.FC<ConfirmBookingProps> = ({
                   <p>
                     <strong>Số dư còn lại</strong> {formattedRemaining} VND
                   </p>
-
                 </ModalBody>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  <ModalFooter className="flex justify-between">
+                    <Button
+                      type="submit"
+                      className="w-40"
+                      color="primary"
+                      // onClick={toggleConfirmModal}
+                    >
+                      Xác nhận
+                    </Button>
 
-                <ModalFooter className="flex justify-between">
-                  <Button
-                    className="w-40"
-                    color="primary"
-                    onClick={toggleConfirmModal}
-                  >
-                    Đặt thêm
-                  </Button>
-                  <Button
-                    className="w-40"
-                    color="danger"
-                    onClick={() => {
-                      toggleConfirmModal;
-                      window.location.reload();
-                    }}
-                  >
-                    Đóng
-                  </Button>
-                </ModalFooter>
+                    <Button
+                      className="w-40"
+                      color="danger"
+                      onClick={() => {
+                        toggleConfirmModal;
+                        window.location.reload();
+                      }}
+                    >
+                      Đóng
+                    </Button>
+                  </ModalFooter>
+                </form>
               </>
             )}
           </ModalContent>
