@@ -29,14 +29,21 @@ import { ChevronDownIcon } from '../Icons/ChevronDownIcon';
 import { capitalize } from '../AdminService/utils';
 import StaffBookingFilter from './StaffBookingFilter';
 import StaffBookingTable from './StaffBookingTable';
-import { getOrderBooking } from '@/service/staff.api';
-import { useQuery } from '@tanstack/react-query';
+import { getOrderBooking, updateBooking } from '@/service/staff.api';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   BookingStaffTable,
   columnsBooking,
   statusOptionsBooking,
 } from '@/types/bookings';
 import RoomPagination from '../AdminService/RoomPagination';
+import { useForm } from 'react-hook-form';
+import {
+  SchemaUpdateOrderStatusSchema,
+  updateOrderStatusSchema,
+} from '@/utils/rules';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { EditBooking } from '../Modal/Staff/EditBooking';
 
 const statusColorMap: Record<string, ChipProps['color']> = {
   available: 'success',
@@ -64,10 +71,13 @@ export default function StaffBookings() {
     return response.data.data;
   };
 
-  const { data: orderBookings = [], refetch } = useQuery<BookingStaffTable[]>({
+  const { data: orderBookings = [], refetch: refetchOrderBooking } = useQuery<
+    BookingStaffTable[]
+  >({
     queryKey: ['orderBookings'],
     queryFn: getStaffBookingApi,
   });
+
   //filter
   const [filterValue, setFilterValue] = React.useState('');
   const hasSearchFilter = Boolean(filterValue);
@@ -172,32 +182,17 @@ export default function StaffBookings() {
   const [valueStatus, setValueStatus] = React.useState(new Set(['available']));
   const [valueRoomType, setValueRoomType] = React.useState(new Set(['single']));
 
-  const [isDetails, setIsDetails] = useState<boolean>(false);
-  const [selectedRoom, setSelectedRoom] =
+  const [selectedBooking, setSelectedBooking] =
     React.useState<BookingStaffTable | null>(null);
-  const openDetail = (booking: BookingStaffTable) => {
-    setIsDetails(true);
-    setSelectedRoom(booking);
-  };
-  const closeDetail = () => {
-    setIsDetails(false);
-  };
 
-  const [isOpenAdd, setIsOpenAdd] = useState<boolean>(false);
-  const openAdd = () => {
-    setIsOpenEdit(true);
-  };
-  const closeAdd = () => {
-    setIsOpenAdd(false);
-  };
-
-  const [isOpenEdit, setIsOpenEdit] = useState<boolean>(false);
-  const openEdit = (room: BookingStaffTable) => {
-    setIsOpenEdit(true);
-    setSelectedRoom(room);
+  const [isEditBooking, setIsEditBooking] = React.useState<boolean>(false);
+  const openEdit = (booking: BookingStaffTable) => {
+    setIsEditBooking(true);
+    setSelectedBooking(booking);
   };
   const closeEdit = () => {
-    setIsOpenEdit(false);
+    setIsEditBooking(false);
+    refetchOrderBooking();
   };
 
   return (
@@ -237,7 +232,7 @@ export default function StaffBookings() {
         selectedKeys={selectedKeys} // Handle selection logic
         setSelectedKeys={setSelectedKeys} // Selection handler
         onSortChange={setSortDescriptor}
-        // onEdit={openEdit}
+        openEdit={openEdit}
         // onDelete={openDelete}
       />
       <RoomPagination
@@ -247,6 +242,14 @@ export default function StaffBookings() {
         onNextPage={onNextPage}
         onChange={setPage}
       />
+      {isEditBooking && (
+        <EditBooking
+          selectedBooking={selectedBooking}
+          refetchBookings={refetchOrderBooking}
+          isOpen={isEditBooking}
+          onClose={closeEdit}
+        />
+      )}
     </div>
   );
 }

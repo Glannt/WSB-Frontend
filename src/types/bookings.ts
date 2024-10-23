@@ -65,3 +65,22 @@ export const statusOptionsBooking = [
   { name: 'đã hủy', uid: 'CANCELLED' },
   { name: 'đang sử dụng', uid: 'USING' },
 ];
+
+export const BookingStatus = {
+  USING: 'Đang sử dụng',
+  FINISHED: 'Hoàn thành',
+  UPCOMING: 'Đang tới',
+  CANCELLED: 'Đã hủy',
+};
+
+export interface CustomerOrderBooking {
+  bookingId: string;
+
+  checkinDate: string;
+  checkoutDate: string;
+  totalPrice: string;
+  status: string;
+  room: Room;
+  slots: SlotBooking[];
+  items: ServiceItems;
+}

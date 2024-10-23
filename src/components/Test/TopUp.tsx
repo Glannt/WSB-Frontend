@@ -135,7 +135,6 @@ const TopUpPage = () => {
     setValue('amount', numericAmount);
 
     setLoading(true);
-    setTimeout(() => setLoading(false), 1500);
   };
 
   const [money, setMoney] = useState('');

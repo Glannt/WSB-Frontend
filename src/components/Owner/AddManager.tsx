@@ -156,7 +156,9 @@ const AddManager: React.FC<RoomModalProps> = ({
       classNames={{
         backdrop:
           'bg-gradient-to-t from-zinc-900 to-zinc-900/10 backdrop-opacity-20',
-        base: 'max-w-[1000px] h-[600px]',
+        base: 'max-w-[1000px] h-auto',
+        header: 'text-2xl',
+        body: 'text-xl',
       }}
       motionProps={{
         variants: {
@@ -190,6 +192,7 @@ const AddManager: React.FC<RoomModalProps> = ({
                 <div className="flex py-2 px-3 justify-evenly flex-wrap md:flex-nowrap gap-4 outline-none border-0">
                   <Input
                     isClearable
+                    size="lg"
                     autoFocus
                     label="Tên đăng nhập"
                     placeholder="Nhập tên đăng nhập"
@@ -224,7 +227,8 @@ const AddManager: React.FC<RoomModalProps> = ({
                     }
                   /> */}
                   <Select
-                    label="Trạng thái phòng"
+                    size="lg"
+                    label="Chọn cơ sở"
                     className="max-w-xl"
                     {...register('buildingId')}
                     onSelectionChange={(keys) => {
@@ -242,6 +246,7 @@ const AddManager: React.FC<RoomModalProps> = ({
                   <Input
                     label="Mật khẩu"
                     variant="bordered"
+                    size="lg"
                     type={showPassword ? 'text' : 'password'}
                     // name="confirmPassword"
                     // value={formData.confirmPassword}
@@ -268,6 +273,7 @@ const AddManager: React.FC<RoomModalProps> = ({
                 <div className="relative flex flex-wrap py-2 px-3 md:flex-nowrap gap-4 w-[960px] justify-evenly">
                   <Input
                     label="Xác nhận mật khẩu"
+                    size="lg"
                     variant="bordered"
                     type={showConfirmPassword ? 'text' : 'password'}
                     // name="confirmPassword"

@@ -11,6 +11,7 @@ import {
   Selection,
   ChipProps,
   User,
+  Button,
 } from '@nextui-org/react';
 import { Room, Column } from '@/types/room.type';
 import { EyeIcon } from '../Icons/EyeIcon';
@@ -26,7 +27,7 @@ interface RoomTableProps {
   selectedKeys: Selection;
   setSelectedKeys: (keys: Selection) => void;
   onSortChange: (descriptor: SortDescriptor) => void;
-  //   onEdit: (room: Room) => void;
+  openEdit: (booking: BookingStaffTable) => void;
   //   onDelete: (room: Room) => void;
 }
 const statusColorMap: Record<string, ChipProps['color']> = {
@@ -42,7 +43,7 @@ const StaffBookingTable: React.FC<RoomTableProps> = ({
   selectedKeys,
   setSelectedKeys,
   onSortChange,
-  //   onEdit,
+  openEdit,
   //   onDelete,
 }) => {
   const translateStatusToVietnamese = (status: string): string => {
@@ -142,27 +143,12 @@ const StaffBookingTable: React.FC<RoomTableProps> = ({
         case 'actions':
           return (
             <div className="relative flex justify-center gap-5">
-              <Tooltip content="Chi tiết">
-                <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                  <EyeIcon />
-                </span>
-              </Tooltip>
-              <Tooltip content="Chỉnh sửa">
-                <span
-                  //   onClick={() => onEdit(booking)}
-                  className="text-lg text-default-400 cursor-pointer active:opacity-50"
-                >
-                  <EditIcon />
-                </span>
-              </Tooltip>
-              <Tooltip color="danger" content="Xóa">
-                <span
-                  //   onClick={() => onDelete(booking)}
-                  className="text-lg text-danger cursor-pointer active:opacity-50"
-                >
-                  <DeleteIcon />
-                </span>
-              </Tooltip>
+              <Button
+                endContent={<EditIcon />}
+                content="Chỉnh sửa"
+                onClick={() => openEdit(booking)}
+                className="text-lg text-default-400 cursor-pointer active:opacity-50"
+              ></Button>
             </div>
           );
 
@@ -203,7 +189,7 @@ const StaffBookingTable: React.FC<RoomTableProps> = ({
       </TableHeader>
       <TableBody emptyContent={'No rooms found'} items={sortedItems}>
         {(item) => (
-          <TableRow key={item.roomId}>
+          <TableRow key={item.bookingId}>
             {(columnKey) => (
               <TableCell>{renderCell(item, columnKey)} </TableCell>
             )}

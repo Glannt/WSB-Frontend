@@ -129,7 +129,7 @@ export const ListRoom = () => {
         {/* Left Panel */}
         <div className="flex">
           <div className="w-1/5 mb-auto mt-10 ml-40 mr-20 ">
-            <div className="flex justify-start items-stretch lg:w-full p-6 bg-gradient-to-r from-white to-blue-50 shadow-lg shadow-black-100 bg-opacity-60 flex-col gap-y-20 border border-gray-300 rounded-xl pb-[450px]">
+            <div className="flex justify-start items-stretch lg:w-full p-6 bg-gradient-to-r via-primary-50 from-background to-primary-100 shadow-lg shadow-primary-100 bg-opacity-60 flex-col gap-y-20 border border-gray-300 rounded-xl pb-[450px]">
               <Select
                 label="Địa điểm"
                 placeholder="Chọn địa điểm"

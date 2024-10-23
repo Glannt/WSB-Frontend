@@ -6,14 +6,17 @@ import 'react-toastify/dist/ReactToastify.css';
 import { router } from './router/Router';
 import { NextUIProvider } from '@nextui-org/system';
 import { CustomerProvider } from './context/customer.context';
+import { ThemeProvider as NextThemesProvider } from 'next-themes';
 function App() {
   return (
     <NextUIProvider>
-      <CustomerProvider>
-        {' '}
-        <RouterProvider router={router} />
-        <ToastContainer />
-      </CustomerProvider>
+      <NextThemesProvider attribute="class" defaultTheme="system">
+        <CustomerProvider>
+          {' '}
+          <RouterProvider router={router} />
+          <ToastContainer />
+        </CustomerProvider>
+      </NextThemesProvider>
     </NextUIProvider>
   );
 }

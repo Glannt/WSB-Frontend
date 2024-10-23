@@ -23,14 +23,23 @@ import {
 } from '@nextui-org/react';
 import { useNavigate } from 'react-router';
 import path from '@/constants/path';
-import { getRoleName } from '@/utils/auth';
+import { getProfileFromLS, getRoleName } from '@/utils/auth';
 import { useCustomer } from '@/context/customer.context';
 import { FaWallet, FaPlus } from 'react-icons/fa';
+import { SidebarMenu } from '../sidebar/sidebar-menu';
+import { CollapseItems } from '../sidebar/collapse-items';
+import { BalanceIcon } from '../Icons/sidebar/balance-icon';
+import { SidebarItem } from '../sidebar/sidebar-item';
+import { SettingsIcon } from '../Icons/sidebar/settings-icon';
+import { AccountsIcon } from '../Icons/sidebar/accounts-icon';
+import { CollapseDropdownItems } from '../sidebar/collapse-dropdown-items';
+import ThemeSwitcher from '../ModeToggle/SwitchTheme';
 export const Header = (props: any) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate();
-  const roleName = getRoleName();
-  const { customer } = useCustomer();
+  const [roleName, setRoleName] = useState<string>('');
+  const profile = getProfileFromLS();
+  const { customer, isLoading } = useCustomer();
   const [wallet, setWallet] = useState<string>('0');
   const { setIsAuthenticated, isAuthenticated } = useContext(AppContext);
   const logoutMutation = useMutation({
@@ -41,6 +50,7 @@ export const Header = (props: any) => {
   });
   const handleLogout = () => {
     logoutMutation.mutate();
+
     // navigate('/');
   };
   useEffect(() => {
@@ -59,6 +69,11 @@ export const Header = (props: any) => {
     };
   }, []);
   useEffect(() => {
+    if (profile !== null) {
+      setRoleName(profile.roleName);
+    }
+  });
+  useEffect(() => {
     if (customer?.wallet?.amount !== undefined) {
       const formattedWallet = new Intl.NumberFormat('vi-VN').format(
         Number(customer.wallet.amount)
@@ -74,8 +89,41 @@ export const Header = (props: any) => {
     return str.replace(/['"]+/g, ''); // Removes both single and double quotes
   };
   const roleNameRemoveQuotes = removeQuotes(roleName);
+  const sidebarItems = [
+    {
+      title: 'Chỉnh sửa trang cá nhân', // Room Status
+      icon: <AccountsIcon />, // Replace with actual icon
+      onClick: () => {
+        navigate(path.settings + '/edit-profile');
+        // Add navigation or action logic here
+      },
+    },
+    {
+      title: 'Lịch sử đặt phòng', // Booking Status
+      icon: <AccountsIcon />, // Replace with actual icon
+
+      onClick: () => {
+        navigate(path.settings + '/booking-history');
+        // Add navigation or action logic here
+      },
+    },
+    {
+      title: 'Gói thành viên', // Booking Status
+      icon: <AccountsIcon />, // Replace with actual icon
+
+      onClick: () => {
+        navigate(path.settings + '/package-membership');
+        // Add navigation or action logic here
+      },
+    },
+  ];
   return (
     <>
+      {isLoading && (
+        <>
+          <div>Loadings</div>
+        </>
+      )}
       <div className="mx-auto flex justify-between items-center shadow-lg shadow-gray-300">
         <Navbar
           className="h-24"
@@ -154,7 +202,7 @@ export const Header = (props: any) => {
                   onClick={() => navigate(path.location)}
                   // startContent={icons.scale}
                 >
-                  TP. HCM
+                  <span className="text-lg font-semibold">TP. HCM</span>
                 </DropdownItem>
                 {/* <DropdownItem
                   key="usage_metrics"
@@ -194,31 +242,39 @@ export const Header = (props: any) => {
                 }}
               >
                 <DropdownItem
+                  showDivider
                   key="workspaces"
-                  description="Nơi làm việc"
-                  className="cursor-pointer"
+                  // description="Nơi làm việc"
+                  className="cursor-pointer text-[30px] font-semibold pt-2 pb-3"
                   onClick={() => navigate(path.rooms)}
                   // startContent={icons.scale}
+                  // title="Phòng làm việc"
+                  classNames={{
+                    title: 'text-[50px] pt-2 pb-2',
+                    base: 'pt-3 pb-3',
+                  }}
                 >
-                  Phòng làm việc
+                  <span className="text-lg font-semibold">Phòng làm việc</span>
                 </DropdownItem>
                 <DropdownItem
+                  showDivider
                   key="amenities"
-                  description="Thiết bị đi kèm"
-                  className="cursor-pointer"
+                  // description="Thiết bị đi kèm"
+                  className="cursor-pointer pt-2 pb-3"
                   onClick={() => navigate(path.equipments)}
                   // startContent={icons.activity}
                 >
-                  Thiết bị
+                  <span className="text-lg font-semibold">Thiết bị</span>
                 </DropdownItem>
                 <DropdownItem
+                  showDivider
                   key="food"
-                  description="Thức ăn đi kèm"
-                  className="cursor-pointer text-start"
+                  // description="Thức ăn đi kèm"
+                  className="cursor-pointer text-start text-lg pt-2 pb-3"
                   onClick={() => navigate(path.foods)}
                   // startContent={icons.activity}
                 >
-                  Đồ ăn
+                  <span className="text-lg font-semibold">Đồ ăn</span>
                 </DropdownItem>
               </DropdownMenu>
             </Dropdown>
@@ -315,7 +371,7 @@ export const Header = (props: any) => {
           )}
           {isAuthenticated && (
             <NavbarContent as="div" justify="end" className="mr-10">
-              <Dropdown placement="bottom-end">
+              <Dropdown placement="bottom-start">
                 <DropdownTrigger>
                   <Avatar
                     isBordered
@@ -336,7 +392,7 @@ export const Header = (props: any) => {
                     <DropdownItem
                       showDivider
                       key="wallet"
-                      className="row-span-1 cursor-pointer"
+                      className="row-span-1 cursor-pointer pt-3 pb-3"
                       startContent={<FaWallet className="text-lg mr-2" />}
                       endContent={
                         <span
@@ -349,27 +405,34 @@ export const Header = (props: any) => {
                         </span>
                       }
                     >
-                      <span className="text-gray-800">Ví:</span>
+                      <span className=" text-lg">Ví:</span>
                     </DropdownItem>
-                    {/* <Divider className="p-1" /> */}
                     <DropdownItem
                       showDivider
                       key="settings"
-                      className="row-span-1 cursor-pointer text-lg pt-2 pb-2"
-                      onClick={() => navigate(path.settings + '/edit-profile')}
+                      className="row-span-1 cursor-pointer text-lg pt-3 pb-3"
+                      closeOnSelect={false}
+                      // onClick={() => navigate(path.settings + '/edit-profile')}
                     >
-                      Cài đặt chung
+                      <div className="bg-white">
+                        <CollapseDropdownItems
+                          title="Cài đặt chung"
+                          icon={<SettingsIcon />}
+                          items={sidebarItems}
+                        />
+                      </div>
                     </DropdownItem>
-
                     <DropdownItem
+                      showDivider
                       key="logout"
-                      className="row-span-1 cursor-pointer text-lg pt-2 pb-2"
+                      className="row-span-1 cursor-pointer text-lg pt-3 pb-3"
                       // href="/logout"
-                      title="Đăng xuất"
                       onClick={handleLogout}
                       color="danger"
-                    >
-                      Đăng xuất
+                      startContent={<span className="text-lg">Đăng xuất</span>}
+                    ></DropdownItem>
+                    <DropdownItem closeOnSelect={false} className="pt-3 pb-3">
+                      <ThemeSwitcher />
                     </DropdownItem>
                   </DropdownSection>
                 </DropdownMenu>

@@ -66,12 +66,14 @@ import { getCustomerFromLS, setCustomerToLS } from '@/utils/auth'; // Local stor
 interface CustomerContextType {
   customer: Customer | null | undefined;
   refetch: () => void; // Added refetch function
+  isLoading: boolean;
 }
 
 // Initial values for the context
 const initialCustomerContext: CustomerContextType = {
   customer: getCustomerFromLS(), // Load initial customer data from local storage
   refetch: () => null, // Placeholder refetch function
+  isLoading: false,
 };
 
 // Create the context
@@ -99,7 +101,11 @@ export const CustomerProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // useQuery to fetch customer data
-  const { data: customer, refetch } = useQuery<Customer>({
+  const {
+    data: customer,
+    refetch,
+    isLoading,
+  } = useQuery<Customer>({
     queryKey: ['customer'], // Unique key for this query
     queryFn: getProfileUser, // Function to fetch customer data
     initialData: getCustomerFromLS(), // Set initial data from local storage
@@ -108,7 +114,7 @@ export const CustomerProvider = ({ children }: { children: ReactNode }) => {
 
   // Use the fetched customer data and refetch function
   return (
-    <CustomerContext.Provider value={{ customer, refetch }}>
+    <CustomerContext.Provider value={{ customer, refetch, isLoading }}>
       {children}
     </CustomerContext.Provider>
   );
