@@ -621,6 +621,7 @@ export const BookingRoomDetailMultiple = () => {
                     Close
                   </Button>
                 </div>
+
               </div>
             )}
             <button
