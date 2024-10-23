@@ -42,7 +42,7 @@ const INITIAL_VISIBLE_COLUMNS = [
 export default function ManageManager() {
   const getAllManagersApi = async () => {
     const response = await getAllManagers();
-    return response.data.content;
+    return response.data.data;
   };
 
   const {
