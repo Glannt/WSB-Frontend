@@ -83,7 +83,7 @@ const AddManager: React.FC<RoomModalProps> = ({
 
   const getAllBuildingApi = async () => {
     const response = await getAllBuilding();
-    return response.data.content;
+    return response.data.data;
   };
 
   const {
