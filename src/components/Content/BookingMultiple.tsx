@@ -644,7 +644,7 @@ export const BookingRoomDetailMultiple = () => {
                 </div>
               )}
               <button
-                type="submit"
+                // type="submit"
                 className={`w-full bg-blackA10 text-white px-6 py-3 rounded-md text-lg font-semibold hover:bg-blackA12 hover:scale-105 transition duration-300 ${
                   (!policyAgreed || !isSelectedDate || !selectedTimeSlot) &&
                   'opacity-50 cursor-not-allowed text-center'

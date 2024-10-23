@@ -146,6 +146,7 @@ export const ConfirmBooking: React.FC<ConfirmBookingProps> = ({
 
                 <ModalFooter className="flex justify-between">
                   <Button
+                    // type="submit"
                     className="w-40"
                     color="primary"
                     onClick={toggleConfirmModal}

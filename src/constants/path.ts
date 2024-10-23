@@ -23,6 +23,7 @@ const path = {
   owner: '/owner',
   manageBuilding: '/owner/manage-building',
   manageAccount: '/owner/manage-account',
+  schedule: '/staff/schedule',
 };
 
 export default path;
