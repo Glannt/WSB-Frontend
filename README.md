@@ -1,4 +1,4 @@
-# React app template with TS, Tailwind CSS, and Radix UI
+# React app template with TS, Tailwind CSS, and NextUI
 
 This is a template project for a [Vite](https://vitejs.dev) [React](https://react.dev) app with [TypeScript](https://www.typescriptlang.org/), [Tailwind CSS](https://tailwindcss.com/), [Storybook](https://storybook.js.org/),
 ✅ [Tailwind CSS](https://tailwindcss.com/)
