@@ -248,6 +248,7 @@ export const ConfirmBooking: React.FC<ConfirmBookingProps> = ({
                       Xác nhận
                     </Button>
 
+
                     <Button
                       className="w-40"
                       color="danger"

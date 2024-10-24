@@ -18,6 +18,7 @@ import React, { useContext } from 'react';
 import { logout } from '@/service/auth.api';
 import { useMutation } from '@tanstack/react-query';
 import { AppContext } from '@/context/app.context';
+import { TimerIcon } from 'lucide-react';
 
 export const SidebarStaff = () => {
   const { setIsAuthenticated, isAuthenticated } = useContext(AppContext);
@@ -83,6 +84,11 @@ export const SidebarStaff = () => {
             />
 
             <SidebarMenu title="Main Menu">
+              <SidebarItem
+                title="Lịch làm việc"
+                icon={<TimerIcon />}
+                onClick={() => navigate(path.schedule)}
+              />
               <CollapseItems
                 title="Quản lý phòng"
                 icon={<BalanceIcon />}

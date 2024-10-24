@@ -9,6 +9,15 @@ export interface Staff {
   buildingId: string;
   status: string;
 }
+
+export interface WorkShift {
+  userId: string;
+  workShift: string;
+  startTime: string;
+  endTime: string;
+  workDays: string;
+}
+
 export const columnsStaff = [
   { name: 'Mã nhân viên', uid: 'userId', sortable: true },
   { name: 'Họ và tên', uid: 'fullName', sortable: true },

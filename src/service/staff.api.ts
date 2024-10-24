@@ -25,3 +25,15 @@ export const updateStatusBooking = (
       'Content-Type': 'application/json',
     },
   });
+
+// @GetMapping("/work-shift")
+// public ResponseEntity<Object> getWorkShift(@RequestHeader("Authorization") String token) {
+//     String jwtToken = token.substring(7);
+//     try{
+//         return ResponseHandler.responseBuilder("Ok", HttpStatus.OK, staffService.getWorkShift(jwtToken));
+
+//     }catch (Exception e){
+//         return ResponseHandler.responseBuilder(e.getMessage(), HttpStatus.BAD_REQUEST);
+//     }
+// }
+export const getWorkShift = () => http.get('/api/auth/staffs/work-shift');
