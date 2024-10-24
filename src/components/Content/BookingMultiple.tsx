@@ -492,8 +492,13 @@ export const BookingRoomDetailMultiple = () => {
                 <div className="w-full flex flex-row flex-wrap gap-4">
                   <Input
                     {...register('buildingId')}
+                    size="lg"
                     label="Cơ sở"
-                    size="md"
+                    classNames={{
+                      label: 'text-lg dark:text-white/90',
+                      input: 'border-0 focus:outline-none focus:border-none',
+                      clearButton: 'pb-4',
+                    }}
                     isReadOnly
                     value={roomBuilding}
                     color="primary"
@@ -505,7 +510,12 @@ export const BookingRoomDetailMultiple = () => {
             </div>
             <div className="mb-6">
               <DateRangePicker
+                size="lg"
                 label="Ngày đặt"
+                classNames={{
+                  label: 'text-md dark:text-white/90',
+                  input: 'border-0 focus:outline-none focus:border-none',
+                }}
                 color="primary"
                 // isDisabled={getValues().buildingId ? false : true}
                 minValue={parseDate(format(selectedDate, 'yyyy-MM-dd'))}
@@ -545,6 +555,10 @@ export const BookingRoomDetailMultiple = () => {
                       key="default"
                       color="primary"
                       label="Thời gian"
+                      classNames={{
+                        label: 'text-lg dark:text-white/90',
+                      }}
+                      size="lg"
                       placeholder="Chọn thời gian..."
                       selectionMode="multiple"
                       className="w-full rounded-md appearance-none"
@@ -570,6 +584,7 @@ export const BookingRoomDetailMultiple = () => {
             </div>
 
             <Button
+              size="lg"
               className="bg-violet-300 shadow-lg font-bold text-black px-4 py-2 rounded-md hover:bg-violet-500 hover:text-blackA12 transition duration-300 flex items-center mb-6"
               onPress={toggleServiceModal}
             >
@@ -587,7 +602,7 @@ export const BookingRoomDetailMultiple = () => {
             />
 
             <div className="mb-6">
-              <p className="text-2xl font-bold">Tổng đơn: ${totals}</p>
+              <p className="text-2xl font-bold">Tổng đơn: {totals} VNĐ</p>
             </div>
 
             <div className="mb-6 flex items-center">
@@ -598,7 +613,11 @@ export const BookingRoomDetailMultiple = () => {
                 onChange={() => setPolicyAgreed(!policyAgreed)}
                 className="mr-2 rounded-sm"
               />
-              <label htmlFor="policy" className="text-sm text-gray-700">
+              <label
+                style={{ fontSize: '1.1rem' }}
+                htmlFor="policy"
+                className="text-sm text-gray-700"
+              >
                 Tôi đồng ý với{' '}
                 <button
                   onClick={togglePolicyModal}
@@ -621,7 +640,6 @@ export const BookingRoomDetailMultiple = () => {
                     Close
                   </Button>
                 </div>
-
               </div>
             )}
             <button
@@ -683,7 +701,7 @@ export const BookingRoomDetailMultiple = () => {
         </div>
       </div>
       <div className="mt-12">
-        <h2 className="text-2xl font-bold mb-4">Similar Rooms</h2>
+        <h2 className="text-2xl font-bold mb-4">Các phòng tương tự</h2>
         {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-6"> */}
         <div className="w-full h-[500px] max-h-[500px]">
           {roomType && roomType.length > 0 ? (

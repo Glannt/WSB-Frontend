@@ -48,11 +48,18 @@ const StaffBookingFilter: React.FC<RoomFiltersProps> = ({
         value={filterValue}
         onClear={onClear}
         onValueChange={onSearchChange}
+        style={{ fontSize: '1.1rem', padding: '0.75rem' }} // Adjusted size
       />
       <div className="flex gap-3">
         <Dropdown>
           <DropdownTrigger>
-            <Button endContent={<ChevronDownIcon />}>Trạng thái</Button>
+            <Button
+              endContent={<ChevronDownIcon />}
+              style={{ fontSize: '1.1rem', padding: '0.75rem' }}
+            >
+              Trạng thái
+            </Button>{' '}
+            {/* Adjusted size */}
           </DropdownTrigger>
           <DropdownMenu
             disallowEmptySelection
@@ -67,7 +74,13 @@ const StaffBookingFilter: React.FC<RoomFiltersProps> = ({
         </Dropdown>
         <Dropdown>
           <DropdownTrigger>
-            <Button endContent={<ChevronDownIcon />}>Cột</Button>
+            <Button
+              endContent={<ChevronDownIcon />}
+              style={{ fontSize: '1.1rem', padding: '0.75rem' }}
+            >
+              Cột
+            </Button>{' '}
+            {/* Adjusted size */}
           </DropdownTrigger>
           <DropdownMenu
             disallowEmptySelection

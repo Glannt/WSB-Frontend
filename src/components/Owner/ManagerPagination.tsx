@@ -27,10 +27,10 @@ const ManagerPagination: React.FC<RoomPaginationProps> = ({
         onChange={onChange}
       />
       <div className="hidden sm:flex w-[30%] justify-end gap-2">
-        <Button isDisabled={pages === 1} size="sm" onPress={onPreviousPage}>
+        <Button isDisabled={pages === 1} size="md" onPress={onPreviousPage}>
           Previous
         </Button>
-        <Button isDisabled={pages === 1} size="sm" onPress={onNextPage}>
+        <Button isDisabled={pages === 1} size="md" onPress={onNextPage}>
           Next
         </Button>
       </div>

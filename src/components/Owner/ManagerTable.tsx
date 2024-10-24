@@ -122,7 +122,7 @@ const ManagerTable: React.FC<RoomTableProps> = ({
       sortDescriptor={sortDescriptor}
       onSelectionChange={setSelectedKeys}
       onSortChange={onSortChange}
-      className="h-[300px] max-h-[300px] overflow-y-auto"
+      className="h-[400px] max-h-[400px] overflow-y-auto text-lg"
     >
       <TableHeader columns={headerColumns}>
         {(column) => (

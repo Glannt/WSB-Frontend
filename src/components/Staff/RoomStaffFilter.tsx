@@ -50,11 +50,18 @@ const RoomStaffFilters: React.FC<RoomStaffFiltersProps> = ({
         value={filterValue}
         onClear={onClear}
         onValueChange={onSearchChange}
+        style={{ fontSize: '1.2rem', padding: '0.75rem' }} // Increased size
       />
       <div className="flex gap-3">
         <Dropdown>
           <DropdownTrigger>
-            <Button endContent={<ChevronDownIcon />}>Trạng thái</Button>
+            <Button
+              endContent={<ChevronDownIcon />}
+              style={{ fontSize: '1.2rem', padding: '0.75rem 1.5rem' }}
+            >
+              Trạng thái
+            </Button>{' '}
+            {/* Increased size */}
           </DropdownTrigger>
           <DropdownMenu
             disallowEmptySelection
@@ -69,7 +76,13 @@ const RoomStaffFilters: React.FC<RoomStaffFiltersProps> = ({
         </Dropdown>
         <Dropdown>
           <DropdownTrigger>
-            <Button endContent={<ChevronDownIcon />}>Cột</Button>
+            <Button
+              endContent={<ChevronDownIcon />}
+              style={{ fontSize: '1.2rem', padding: '0.75rem 1.5rem' }}
+            >
+              Cột
+            </Button>{' '}
+            {/* Increased size */}
           </DropdownTrigger>
           <DropdownMenu
             disallowEmptySelection
