@@ -200,6 +200,14 @@ export const router = createBrowserRouter([
     path: '/',
     element: <RequireCaptcha />,
   },
+  // {
+  //   path: '/',
+  //   element: (
+  //     <MainLayout>
+  //       <HomePage />
+  //     </MainLayout>
+  //   ),
+  // },
   {
     path: path.rooms,
     element: (
