@@ -93,17 +93,17 @@ jobs:
   #           "npx http-server storybook-static --port 6006 --silent" \
   #           "npx wait-on http://127.0.0.1:6006 && npm run test-storybook"
 
-  # deploy-gh-pages:
-  #   name: Deploy to GitHub Pages
-  #   needs:
-  #     - typecheck
-  #     - test
-  #     - build
-  #     - build-storybook
-  #     - test-storybook
-  #   if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-  #   uses: ./.github/workflows/deploy-gh-pages.yml
-  #   with:
-  #     get_built_app_from_artifact: true
-  #     get_built_storybook_from_artifact: true
-  #   secrets: inherit
+  deploy-gh-pages:
+    name: Deploy to GitHub Pages
+    needs:
+      - typecheck
+      - test
+      - build
+      - build-storybook
+      # - test-storybook
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    uses: ./.github/workflows/deploy-gh-pages.yml
+    with:
+      get_built_app_from_artifact: true
+      get_built_storybook_from_artifact: true
+    secrets: inherit
