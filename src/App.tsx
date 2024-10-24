@@ -10,7 +10,7 @@ import { ThemeProvider as NextThemesProvider } from 'next-themes';
 function App() {
   return (
     <NextUIProvider>
-      <NextThemesProvider attribute="class" defaultTheme="system">
+      <NextThemesProvider attribute="class" defaultTheme="light">
         <CustomerProvider>
           {' '}
           <RouterProvider router={router} />

@@ -26,7 +26,7 @@ export const DeleteRoom: React.FC<DeleteRoomProps> = ({
   refetchRooms,
 }) => {
   const deleteRoomMutation = useMutation({
-    mutationFn: ({ roomId }: { roomId: number | undefined }) =>
+    mutationFn: ({ roomId }: { roomId: string | undefined }) =>
       deleteRoomById(roomId),
     onSuccess: () => {
       setSelectedDeleteRoom?.(null);

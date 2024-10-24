@@ -1,4 +1,6 @@
-import { staffs } from '@/data/data';
+// import { staffs } from '@/data/data';
+import { getAllStaff } from '@/service/manager.api';
+import { Staff } from '@/types/staff.type';
 import {
   Button,
   Modal,
@@ -9,6 +11,7 @@ import {
   Select,
   SelectItem,
 } from '@nextui-org/react';
+import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
 interface StaffModalProps {
@@ -29,7 +32,7 @@ interface StaffModalProps {
   setSelectedStaff:
     | React.Dispatch<
         React.SetStateAction<{
-          staffId?: string;
+          userId?: string;
           fullName?: string;
           workShift?: string;
           roomInCharge?: string[];
@@ -71,6 +74,18 @@ const AdminStaffModal: React.FC<StaffModalProps> = ({
         : undefined;
     }
   };
+  const getAllStaffApi = async () => {
+    const response = await getAllStaff();
+    return response.data.content;
+  };
+  const {
+    data: staffs = [],
+    isLoading,
+    refetch,
+  } = useQuery<Staff[]>({
+    queryKey: ['staffs'],
+    queryFn: getAllStaffApi,
+  });
 
   return (
     <Modal
@@ -107,9 +122,7 @@ const AdminStaffModal: React.FC<StaffModalProps> = ({
                   }
                 >
                   {staffs.map((staff) => (
-                    <SelectItem key={staff.staffId}>
-                      {staff.fullName}
-                    </SelectItem>
+                    <SelectItem key={staff.userId}>{staff.fullName}</SelectItem>
                   ))}
                 </Select>
 

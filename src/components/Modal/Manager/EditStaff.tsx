@@ -1,4 +1,4 @@
-import { staffs } from '@/data/data';
+// import { staffs } from '@/data/data';
 import { Staff } from '@/types/staff.type';
 import {
   Button,
