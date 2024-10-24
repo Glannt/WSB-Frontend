@@ -59,6 +59,8 @@ jobs:
         uses: ./.github/actions/setup-environment
       - name: Test
         run: FORCE_COLOR=true npm run test -- --verbose
+      - name: Run tests and generate coverage report
+        run: npx jest --coverage
 
   build:
     name: Build
