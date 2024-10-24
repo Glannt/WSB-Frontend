@@ -3,6 +3,7 @@ import path from 'path';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import vercel from 'vite-plugin-vercel';
+import { codecovVitePlugin } from '@codecov/vite-plugin';
 // import dotenv from 'dotenv';
 // https://vitejs.dev/config/
 // export default defineConfig({
@@ -16,7 +17,15 @@ import vercel from 'vite-plugin-vercel';
 // });
 
 export default defineConfig({
-  plugins: [react(), vercel()],
+  plugins: [
+    react(),
+    vercel(),
+    codecovVitePlugin({
+      enableBundleAnalysis: process.env.CODECOV_TOKEN !== undefined,
+      bundleName: 'wsb-frontend', // Đặt tên bundle dự án ở đây
+      uploadToken: process.env.CODECOV_TOKEN,
+    }),
+  ],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
