@@ -59,9 +59,9 @@ const StaffRoomTable: React.FC<RoomTableProps> = ({
 
       switch (columnKey) {
         case 'roomId':
-          return <span style={{ fontSize: '1.1rem' }}>{room.roomId}</span>;
+          return <span>{room.roomId}</span>;
         case 'roomName':
-          return <span style={{ fontSize: '1.1rem' }}>{room.roomName}</span>;
+          return <span>{room.roomName}</span>;
 
         case 'roomStatus':
           return (
@@ -70,7 +70,6 @@ const StaffRoomTable: React.FC<RoomTableProps> = ({
               color={statusColorMap[room.roomStatus.toLowerCase()]}
               size="sm"
               variant="flat"
-              style={{ fontSize: '1.1rem' }}
             >
               {typeof cellValue === 'object'
                 ? JSON.stringify(
@@ -85,7 +84,7 @@ const StaffRoomTable: React.FC<RoomTableProps> = ({
               <Tooltip content="Chi tiết">
                 <span
                   // onClick={() => openDetail(room)}
-                  className="text-xl text-default-400 cursor-pointer active:opacity-50"
+                  className="text-lg text-default-400 cursor-pointer active:opacity-50"
                 >
                   <EyeIcon />
                 </span>
@@ -95,7 +94,7 @@ const StaffRoomTable: React.FC<RoomTableProps> = ({
                   // onClick={() => {
                   //   onEdit(room);
                   // }}
-                  className="text-xl text-default-400 cursor-pointer active:opacity-50"
+                  className="text-lg text-default-400 cursor-pointer active:opacity-50"
                 >
                   <EditIcon />
                 </span>
@@ -103,7 +102,7 @@ const StaffRoomTable: React.FC<RoomTableProps> = ({
               <Tooltip color="danger" content="Xóa">
                 <span
                   // onClick={() => onDelete(room)}
-                  className="text-xl text-danger cursor-pointer active:opacity-50"
+                  className="text-lg text-danger cursor-pointer active:opacity-50"
                 >
                   <DeleteIcon />
                 </span>
@@ -112,7 +111,7 @@ const StaffRoomTable: React.FC<RoomTableProps> = ({
           );
         default:
           return (
-            <span style={{ fontSize: '1.1rem' }}>
+            <span>
               {typeof cellValue === 'object'
                 ? JSON.stringify(cellValue)
                 : cellValue}

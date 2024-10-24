@@ -67,12 +67,12 @@ const StaffBookingTable: React.FC<RoomTableProps> = ({
 
       switch (columnKey) {
         case 'roomId':
-          return <span className="text-lg">{booking.roomId}</span>;
+          return <span>{booking.roomId}</span>;
 
         case 'checkinDate':
           return (
             <div className="flex flex-col">
-              <p className="text-bold text-lg capitalize">
+              <p className="text-bold text-small capitalize">
                 {new Date(booking.checkinDate).toLocaleString()}
               </p>
             </div>
@@ -81,7 +81,7 @@ const StaffBookingTable: React.FC<RoomTableProps> = ({
         case 'checkoutDate':
           return (
             <div className="flex flex-col">
-              <p className="text-bold text-lg capitalize">
+              <p className="text-bold text-small capitalize">
                 {new Date(booking.checkoutDate).toLocaleString()}
               </p>
             </div>
@@ -91,7 +91,7 @@ const StaffBookingTable: React.FC<RoomTableProps> = ({
           return (
             <div className="flex flex-col">
               {booking.slots.map((slot, index) => (
-                <p key={index} className="text-bold text-lg capitalize">
+                <p key={index} className="text-bold text-small capitalize">
                   Slot {slot.timeSlotId}: {slot.timeStart} - {slot.timeEnd} (
                   {slot.status})
                 </p>
@@ -102,14 +102,14 @@ const StaffBookingTable: React.FC<RoomTableProps> = ({
         case 'customerId':
           return (
             <div className="flex flex-col">
-              <p className="text-bold text-lg">{booking.customerId}</p>
+              <p className="text-bold text-small">{booking.customerId}</p>
             </div>
           );
 
         case 'totalPrice':
           return (
             <div className="flex flex-col">
-              <p className="text-bold text-lg">
+              <p className="text-bold text-small">
                 {booking.totalPrice.toLocaleString()} VNĐ
               </p>
             </div>
@@ -120,7 +120,7 @@ const StaffBookingTable: React.FC<RoomTableProps> = ({
             <div className="flex flex-col">
               {Object.entries(booking.serviceItems).map(
                 ([serviceName, quantity], index) => (
-                  <p key={index} className="text-lg">
+                  <p key={index} className="text-small">
                     {serviceName}: {quantity}
                   </p>
                 )
@@ -131,7 +131,7 @@ const StaffBookingTable: React.FC<RoomTableProps> = ({
         case 'status':
           return (
             <Chip
-              className="capitalize text-lg"
+              className="capitalize"
               color={statusColorMap[booking.status.toLowerCase()]}
               size="sm"
               variant="flat"
@@ -154,7 +154,7 @@ const StaffBookingTable: React.FC<RoomTableProps> = ({
 
         default:
           return (
-            <span className="text-lg">
+            <span>
               {typeof cellValue === 'object'
                 ? JSON.stringify(cellValue)
                 : cellValue}
@@ -182,7 +182,6 @@ const StaffBookingTable: React.FC<RoomTableProps> = ({
             key={column.uid}
             align={column.uid === 'actions' ? 'center' : 'start'}
             allowsSorting={column.sortable}
-            className="text-lg"
           >
             {column.name}
           </TableColumn>
@@ -192,9 +191,7 @@ const StaffBookingTable: React.FC<RoomTableProps> = ({
         {(item) => (
           <TableRow key={item.bookingId}>
             {(columnKey) => (
-              <TableCell className="text-lg">
-                {renderCell(item, columnKey)}{' '}
-              </TableCell>
+              <TableCell>{renderCell(item, columnKey)} </TableCell>
             )}
           </TableRow>
         )}
