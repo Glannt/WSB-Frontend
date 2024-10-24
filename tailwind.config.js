@@ -208,16 +208,16 @@ module.exports = {
       layout: {
         dividerWeight: '1px',
         disabledOpacity: '0.5', // opacity-[0.3]
-        radius: {
-          small: '2px', // rounded-small
-          medium: '4px', // rounded-medium
-          large: '6px', // rounded-large
-        },
-        borderWidth: {
-          small: '1px', // border-small
-          medium: '1px', // border-medium
-          large: '2px', // border-large
-        },
+        // radius: {
+        //   small: '2px', // rounded-small
+        //   medium: '4px', // rounded-medium
+        //   large: '6px', // rounded-large
+        // },
+        // borderWidth: {
+        //   small: '1px', // border-small
+        //   medium: '1px', // border-medium
+        //   large: '2px', // border-large
+        // },
       },
       themes: {
         light: {
@@ -273,16 +273,16 @@ module.exports = {
           layout: {
             hoverOpacity: 0.9, // Applied as opacity-[value] when the component is hovered
             disabledOpacity: 0.3, // Lower opacity for disabled components
-            radius: {
-              small: '6px',
-              medium: '8px',
-              large: '10px',
-            },
-            borderWidth: {
-              small: '1px',
-              medium: '2px',
-              large: '3px',
-            },
+            // radius: {
+            //   small: '6px',
+            //   medium: '8px',
+            //   large: '10px',
+            // },
+            // borderWidth: {
+            //   small: '1px',
+            //   medium: '2px',
+            //   large: '3px',
+            // },
             boxShadow: {
               small:
                 '0px 0px 5px 0px rgb(0 0 0 / 0.05), 0px 2px 10px 0px rgb(0 0 0 / 0.2), inset 0px 0px 1px 0px rgb(255 255 255 / 0.15)', // Light inner and outer shadows for a modern feel
