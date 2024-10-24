@@ -1,3 +1,5 @@
+[![CI](https://github.com/Glannt/WSB-Frontend/actions/workflows/ci.yml/badge.svg)](https://github.com/Glannt/WSB-Frontend/actions/workflows/ci.yml)
+
 # React app template with TS, Tailwind CSS, and NextUI
 
 This is a template project for a [Vite](https://vitejs.dev) [React](https://react.dev) app with [TypeScript](https://www.typescriptlang.org/), [Tailwind CSS](https://tailwindcss.com/), [Storybook](https://storybook.js.org/),
@@ -29,5 +31,9 @@ It correctly bundles React in production mode and optimizes the build for the be
 
 The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
+
+### `npm test`
+
+Test by jess
 
 See the section about [deploying](https://vitejs.dev/guide/static-deploy) for more information.
