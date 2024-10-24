@@ -22,7 +22,7 @@ class Http {
   constructor() {
     this.accessToken = getAccessTokenFromLS();
     this.instance = axios.create({
-      baseURL: 'http://localhost:8080',
+      baseURL: import.meta.env.REACT_BACKEND_URL || 'http://localhost:8080',
       timeout: 10000,
       headers: {
         'Content-Type': 'application/json',
