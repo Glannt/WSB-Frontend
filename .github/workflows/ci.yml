@@ -67,10 +67,10 @@ jobs:
       base_url: './'
     secrets: inherit
 
-  build-storybook:
-    name: 'Build Storybook'
-    uses: ./.github/workflows/build-storybook.yml
-    secrets: inherit
+  # build-storybook:
+  #   name: 'Build Storybook'
+  #   uses: ./.github/workflows/build-storybook.yml
+  #   secrets: inherit
 
   # test-storybook:
   #   name: 'Test Storybook'
@@ -99,7 +99,7 @@ jobs:
       - typecheck
       - test
       - build
-      - build-storybook
+      # - build-storybook
       # - test-storybook
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
     uses: ./.github/workflows/deploy-gh-pages.yml
