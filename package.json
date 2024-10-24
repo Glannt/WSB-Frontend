@@ -69,6 +69,7 @@
     "yup": "^1.4.0"
   },
   "devDependencies": {
+    "@codecov/vite-plugin": "^1.2.1",
     "@storybook/addon-essentials": "^8.0.0-alpha.15",
     "@storybook/addon-interactions": "^8.0.0-alpha.15",
     "@storybook/addon-links": "^8.0.0-alpha.15",
