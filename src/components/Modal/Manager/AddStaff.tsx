@@ -251,9 +251,7 @@ export const AddStaff: React.FC<RoomModalProps> = ({
                     }
                   />
                 </div>
-                <div className="py-2 px-3">
-                  <UploadImage />
-                </div>
+                <div className="py-2 px-3">{/* <UploadImage /> */}</div>
               </ModalBody>
 
               <ModalFooter>
