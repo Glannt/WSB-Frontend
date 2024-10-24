@@ -58,26 +58,20 @@ const BuildingTable: React.FC<RoomTableProps> = ({
                   ? JSON.stringify(cellValue)
                   : cellValue
               }
+              className="text-lg"
             >
               {building.buildingName}
             </User>
           );
         case 'location':
-          return (
-            <span
-            // avatarProps={{ radius: 'lg', src: room.avatar }}
-            // description={room.email}
-            >
-              {building.buildingLocation}
-            </span>
-          );
+          return <span className="text-lg">{building.buildingLocation}</span>;
         case 'actions':
           return (
             <div className="relative flex justify-center gap-5">
               <Tooltip content="Chi tiết">
                 <span
                   // onClick={() => openDetail(room)}
-                  className="text-lg text-default-400 cursor-pointer active:opacity-50"
+                  className="text-xl text-default-400 cursor-pointer active:opacity-50" // Increase icon size
                 >
                   <EyeIcon />
                 </span>
@@ -87,7 +81,7 @@ const BuildingTable: React.FC<RoomTableProps> = ({
                   onClick={() => {
                     onEdit(building);
                   }}
-                  className="text-lg text-default-400 cursor-pointer active:opacity-50"
+                  className="text-xl text-default-400 cursor-pointer active:opacity-50" // Increase icon size
                 >
                   <EditIcon />
                 </span>
@@ -95,7 +89,7 @@ const BuildingTable: React.FC<RoomTableProps> = ({
               <Tooltip color="danger" content="Xóa">
                 <span
                   onClick={() => onDelete(building)}
-                  className="text-lg text-danger cursor-pointer active:opacity-50"
+                  className="text-xl text-danger cursor-pointer active:opacity-50" // Increase icon size
                 >
                   <DeleteIcon />
                 </span>
@@ -104,7 +98,8 @@ const BuildingTable: React.FC<RoomTableProps> = ({
           );
         default:
           return (
-            <span>
+            <span className="text-lg">
+              {' '}
               {typeof cellValue === 'object'
                 ? JSON.stringify(cellValue)
                 : cellValue}

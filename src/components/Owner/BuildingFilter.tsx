@@ -48,7 +48,12 @@ const BuildingFilter: React.FC<RoomFiltersProps> = ({
       <div className="flex gap-3">
         <Dropdown>
           <DropdownTrigger>
-            <Button endContent={<ChevronDownIcon />}>Cột</Button>
+            <Button
+              className="text-lg py-2 px-4"
+              endContent={<ChevronDownIcon />}
+            >
+              Cột
+            </Button>
           </DropdownTrigger>
           <DropdownMenu
             disallowEmptySelection
@@ -61,7 +66,12 @@ const BuildingFilter: React.FC<RoomFiltersProps> = ({
             ))}
           </DropdownMenu>
         </Dropdown>
-        <Button color="primary" endContent={<PlusIcon />} onClick={onAddRoom}>
+        <Button
+          className="text-lg py-2 px-4"
+          color="primary"
+          endContent={<PlusIcon />}
+          onClick={onAddRoom}
+        >
           Thêm cơ sở
         </Button>
       </div>

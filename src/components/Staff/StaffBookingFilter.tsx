@@ -66,6 +66,7 @@ const StaffBookingFilter: React.FC<RoomFiltersProps> = ({
           </DropdownMenu>
         </Dropdown>
         <Dropdown>
+          {' '}
           <DropdownTrigger>
             <Button endContent={<ChevronDownIcon />}>Cột</Button>
           </DropdownTrigger>

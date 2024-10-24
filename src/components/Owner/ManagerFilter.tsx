@@ -44,11 +44,13 @@ const ManagerFilter: React.FC<RoomFiltersProps> = ({
   onRowsPerPageChange,
 }) => {
   return (
-    <div className="flex justify-end gap-3 items-end">
-      <div className="flex gap-3">
+    <div className="flex justify-end gap-4 items-end">
+      <div className="flex gap-4">
         <Dropdown>
           <DropdownTrigger>
-            <Button endContent={<ChevronDownIcon />}>Cột</Button>
+            <Button size="lg" endContent={<ChevronDownIcon />}>
+              Cột
+            </Button>
           </DropdownTrigger>
           <DropdownMenu
             disallowEmptySelection
@@ -62,6 +64,7 @@ const ManagerFilter: React.FC<RoomFiltersProps> = ({
           </DropdownMenu>
         </Dropdown>
         <Button
+          size="lg"
           color="primary"
           endContent={<PlusIcon />}
           onClick={onAddManager}

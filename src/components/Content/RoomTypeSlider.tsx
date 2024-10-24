@@ -7,11 +7,15 @@ import 'swiper/swiper-bundle.css'; // Import Swiper styles
 import { Button, Image } from '@nextui-org/react'; // Assuming you're using NextUI for the Button component
 // import TypeRoomCard from './TypeRoomCard'; // Adjust the import based on your file structure
 import { ListRooms } from '@/types/roomOverview';
+import { useNavigate } from 'react-router';
 
 interface RoomTypeSwiperProps {
   roomType: ListRooms[];
 }
 const RoomTypeSwiper: React.FC<RoomTypeSwiperProps> = ({ roomType }) => {
+  console.log('roomType', roomType[0].roomType);
+
+  const navigate = useNavigate();
   return (
     <Swiper
       breakpoints={{
@@ -54,7 +58,10 @@ const RoomTypeSwiper: React.FC<RoomTypeSwiperProps> = ({ roomType }) => {
                 <h3 className="font-bold text-lg mb-2">{room.roomName}</h3>
                 <p className="text-gray-600">{room.price}$/slot</p>
               </div>
-              <Button className="ml-7 mb-5 bg-transparent w-[90%] border border-blackA2 text-center text-black hover:bg-blackA9 hover:text-white hover:transition hover:duration-300 transition duration-500 ease-in-out">
+              <Button
+                onClick={() => navigate(`/single-space`)}
+                className="ml-7 mb-5 bg-transparent w-[90%] border border-blackA2 text-center text-black hover:bg-blackA9 hover:text-white hover:transition hover:duration-300 transition duration-500 ease-in-out"
+              >
                 Tìm hiểu thêm
               </Button>
             </div>

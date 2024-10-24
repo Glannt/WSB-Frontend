@@ -13,11 +13,11 @@ import {
   ViewsDirective,
 } from '@syncfusion/ej2-react-schedule';
 import { DataManager, WebApiAdaptor } from '@syncfusion/ej2-data';
-import { registerLicense } from '@syncfusion/ej2-base';
+import { L10n, registerLicense, setCulture } from '@syncfusion/ej2-base';
 import { getWorkShift } from '@/service/staff.api';
 import { useQuery } from '@tanstack/react-query';
 import { WorkShift } from '@/types/staff.type';
-
+import * as EJ2_LOCALE from '@/vi.json';
 const Schedule = () => {
   const getWorkShiftApi = async () => {
     const response = await getWorkShift();
@@ -73,6 +73,9 @@ const Schedule = () => {
     })
   );
 
+  L10n.load({ vi: EJ2_LOCALE.vi });
+  // setCulture('vi');
+
   registerLicense(
     'Ngo9BigBOggjHTQxAR8/V1NDaF5cWWtCf1JpR2NGfV5ycEVHYFZQRHxdR00SNHVRdkdnWH9ccXVVRGFfUEF2W0o='
   );
@@ -88,6 +91,7 @@ const Schedule = () => {
   return (
     <>
       <ScheduleComponent
+        // locale="vi"
         startHour="06:00"
         endHour="24:00"
         timeScale={timeScale}
