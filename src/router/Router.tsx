@@ -196,9 +196,17 @@ function RequireCaptcha() {
 }
 
 export const router = createBrowserRouter([
+  // {
+  //   path: '/',
+  //   element: <RequireCaptcha />,
+  // },
   {
     path: '/',
-    element: <RequireCaptcha />,
+    element: (
+      <MainLayout>
+        <HomePage />
+      </MainLayout>
+    ),
   },
   {
     path: path.rooms,
