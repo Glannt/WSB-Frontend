@@ -186,6 +186,7 @@ function RequireCaptcha() {
         sitekey={import.meta.env.VITE_GOOGLE_CAPCHA_SITE_KEY} // Thay bằng site key từ Google reCAPTCHA
         onChange={handleCaptchaChange}
       />
+      {/* 6LdLoV8qAAAAAF7HWwBph0kufiITsRwjdhgbIU63 */}
     </div>
   ) : (
     <MainLayout>
