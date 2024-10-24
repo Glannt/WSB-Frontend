@@ -63,6 +63,8 @@ import ManageBuildings from '@/components/Owner/ManageBuildings';
 import ManageManager from '@/components/Owner/ManageManager';
 import Schedule from '@/components/Staff/Schedule';
 import { ManagerWelComeback } from '@/components/Manager/WelcombackManager';
+// import dotenv from 'dotenv';
+
 interface ProtectedRouteProps {
   requiredRoles?: Role[]; // Optional prop for role-based protection
 }
@@ -149,6 +151,7 @@ function RequireCaptcha() {
       'captchaVerifiedTime',
       new Date().getTime().toString()
     ); // Lưu thời gian xác minh
+    console.log(import.meta.env.VITE_GOOGLE_CAPCHA_SITE_KEY);
   };
   useEffect(() => {
     // localStorage.removeItem('captchaVerified');
@@ -180,7 +183,7 @@ function RequireCaptcha() {
         Vui lòng hoàn thành reCAPTCHA để tiếp tục
       </h2>
       <ReCAPTCHA
-        sitekey="6LdLoV8qAAAAAF7HWwBph0kufiITsRwjdhgbIU63" // Thay bằng site key từ Google reCAPTCHA
+        sitekey={import.meta.env.VITE_GOOGLE_CAPCHA_SITE_KEY} // Thay bằng site key từ Google reCAPTCHA
         onChange={handleCaptchaChange}
       />
     </div>
