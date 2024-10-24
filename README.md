@@ -34,6 +34,6 @@ Your app is ready to be deployed!
 
 ### `npm test`
 
-Test by jess
+Test the app class
 
 See the section about [deploying](https://vitejs.dev/guide/static-deploy) for more information.

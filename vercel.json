@@ -4,15 +4,5 @@
       "source": "/(.*)",
       "destination": "/index.html"
     }
-  ],
-  "builds": [
-    {
-      "src": "src/main.tsx",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "dist/**/*",
-      "use": "@vercel/static"
-    }
   ]
 }
