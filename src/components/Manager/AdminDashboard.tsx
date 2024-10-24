@@ -10,6 +10,9 @@ import {
   FaTimesCircle,
 } from 'react-icons/fa';
 import RoomList from './TestRoomList';
+import React from 'react';
+import { Steam } from '../DashboardComponent/Charts/steam';
+import { MdMeetingRoom } from 'react-icons/md';
 
 const dataStats = [
   {
@@ -17,7 +20,7 @@ const dataStats = [
     total: '150',
     rate: '15%',
     levelUp: true,
-    icon: <FaCalendarCheck />,
+    icon: <MdMeetingRoom className="text-2xl" />,
   },
   {
     title: 'Tổng số lượt đặt chỗ trong tuần',
@@ -39,6 +42,11 @@ const dataStats = [
     icon: <FaBriefcase />,
   },
 ];
+// const Chart = React.lazy(() =>
+//   import('@/components/DashboardComponent/Charts/steam').then((mod) => ({
+//     default: mod.Steam,
+//   }))
+// );
 
 export const AdminDashboard: React.FC = () => {
   return (
@@ -66,6 +74,12 @@ export const AdminDashboard: React.FC = () => {
           <div className="col-span-12 xl:col-span-8">
             {/* <TableOne /> */}
             {/* <RoomList /> */}
+          </div>
+        </div>
+        <div className="h-full flex flex-col gap-2 mt-5">
+          <h3 className="text-2xl font-semibold">Statistics</h3>
+          <div className="w-full bg-default-50 shadow-lg rounded-2xl p-6 ">
+            <Steam />
           </div>
         </div>
       </div>
