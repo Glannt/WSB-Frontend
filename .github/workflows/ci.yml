@@ -55,12 +55,18 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Setup Environment
         uses: ./.github/actions/setup-environment
       - name: Test
         run: FORCE_COLOR=true npm run test -- --verbose
       - name: Run tests and generate coverage report
         run: npx jest --coverage
+      - name: Upload results to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
 
   build:
     name: Build
