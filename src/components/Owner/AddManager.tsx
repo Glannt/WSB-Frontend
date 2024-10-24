@@ -83,7 +83,7 @@ const AddManager: React.FC<RoomModalProps> = ({
 
   const getAllBuildingApi = async () => {
     const response = await getAllBuilding();
-    return response.data.content;
+    return response.data.data;
   };
 
   const {
@@ -202,9 +202,9 @@ const AddManager: React.FC<RoomModalProps> = ({
                       input: 'border-0 focus:outline-none focus:border-none',
                       clearButton: 'pb-4',
                     }}
-                    defaultValue={
-                      selectedRoom ? selectedRoom?.buildingName : ''
-                    }
+                    // defaultValue={
+                    //   selectedRoom ? selectedRoom?.buildingName : ''
+                    // }
                     {...register('userName')}
                     onChange={(e) =>
                       handleFieldChange('userName', e.target.value)

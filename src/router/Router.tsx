@@ -61,6 +61,7 @@ import ReturnPage from '@/components/Test/ReturnPage';
 import { DashboardOwner } from '@/components/Owner/DashboardOwner';
 import ManageBuildings from '@/components/Owner/ManageBuildings';
 import ManageManager from '@/components/Owner/ManageManager';
+import Schedule from '@/components/Staff/Schedule';
 import { ManagerWelComeback } from '@/components/Manager/WelcombackManager';
 interface ProtectedRouteProps {
   requiredRoles?: Role[]; // Optional prop for role-based protection
@@ -296,6 +297,10 @@ export const router = createBrowserRouter([
         path: path.staff,
         element: <DashboardStaff />,
         children: [
+          {
+            path: path.schedule,
+            element: <Schedule />,
+          },
           {
             path: path.staffRooms,
             element: <StaffRoomOverview />,
