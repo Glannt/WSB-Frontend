@@ -1,9 +1,11 @@
+import { RoomTypeAnalyst } from '@/types/dashboard.type';
 import { ApexOptions } from 'apexcharts';
 import React, { useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 
 interface ChartRoomBookingState {
   series: number[];
+  labels: string[];
 }
 
 const options: ApexOptions = {
@@ -11,12 +13,12 @@ const options: ApexOptions = {
     fontFamily: 'Satoshi, sans-serif',
     type: 'donut',
   },
-  colors: ['#FF5733', '#33FF57', '#3357FF', '#FFC300'], // Custom colors for rooms
+  colors: ['#F59883FF', '#91DE9FFF', '#A4B0E5FF', '#EADCADFF'], // Custom colors for rooms
   labels: [
-    'Single Room',
-    'Double Room',
-    '7-Person Meeting Room',
-    '10-Person Meeting Room',
+    'Phòng học 1 người',
+    'Phòng học 2 người',
+    'Phòng họp',
+    'Phòng sự kiện',
   ], // Room types
   legend: {
     show: false,
@@ -53,12 +55,28 @@ const options: ApexOptions = {
     },
   ],
 };
+interface ChartRoomBookingProps {
+  roomTypeAnalysis?: RoomTypeAnalyst;
+}
 
-const ChartRoomBooking: React.FC = () => {
+const ChartRoomBooking: React.FC<ChartRoomBookingProps> = ({
+  roomTypeAnalysis,
+}) => {
   const [state, setState] = useState<ChartRoomBookingState>({
-    series: [40, 30, 15, 15], // Percentages for room types (example data)
+    series: [], // Percentages for room types (example data)
+    labels: [],
   });
+  React.useEffect(() => {
+    if (roomTypeAnalysis) {
+      const labels = Object.keys(roomTypeAnalysis);
+      const series = Object.values(roomTypeAnalysis);
 
+      setState({ series, labels });
+    } else {
+      console.warn('roomType analysis null or undefine');
+    }
+    // Extracting series and labels from roomTypeAnalysis
+  }, [roomTypeAnalysis]);
   const handleReset = () => {
     setState((prevState) => ({
       ...prevState,
@@ -138,7 +156,7 @@ const ChartRoomBooking: React.FC = () => {
             <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#33FF57]"></span>
             <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
               <span> Double Room </span>
-              <span> 30% </span>
+              <span> {state.series} </span>
             </p>
           </div>
         </div>
