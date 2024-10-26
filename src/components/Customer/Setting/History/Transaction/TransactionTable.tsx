@@ -62,13 +62,18 @@ const TransactionTable: React.FC<BookingTableProps> = ({
   // console.log(
   //   'aaaaaaaa ' + items.find((item) => item.transactionId === '1')?.type
   // );
-  console.log(items.at(0)?.time);
+  console.log(items.at(1)?.amount);
 
   const renderCell = React.useCallback(
     (user: Transaction, columnKey: React.Key) => {
       const cellValue = user[columnKey as keyof Transaction];
-
       switch (columnKey) {
+        case 'amount':
+          return (
+            <div className="relative flex items-center gap-2 h-10">
+              {new Intl.NumberFormat('vi-VN').format(user.amount)} VNĐ
+            </div>
+          );
         case 'id':
           return (
             <div className="relative flex items-center gap-2 h-10">
