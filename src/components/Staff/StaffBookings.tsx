@@ -19,6 +19,7 @@ import {
   DropdownMenu,
   DropdownItem,
   SortDescriptor,
+  Divider,
 } from '@nextui-org/react';
 import { SearchIcon } from '../Icons/SearchIcon';
 import { PlusIcon } from '../Icons/PlusIcon';
@@ -44,6 +45,7 @@ import {
 } from '@/utils/rules';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { EditBooking } from '../Modal/Staff/EditBooking';
+import { VerifyBooking } from './VerifyBooking';
 
 const statusColorMap: Record<string, ChipProps['color']> = {
   available: 'success',
@@ -196,60 +198,66 @@ export default function StaffBookings() {
   };
 
   return (
-    <div className="h-full mt-12 ml-5 mr-5">
-      <StaffBookingFilter
-        filterValue={filterValue}
-        statusFilter={statusFilter}
-        visibleColumns={visibleColumns}
-        statusOptions={statusOptionsBooking}
-        columns={columnsBooking}
-        onSearchChange={onSearchChange}
-        onClear={() => onClear()}
-        setStatusFilter={setStatusFilter}
-        setVisibleColumns={setVisibleColumns}
-      />
-      <div className="flex justify-between items-center mt-5 mb-5">
-        <span className="text-default-400 text-small">
-          {/* Tổng {rooms?.length} phòng */}
-        </span>
-        <label className="flex items-center text-default-400 text-small">
-          Số hàng
-          <select
-            className="bg-transparent outline-none text-default-400 text-small rounded-md ml-3"
-            onChange={onRowsPerPageChange}
-            value={rowsPerPage}
-          >
-            <option value="5">5</option>
-            <option value="10">10</option>
-            <option value="15">15</option>
-          </select>
-        </label>
-      </div>
-      <StaffBookingTable
-        sortedItems={sortedItems}
-        headerColumns={headerColumns}
-        sortDescriptor={sortDescriptor}
-        selectedKeys={selectedKeys} // Handle selection logic
-        setSelectedKeys={setSelectedKeys} // Selection handler
-        onSortChange={setSortDescriptor}
-        openEdit={openEdit}
-        // onDelete={openDelete}
-      />
-      <RoomPagination
-        page={page}
-        pages={pages}
-        onPreviousPage={onPreviousPage}
-        onNextPage={onNextPage}
-        onChange={setPage}
-      />
-      {isEditBooking && (
-        <EditBooking
-          selectedBooking={selectedBooking}
-          refetchBookings={refetchOrderBooking}
-          isOpen={isEditBooking}
-          onClose={closeEdit}
+    <div className="">
+      <div className="h-full mt-12 ml-5 mr-5">
+        <StaffBookingFilter
+          filterValue={filterValue}
+          statusFilter={statusFilter}
+          visibleColumns={visibleColumns}
+          statusOptions={statusOptionsBooking}
+          columns={columnsBooking}
+          onSearchChange={onSearchChange}
+          onClear={() => onClear()}
+          setStatusFilter={setStatusFilter}
+          setVisibleColumns={setVisibleColumns}
         />
-      )}
+        <div className="flex justify-between items-center mt-5 mb-5">
+          <span className="text-default-400 text-small">
+            {/* Tổng {rooms?.length} phòng */}
+          </span>
+          <label className="flex items-center text-default-400 text-small">
+            Số hàng
+            <select
+              className="bg-transparent outline-none text-default-400 text-small rounded-md ml-3"
+              onChange={onRowsPerPageChange}
+              value={rowsPerPage}
+            >
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="15">15</option>
+            </select>
+          </label>
+        </div>
+        <StaffBookingTable
+          sortedItems={sortedItems}
+          headerColumns={headerColumns}
+          sortDescriptor={sortDescriptor}
+          selectedKeys={selectedKeys} // Handle selection logic
+          setSelectedKeys={setSelectedKeys} // Selection handler
+          onSortChange={setSortDescriptor}
+          openEdit={openEdit}
+          // onDelete={openDelete}
+        />
+        <RoomPagination
+          page={page}
+          pages={pages}
+          onPreviousPage={onPreviousPage}
+          onNextPage={onNextPage}
+          onChange={setPage}
+        />
+        {isEditBooking && (
+          <EditBooking
+            selectedBooking={selectedBooking}
+            refetchBookings={refetchOrderBooking}
+            isOpen={isEditBooking}
+            onClose={closeEdit}
+          />
+        )}
+      </div>
+      <Divider className="mt-24" />
+      <div className="mt-10 p-10 w-auto h-[100px]">
+        <VerifyBooking refetchOrderBooking={refetchOrderBooking} />
+      </div>
     </div>
   );
 }

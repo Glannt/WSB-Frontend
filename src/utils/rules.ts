@@ -275,3 +275,11 @@ export const shemaBuyMemberShip = Yup.object().shape({
   membershipId: Yup.string(),
 });
 export type SchemaBuyMemberShip = Yup.InferType<typeof shemaBuyMemberShip>;
+
+export const schemaUpdateBookingStatus = Yup.object().shape({
+  bookingId: Yup.string(),
+  status: Yup.string().default('USING'),
+});
+export type SchemaUpdateBookingStatus = Yup.InferType<
+  typeof schemaUpdateBookingStatus
+>;

@@ -84,3 +84,15 @@ export interface CustomerOrderBooking {
   slots: SlotBooking[];
   items: ServiceItems;
 }
+
+export interface CheckBooking {
+  bookingId: string;
+  checkinDate: string;
+  checkoutDate: string;
+  customerId: string;
+  roomId: string;
+  serviceItems: ServiceItems;
+  slots: SlotBooking[];
+  status: string;
+  totalPrice: number;
+}

@@ -92,8 +92,7 @@ const StaffBookingTable: React.FC<RoomTableProps> = ({
             <div className="flex flex-col">
               {booking.slots.map((slot, index) => (
                 <p key={index} className="text-bold text-small capitalize">
-                  Slot {slot.timeSlotId}: {slot.timeStart} - {slot.timeEnd} (
-                  {slot.status})
+                  Slot {slot.timeSlotId}: {slot.timeStart} - {slot.timeEnd}
                 </p>
               ))}
             </div>

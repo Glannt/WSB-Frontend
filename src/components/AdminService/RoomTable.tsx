@@ -172,7 +172,7 @@ const RoomTable: React.FC<RoomTableProps> = ({
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent={'No rooms found'} items={sortedItems}>
+      <TableBody emptyContent={'Không tìm thấy phòng'} items={sortedItems}>
         {(item) => (
           <TableRow key={item.roomId}>
             {(columnKey) => (
