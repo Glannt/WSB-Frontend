@@ -232,7 +232,7 @@ export type SchemacreateMultiBooking = Yup.InferType<
 export const schemaTopUp = Yup.object().shape({
   amount: Yup.number()
     .required('Số tiền là bắt buộc')
-    .min(10000, 'Số tiền phải ít nhất là 10,000 VND'),
+    .min(10000, 'Số tiền phải ít nhất là 10,000 VNĐ'),
 });
 export type SchemaTopUp = Yup.InferType<typeof schemaTopUp>;
 
@@ -241,7 +241,6 @@ export const schemaCancelBooking = Yup.object().shape({
 });
 
 export type SchemaCancelBooking = Yup.InferType<typeof schemaCancelBooking>;
-
 
 export const updateOrderStatusSchema = Yup.object().shape({
   bookingId: Yup.string()
@@ -271,4 +270,3 @@ export const schemaCreateAccount = Yup.object().shape({
 });
 
 export type SchemaCreateAccount = Yup.InferType<typeof schemaCreateAccount>;
-

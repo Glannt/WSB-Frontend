@@ -11,8 +11,6 @@ import {
   getWalletByUserId,
 } from '@/service/customer.api';
 
-
-
 import { getCustomerFromLS, getProfileFromLS } from '@/utils/auth';
 
 import { useQuery } from '@tanstack/react-query';
@@ -38,7 +36,6 @@ const MyWallet: React.FC = () => {
   //     setIsAdding(false);
   //   }, 1500);
   // };
-
 
   const getHistoryTransactionApi = async () => {
     const response = await getTransactionsByUserId(profile.userId);
@@ -67,7 +64,6 @@ const MyWallet: React.FC = () => {
 
   //const wallet = getCustomerFromLS().wallet;
 
-
   const formattedWallet = new Intl.NumberFormat('vi-VN').format(
     Number(wallet?.amount)
   );
@@ -84,7 +80,7 @@ const MyWallet: React.FC = () => {
           </div>
           <div className="mt-4">
             <p className="text-sm">Số dư tiện tại</p>
-            <p className="text-4xl font-bold">{formattedWallet} VND</p>
+            <p className="text-4xl font-bold">{formattedWallet} VNĐ</p>
           </div>
           <div className="flex justify-end">
             <Button

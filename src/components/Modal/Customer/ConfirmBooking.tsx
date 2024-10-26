@@ -229,13 +229,13 @@ export const ConfirmBooking: React.FC<ConfirmBookingProps> = ({
                   </div>
                   <hr />
                   <p>
-                    <strong>Số dư hiện tại:</strong> {formattedCurrent} VND
+                    <strong>Số dư hiện tại:</strong> {formattedCurrent} VNĐ
                   </p>
                   <p>
-                    <strong>Tổng giá:</strong> {formatted} VND
+                    <strong>Tổng giá:</strong> {formatted} VNĐ
                   </p>
                   <p>
-                    <strong>Số dư còn lại</strong> {formattedRemaining} VND
+                    <strong>Số dư còn lại</strong> {formattedRemaining} VNĐ
                   </p>
                 </ModalBody>
                 <form onSubmit={handleSubmit(onSubmit)}>
