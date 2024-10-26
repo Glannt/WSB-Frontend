@@ -1,3 +1,4 @@
+import { BookingAnalyst } from '@/types/dashboard.type';
 import { ApexOptions } from 'apexcharts';
 import React, { useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
@@ -49,11 +50,32 @@ const options: ApexOptions = {
   ],
 };
 
-const ChartOrder: React.FC = () => {
+interface ChartRoomBookingState {
+  series: number[];
+  labels: string[];
+}
+
+interface ChartBookingProps {
+  bookingAnalysis?: BookingAnalyst;
+}
+
+const ChartOrder: React.FC<ChartBookingProps> = ({ bookingAnalysis }) => {
   const [state, setState] = useState<ChartRoomBookingState>({
-    series: [40, 30, 15, 15], // Percentages for room types (example data)
+    series: [], // Percentages for room types (example data)
+    labels: [],
   });
 
+  React.useEffect(() => {
+    if (bookingAnalysis) {
+      const labels = Object.keys(bookingAnalysis);
+      const series = Object.values(bookingAnalysis);
+
+      setState({ series, labels });
+    } else {
+      console.warn('roomType analysis null or undefine');
+    }
+    // Extracting series and labels from roomTypeAnalysis
+  }, [bookingAnalysis]);
   const handleReset = () => {
     setState((prevState) => ({
       ...prevState,
@@ -121,10 +143,24 @@ const ChartOrder: React.FC = () => {
       <div className="-mx-8 flex flex-wrap items-center justify-center gap-y-3">
         <div className="sm:w-1/2 w-full px-8">
           <div className="flex w-full items-center">
-            <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#FF5733]"></span>
+            <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#347928]"></span>
             <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
               <span> Đơn đặt </span>
-              <span> 60% </span>
+              {/* <span> {(state.series[0] / state.series[0]) * 100 || 0}% </span> */}
+              <span>
+                {' '}
+                {(
+                  (state.series[0] / state.series.reduce((a, b) => a + b, 0)) *
+                  100
+                ).toFixed(2) == 'NaN'
+                  ? 0
+                  : (
+                      (state.series[0] /
+                        state.series.reduce((a, b) => a + b, 0)) *
+                      100
+                    ).toFixed(2)}
+                %{' '}
+              </span>
             </p>
           </div>
         </div>
@@ -133,7 +169,20 @@ const ChartOrder: React.FC = () => {
             <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#33FF57]"></span>
             <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
               <span> Đang chờ xử lý </span>
-              <span> 10% </span>
+              <span>
+                {' '}
+                {(
+                  (state.series[1] / state.series.reduce((a, b) => a + b, 0)) *
+                  100
+                ).toFixed(2) == 'NaN'
+                  ? 0
+                  : (
+                      (state.series[1] /
+                        state.series.reduce((a, b) => a + b, 0)) *
+                      100
+                    ).toFixed(2)}
+                %{' '}
+              </span>
             </p>
           </div>
         </div>
@@ -142,7 +191,20 @@ const ChartOrder: React.FC = () => {
             <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#3357FF]"></span>
             <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
               <span> Đã hoàn thành </span>
-              <span> 15% </span>
+              <span>
+                {' '}
+                {(
+                  (state.series[2] / state.series.reduce((a, b) => a + b, 0)) *
+                  100
+                ).toFixed(2) == 'NaN'
+                  ? 0
+                  : (
+                      (state.series[2] /
+                        state.series.reduce((a, b) => a + b, 0)) *
+                      100
+                    ).toFixed(2)}
+                %{' '}
+              </span>
             </p>
           </div>
         </div>
@@ -151,7 +213,20 @@ const ChartOrder: React.FC = () => {
             <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#FFC300]"></span>
             <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
               <span> Bị hủy </span>
-              <span> 15% </span>
+              <span>
+                {' '}
+                {(
+                  (state.series[3] / state.series.reduce((a, b) => a + b, 0)) *
+                  100
+                ).toFixed(2) == 'NaN'
+                  ? 0
+                  : (
+                      (state.series[3] /
+                        state.series.reduce((a, b) => a + b, 0)) *
+                      100
+                    ).toFixed(2)}
+                %{' '}
+              </span>
             </p>
           </div>
         </div>

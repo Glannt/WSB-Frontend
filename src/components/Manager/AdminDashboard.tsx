@@ -15,6 +15,7 @@ import { Steam } from '../DashboardComponent/Charts/steam';
 import { MdMeetingRoom } from 'react-icons/md';
 import { useQuery } from '@tanstack/react-query';
 import {
+  getBookingAnalysisByMonth,
   getRoomTypeAnalysisByDate,
   getRoomTypeAnalysisByMonth,
   getTotalBookingInDate,
@@ -22,7 +23,11 @@ import {
   getTotalBookingInWeek,
   getTotalSpace,
 } from '@/service/manager.api';
-import { RoomTypeAnalyst, TotalBooking } from '@/types/dashboard.type';
+import {
+  BookingAnalyst,
+  RoomTypeAnalyst,
+  TotalBooking,
+} from '@/types/dashboard.type';
 
 // const Chart = React.lazy(() =>
 //   import('@/components/DashboardComponent/Charts/steam').then((mod) => ({
@@ -62,6 +67,8 @@ export const AdminDashboard: React.FC = () => {
     queryKey: ['bookingInDate'],
     queryFn: getTotalBookingInDateApi,
   });
+  console.log(bookingInDate);
+
   const getTotalTotalSpaceApi = async () => {
     const response = await getTotalSpace();
     console.log(response.data.data);
@@ -80,39 +87,55 @@ export const AdminDashboard: React.FC = () => {
       return {}; // Return an empty object or a fallback value
     }
 
-    return response.data.data.roomTypeAnalyst || {};
+    return response.data.data.roomTypeAnalyst;
   };
   const { data: RoomTypeAnalysisByMonth } = useQuery<RoomTypeAnalyst>({
     queryKey: ['RoomTypeAnalysisByMonth'],
     queryFn: getRoomTypeAnalysisByMonthApi,
   });
-  console.log(RoomTypeAnalysisByMonth);
+
+  const getBookingAnalysisByMonthApi = async () => {
+    const response = await getBookingAnalysisByMonth();
+    if (!response || !response.data || !response.data.data) {
+      console.error('Invalid response structure:', response);
+      return {}; // Return an empty object or a fallback value
+    }
+
+    return response.data.data.bookingAnalyst;
+  };
+  const { data: BookingAnalysisByMonth } = useQuery<BookingAnalyst>({
+    queryKey: ['BookingAnalysisByMonth'],
+    queryFn: getBookingAnalysisByMonthApi,
+  });
+  console.log('RoomTypeAnalysisByMonth', BookingAnalysisByMonth);
 
   const dataStats = [
     {
       title: 'Tổng số lượt đặt chỗ hôm nay',
+
       total: String(bookingInDate?.totalBookingSlot) || '0',
+
       rate: '15%',
       levelUp: true,
       icon: <MdMeetingRoom className="text-2xl" />,
     },
     {
       title: 'Tổng số lượt đặt chỗ trong tuần',
-      total: bookingInWeek?.totalBookingSlot.toString() || '0',
+      total: bookingInWeek?.totalBookingSlot?.toString() || '0',
       rate: '10%',
       levelUp: true,
       icon: <FaCalendarCheck />,
     },
     {
       title: 'Tổng số lượt đặt chỗ trong tháng',
-      total: bookingInMonth?.totalBookingSlot.toString() || '0',
+      total: bookingInMonth?.totalBookingSlot?.toString() || '0',
       rate: '5%',
       levelDown: true,
       icon: <FaCalendarCheck />,
     },
     {
       title: 'Tổng số không gian làm việc',
-      total: totalSpace?.totalSpace.toString() || '0',
+      total: totalSpace?.totalSpace?.toString() || '0',
       icon: <FaBriefcase />,
     },
   ];
@@ -148,7 +171,7 @@ export const AdminDashboard: React.FC = () => {
         </div>
         <div className="mt-4 grid grid-cols-10 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
           <ChartRoomBooking roomTypeAnalysis={RoomTypeAnalysisByMonth} />
-          <ChartOrder />
+          <ChartOrder bookingAnalysis={BookingAnalysisByMonth} />
           {/* <ChartTwo /> */}
           {/* <ChartThree /> */}
           <div className="col-span-12 xl:col-span-8">

@@ -345,7 +345,7 @@ export const BookingRoomDetail = () => {
                                           {service.name}
                                         </h4>
                                         <p className="text-gray-600">
-                                          ${service.price}
+                                          {service.price} VNĐ
                                         </p>
                                       </div>
                                       {

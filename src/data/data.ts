@@ -20,6 +20,7 @@ export const statusOptionsBooking = [
   { name: 'Đang sử dụng', uid: 'using' },
   { name: 'Hoàn thành', uid: 'finished' },
   { name: 'Sắp tới', uid: 'upcoming' },
+  { name: 'Đã hủy', uid: 'cancelled' },
 ];
 
 export const statusOptionsTransaction = [

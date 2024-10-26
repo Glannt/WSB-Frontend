@@ -54,3 +54,12 @@ export const getRoomTypeAnalysisByWeek = () =>
 
 export const getRoomTypeAnalysisByMonth = () =>
   http.get('/api/dashboard/room-type-analyst-month');
+
+export const getBookingAnalysisByMonth = () =>
+  http.get('/api/dashboard/booking-analyst-month');
+
+export const getBookingAnalysisByWeek = () =>
+  http.get('/api/dashboard/booking-analyst-week');
+
+export const getBookingAnalysisByDate = () =>
+  http.get('/api/dashboard/booking-analyst-date');

@@ -12,8 +12,27 @@ import { useNavigate } from 'react-router';
 interface RoomTypeSwiperProps {
   roomType: ListRooms[];
 }
+
 const RoomTypeSwiper: React.FC<RoomTypeSwiperProps> = ({ roomType }) => {
   console.log('roomType', roomType[0].roomType);
+
+  const formatRoomPrice = (price: number) => {
+    return new Intl.NumberFormat('vi-VN').format(price);
+  };
+
+  const handleNavigate = () => {
+    if (roomType[0].roomType === 'Phòng học 5 người') {
+      console.log('ok');
+
+      navigate(`/double-space`);
+    } else if (roomType[0].roomType === 'Phòng học 1 người') {
+      navigate(`/single-space`);
+    } else if (roomType[0].roomType === 'Phòng họp') {
+      navigate(`/meeting-space`);
+    } else if (roomType[0].roomType === 'Phòng sự kiện') {
+      navigate(`/event-space`);
+    }
+  };
 
   const navigate = useNavigate();
   return (
@@ -56,10 +75,12 @@ const RoomTypeSwiper: React.FC<RoomTypeSwiperProps> = ({ roomType }) => {
               />
               <div className="p-4">
                 <h3 className="font-bold text-lg mb-2">{room.roomName}</h3>
-                <p className="text-gray-600">{room.price}$/slot</p>
+                <p className="text-gray-600">
+                  {formatRoomPrice(room.price)} VNĐ/slot
+                </p>
               </div>
               <Button
-                onClick={() => navigate(`/single-space`)}
+                onClick={() => handleNavigate()}
                 className="ml-7 mb-5 bg-transparent w-[90%] border border-blackA2 text-center text-black hover:bg-blackA9 hover:text-white hover:transition hover:duration-300 transition duration-500 ease-in-out"
               >
                 Tìm hiểu thêm

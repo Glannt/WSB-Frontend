@@ -10,11 +10,11 @@ import RoomSlider from '../Slider/RoomSlider';
 
 export const BuildingTwo: React.FC = () => {
   const images = [img1, img2, img3, img4, img5, img6, img7];
-  const mapUrl = `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.3060219274423!2d-73.98823492346382!3d40.74844097138868!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259a9b3117469%3A0xd134e199a405a163!2sEmpire%20State%20Building!5e0!3m2!1sen!2sus!4v1685158645145!5m2!1sen!2sus`;
+  const mapUrl = `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.5664434319997!2d106.78327977583895!3d10.844453457933579!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752713d6664815%3A0xc94c9bae67924dee!2zMTAwIEzDqiBWxINuIFZp4buHdCwga2h1IHBo4buRIDUsIFF14bqtbiA5LCBI4buTIENow60gTWluaCwgVmnhu4d0IE5hbQ!5e0!3m2!1svi!2sus!4v1729959508785!5m2!1svi!2sus`;
 
   return (
     <div className="container">
-      <h1 className="text-8xl text-center">District 3 Coworking</h1>
+      <h1 className="text-8xl text-center">FPT NVH</h1>
       <SliderBuilding images={images} />
       <div className="mt-1">
         <div className="flex flex-col lg:flex-row gap-10">

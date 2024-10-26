@@ -59,6 +59,9 @@ const BookingTable: React.FC<BookingTableProps> = ({
   openModal,
   openCancel,
 }) => {
+  const formatRoomPrice = (price: number) => {
+    return new Intl.NumberFormat('vi-VN').format(price);
+  };
   const renderCell = React.useCallback(
     (booking: CustomerOrderBookingHistory, columnKey: React.Key) => {
       const cellValue = booking[columnKey as keyof CustomerOrderBookingHistory];
@@ -81,10 +84,20 @@ const BookingTable: React.FC<BookingTableProps> = ({
           return booking ? (
             <div className="flex flex-col">
               <p className="text-bold text-sm capitalize">{booking.roomId}</p>
-              <p className="text-bold text-sm capitalize text-default-400">
+              {/* <p className="text-bold text-sm capitalize text-default-400">
                 {booking.totalPrice} VND
-              </p>
+              </p> */}
             </div>
+          ) : (
+            'N/A'
+          );
+        case 'totalPrice':
+          // Render room information like room name
+          // const room = booking.room;
+          return booking ? (
+            <p className="text-bold text-sm capitalize">
+              {formatRoomPrice(Number(booking.totalPrice))} VNĐ
+            </p>
           ) : (
             'N/A'
           );

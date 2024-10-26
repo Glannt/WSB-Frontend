@@ -10,11 +10,11 @@ import RoomSlider from '../Slider/RoomSlider';
 
 export const BuildingOne: React.FC = () => {
   const images = [img1, img2, img3, img4, img5, img6, img7];
-  const mapUrl = `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.3060219274423!2d-73.98823492346382!3d40.74844097138868!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259a9b3117469%3A0xd134e199a405a163!2sEmpire%20State%20Building!5e0!3m2!1sen!2sus!4v1685158645145!5m2!1sen!2sus`;
+  const mapUrl = `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.4620109147554!2d106.79240238491266!3d10.852421630217462!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3175274103e53973%3A0xa6e53a8587e21c91!2zMSDEkC4gRDEsIFBoxrDhu51uZyBUw6JuIFBow7osIFF14bqtbiA5LCBI4buTIENow60gTWluaCwgVmnhu4d0IE5hbQ!5e0!3m2!1svi!2sus!4v1729959389573!5m2!1svi!2sus`;
 
   return (
     <div className="container">
-      <h1 className="text-8xl text-center">District 1 Workspace</h1>
+      <h1 className="text-8xl text-center">FPT WorkSpace</h1>
       <SliderBuilding images={images} />
       <div className="mt-1">
         <div className="flex flex-col lg:flex-row gap-10">

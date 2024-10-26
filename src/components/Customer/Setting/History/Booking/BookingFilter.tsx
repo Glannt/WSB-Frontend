@@ -13,6 +13,7 @@ import { capitalize } from '@/components/Customer/utils';
 import { statusOptionsBooking } from '@/data/data';
 
 interface BookingFiltersProps {
+  items: any[];
   statusFilter: Selection;
   visibleColumns: Selection;
   statusOptions: StatusOption[];
@@ -29,79 +30,80 @@ interface BookingFiltersProps {
 //   { name: 'Tình trạng', uid: 'status' },
 //   { name: 'Thêm dịch vụ', uid: 'actions' },
 // ];
-const bookings = [
-  {
-    id: 1,
-    date: '2021-10-10',
-    amount: '$100',
-    status: 'finished',
-    address: '123/ABC, ABC, Hà Nội',
-  },
-  {
-    id: 2,
-    date: '2021-10-11',
-    amount: '$200',
-    status: 'using',
-    address: 'Hà Nội',
-  },
-  {
-    id: 3,
-    date: '2021-10-12',
-    amount: '$300',
-    status: 'upcoming',
-    address: 'Hà Nội',
-  },
-  {
-    id: 4,
-    date: '2021-10-13',
-    amount: '$400',
-    status: 'finished',
-    address: 'Hà Nội',
-  },
-  {
-    id: 5,
-    date: '2021-10-14',
-    amount: '$500',
-    status: 'using',
-    address: 'Hà Nội',
-  },
-  {
-    id: 6,
-    date: '2021-10-15',
-    amount: '$600',
-    status: 'upcoming',
-    address: 'Hà Nội',
-  },
-  {
-    id: 7,
-    date: '2021-10-16',
-    amount: '$700',
-    status: 'finished',
-    address: 'Hà Nội',
-  },
-  {
-    id: 8,
-    date: '2021-10-17',
-    amount: '$800',
-    status: 'using',
-    address: 'Hà Nội',
-  },
-  {
-    id: 9,
-    date: '2021-10-18',
-    amount: '$900',
-    status: 'upcoming',
-    address: 'Hà Nội',
-  },
-  {
-    id: 10,
-    date: '2021-10-19',
-    amount: '$1000',
-    status: 'finished',
-    address: 'Hà Nội',
-  },
-];
+// const bookings = [
+//   {
+//     id: 1,
+//     date: '2021-10-10',
+//     amount: '$100',
+//     status: 'finished',
+//     address: '123/ABC, ABC, Hà Nội',
+//   },
+//   {
+//     id: 2,
+//     date: '2021-10-11',
+//     amount: '$200',
+//     status: 'using',
+//     address: 'Hà Nội',
+//   },
+//   {
+//     id: 3,
+//     date: '2021-10-12',
+//     amount: '$300',
+//     status: 'upcoming',
+//     address: 'Hà Nội',
+//   },
+//   {
+//     id: 4,
+//     date: '2021-10-13',
+//     amount: '$400',
+//     status: 'finished',
+//     address: 'Hà Nội',
+//   },
+//   {
+//     id: 5,
+//     date: '2021-10-14',
+//     amount: '$500',
+//     status: 'using',
+//     address: 'Hà Nội',
+//   },
+//   {
+//     id: 6,
+//     date: '2021-10-15',
+//     amount: '$600',
+//     status: 'upcoming',
+//     address: 'Hà Nội',
+//   },
+//   {
+//     id: 7,
+//     date: '2021-10-16',
+//     amount: '$700',
+//     status: 'finished',
+//     address: 'Hà Nội',
+//   },
+//   {
+//     id: 8,
+//     date: '2021-10-17',
+//     amount: '$800',
+//     status: 'using',
+//     address: 'Hà Nội',
+//   },
+//   {
+//     id: 9,
+//     date: '2021-10-18',
+//     amount: '$900',
+//     status: 'upcoming',
+//     address: 'Hà Nội',
+//   },
+//   {
+//     id: 10,
+//     date: '2021-10-19',
+//     amount: '$1000',
+//     status: 'finished',
+//     address: 'Hà Nội',
+//   },
+// ];
 const BookingFilter: React.FC<BookingFiltersProps> = ({
+  items,
   columns,
   statusFilter,
   setStatusFilter,
@@ -168,10 +170,10 @@ const BookingFilter: React.FC<BookingFiltersProps> = ({
       </div>
       <div className="flex justify-between items-center">
         <span className="text-default-400 text-small">
-          Tổng {bookings.length} đơn
+          Tổng {items.length} đơn
         </span>
         <label className="flex items-center text-default-400 text-small">
-          Rows per page:
+          Số hàng:
           <select
             className="bg-transparent outline-none text-default-400 text-small rounded-md ml-3"
             onChange={onRowsPerPageChange}

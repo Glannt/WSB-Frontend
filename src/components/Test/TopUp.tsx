@@ -155,8 +155,8 @@ const TopUpPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-500 to-purple-600 p-4">
-      <div className="bg-white rounded-lg shadow-xl p-8 w-full max-w-md">
+    <div className="flex items-center justify-center mt-36 p-4">
+      <div className="bg-white rounded-lg shadow-2xl p-8 w-full max-w-2xl bg-gradient-to-br from-blue-300 to-purple-400">
         <h1 className="text-3xl font-bold text-center mb-6">Nạp vào ví</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
@@ -167,8 +167,8 @@ const TopUpPage = () => {
               Số tiền
             </label>
             <div className="relative rounded-md shadow-sm">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <span className="text-gray-500 sm:text-sm">VNĐ &nbsp;</span>
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none shadow-lg">
+                <span className="text-gray-800 sm:text-sm">VNĐ &nbsp;</span>
               </div>
               <Input
                 type="text"
@@ -176,7 +176,7 @@ const TopUpPage = () => {
                 onChange={(e) => formatMoney(e.target.value)}
                 name="amount"
                 id="amount"
-                className={`ml-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 pr-12 sm:text-sm border-gray-300 rounded-md `}
+                className={`ml-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 pr-12 sm:text-sm border-gray-300 rounded-md`}
                 isInvalid={errors.amount?.message ? true : false}
                 errorMessage={errors.amount?.message}
                 placeholder="Nhập số tiền"
@@ -187,12 +187,12 @@ const TopUpPage = () => {
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Gợi ý mệnh giá
             </label>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-3 gap-5">
               {denominations.map((value) => (
                 <button
                   key={value}
                   type="button"
-                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200"
+                  className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200"
                   onClick={() => handleDenominationClick(value)}
                 >
                   {value} VNĐ
@@ -208,7 +208,7 @@ const TopUpPage = () => {
             {loading ? (
               <AiOutlineLoading3Quarters className="animate-spin h-5 w-5 mr-3" />
             ) : (
-              'Top Up'
+              'Nạp tiền'
             )}
           </button>
         </form>

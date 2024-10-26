@@ -29,7 +29,7 @@ const options: ApexOptions = {
   ], // Custom colors for rooms
   labels: [
     'Phòng học 1 người',
-    'Phòng học 2 người',
+    'Phòng học 5 người',
     'Phòng họp',
     'Phòng sự kiện',
   ], // Room types
@@ -157,24 +157,24 @@ const ChartRoomBooking: React.FC<ChartRoomBookingProps> = ({
       <div className="-mx-8 flex flex-wrap items-center justify-center gap-y-3">
         <div className="sm:w-1/2 w-full px-8">
           <div className="flex w-full items-center">
+
             <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-orange-200 "></span>
+
             <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
               <span> Phòng học 1 người </span>
               <span>
                 {' '}
-                {
-                  state?.series &&
-                  state.series.length >= 4 &&
-                  state.series[1] + state.series[2] + state.series[3] !== 0
-                    ? (
-                        (state.series[0] /
-                          (state.series[1] +
-                            state.series[2] +
-                            state.series[3])) *
-                        100
-                      ).toFixed(2) // Format to 2 decimal places
-                    : 100 // Fallback display value if total is 0 or data is missing
-                }
+                {(
+                  (state.series[0] / state.series.reduce((a, b) => a + b, 0)) *
+                  100
+                ).toFixed(2) == 'NaN'
+                  ? 0
+                  : (
+                      (state.series[0] /
+                        state.series.reduce((a, b) => a + b, 0)) *
+                      100
+                    ).toFixed(2)}
+
                 %{' '}
               </span>
             </p>
@@ -184,28 +184,20 @@ const ChartRoomBooking: React.FC<ChartRoomBookingProps> = ({
           <div className="flex w-full items-center">
             <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-green-200"></span>
             <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
-              <span> Phòng học 2 người </span>
+
+              <span> Phòng học 5 người </span>
               <span>
                 {' '}
-                {
-                  state?.series &&
-                  state.series.length >= 4 &&
-                  state.series[0] + state.series[2] + state.series[3] !== 0
-                    ? (
-                        (state.series[1] /
-                          (state.series[0] +
-                            state.series[2] +
-                            state.series[3])) *
-                        100
-                      ).toFixed(2) // Format to 2 decimal places
-                    : (
-                        (state.series[1] /
-                          (state.series[0] +
-                            state.series[2] +
-                            state.series[3])) *
-                        100
-                      ).toFixed(2) // Fallback display value if total is 0 or data is missing
-                }
+                {(
+                  (state.series[1] / state.series.reduce((a, b) => a + b, 0)) *
+                  100
+                ).toFixed(2) == 'NaN'
+                  ? 0
+                  : (
+                      (state.series[1] /
+                        state.series.reduce((a, b) => a + b, 0)) *
+                      100
+                    ).toFixed(2)}
                 %{' '}
               </span>
             </p>
@@ -216,7 +208,21 @@ const ChartRoomBooking: React.FC<ChartRoomBookingProps> = ({
             <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-blue-200"></span>
             <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
               <span> Phòng họp </span>
-              <span> {state.series[2]}% </span>
+
+              <span>
+                {' '}
+                {(
+                  (state.series[2] / state.series.reduce((a, b) => a + b, 0)) *
+                  100
+                ).toFixed(2) == 'NaN'
+                  ? 0
+                  : (
+                      (state.series[2] /
+                        state.series.reduce((a, b) => a + b, 0)) *
+                      100
+                    ).toFixed(2)}
+                %{' '}
+              </span>
             </p>
           </div>
         </div>
@@ -225,7 +231,20 @@ const ChartRoomBooking: React.FC<ChartRoomBookingProps> = ({
             <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-yellow-200"></span>
             <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
               <span> Phòng sự kiện </span>
-              <span> {state.series[3]} %</span>
+              <span>
+                {' '}
+                {(
+                  (state.series[3] / state.series.reduce((a, b) => a + b, 0)) *
+                  100
+                ).toFixed(2) == 'NaN'
+                  ? 0
+                  : (
+                      (state.series[3] /
+                        state.series.reduce((a, b) => a + b, 0)) *
+                      100
+                    ).toFixed(2)}
+                %{' '}
+              </span>
             </p>
           </div>
         </div>

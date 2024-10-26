@@ -64,6 +64,9 @@ import ManageManager from '@/components/Owner/ManageManager';
 import Schedule from '@/components/Staff/Schedule';
 import { ManagerWelComeback } from '@/components/Manager/WelcombackManager';
 import { MemberShipPage } from '@/components/Customer/MemberShipPage';
+
+import ScrollToTop from '@/components/ScrollToTop/ScrollToTop';
+
 // import dotenv from 'dotenv';
 
 interface ProtectedRouteProps {
@@ -220,7 +223,10 @@ export const router = createBrowserRouter([
     path: path.rooms,
     element: (
       <MainLayout>
-        <ListRoom />
+        <>
+          <ScrollToTop />
+          <ListRoom />
+        </>
       </MainLayout>
     ),
   },
@@ -228,7 +234,10 @@ export const router = createBrowserRouter([
     path: path.equipments,
     element: (
       <MainLayout>
-        <EquipmentList />
+        <>
+          <ScrollToTop />
+          <EquipmentList />
+        </>
       </MainLayout>
     ),
   },
@@ -236,7 +245,10 @@ export const router = createBrowserRouter([
     path: path.contact,
     element: (
       <MainLayout>
-        <Contact />
+        <>
+          <ScrollToTop />
+          <Contact />
+        </>
       </MainLayout>
     ),
   },
@@ -244,7 +256,10 @@ export const router = createBrowserRouter([
     path: path.location,
     element: (
       <MainLayout>
-        <Location />
+        <>
+          <ScrollToTop />
+          <Location />
+        </>
       </MainLayout>
     ),
   },
@@ -253,7 +268,10 @@ export const router = createBrowserRouter([
     path: path.foods,
     element: (
       <MainLayout>
-        <ListFood />
+        <>
+          <ScrollToTop />
+          <ListFood />
+        </>
       </MainLayout>
     ),
   },
@@ -306,12 +324,8 @@ export const router = createBrowserRouter([
             element: <ManageManager />,
           },
           {
-            path: 'dashboard',
-            element: <AdminDashboard />,
-          },
-          {
             path: '',
-            element: <ManagerWelComeback />,
+            element: <AdminDashboard />,
           },
         ],
       },
@@ -354,7 +368,10 @@ export const router = createBrowserRouter([
     path: path.aboutUs,
     element: (
       <MainLayout>
-        <AboutUs />
+        <>
+          <ScrollToTop />
+          <AboutUs />
+        </>
       </MainLayout>
     ),
   },
@@ -362,7 +379,10 @@ export const router = createBrowserRouter([
     path: 'single-space',
     element: (
       <MainLayout>
-        <TypeSingle />
+        <>
+          <ScrollToTop />
+          <TypeSingle />
+        </>
       </MainLayout>
     ),
   },
@@ -370,7 +390,10 @@ export const router = createBrowserRouter([
     path: '/sidebarTest',
     element: (
       <MainLayout>
-        <SidebarWrapper />
+        <>
+          <ScrollToTop />
+          <SidebarWrapper />
+        </>
       </MainLayout>
     ),
   },
@@ -378,7 +401,10 @@ export const router = createBrowserRouter([
     path: 'double-space',
     element: (
       <MainLayout>
-        <TypeDouble />
+        <>
+          <ScrollToTop />
+          <TypeDouble />
+        </>
       </MainLayout>
     ),
   },
@@ -386,7 +412,10 @@ export const router = createBrowserRouter([
     path: 'meeting-space',
     element: (
       <MainLayout>
-        <TypeMeeting />
+        <>
+          <ScrollToTop />
+          <TypeMeeting />
+        </>
       </MainLayout>
     ),
   },
@@ -394,7 +423,10 @@ export const router = createBrowserRouter([
     path: 'event-space',
     element: (
       <MainLayout>
-        <TypeEvent />
+        <>
+          <ScrollToTop />
+          <TypeEvent />
+        </>
       </MainLayout>
     ),
   },
@@ -402,7 +434,10 @@ export const router = createBrowserRouter([
     path: 'building-1',
     element: (
       <MainLayout>
-        <BuildingOne />
+        <>
+          <ScrollToTop />
+          <BuildingOne />
+        </>
       </MainLayout>
     ),
   },
@@ -410,7 +445,10 @@ export const router = createBrowserRouter([
     path: 'building-2',
     element: (
       <MainLayout>
-        <BuildingTwo />
+        <>
+          <ScrollToTop />
+          <BuildingTwo />
+        </>
       </MainLayout>
     ),
   },
@@ -419,7 +457,10 @@ export const router = createBrowserRouter([
     path: '',
     element: (
       <CustomerProvider>
-        <ProtectedRoute />
+        <>
+          <ScrollToTop />
+          <ProtectedRoute />
+        </>
       </CustomerProvider>
     ),
     children: [
@@ -431,7 +472,10 @@ export const router = createBrowserRouter([
         path: 'room-detail/:roomId',
         element: (
           <MainLayout>
-            <RoomDetail />
+            <>
+              <ScrollToTop />
+              <RoomDetail />
+            </>
           </MainLayout>
         ),
         // <BookingRoomDetail />,
@@ -440,7 +484,11 @@ export const router = createBrowserRouter([
         path: 'room-booking/:roomBuilding/:roomId',
         element: (
           <MainLayout>
-            <BookingRoomDetailMultiple />
+            <>
+              <ScrollToTop />
+              <BookingRoomDetailMultiple />
+            </>
+
             {/* <TestBookingRoomDetailMultiple /> */}
           </MainLayout>
         ),
@@ -452,7 +500,14 @@ export const router = createBrowserRouter([
       },
       {
         path: 'top-up',
-        element: <TopUpPage />,
+        element: (
+          <MainLayout>
+            <>
+              <ScrollToTop />
+              <TopUpPage />
+            </>
+          </MainLayout>
+        ),
       },
       {
         path: path.settings,
@@ -528,7 +583,10 @@ export const router = createBrowserRouter([
         path: path.register,
         element: (
           <MainLayout>
-            <SignUp />
+            <>
+              <ScrollToTop />
+              <SignUp />
+            </>
           </MainLayout>
         ),
       },
@@ -536,7 +594,10 @@ export const router = createBrowserRouter([
         path: path.login,
         element: (
           <MainLayout>
-            <Login />
+            <>
+              <ScrollToTop />
+              <Login />
+            </>
           </MainLayout>
         ),
       },
