@@ -73,7 +73,7 @@ const MyWallet: React.FC = () => {
   return (
     <>
       <div className="max-w-screen-lg mx-auto bg-white shadow-lg rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl">
-        <div className="bg-gradient-to-r from-black via-slate-600 to-gray-400 p-6 text-white">
+        <div className="bg-gradient-to-br from-blue-300 to-purple-400 p-6 text-white">
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-bold">Ví Điện Tử</h2>
             <FaWallet className="text-3xl" />
@@ -86,7 +86,7 @@ const MyWallet: React.FC = () => {
             <Button
               // onClick={handleAddFunds}
               disabled={isAdding}
-              className="text-xl bg-blackA12 text-white h-12 p-3 rounded-lg font-semibold hover:bg-white hover:text-black hover:shadow-3xl ease-in-out flex items-center hover:scale-105 transition duration-100 shadow-lg"
+              className="text-xl bg-indigo-600 hover:bg-indigo-700 text-white h-12 p-3 rounded-lg font-semibold  hover:shadow-3xl ease-in-out flex items-center hover:scale-105 transition duration-100 shadow-lg"
               onClick={() => navigate('/top-up')}
             >
               <FaPlus className="mr-2" />
