@@ -439,7 +439,13 @@ export const router = createBrowserRouter([
       },
       {
         path: 'top-up',
-        element: <TopUpPage />,
+        element: (
+          <MainLayout>
+            <>
+              <TopUpPage />
+            </>
+          </MainLayout>
+        ),
       },
       {
         path: path.settings,
