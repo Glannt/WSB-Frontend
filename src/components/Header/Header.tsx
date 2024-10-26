@@ -198,7 +198,7 @@ export const Header = (props: any) => {
               >
                 <DropdownItem
                   key="autoscaling"
-                  description="Cơ sở 1"
+                  // description="Cơ sở 1"
                   onClick={() => navigate(path.location)}
                   // startContent={icons.scale}
                 >

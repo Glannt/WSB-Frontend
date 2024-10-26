@@ -98,7 +98,7 @@ export const AddMoreServices: React.FC<AddMoreServicesProps> = ({
   const [quantities, setQuantities] = React.useState<ServiceItems>(
     initialQuantities // Initialize from booking if available
   );
-  console.log(quantities);
+  // console.log(quantities);
 
   const handleQuantityChange = (id: string, newQuantity: number) => {
     setQuantities((prevQuantities) => ({
@@ -228,6 +228,7 @@ export const AddMoreServices: React.FC<AddMoreServicesProps> = ({
       </Modal>
       {isServiceSummary && (
         <ConfirmAddServices
+          quantities={quantities}
           showConfirmModal={isServiceSummary}
           toggleConfirmModal={toggleServiceSummary}
           booking={booking}

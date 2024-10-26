@@ -146,7 +146,13 @@ const ChartOrder: React.FC<ChartBookingProps> = ({ bookingAnalysis }) => {
             <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#347928]"></span>
             <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
               <span> Đơn đặt </span>
-              <span> 60% </span>
+              {/* <span> {(state.series[0] / state.series[0]) * 100 || 0}% </span> */}
+              <span>
+                {' '}
+                {(state.series[0] / state.series.reduce((a, b) => a + b, 0)) *
+                  100 || 0}
+                %{' '}
+              </span>
             </p>
           </div>
         </div>
@@ -155,7 +161,12 @@ const ChartOrder: React.FC<ChartBookingProps> = ({ bookingAnalysis }) => {
             <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#33FF57]"></span>
             <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
               <span> Đang chờ xử lý </span>
-              <span> 10% </span>
+              <span>
+                {' '}
+                {(state.series[1] / state.series.reduce((a, b) => a + b, 0)) *
+                  100 || 0}
+                %{' '}
+              </span>
             </p>
           </div>
         </div>
@@ -164,7 +175,12 @@ const ChartOrder: React.FC<ChartBookingProps> = ({ bookingAnalysis }) => {
             <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#3357FF]"></span>
             <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
               <span> Đã hoàn thành </span>
-              <span> 15% </span>
+              <span>
+                {' '}
+                {(state.series[2] / state.series.reduce((a, b) => a + b, 0)) *
+                  100 || 0}
+                %{' '}
+              </span>
             </p>
           </div>
         </div>
@@ -173,7 +189,12 @@ const ChartOrder: React.FC<ChartBookingProps> = ({ bookingAnalysis }) => {
             <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#FFC300]"></span>
             <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
               <span> Bị hủy </span>
-              <span> 15% </span>
+              <span>
+                {' '}
+                {(state.series[3] / state.series.reduce((a, b) => a + b, 0)) *
+                  100 || 0}
+                %{' '}
+              </span>
             </p>
           </div>
         </div>

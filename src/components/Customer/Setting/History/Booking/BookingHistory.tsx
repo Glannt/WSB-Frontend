@@ -38,12 +38,6 @@ import { AddMoreServices } from '@/components/Modal/Customer/AddMoreServices';
 import { Services } from '@/types/service.type';
 import { ConfirmCancelBooking } from '@/components/Modal/Customer/ConfirmCancelBooking';
 
-const statusOptions = [
-  { name: 'Đang sử dụng', uid: 'using' },
-  { name: 'Hoàn thành', uid: 'finished' },
-  { name: 'Sắp tới', uid: 'upcoming' },
-];
-
 const columns = [
   { name: 'ID', uid: 'bookingId', sortable: true }, // Based on bookingId field
   { name: 'Thời gian bắt đầu sử dụng', uid: 'checkinDate', sortable: true }, // Date of booking
@@ -152,12 +146,14 @@ export default function BookingHistory() {
         booking.totalPrice.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
+    console.log('statusFilter', statusFilter);
+
     if (
       statusFilter !== 'all' &&
-      Array.from(statusFilter).length !== statusOptions.length
+      Array.from(statusFilter).length !== statusOptionsBooking.length
     ) {
-      filteredBookings = filteredBookings.filter((user) =>
-        Array.from(statusFilter).includes(user.status)
+      filteredBookings = filteredBookings.filter((x) =>
+        Array.from(statusFilter).includes(x.status.toLowerCase())
       );
     }
     return filteredBookings;

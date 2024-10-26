@@ -297,12 +297,8 @@ export const router = createBrowserRouter([
             element: <ManageManager />,
           },
           {
-            path: 'dashboard',
-            element: <AdminDashboard />,
-          },
-          {
             path: '',
-            element: <ManagerWelComeback />,
+            element: <AdminDashboard />,
           },
         ],
       },
