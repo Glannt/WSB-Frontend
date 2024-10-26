@@ -24,6 +24,9 @@ export default defineConfig({
       enableBundleAnalysis: process.env.CODECOV_TOKEN !== undefined,
       bundleName: 'wsb-frontend', // Đặt tên bundle dự án ở đây
       uploadToken: process.env.CODECOV_TOKEN,
+      oidc: {
+        useGitHubOIDC: true,
+      },
     }),
   ],
   resolve: {

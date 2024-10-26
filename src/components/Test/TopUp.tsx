@@ -133,8 +133,10 @@ const TopUpPage = () => {
     setMoney(value);
     const numericAmount = Number(value.replace(/\./g, ''));
     setValue('amount', numericAmount);
-
     setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
   };
 
   const [money, setMoney] = useState('');

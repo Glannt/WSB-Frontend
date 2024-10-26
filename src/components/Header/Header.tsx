@@ -303,7 +303,7 @@ export const Header = (props: any) => {
               </Link>
             </NavbarItem>
             {/* Manager */}
-            {roleNameRemoveQuotes.toUpperCase() === 'MANAGER' && (
+            {/* {roleNameRemoveQuotes.toUpperCase() === 'MANAGER' && (
               <NavbarItem
                 isActive={window.location.pathname === path.manager}
                 className="mx-10"
@@ -344,7 +344,7 @@ export const Header = (props: any) => {
                   Trang chủ sở hữu
                 </Link>
               </NavbarItem>
-            )}
+            )} */}
           </NavbarContent>
           {!isAuthenticated && (
             <NavbarContent justify="end" className="mr-10">

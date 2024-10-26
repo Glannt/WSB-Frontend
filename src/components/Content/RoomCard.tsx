@@ -34,7 +34,7 @@ export const ListingCard: React.FC<ListingCardProps> = ({ room, images }) => {
         onClick={() =>
           navigate('/room-booking/' + room.building + '/' + room.roomId)
         }
-        className="mx-6 w-[430px] px-40 bg-black text-white hover:bg-zinc-800 hover:transition hover:duration-500 hover:translate-y-1 mb-5"
+        className="mx-6 w-auto px-40 bg-black text-white hover:bg-zinc-800 hover:transition hover:duration-500 hover:translate-y-1 mb-5"
       >
         Đặt phòng
       </Button>
