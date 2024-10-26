@@ -80,7 +80,7 @@ export function SidebarAdmin({ children, collapse, hover }: SidebarProps) {
                 className="cursor-pointer"
                 onClick={() => navigate(path.settings + '/booking-history')}
                 icon={HistoryIcon}
-                label="3"
+                // label="3"
                 // label="Pro"
                 // labelColor="dark"
               >

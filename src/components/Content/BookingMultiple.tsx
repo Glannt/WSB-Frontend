@@ -621,7 +621,7 @@ export const BookingRoomDetailMultiple = () => {
 
             <div className="mb-6">
               <p className="text-2xl font-bold">
-                Tổng đơn: {totalsFormatted} VNĐ
+                Tổng đơn: {totalsFormatted != 'NaN' ? totalsFormatted : '0'} VNĐ
               </p>
             </div>
 

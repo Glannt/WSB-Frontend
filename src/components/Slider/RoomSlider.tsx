@@ -92,19 +92,29 @@ const RoomSlider = () => {
     },
     {
       url: 'https://workflow.com.vn/wp-content/uploads/2024/07/675e66a2542d4618edc4802b0124c59e.jpg',
-      name: 'Phòng 7',
+      name: 'Phòng họp',
       description: 'Thiết bị đầy đủ, tiện ích tốt',
       id: 3,
     },
     {
       url: 'https://workflow.com.vn/wp-content/uploads/2024/07/675e66a2542d4618edc4802b0124c59e.jpg',
-      name: 'Phòng 10',
+      name: 'Phòng sự kiện',
       description: 'Thiết bị đầy đủ, tiện ích tốt',
       id: 4,
     },
     // Add more room data as needed
   ];
-
+  const handleNavigate = (x: string) => {
+    if (x === 'Phòng đôi') {
+      navigate(`/double-space`);
+    } else if (x === 'Phòng đơn') {
+      navigate(`/single-space`);
+    } else if (x === 'Phòng họp') {
+      navigate(`/meeting-space`);
+    } else if (x === 'Phòng sự kiện') {
+      navigate(`/event-space`);
+    }
+  };
   return (
     <Swiper
       breakpoints={{
@@ -143,7 +153,10 @@ const RoomSlider = () => {
               description={image.description}
               className="h-full" // Make sure the card takes full height
             />
-            <Button className="ml-7 mb-5 bg-transparent w-[90%] border border-blackA2 text-center text-black hover:bg-blackA9 hover:text-white hover:transition hover:duration-300 transition duration-500 ease-in-out">
+            <Button
+              onClick={() => handleNavigate(image.name)}
+              className="ml-7 mb-5 w-[90%] border border-blackA2 text-center text-black hover:bg-blackA9 hover:text-white hover:transition hover:duration-300 transition duration-500 ease-in-out"
+            >
               Tìm hiểu thêm
             </Button>
           </div>
