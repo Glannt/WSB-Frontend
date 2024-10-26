@@ -34,7 +34,7 @@ export const DashboardStaff = () => {
         className={`relative transition-all duration-300 ease-in-out ${collapse || isHovered ? 'w[20%] p-0 m-0' : 'w-16'}`}
       >
         <div
-          className={`h-full text-white p-4 transition-all duration-300 ease-in-out ${
+          className={`h-full text-white transition-all duration-300 ease-in-out ${
             collapse || isHovered ? 'translate-x-0' : '-translate-x-full'
           }`}
         >

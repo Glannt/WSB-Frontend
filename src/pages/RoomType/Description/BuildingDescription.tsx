@@ -15,7 +15,7 @@ const BuildingDescription: React.FC = () => {
   const navigate = useNavigate();
   const rooms: Room[] = [
     {
-      name: 'Building 1',
+      name: 'Cơ sở 1',
       utilities: [
         'Bàn làm việc đơn rộng rãi',
         'Ghế văn phòng thoải mái',
@@ -31,7 +31,7 @@ const BuildingDescription: React.FC = () => {
       url: '/building-1',
     },
     {
-      name: 'Building 2',
+      name: 'Cơ sở 2',
       utilities: [
         'Bàn làm việc cho 2 người',
         '2 ghế văn phòng thoải mái',
