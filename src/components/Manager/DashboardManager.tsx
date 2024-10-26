@@ -27,7 +27,7 @@ export const DashboardManager = () => {
         className={`relative transition-all duration-300 ease-in-out ${collapse || isHovered ? 'w[20%] p-0 m-0' : 'w-16'}`}
       >
         <div
-          className={`h-screen text-white p-4 transition-all duration-300 ease-in-out ${
+          className={`h-screen text-white transition-all duration-300 ease-in-out ${
             collapse || isHovered ? 'translate-x-0' : '-translate-x-full'
           }`}
           //   onMouseEnter={handleMouseEnter}

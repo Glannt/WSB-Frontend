@@ -81,10 +81,20 @@ const BookingTable: React.FC<BookingTableProps> = ({
           return booking ? (
             <div className="flex flex-col">
               <p className="text-bold text-sm capitalize">{booking.roomId}</p>
-              <p className="text-bold text-sm capitalize text-default-400">
+              {/* <p className="text-bold text-sm capitalize text-default-400">
                 {booking.totalPrice} VND
-              </p>
+              </p> */}
             </div>
+          ) : (
+            'N/A'
+          );
+        case 'totalPrice':
+          // Render room information like room name
+          // const room = booking.room;
+          return booking ? (
+            <p className="text-bold text-sm capitalize">
+              {booking.totalPrice} VNĐ
+            </p>
           ) : (
             'N/A'
           );

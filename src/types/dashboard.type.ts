@@ -5,3 +5,7 @@ export interface TotalBooking {
 export interface RoomTypeAnalyst {
   [key: string]: number;
 }
+
+export interface BookingAnalyst {
+  [key: string]: number;
+}

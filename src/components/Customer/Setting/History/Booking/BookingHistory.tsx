@@ -217,6 +217,7 @@ export default function BookingHistory() {
   return (
     <div className="h-40 mt-5 ml-5 mr-5">
       <BookingFilter
+        items={items}
         statusOptions={statusOptionsBooking}
         columns={columns}
         statusFilter={statusFilter}
