@@ -173,7 +173,7 @@ const BookingFilter: React.FC<BookingFiltersProps> = ({
           Tổng {items.length} đơn
         </span>
         <label className="flex items-center text-default-400 text-small">
-          Rows per page:
+          Số hàng:
           <select
             className="bg-transparent outline-none text-default-400 text-small rounded-md ml-3"
             onChange={onRowsPerPageChange}

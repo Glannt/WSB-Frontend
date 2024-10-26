@@ -442,15 +442,30 @@ export const BookingRoomDetailMultiple = () => {
   };
 
   const amenities = [
-    { icon: <FaWifi />, name: 'Free Wi-Fi' },
-    { icon: <FaParking />, name: 'Parking' },
-    { icon: <FaSwimmingPool />, name: 'Pool' },
-    { icon: <FaCoffee />, name: 'Coffee Machine' },
-    { icon: <MdAir />, name: 'Air Conditioning' },
-    { icon: <MdTv />, name: 'Smart TV' },
+    { icon: <FaWifi />, name: 'Wi-Fi miễn phí' },
+    { icon: <FaParking />, name: 'Bãi đỗ xe' },
+    { icon: <FaSwimmingPool />, name: 'Hồ bơi' },
+    { icon: <FaCoffee />, name: 'Máy pha cà phê' },
+    { icon: <MdAir />, name: 'Điều hòa không khí' },
+    { icon: <MdTv />, name: 'TV thông minh' },
   ];
   const [selected, setSelected] = React.useState('photos');
 
+  const roomPriceFormatted = new Intl.NumberFormat('vi-VN').format(
+    Number(roomPrice)
+  );
+
+  const totalsFormatted = new Intl.NumberFormat('vi-VN').format(Number(totals));
+
+  const handleSelectTimeSlot = (slot: (typeof timeSlots)[0]) => {
+    if (dateCheckIn === format(new Date(), 'yyyy-MM-dd')) {
+      if (
+        format(new Date(), 'HH') >= slot.value.split(' - ')[0].split(':')[0]
+      ) {
+        return true;
+      }
+    }
+  };
   return (
     <div className="mx-72 h-full p-8 flex-row items-center justify-center">
       <div className="bg-white overflow-hidden w-full h-full flex">
@@ -565,7 +580,10 @@ export const BookingRoomDetailMultiple = () => {
                     >
                       {timeSlots.map((slot) => (
                         <SelectItem
-                          isDisabled={largestSlotsArray.includes(slot.id)}
+                          isDisabled={
+                            largestSlotsArray.includes(slot.id) ||
+                            handleSelectTimeSlot(slot)
+                          }
                           key={slot.id}
                         >
                           {slot.value}
@@ -579,7 +597,7 @@ export const BookingRoomDetailMultiple = () => {
 
             <div className="mb-6">
               <p className="text-xl font-semibold">
-                Giá ban đầu: {roomPrice} VNĐ
+                Giá ban đầu: {roomPriceFormatted} VNĐ
               </p>
             </div>
 
@@ -602,7 +620,9 @@ export const BookingRoomDetailMultiple = () => {
             />
 
             <div className="mb-6">
-              <p className="text-2xl font-bold">Tổng đơn: {totals} VNĐ</p>
+              <p className="text-2xl font-bold">
+                Tổng đơn: {totalsFormatted} VNĐ
+              </p>
             </div>
 
             <div className="mb-6 flex items-center">
@@ -691,7 +711,7 @@ export const BookingRoomDetailMultiple = () => {
         cao cấp.
       </p>
       <div className="mb-4">
-        <h2 className="text-xl font-semibold mb-2">Amenities</h2>
+        <h2 className="text-xl font-semibold mb-2">Tiện nghi</h2>
         <div className="grid grid-cols-2 gap-2">
           {amenities.map((amenity, index) => (
             <div key={index} className="flex items-center">

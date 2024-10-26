@@ -59,8 +59,10 @@ export const ListRoom = () => {
     })) || [];
 
   const roomTypeOptions = [
-    { key: 'Văn phòng riêng', label: 'Văn phòng riêng' },
+    { key: 'Phòng học 1 người', label: 'Phòng học 1 người' },
+    { key: 'Phòng học 5 người', label: 'Phòng học 5 người' },
     { key: 'Phòng họp', label: 'Phòng họp' },
+    { key: 'Phòng sự kiện', label: 'Phòng sự kiện' },
   ];
 
   // const handleLocationChange = (e: any) => {
@@ -159,7 +161,7 @@ export const ListRoom = () => {
               <Slider
                 label="Giá tiền"
                 step={50000}
-                maxValue={20000000}
+                maxValue={1000000}
                 minValue={0}
                 defaultValue={priceRange}
                 onChange={handlePriceRangeChange}

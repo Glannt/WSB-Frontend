@@ -17,6 +17,9 @@ const ServiceList: React.FC<ServiceListProps> = ({
   handleServiceSelection,
   handleQuantityChange,
 }) => {
+  const formatRoomPrice = (price: number) => {
+    return new Intl.NumberFormat('vi-VN').format(price);
+  };
   return (
     <Card>
       <CardBody>
@@ -32,7 +35,9 @@ const ServiceList: React.FC<ServiceListProps> = ({
                   {/* <img src={service.image} alt={service.serviceName} className="w-20 h-20 object-cover rounded-md mr-4" /> */}
                   <div>
                     <h4 className="font-semibold">{service.serviceName}</h4>
-                    <p className="text-gray-600">${service.price}</p>
+                    <p className="text-gray-600">
+                      {formatRoomPrice(service.price)} VNĐ
+                    </p>
                   </div>
                   <Input
                     variant="underlined"

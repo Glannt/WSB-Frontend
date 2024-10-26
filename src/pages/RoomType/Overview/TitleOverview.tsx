@@ -16,7 +16,7 @@ export const TitleOverview: React.FC<TitleOverviewProps> = ({
 }) => {
   const navigate = useNavigate();
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-10 gap-8">
+    <div className="grid grid-cols-1 lg:grid-cols-10 gap-8 scale-100">
       <div className="lg:col-span-7">
         <Image
           src="https://storage.googleapis.com/circo-coworking--1550040568856.appspot.com/images/MG_5535_1718fda473.jpg"

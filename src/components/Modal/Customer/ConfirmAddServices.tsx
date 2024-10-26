@@ -10,12 +10,14 @@ import {
 } from '@nextui-org/react';
 import React from 'react';
 interface ConfirmAddServicesProps {
+  quantities: { [key: string]: number };
   showConfirmModal: boolean;
   toggleConfirmModal: () => void;
   booking: CustomerOrderBookingHistory | null;
   services: Services[];
 }
 export const ConfirmAddServices: React.FC<ConfirmAddServicesProps> = ({
+  quantities,
   showConfirmModal,
   toggleConfirmModal,
   booking,
@@ -24,22 +26,9 @@ export const ConfirmAddServices: React.FC<ConfirmAddServicesProps> = ({
 }) => {
   console.log(booking);
 
-  const initialQuantities = React.useMemo(() => {
-    const quantities: { [key: string]: number } = {};
-    if (booking?.serviceItems) {
-      Object.entries(booking.serviceItems).forEach(
-        ([serviceName, quantity]) => {
-          const service = services.find((s) => s.serviceName === serviceName);
-          if (service) {
-            quantities[service.serviceId] = quantity; // Chuyển đổi sang ID dịch vụ
-          }
-        }
-      );
-    }
-    return quantities;
-  }, [booking, services]);
-  console.log(initialQuantities);
-
+  const formatRoomPrice = (price: number) => {
+    return new Intl.NumberFormat('vi-VN').format(price);
+  };
   return (
     <Modal
       isOpen={showConfirmModal}
@@ -90,26 +79,26 @@ export const ConfirmAddServices: React.FC<ConfirmAddServicesProps> = ({
                     ) : null;
                   }
                 )} */}
-                {Object.entries(initialQuantities).map(
-                  ([serviceId, quantity]) => {
-                    const selectedService = services.find(
-                      (s) => String(s.serviceId) === String(serviceId)
-                    );
+                {Object.entries(quantities).map(([serviceId, quantity]) => {
+                  const selectedService = services.find(
+                    (s) => String(s.serviceId) === String(serviceId)
+                  );
 
-                    return selectedService ? (
-                      <li key={serviceId} className="flex justify-between py-2">
-                        <span className="text-lg">
-                          {selectedService.serviceName} (x{quantity})
-                        </span>
-                        <span>{selectedService.price * quantity} VND</span>
-                      </li>
-                    ) : (
-                      <li key={serviceId}>
-                        Service not found for ID: {serviceId}
-                      </li>
-                    );
-                  }
-                )}
+                  return selectedService ? (
+                    <li key={serviceId} className="flex justify-between py-2">
+                      <span className="text-lg">
+                        {selectedService.serviceName} (x{quantity})
+                      </span>
+                      <span>
+                        {formatRoomPrice(selectedService.price * quantity)} VNĐ
+                      </span>
+                    </li>
+                  ) : (
+                    <li key={serviceId}>
+                      Service not found for ID: {serviceId}
+                    </li>
+                  );
+                })}
               </ul>
             </ModalBody>
 

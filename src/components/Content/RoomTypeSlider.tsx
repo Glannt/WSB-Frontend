@@ -12,8 +12,13 @@ import { useNavigate } from 'react-router';
 interface RoomTypeSwiperProps {
   roomType: ListRooms[];
 }
+
 const RoomTypeSwiper: React.FC<RoomTypeSwiperProps> = ({ roomType }) => {
   console.log('roomType', roomType[0].roomType);
+
+  const formatRoomPrice = (price: number) => {
+    return new Intl.NumberFormat('vi-VN').format(price);
+  };
 
   const navigate = useNavigate();
   return (
@@ -56,7 +61,9 @@ const RoomTypeSwiper: React.FC<RoomTypeSwiperProps> = ({ roomType }) => {
               />
               <div className="p-4">
                 <h3 className="font-bold text-lg mb-2">{room.roomName}</h3>
-                <p className="text-gray-600">{room.price}$/slot</p>
+                <p className="text-gray-600">
+                  {formatRoomPrice(room.price)} VNĐ/slot
+                </p>
               </div>
               <Button
                 onClick={() => navigate(`/single-space`)}

@@ -166,6 +166,7 @@ export const ConfirmBooking: React.FC<ConfirmBookingProps> = ({
   if (isLoadingServices) {
     return <div className="">Loading....</div>;
   }
+
   return (
     <>
       {' '}
@@ -248,13 +249,12 @@ export const ConfirmBooking: React.FC<ConfirmBookingProps> = ({
                       Xác nhận
                     </Button>
 
-
                     <Button
                       className="w-40"
                       color="danger"
                       onClick={() => {
-                        toggleConfirmModal;
-                        window.location.reload();
+                        toggleConfirmModal();
+                        // window.location.reload();
                       }}
                     >
                       Đóng
