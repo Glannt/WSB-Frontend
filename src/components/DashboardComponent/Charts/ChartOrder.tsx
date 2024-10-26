@@ -149,8 +149,16 @@ const ChartOrder: React.FC<ChartBookingProps> = ({ bookingAnalysis }) => {
               {/* <span> {(state.series[0] / state.series[0]) * 100 || 0}% </span> */}
               <span>
                 {' '}
-                {(state.series[0] / state.series.reduce((a, b) => a + b, 0)) *
-                  100 || 0}
+                {(
+                  (state.series[0] / state.series.reduce((a, b) => a + b, 0)) *
+                  100
+                ).toFixed(2) == 'NaN'
+                  ? 0
+                  : (
+                      (state.series[0] /
+                        state.series.reduce((a, b) => a + b, 0)) *
+                      100
+                    ).toFixed(2)}
                 %{' '}
               </span>
             </p>
@@ -163,8 +171,16 @@ const ChartOrder: React.FC<ChartBookingProps> = ({ bookingAnalysis }) => {
               <span> Đang chờ xử lý </span>
               <span>
                 {' '}
-                {(state.series[1] / state.series.reduce((a, b) => a + b, 0)) *
-                  100 || 0}
+                {(
+                  (state.series[1] / state.series.reduce((a, b) => a + b, 0)) *
+                  100
+                ).toFixed(2) == 'NaN'
+                  ? 0
+                  : (
+                      (state.series[1] /
+                        state.series.reduce((a, b) => a + b, 0)) *
+                      100
+                    ).toFixed(2)}
                 %{' '}
               </span>
             </p>
@@ -177,8 +193,16 @@ const ChartOrder: React.FC<ChartBookingProps> = ({ bookingAnalysis }) => {
               <span> Đã hoàn thành </span>
               <span>
                 {' '}
-                {(state.series[2] / state.series.reduce((a, b) => a + b, 0)) *
-                  100 || 0}
+                {(
+                  (state.series[2] / state.series.reduce((a, b) => a + b, 0)) *
+                  100
+                ).toFixed(2) == 'NaN'
+                  ? 0
+                  : (
+                      (state.series[2] /
+                        state.series.reduce((a, b) => a + b, 0)) *
+                      100
+                    ).toFixed(2)}
                 %{' '}
               </span>
             </p>
@@ -191,8 +215,16 @@ const ChartOrder: React.FC<ChartBookingProps> = ({ bookingAnalysis }) => {
               <span> Bị hủy </span>
               <span>
                 {' '}
-                {(state.series[3] / state.series.reduce((a, b) => a + b, 0)) *
-                  100 || 0}
+                {(
+                  (state.series[3] / state.series.reduce((a, b) => a + b, 0)) *
+                  100
+                ).toFixed(2) == 'NaN'
+                  ? 0
+                  : (
+                      (state.series[3] /
+                        state.series.reduce((a, b) => a + b, 0)) *
+                      100
+                    ).toFixed(2)}
                 %{' '}
               </span>
             </p>
