@@ -1,7 +1,10 @@
+import path from '@/constants/path';
 import React from 'react';
 import { FaArrowRight } from 'react-icons/fa';
+import { useNavigate } from 'react-router';
 
 const HeroSection = () => {
+  const navigate = useNavigate();
   return (
     <div className=" px-4 py-16">
       <div className="flex flex-col md:flex-row items-center gap-x-32 w-full">
@@ -86,7 +89,12 @@ const HeroSection = () => {
               </span>
             </div>
           </div>
-          <button className="mt-8 bg-blackA12 text-white py-3 px-6 rounded-lg font-semibold hover:bg-white hover:text-black hover:shadow-2xl transition duration-300 ease-in-out flex items-center">
+          <button
+            onClick={() => {
+              navigate(path.location);
+            }}
+            className="mt-8 bg-blackA12 text-white py-3 px-6 rounded-lg font-semibold hover:bg-white hover:text-black hover:shadow-2xl transition duration-300 ease-in-out flex items-center"
+          >
             Khám phá thêm
             <FaArrowRight className="ml-2" />
           </button>
