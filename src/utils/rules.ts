@@ -242,7 +242,6 @@ export const schemaCancelBooking = Yup.object().shape({
 
 export type SchemaCancelBooking = Yup.InferType<typeof schemaCancelBooking>;
 
-
 export const updateOrderStatusSchema = Yup.object().shape({
   bookingId: Yup.string()
     .required('Booking ID is required') // Kiểm tra chuỗi bookingId
@@ -272,3 +271,7 @@ export const schemaCreateAccount = Yup.object().shape({
 
 export type SchemaCreateAccount = Yup.InferType<typeof schemaCreateAccount>;
 
+export const shemaBuyMemberShip = Yup.object().shape({
+  membershipId: Yup.string(),
+});
+export type SchemaBuyMemberShip = Yup.InferType<typeof shemaBuyMemberShip>;

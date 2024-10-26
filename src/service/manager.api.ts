@@ -42,7 +42,7 @@ export const getTotalBookingInWeek = () =>
   http.get('/api/dashboard/total-booking-in-week');
 
 export const getTotalBookingInMonth = () =>
-  http.get('/api/dashboard/total-booking-in-month');
+  http.get('/api/dashboard/total-booking-in-moth');
 
 export const getTotalSpace = () => http.get('/api/dashboard/total-space');
 

@@ -67,3 +67,10 @@ export const cancelBooking = (formData: FormData) =>
       'Content-Type': 'multipart/form-data',
     },
   });
+
+export const postBuyMemberShipPackage = (formdata: FormData) =>
+  http.post('/api/customer/buy/membership', formdata, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });

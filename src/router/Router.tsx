@@ -63,6 +63,7 @@ import ManageBuildings from '@/components/Owner/ManageBuildings';
 import ManageManager from '@/components/Owner/ManageManager';
 import Schedule from '@/components/Staff/Schedule';
 import { ManagerWelComeback } from '@/components/Manager/WelcombackManager';
+import { MemberShipPage } from '@/components/Customer/MemberShipPage';
 // import dotenv from 'dotenv';
 
 interface ProtectedRouteProps {
@@ -253,6 +254,14 @@ export const router = createBrowserRouter([
     element: (
       <MainLayout>
         <ListFood />
+      </MainLayout>
+    ),
+  },
+  {
+    path: path.membership,
+    element: (
+      <MainLayout>
+        <MemberShipPage />
       </MainLayout>
     ),
   },

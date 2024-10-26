@@ -24,6 +24,7 @@ const path = {
   manageBuilding: '/owner/manage-building',
   manageAccount: '/owner/manage-account',
   schedule: '/staff/schedule',
+  membership: '/membership',
 };
 
 export default path;
