@@ -12,8 +12,21 @@ const options: ApexOptions = {
   chart: {
     fontFamily: 'Satoshi, sans-serif',
     type: 'donut',
+    dropShadow: {
+      enabled: true,
+      color: '#C58DCCFF',
+      top: 1,
+      left: 1,
+      blur: 1,
+      opacity: 0.45, // Adjust opacity for transparency
+    },
   },
-  colors: ['#F59883FF', '#91DE9FFF', '#A4B0E5FF', '#EADCADFF'], // Custom colors for rooms
+  colors: [
+    'rgba(254, 215, 170, 0.6)', // Tailwind's orange-200 with transparency
+    'rgba(152, 226, 165, 0.6)', // Soft green with transparency
+    'rgba(175, 186, 238, 0.6)', // Soft blue with transparency
+    'rgba(231, 218, 176, 0.6)',
+  ], // Custom colors for rooms
   labels: [
     'Phòng học 1 người',
     'Phòng học 5 người',
@@ -86,7 +99,7 @@ const ChartRoomBooking: React.FC<ChartRoomBookingProps> = ({
   handleReset;
 
   return (
-    <div className="sm:px-7.5 col-span-12 rounded-lg shadow-xl shadow-primary-100 bg-default-50 px-5 pb-5 pt-7.5 dark:border-strokedark dark:bg-boxdark xl:col-span-5">
+    <div className="sm:px-7.5 col-span-12 rounded-lg shadow-xl shadow-primary-100 bg-default-50 px-5 pb-5 pt-7.5 dark:bg-boxdark xl:col-span-5">
       <div className="mb-3 justify-between gap-4 sm:flex">
         <div>
           <h5 className="text-xl font-semibold text-black dark:text-white">
@@ -144,7 +157,9 @@ const ChartRoomBooking: React.FC<ChartRoomBookingProps> = ({
       <div className="-mx-8 flex flex-wrap items-center justify-center gap-y-3">
         <div className="sm:w-1/2 w-full px-8">
           <div className="flex w-full items-center">
-            <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-orange-300 opacity-70"></span>
+
+            <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-orange-200 "></span>
+
             <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
               <span> Phòng học 1 người </span>
               <span>
@@ -159,6 +174,7 @@ const ChartRoomBooking: React.FC<ChartRoomBookingProps> = ({
                         state.series.reduce((a, b) => a + b, 0)) *
                       100
                     ).toFixed(2)}
+
                 %{' '}
               </span>
             </p>
@@ -166,8 +182,9 @@ const ChartRoomBooking: React.FC<ChartRoomBookingProps> = ({
         </div>
         <div className="sm:w-1/2 w-full px-8">
           <div className="flex w-full items-center">
-            <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#33FF57]"></span>
+            <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-green-200"></span>
             <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
+
               <span> Phòng học 5 người </span>
               <span>
                 {' '}
@@ -188,9 +205,10 @@ const ChartRoomBooking: React.FC<ChartRoomBookingProps> = ({
         </div>
         <div className="sm:w-1/2 w-full px-8">
           <div className="flex w-full items-center">
-            <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#3357FF]"></span>
+            <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-blue-200"></span>
             <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
               <span> Phòng họp </span>
+
               <span>
                 {' '}
                 {(
@@ -210,7 +228,7 @@ const ChartRoomBooking: React.FC<ChartRoomBookingProps> = ({
         </div>
         <div className="sm:w-1/2 w-full px-8">
           <div className="flex w-full items-center">
-            <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#FFC300]"></span>
+            <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-yellow-200"></span>
             <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
               <span> Phòng sự kiện </span>
               <span>

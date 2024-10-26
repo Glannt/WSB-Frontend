@@ -1,10 +1,13 @@
+import path from '@/constants/path';
 import React from 'react';
 import { FaCheck, FaTimes } from 'react-icons/fa';
+import { useNavigate } from 'react-router';
 
 export const SubcriptionCard = () => {
+  const navigate = useNavigate();
   const plans = [
     {
-      name: 'Gói bạc',
+      name: 'Gói thành viên bạc',
       price: 9.99,
       description: 'Perfect for individuals just starting out',
       features: [
@@ -35,7 +38,7 @@ export const SubcriptionCard = () => {
       buttonColor: 'bg-blue-500 text-white hover:bg-blue-600',
     },
     {
-      name: 'Gói vàng',
+      name: 'Gói thành viên vàng',
       price: 19.99,
       description: 'Great for small businesses and growing teams',
       features: [
@@ -149,6 +152,7 @@ export const SubcriptionCard = () => {
                   ))}
                 </ul>
                 <button
+                  onClick={() => navigate(path.membership)}
                   className={`w-full ${plan.buttonColor} text-white font-bold py-3 px-4 rounded-lg transition-colors duration-300`}
                 >
                   Mua ngay

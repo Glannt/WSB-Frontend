@@ -1,5 +1,6 @@
 import { BookingStatus } from '@/types/bookings';
 import http from '@/utils/http';
+import { parseDate, CalendarDate } from '@internationalized/date';
 
 export const getAllRoomOverView = () => http.get('/api/auth/staffs/status');
 
@@ -37,3 +38,19 @@ export const updateStatusBooking = (
 //     }
 // }
 export const getWorkShift = () => http.get('/api/auth/staffs/work-shift');
+
+export const getCheckBookingByPhone = (date: string, phoneNumber: string) =>
+  http.get('/api/auth/staffs/check-customer-order-booking-phone', {
+    params: { date: date, phonenumber: phoneNumber },
+  });
+export const getCheckBookingByEmail = (date: string, email: string) =>
+  http.get('/api/auth/staffs/check-customer-order-booking-email', {
+    params: { date: date, email: email },
+  });
+
+export const updateBookingStatus = (formdata: FormData) =>
+  http.put('/api/auth/staffs/update-booking-status', formdata, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });

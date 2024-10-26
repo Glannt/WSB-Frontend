@@ -32,3 +32,13 @@ export type Customer = {
   roleName: string; // Role assigned to the customer (e.g., "CUSTOMER")
   wallet: Wallet; // Wallet information of the customer
 };
+
+export interface MemberShip {
+  id: string;
+  name: string;
+  price: number;
+  color: string;
+  buttonColor: string;
+  description?: string;
+  features?: { name: string; included: boolean }[];
+}

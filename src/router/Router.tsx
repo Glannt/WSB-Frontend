@@ -63,7 +63,10 @@ import ManageBuildings from '@/components/Owner/ManageBuildings';
 import ManageManager from '@/components/Owner/ManageManager';
 import Schedule from '@/components/Staff/Schedule';
 import { ManagerWelComeback } from '@/components/Manager/WelcombackManager';
+import { MemberShipPage } from '@/components/Customer/MemberShipPage';
+
 import ScrollToTop from '@/components/ScrollToTop/ScrollToTop';
+
 // import dotenv from 'dotenv';
 
 interface ProtectedRouteProps {
@@ -269,6 +272,14 @@ export const router = createBrowserRouter([
           <ScrollToTop />
           <ListFood />
         </>
+      </MainLayout>
+    ),
+  },
+  {
+    path: path.membership,
+    element: (
+      <MainLayout>
+        <MemberShipPage />
       </MainLayout>
     ),
   },

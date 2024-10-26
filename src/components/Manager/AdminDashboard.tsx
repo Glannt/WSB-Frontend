@@ -112,7 +112,9 @@ export const AdminDashboard: React.FC = () => {
   const dataStats = [
     {
       title: 'Tổng số lượt đặt chỗ hôm nay',
-      total: bookingInDate?.totalBookingSlot?.toString() || '0',
+
+      total: String(bookingInDate?.totalBookingSlot) || '0',
+
       rate: '15%',
       levelUp: true,
       icon: <MdMeetingRoom className="text-2xl" />,
