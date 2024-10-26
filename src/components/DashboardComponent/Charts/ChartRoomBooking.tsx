@@ -126,7 +126,7 @@ const ChartRoomBooking: React.FC = () => {
       <div className="-mx-8 flex flex-wrap items-center justify-center gap-y-3">
         <div className="sm:w-1/2 w-full px-8">
           <div className="flex w-full items-center">
-            <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#FF5733]"></span>
+            <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-orange-300 opacity-70"></span>
             <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
               <span> Single Room </span>
               <span> 40% </span>
