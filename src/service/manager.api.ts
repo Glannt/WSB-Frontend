@@ -34,3 +34,32 @@ export const AddNewStaff = (body: {
   buildingId: string;
   // status: string;
 }) => http.post('/api/auth/staffs', body);
+
+export const getTotalBookingInDate = () =>
+  http.get('/api/dashboard/total-booking-in-date');
+
+export const getTotalBookingInWeek = () =>
+  http.get('/api/dashboard/total-booking-in-week');
+
+export const getTotalBookingInMonth = () =>
+  http.get('/api/dashboard/total-booking-in-moth');
+
+export const getTotalSpace = () => http.get('/api/dashboard/total-space');
+
+export const getRoomTypeAnalysisByDate = () =>
+  http.get('/api/dashboard/room-type-analyst-date');
+
+export const getRoomTypeAnalysisByWeek = () =>
+  http.get('/api/dashboard/room-type-analyst-week');
+
+export const getRoomTypeAnalysisByMonth = () =>
+  http.get('/api/dashboard/room-type-analyst-month');
+
+export const getBookingAnalysisByMonth = () =>
+  http.get('/api/dashboard/booking-analyst-month');
+
+export const getBookingAnalysisByWeek = () =>
+  http.get('/api/dashboard/booking-analyst-week');
+
+export const getBookingAnalysisByDate = () =>
+  http.get('/api/dashboard/booking-analyst-date');

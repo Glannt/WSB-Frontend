@@ -117,7 +117,7 @@ const ProtectedRoute = ({ requiredRoles }: ProtectedRouteProps) => {
   };
 
   const { data: fetchedCustomer, isLoading } = useQuery({
-    queryKey: ['customer'],
+    queryKey: ['fetchedCustomer'],
     queryFn: getProfileUser,
     enabled: !customer, // Fetch data only if customer is not already in context
   });
@@ -129,16 +129,23 @@ const ProtectedRoute = ({ requiredRoles }: ProtectedRouteProps) => {
 
   // Check if the user has the required role(s)
   if (requiredRoles && !hasRole(requiredRoles)) {
-    return <Navigate to={path.home} />; // Redirect to home if the user lacks roles
+    return <Navigate to={path.home} />;
+
+    // Redirect to home if the user lacks roles
   }
 
   // If authenticated and has the required roles, render the nested route
   return <Outlet />;
 };
-
-function RejectedRoute() {
+type RejectedRouteProps = {
+  requiredRoles?: Role[]; // Define requiredRoles as an optional prop
+};
+function RejectedRoute({ requiredRoles }: RejectedRouteProps) {
   const { isAuthenticated } = useContext(AppContext);
-  return !isAuthenticated ? <Outlet /> : <Navigate to="/" />;
+  if (!isAuthenticated) {
+    return <Outlet />;
+  }
+  return <ProtectedRoute />;
 }
 
 function RequireCaptcha() {

@@ -683,11 +683,12 @@ export const BookingRoomDetailMultiple = () => {
         {[1, 2, 3, 4, 5].map((star) => (
           <FaStar key={star} className="text-yellow-400" />
         ))}
-        <span className="ml-2">(4.8/5 based on 120 reviews)</span>
+        <span className="ml-2">(4.8/5 dựa trên 120 đánh giá)</span>
       </div>
       <p className="text-gray-600 mb-4">
-        Experience luxury and comfort in our spacious king room. Perfect for
-        couples or business travelers seeking a premium stay.
+        Trải nghiệm sự sang trọng và thoải mái trong phòng king rộng rãi của
+        chúng tôi. Hoàn hảo cho các cặp đôi hoặc doanh nhân tìm kiếm một kỳ nghỉ
+        cao cấp.
       </p>
       <div className="mb-4">
         <h2 className="text-xl font-semibold mb-2">Amenities</h2>

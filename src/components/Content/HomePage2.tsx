@@ -21,7 +21,7 @@ export interface CarouselPropsSlider {
   autoSlideInterval?: number;
 }
 
-export const HomePage: React.FC<CarouselPropsSlider> = ({
+export const HomePage2: React.FC<CarouselPropsSlider> = ({
   autoSlide = true,
   autoSlideInterval = 3000,
 }) => {
@@ -35,20 +35,21 @@ export const HomePage: React.FC<CarouselPropsSlider> = ({
   };
 
   // console.log(profile.roleName);
-  const profile = getProfileFromLS();
-  if (profile) {
-    useEffect(() => {
-      if (profile.roleName === 'MANAGER') {
-        window.location.href = path.manager;
-      }
-      if (profile.roleName === 'STAFF') {
-        window.location.href = path.staff;
-      }
-      if (profile.roleName === 'OWNER') {
-        window.location.href = path.owner;
-      }
-    }, []);
-  }
+  //   useEffect(() => {
+  //     const profile = getProfileFromLS();
+  //     // if (profile.roleName === undefined || profile.roleName === null) {
+  //     //   window.location.href = path.home;
+  //     // }
+  //     if (profile.roleName === 'MANAGER') {
+  //       window.location.href = path.manager;
+  //     }
+  //     if (profile.roleName === 'STAFF') {
+  //       window.location.href = path.staff;
+  //     }
+  //     if (profile.roleName === 'OWNER') {
+  //       window.location.href = path.owner;
+  //     }
+  //   }, []);
 
   // if(roleName. ===)
 

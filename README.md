@@ -1,4 +1,6 @@
 [![CI](https://github.com/Glannt/WSB-Frontend/actions/workflows/ci.yml/badge.svg)](https://github.com/Glannt/WSB-Frontend/actions/workflows/ci.yml)
+[![Dependabot Updates](https://github.com/Glannt/WSB-Frontend/actions/workflows/dependabot/dependabot-updates/badge.svg)](https://github.com/Glannt/WSB-Frontend/actions/workflows/dependabot/dependabot-updates)
+[![pages-build-deployment](https://github.com/Glannt/WSB-Frontend/actions/workflows/pages/pages-build-deployment/badge.svg?branch=demo)](https://github.com/Glannt/WSB-Frontend/actions/workflows/pages/pages-build-deployment)
 
 # React app template with TS, Tailwind CSS, and NextUI
 
