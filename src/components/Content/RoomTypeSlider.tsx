@@ -22,8 +22,6 @@ const RoomTypeSwiper: React.FC<RoomTypeSwiperProps> = ({ roomType }) => {
 
   const handleNavigate = () => {
     if (roomType[0].roomType === 'Phòng học 5 người') {
-      console.log('ok');
-
       navigate(`/double-space`);
     } else if (roomType[0].roomType === 'Phòng học 1 người') {
       navigate(`/single-space`);

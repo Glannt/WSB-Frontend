@@ -131,6 +131,9 @@ export const AddMoreServices: React.FC<AddMoreServicesProps> = ({
     setIsServiceSummary(false);
     onClose();
   };
+  const formatRoomPrice = (price: number) => {
+    return new Intl.NumberFormat('vi-VN').format(price);
+  };
   return (
     <>
       <Modal
@@ -167,7 +170,7 @@ export const AddMoreServices: React.FC<AddMoreServicesProps> = ({
                                     {service.serviceName}
                                   </h4>
                                   <p className="text-gray-600">
-                                    ${service.price}
+                                    {formatRoomPrice(service.price)} VNĐ
                                   </p>
                                 </div>
                                 <Input
