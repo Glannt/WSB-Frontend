@@ -43,17 +43,17 @@ export const HomePage: React.FC<CarouselPropsSlider> = ({
 
       if (profile) {
         if (profile.roleName === 'MANAGER') {
-          navigate(path.manager);
+          window.location.href = path.manager;
         } else if (profile.roleName === 'STAFF') {
-          navigate(path.staff);
+          window.location.href = path.staff;
         } else if (profile.roleName === 'OWNER') {
-          navigate(path.owner);
+          window.location.href = path.owner;
         }
       }
     };
 
     redirectUser(); // Call the redirect function
-  }, [profile, navigate]); // Add profile and navigate to dependencies
+  }, [profile]); // Add profile and navigate to dependencies
 
   // if(roleName. ===)
 

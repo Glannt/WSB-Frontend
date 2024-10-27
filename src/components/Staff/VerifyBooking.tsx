@@ -56,11 +56,9 @@ export const VerifyBooking: React.FC<VerifyBookingProps> = ({
   } = useForm({});
   const handleChangeField = (field: any, value: any) => {
     setValue(field, value);
-    console.log(getValues());
   };
 
   React.useEffect(() => {
-    console.log('selectedDate', selectedDate);
     const dateWithoutCalendar = omit(
       selectedDate,
       'day',
@@ -69,7 +67,6 @@ export const VerifyBooking: React.FC<VerifyBookingProps> = ({
       'era'
     ); // Bỏ thuộc tính calendar
     handleChangeField('date', selectedDate);
-    console.log('useEffect', getValues().date);
   }, [selectedDate]);
   React.useEffect(() => {
     if (isOpenModal === false) {
