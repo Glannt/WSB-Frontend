@@ -31,8 +31,8 @@ interface RoomTableProps {
   //   onDelete: (room: Room) => void;
 }
 const statusColorMap: Record<string, ChipProps['color']> = {
-  using: 'success', // USING
-  finished: 'default', // FINISHED
+  using: 'secondary', // USING
+  finished: 'success', // FINISHED
   upcoming: 'warning', // UPCOMING
   cancelled: 'danger', // CANCELLED
 };

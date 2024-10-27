@@ -46,7 +46,9 @@ import {
 import { yupResolver } from '@hookform/resolvers/yup';
 import { EditBooking } from '../Modal/Staff/EditBooking';
 import { VerifyBooking } from './VerifyBooking';
-
+import { io } from 'socket.io-client';
+import { Client } from '@stomp/stompjs';
+import useWebSocket from './useWebsocket';
 const statusColorMap: Record<string, ChipProps['color']> = {
   available: 'success',
   maintenance: 'danger',
@@ -64,8 +66,38 @@ const INITIAL_VISIBLE_COLUMNS = [
   'status', // Current status of the booking (e.g., confirmed, cancelled)
   'actions', // Actions like view, edit, or delete the booking
 ];
-
+// const socket = io('http://localhost:8080/ws');
 export default function StaffBookings() {
+  // React.useEffect(() => {
+  //   const client = new Client({
+  //     brokerURL: 'http://localhost:8080/ws', // URL WebSocket của server
+  //     reconnectDelay: 3000, // Tự động kết nối lại sau 5s nếu mất kết nối
+  //     heartbeatIncoming: 12000, // Thời gian giữ kết nối
+  //     heartbeatOutgoing: 10000,
+
+  //     onConnect: () => {
+  //       console.log('Connected to WebSocket stomps');
+  //       refetchOrderBooking();
+  //       window.location.reload();
+  //       client.subscribe('/booking/bookings/status', (message) => {
+  //         const updatedBooking = JSON.parse(message.body);
+  //         console.log('Updated booking:', updatedBooking);
+  //         // Xử lý khi nhận thông báo hết hạn đặt phòng
+  //       });
+  //     },
+
+  //     onStompError: (error) => {
+  //       console.error('Error:', error);
+  //     },
+  //   });
+
+  //   client.activate();
+
+  //   return () => {
+  //     client.deactivate();
+  //   };
+  // }, []);
+
   const getStaffBookingApi = async (): Promise<BookingStaffTable[]> => {
     const response = await getOrderBooking();
     console.log(response.data.data);
@@ -79,7 +111,7 @@ export default function StaffBookings() {
     queryKey: ['orderBookings'],
     queryFn: getStaffBookingApi,
   });
-
+  useWebSocket(refetchOrderBooking);
   //filter
   const [filterValue, setFilterValue] = React.useState('');
   const hasSearchFilter = Boolean(filterValue);
