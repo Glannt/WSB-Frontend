@@ -6,6 +6,9 @@ export const buildingBase = [
 export interface buildingCustomer {
   buildingId: string;
   buildingName: string;
+  buildingLocation: string;
+  buildingImg: string[];
+  phoneContact: string;
 }
 
 export interface Building {

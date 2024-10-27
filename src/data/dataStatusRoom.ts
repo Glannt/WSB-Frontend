@@ -12,6 +12,11 @@ export const roomStatuses = [
 ];
 
 export const roomStatusManager = [
-  { key: 'available', label: 'Available' },
-  { key: 'maintenance', label: ' Maintenance' },
+  { key: 'AVAILABLE', label: 'Có thể sử dụng' },
+  { key: 'MAINTENANCE', label: ' Đang bảo trì' },
 ];
+
+// export const buildingManager = [
+//   { key: 'BD001', label: 'Có thể sử dụng' },
+//   { key: 'MAINTENANCE', label: ' Đang bảo trì' },
+// ];

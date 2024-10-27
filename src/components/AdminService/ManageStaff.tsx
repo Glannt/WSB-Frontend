@@ -488,9 +488,9 @@ const INITIAL_VISIBLE_COLUMNS = [
 export default function ManageStaff() {
   const getAllStaffApi = async () => {
     const response = await getAllStaff();
-    console.log(response.data.content);
+    console.log(response.data.data);
 
-    return response.data.content;
+    return response.data.data;
   };
 
   const {
@@ -622,6 +622,7 @@ export default function ManageStaff() {
   const openEdit = (staff: Staff) => {
     setIsOpenEdit(true);
     setSelectedStaff(staff);
+    console.log('edit staff');
   };
   const closeEdit = () => {
     setIsOpenEdit(false);

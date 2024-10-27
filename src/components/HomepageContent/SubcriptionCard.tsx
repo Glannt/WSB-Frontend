@@ -8,7 +8,7 @@ export const SubcriptionCard = () => {
   const plans = [
     {
       name: 'Gói thành viên bạc',
-      price: 9.99,
+      price: 50000,
       description: 'Perfect for individuals just starting out',
       features: [
         { name: 'Giảm giá 10% cho các lần đặt tiếp theo.', included: true },
@@ -39,7 +39,7 @@ export const SubcriptionCard = () => {
     },
     {
       name: 'Gói thành viên vàng',
-      price: 19.99,
+      price: 100000,
       description: 'Great for small businesses and growing teams',
       features: [
         { name: 'Giảm giá 20% cho các lần đặt tiếp theo.', included: true },

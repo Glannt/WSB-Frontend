@@ -50,15 +50,13 @@ const EditRoom: React.FC<RoomModalProps> = ({
   const [valueStatus, setValueStatus] = React.useState(new Set(['available']));
   const [valueStaffAtRoom, setValueStaffAtRoom] = React.useState(
     new Set(
-      selectedRoom?.staffAtRoom
-        ? selectedRoom.staffAtRoom.split(',').map((id) => id.trim()) // Tách chuỗi thành mảng và loại bỏ khoảng trắng
-        : []
+      selectedRoom?.staff ? selectedRoom.staff.map((staff) => staff.userId) : []
     )
   );
   const getAllStaffApi = async () => {
     const response = await getAllStaff();
 
-    return response.data.content;
+    return response.data.data;
   };
   const {
     data: staffs = [],
@@ -77,14 +75,19 @@ const EditRoom: React.FC<RoomModalProps> = ({
     setError,
   } = useForm<SchemaUpdateRoom>({
     resolver: yupResolver(schemaUpdateRoom),
+    defaultValues: {
+      roomName: selectedRoom?.roomName || '',
+      status: selectedRoom?.status || '',
+      listStaffID: [],
+      price: selectedRoom?.price || 0,
+    },
   });
 
   const [images, setImages] = React.useState<{ file: File; url: string }[]>([]);
-
+  const [roomId, setRoomId] = React.useState<string>(selectedRoom?.roomId!);
   const handleImageUpload = (uploadedImages: { file: File; url: string }[]) => {
     setImages(uploadedImages); // Cập nhật hình ảnh
   };
-
   const UpdateMutation = useMutation({
     mutationFn: ({
       roomId,
@@ -96,12 +99,15 @@ const EditRoom: React.FC<RoomModalProps> = ({
   });
 
   // Function to handle updating an existing room
-  const updateRoom = (data: SchemaUpdateRoom) => {
+  const updateRoom = (data: SchemaUpdateRoom, roomId: string | undefined) => {
     const formData = new FormData();
+    console.log(data);
+    console.log(roomId);
+
     // Append the fields you want to update
-    formData.append('roomName', data.roomName);
-    formData.append('price', data.price.toString());
-    formData.append('status', data.status?.toString());
+    formData.append('roomName', getValues().roomName);
+    formData.append('price', getValues().price.toString());
+    formData.append('status', getValues().status?.toString());
     if (data.listStaffID && data.listStaffID.length > 0) {
       data.listStaffID.forEach((id) => {
         formData.append('listStaffID', id); // Append each staff ID
@@ -109,12 +115,14 @@ const EditRoom: React.FC<RoomModalProps> = ({
     } else {
       formData.append('listStaffID', ''); // Optional: Send empty value or skip this
     }
-    images.forEach((image) => {
-      formData.append('image', image.file); // Chỉ sử dụng roomImg cho nhiều tệp
-    });
+    // images.forEach((image) => {
+    //   formData.append('image', image.file); // Chỉ sử dụng roomImg cho nhiều tệp
+    // });
+    for (let pair of formData.entries()) {
+      console.log(`${pair[0]}: ${pair[1]}`);
+    }
     // Assuming you have the roomId from selectedRoom
-    const roomId = selectedRoom?.roomId;
-
+    // React.useEffect(() => {});
     UpdateMutation.mutate(
       { roomId, formData }, // Pass an object with roomId and formData
       {
@@ -132,7 +140,7 @@ const EditRoom: React.FC<RoomModalProps> = ({
   };
 
   const onSubmit = handleSubmit((data) => {
-    updateRoom(data as SchemaUpdateRoom); // Call update room function
+    updateRoom(data as SchemaUpdateRoom, selectedRoom?.roomId); // Call update room function
   });
 
   const handleFieldChange = (field: keyof SchemaUpdateRoom, value: any) => {
@@ -143,6 +151,7 @@ const EditRoom: React.FC<RoomModalProps> = ({
         [field]: value,
       });
     }
+    console.log(getValues());
   };
 
   return (
@@ -262,7 +271,7 @@ const EditRoom: React.FC<RoomModalProps> = ({
                     //     ? new Set(selectedRoom?.staffAtRoom)
                     //     : undefined
                     // }
-                    selectedKeys={valueStaffAtRoom}
+                    defaultSelectedKeys={valueStaffAtRoom}
                   >
                     {staffs.map((staff) => (
                       <SelectItem key={staff.userId}>

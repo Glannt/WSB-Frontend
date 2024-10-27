@@ -11,6 +11,7 @@ import {
   Selection,
   ChipProps,
   User,
+  Button,
 } from '@nextui-org/react';
 import { Room, Column } from '@/types/room.type';
 import { EyeIcon } from '../Icons/EyeIcon';
@@ -34,8 +35,8 @@ interface RoomTableProps {
 }
 const statusColorMap: Record<string, ChipProps['color']> = {
   active: 'success',
-  maintenance: 'danger',
-  // vacation: 'warning',
+  inactive: 'danger',
+  vacation: 'warning',
 };
 const StaffTable: React.FC<RoomTableProps> = ({
   sortedItems,
@@ -46,6 +47,30 @@ const StaffTable: React.FC<RoomTableProps> = ({
   onSortChange,
   onEdit,
 }) => {
+  const translateStatusToVietnamese = (status: string): string => {
+    switch (status.toLowerCase()) {
+      case 'active':
+        return 'Đang làm việc';
+      case 'inactive':
+        return 'Đã nghỉ';
+      case 'vacation':
+        return 'Đang nghỉ phép';
+      default:
+        return 'Không xác định'; // Default case for unknown status
+    }
+  };
+  const translateWorkShiftToVietnamese = (status: string): string => {
+    switch (status) {
+      case 'MORNING':
+        return 'Sáng';
+      case 'AFTERNOON':
+        return 'Chiều';
+      case 'EVENING':
+        return 'Tối';
+      default:
+        return 'Không xác định'; // Default case for unknown status
+    }
+  };
   const renderCell = React.useCallback((staff: Staff, columnKey: React.Key) => {
     const cellValue = staff[columnKey as keyof Staff];
     if (Array.isArray(cellValue)) {
@@ -72,9 +97,7 @@ const StaffTable: React.FC<RoomTableProps> = ({
         return (
           <div className="flex flex-col">
             <p className="text-bold text-small capitalize">
-              {typeof cellValue === 'object'
-                ? JSON.stringify(cellValue)
-                : cellValue}
+              {translateWorkShiftToVietnamese(staff.workShift)}
             </p>
           </div>
         );
@@ -116,27 +139,17 @@ const StaffTable: React.FC<RoomTableProps> = ({
           <Chip
             content="Details"
             className="capitalize"
-            color={statusColorMap[staff.status]}
+            color={statusColorMap[staff.status.toLowerCase()]}
             size="sm"
             variant="flat"
           >
-            {typeof cellValue === 'object'
-              ? JSON.stringify(cellValue)
-              : cellValue}
+            {translateStatusToVietnamese(staff.status)}
           </Chip>
         );
       case 'actions':
         return (
           <div className="relative flex justify-center gap-5">
-            <Tooltip content="Chi tiết">
-              <span
-                // onClick={() => openDetail(room)}
-                className="text-lg text-default-400 cursor-pointer active:opacity-50"
-              >
-                <EyeIcon />
-              </span>
-            </Tooltip>
-            <Tooltip content="Chỉnh sửa nhân viên">
+            <Button content="Chỉnh sửa nhân viên">
               <span
                 onClick={() => {
                   onEdit(staff);
@@ -145,12 +158,7 @@ const StaffTable: React.FC<RoomTableProps> = ({
               >
                 <EditIcon />
               </span>
-            </Tooltip>
-            <Tooltip color="danger" content="Xóa nhân viên">
-              <span className="text-lg text-danger cursor-pointer active:opacity-50">
-                <DeleteIcon />
-              </span>
-            </Tooltip>
+            </Button>
           </div>
         );
       default:
