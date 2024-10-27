@@ -78,7 +78,9 @@ const EditRoom: React.FC<RoomModalProps> = ({
     defaultValues: {
       roomName: selectedRoom?.roomName || '',
       status: selectedRoom?.status || '',
-      listStaffID: [],
+      listStaffID: selectedRoom?.staff
+        ? selectedRoom.staff.map((staff) => staff.userId)
+        : [],
       price: selectedRoom?.price || 0,
     },
   });
@@ -115,9 +117,9 @@ const EditRoom: React.FC<RoomModalProps> = ({
     } else {
       formData.append('listStaffID', ''); // Optional: Send empty value or skip this
     }
-    // images.forEach((image) => {
-    //   formData.append('image', image.file); // Chỉ sử dụng roomImg cho nhiều tệp
-    // });
+    images.forEach((image) => {
+      formData.append('image', image.file); // Chỉ sử dụng roomImg cho nhiều tệp
+    });
     for (let pair of formData.entries()) {
       console.log(`${pair[0]}: ${pair[1]}`);
     }
@@ -259,18 +261,9 @@ const EditRoom: React.FC<RoomModalProps> = ({
                     onSelectionChange={(keys) => {
                       // const listStaffID = Array.from(keys).join(',');
                       // handleFieldChange('listStaffID', listStaffID);
-                      const listStaffID = Array.from(keys); // Store keys as an array
-                      handleFieldChange(
-                        'listStaffID',
-                        JSON.stringify(listStaffID)
-                      );
+                      const listStaffID = Array.from(keys).join(','); // Store keys as an array
+                      handleFieldChange('listStaffID', listStaffID);
                     }}
-                    // defaultSelectedKeys={
-                    //   selectedRoom?.staffAtRoom &&
-                    //   Array.isArray(selectedRoom?.staffAtRoom)
-                    //     ? new Set(selectedRoom?.staffAtRoom)
-                    //     : undefined
-                    // }
                     defaultSelectedKeys={valueStaffAtRoom}
                   >
                     {staffs.map((staff) => (

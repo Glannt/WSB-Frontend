@@ -12,6 +12,7 @@ import { AddRoom } from '../Modal/Manager/AddRoom';
 import EditRoom from '../Modal/Manager/EditRoom';
 import { DeleteRoom } from '../Modal/Manager/DeleteRoom';
 import { useParams } from 'react-router';
+import { DetailModal } from './DetailModal';
 
 const INITIAL_VISIBLE_COLUMNS = [
   'roomName',
@@ -49,6 +50,7 @@ export default function ManageRoom() {
   });
   const [isOpenAdd, setIsOpenAdd] = useState<boolean>(false);
   const [isOpenEdit, setIsOpenEdit] = useState<boolean>(false);
+  const [isOpenDetail, setIsDetail] = useState<boolean>(false);
   const [isDeleteRoom, setIsDeleteRoom] = useState<boolean>(false);
   const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
   const headerColumns = React.useMemo(() => {
@@ -172,6 +174,13 @@ export default function ManageRoom() {
     setIsOpenEdit(false);
     refetch();
   };
+  const openDetail = (room: Room) => {
+    setIsDetail(true);
+    setSelectedRoom(room);
+  };
+  const closeDetail = () => {
+    setIsDetail(false);
+  };
 
   const openDelete = (room: Room) => {
     setIsDeleteRoom(true);
@@ -223,6 +232,7 @@ export default function ManageRoom() {
         onSortChange={setSortDescriptor}
         onEdit={openEdit}
         onDelete={openDelete}
+        openDetail={openDetail}
       />
       <RoomPagination
         page={page}
@@ -244,7 +254,14 @@ export default function ManageRoom() {
           refetchRooms={refetch}
         />
       )}
-      {isDeleteRoom && (
+      {isOpenDetail && (
+        <DetailModal
+          isOpen={isOpenDetail}
+          onClose={closeDetail}
+          selectedRoom={selectedRoom}
+        />
+      )}
+      {/* {isDeleteRoom && (
         <DeleteRoom
           isOpen={isDeleteRoom}
           onClose={closeDelete}
@@ -252,7 +269,7 @@ export default function ManageRoom() {
           setSelectedDeleteRoom={setSelectedRoom}
           refetchRooms={refetch}
         />
-      )}
+      )} */}
     </div>
   );
 }

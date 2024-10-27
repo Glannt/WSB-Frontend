@@ -570,6 +570,7 @@ export const BookingRoomDetailMultiple = () => {
                       errorMessage={
                         errors.slots?.message ? '' : 'Lỗi select slot'
                       }
+                      isInvalid={errors.slots?.message ? true : false}
                       key="default"
                       color="primary"
                       label="Thời gian"

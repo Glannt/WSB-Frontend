@@ -488,7 +488,7 @@ const INITIAL_VISIBLE_COLUMNS = [
 export default function ManageStaff() {
   const getAllStaffApi = async () => {
     const response = await getAllStaff();
-    console.log(response.data.data);
+    console.log(response.data);
 
     return response.data.data;
   };
@@ -496,7 +496,7 @@ export default function ManageStaff() {
   const {
     data: staffs = [],
     isLoading,
-    refetch,
+    refetch: refetchStaff,
   } = useQuery<Staff[]>({
     queryKey: ['staffs'],
     queryFn: getAllStaffApi,
@@ -616,16 +616,16 @@ export default function ManageStaff() {
   };
   const closeAdd = () => {
     setIsOpenAdd(false);
-    refetch();
+    // refetch();
   };
 
   const openEdit = (staff: Staff) => {
-    setIsOpenEdit(true);
+    setIsOpenEdit(!isOpenEdit);
     setSelectedStaff(staff);
-    console.log('edit staff');
   };
   const closeEdit = () => {
-    setIsOpenEdit(false);
+    setIsOpenEdit(!isOpenEdit);
+    refetchStaff();
   };
 
   return (
@@ -675,13 +675,13 @@ export default function ManageStaff() {
         onNextPage={onNextPage}
         onChange={setPage}
       />
-      {isOpenAdd && (
+      {/* {isOpenAdd && (
         <AddStaff
           isOpen={isOpenAdd}
           onClose={closeAdd}
           refetchRooms={refetch}
         />
-      )}
+      )} */}
 
       {isOpenEdit && (
         <EditStaff
@@ -689,6 +689,7 @@ export default function ManageStaff() {
           onClose={closeEdit}
           selectedStaff={selectedStaff}
           setSelectedStaff={setSelectedStaff}
+          refetchStaff={refetchStaff}
         />
       )}
     </div>

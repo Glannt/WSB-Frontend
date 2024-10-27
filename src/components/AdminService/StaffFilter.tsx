@@ -97,9 +97,6 @@ const StaffFilter: React.FC<StaffFiltersProps> = ({
             ))}
           </DropdownMenu>
         </Dropdown>
-        <Button color="primary" endContent={<PlusIcon />} onClick={onAddStaff}>
-          Thêm nhân viên
-        </Button>
       </div>
     </div>
   );

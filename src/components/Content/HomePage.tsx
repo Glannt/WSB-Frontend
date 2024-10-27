@@ -36,25 +36,30 @@ export const HomePage: React.FC<CarouselPropsSlider> = ({
 
   // console.log(profile.roleName);
   const profile = getProfileFromLS();
-  if (profile) {
-    useEffect(() => {
-      if (profile.roleName === 'MANAGER') {
-        window.location.href = path.manager;
+  useEffect(() => {
+    const redirectUser = async () => {
+      // Optionally fetch user data if necessary
+      // const customerData = await getProfileUser(); // Uncomment if needed
+
+      if (profile) {
+        if (profile.roleName === 'MANAGER') {
+          navigate(path.manager);
+        } else if (profile.roleName === 'STAFF') {
+          navigate(path.staff);
+        } else if (profile.roleName === 'OWNER') {
+          navigate(path.owner);
+        }
       }
-      if (profile.roleName === 'STAFF') {
-        window.location.href = path.staff;
-      }
-      if (profile.roleName === 'OWNER') {
-        window.location.href = path.owner;
-      }
-    }, []);
-  }
+    };
+
+    redirectUser(); // Call the redirect function
+  }, [profile, navigate]); // Add profile and navigate to dependencies
 
   // if(roleName. ===)
 
-  useEffect(() => {
-    getProfileUser();
-  }, []);
+  // useEffect(() => {
+  //   getProfileUser();
+  // }, []);
   // useEffect(() => {
   //   const rolePathMap = {
   //     MANAGER: path.manager,
