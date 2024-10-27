@@ -1,5 +1,7 @@
 // import { RoomType } from './roomType';
 
+import { Staff } from './staff.type';
+
 export interface AddRoomResponse {
   data: {
     roomId: number;
@@ -45,7 +47,7 @@ export interface Room {
   roomImg: string[]; // URL of the room image
   status: string; // Current status of the room (e.g., 'available', 'maintenance')
   roomType: RoomType; // Details about the type of room
-  staffAtRoom: string;
+  staff: Staff[];
 }
 
 export interface RoomType {

@@ -3,7 +3,7 @@ import * as NavigationMenu from '@radix-ui/react-navigation-menu';
 import { CaretDownIcon, ChevronDownIcon } from '@radix-ui/react-icons';
 import React, { forwardRef, useContext, useEffect, useState } from 'react';
 import classNames from 'classnames';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { logout } from '@/service/auth.api';
 import { AppContext } from '@/context/app.context';
 import {
@@ -34,12 +34,14 @@ import { SettingsIcon } from '../Icons/sidebar/settings-icon';
 import { AccountsIcon } from '../Icons/sidebar/accounts-icon';
 import { CollapseDropdownItems } from '../sidebar/collapse-dropdown-items';
 import ThemeSwitcher from '../ModeToggle/SwitchTheme';
+import { getWalletByUserId } from '@/service/customer.api';
+import { Wallet } from '@/types/customer.type';
 export const Header = (props: any) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate();
   const [roleName, setRoleName] = useState<string>('');
   const profile = getProfileFromLS();
-  const { customer, isLoading } = useCustomer();
+  const { customer, isLoading, refetch } = useCustomer();
   const [wallet, setWallet] = useState<string>('0');
   const { setIsAuthenticated, isAuthenticated } = useContext(AppContext);
   const logoutMutation = useMutation({
@@ -53,6 +55,15 @@ export const Header = (props: any) => {
 
     // navigate('/');
   };
+  // const getWalletByUserIdApi = async () => {
+  //   const response = await getWalletByUserId(profile.userId);
+  //   return response.data.data;
+  // };
+
+  // const { data: wallet } = useQuery<Wallet>({
+  //   queryKey: ['wallet'],
+  //   queryFn: getWalletByUserIdApi,
+  // });
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 50) {
@@ -74,6 +85,7 @@ export const Header = (props: any) => {
     }
   });
   useEffect(() => {
+    refetch();
     if (customer?.wallet?.amount !== undefined) {
       const formattedWallet = new Intl.NumberFormat('vi-VN').format(
         Number(customer.wallet.amount)

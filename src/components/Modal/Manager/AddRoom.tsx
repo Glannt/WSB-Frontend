@@ -3,6 +3,8 @@ import { roomTypes } from '@/data/dataRoomType';
 import { roomStatusManager } from '@/data/dataStatusRoom';
 
 import { AddNewRoom, getAllStaff } from '@/service/manager.api';
+import { getAllBuilding } from '@/service/owner.api';
+import { Building } from '@/types/building.type';
 import { AddRoomResponse } from '@/types/room.type';
 import { Staff } from '@/types/staff.type';
 import { getAccessTokenFromLS } from '@/utils/auth';
@@ -39,12 +41,25 @@ export const AddRoom: React.FC<RoomModalProps> = ({
   onClose,
   refetchRooms,
 }) => {
-  const [valueStatus, setValueStatus] = React.useState(new Set(['available']));
+  const [valueStatus, setValueStatus] = React.useState(new Set(['AVAILABLE']));
   const [valueRoomType, setValueRoomType] = React.useState(new Set(['RT001']));
   const [selectedStaff, setSelectedStaff] = React.useState<string[]>([]);
+  const getAllBuildingsApi = async () => {
+    const response = await getAllBuilding();
+    return response.data.data;
+  };
+
+  const {
+    data: buildings = [],
+    isLoading: isLoadingBuildings,
+    refetch: isRefetchBuilding,
+  } = useQuery<Building[]>({
+    queryKey: ['buildings'],
+    queryFn: getAllBuildingsApi,
+  });
   const getAllStaffApi = async () => {
     const response = await getAllStaff();
-    return response.data.content;
+    return response.data.data;
   };
   const {
     data: staffs = [],
@@ -61,8 +76,6 @@ export const AddRoom: React.FC<RoomModalProps> = ({
     setImages(uploadedImages); // Cập nhật hình ảnh
   };
 
-  console.log(images);
-
   const {
     register,
     handleSubmit,
@@ -72,32 +85,49 @@ export const AddRoom: React.FC<RoomModalProps> = ({
     setError,
   } = useForm<SchemaAddRoom>({
     resolver: yupResolver(schemaAddRoom),
+    defaultValues: {
+      roomName: '',
+      buildingId: '',
+      roomTypeId: '',
+      listStaffID: [],
+      image: [],
+      price: 0,
+      status: '',
+    },
   });
 
   const AddNewRoomMutation = useMutation({
     mutationFn: (formData: FormData) => AddNewRoom(formData),
   });
   const addNewRoom = (data: SchemaAddRoom) => {
-    const formData = new FormData();
+    const formdata = new FormData();
+    console.log(data);
+
     // Append all form fields to the FormData object
-    formData.append('roomName', data.roomName);
-    formData.append('price', data.price.toString());
-    formData.append('status', data.status);
-    formData.append('roomTypeId', data.roomTypeId);
-    formData.append('buildingId', data.buildingId.toString());
+    formdata.append('roomName', data.roomName);
+    formdata.append('price', data.price.toString());
+    formdata.append('status', data.status);
+    formdata.append('roomTypeId', data.roomTypeId);
+    formdata.append('buildingId', data.buildingId.toString());
+
     // Check if listStaffID exists and append it
     if (data.listStaffID && data.listStaffID.length > 0) {
-      data.listStaffID.forEach((id) => {
-        formData.append('listStaffID', id); // Append each staff ID
+      data.listStaffID.forEach((id, index) => {
+        formdata.append(`listStaffID`, id); // Append each staff ID
       });
-    } else {
-      formData.append('listStaffID', ''); // Optional: Send empty value or skip this
     }
 
+    // if (images.length > 0) {
     images.forEach((image) => {
-      formData.append('image', image.file); // Chỉ sử dụng roomImg cho nhiều tệp
+      formdata.append('image', image.file); // Chỉ sử dụng roomImg cho nhiều tệp
     });
-    AddNewRoomMutation.mutate(formData, {
+    // } else {
+    //   formData.append('image', '');
+    // }
+    for (let pair of formdata.entries()) {
+      console.log(`${pair[0]}: ${pair[1]}`);
+    }
+    AddNewRoomMutation.mutate(formdata, {
       onSuccess: () => {
         refetchRooms();
         // Close modal or do something on success
@@ -114,6 +144,7 @@ export const AddRoom: React.FC<RoomModalProps> = ({
   });
   const handleFieldChange = (field: keyof SchemaAddRoom, value: any) => {
     setValue(field, value);
+    console.log(getValues());
   };
   return (
     <Modal
@@ -197,10 +228,9 @@ export const AddRoom: React.FC<RoomModalProps> = ({
                     className="max-w-xl"
                     {...register('status')}
                     onSelectionChange={(keys) => {
-                      const newStatus = Array.from(keys).join('');
-                      handleFieldChange('status', newStatus);
+                      const newStatus = keys;
+                      handleFieldChange('status', newStatus.toString());
                     }}
-                    defaultSelectedKeys={valueStatus}
                   >
                     {roomStatusManager.map((roomStatuses) => (
                       <SelectItem key={roomStatuses.key}>
@@ -214,12 +244,10 @@ export const AddRoom: React.FC<RoomModalProps> = ({
                     className="max-w-xl"
                     {...register('roomTypeId')}
                     onSelectionChange={(keys) => {
-                      const newRoomType = Array.from(keys).join('');
-                      const newRoomTypeId = Array.from(keys)[0].toString();
-                      setValue('roomTypeId', newRoomTypeId);
-                      handleFieldChange('roomTypeId', newRoomTypeId);
+                      const newRoomTypeId = Array.from(keys)[0];
+                      // setValue('roomTypeId', newRoomTypeId.toString());
+                      handleFieldChange('roomTypeId', newRoomTypeId.toString());
                     }}
-                    defaultSelectedKeys={valueRoomType}
                   >
                     {roomTypes.map((roomType) => (
                       <SelectItem key={roomType.key}>
@@ -230,27 +258,38 @@ export const AddRoom: React.FC<RoomModalProps> = ({
                 </div>
                 <div className="flex flex-wrap py-2 px-3 md:flex-nowrap gap-4 w-[960px] justify-evenly">
                   <Select
-                    aria-hidden="false"
                     aria-multiselectable="true"
                     aria-errormessage="Lỗi"
                     label="Nhân viên"
                     selectionMode="multiple"
                     placeholder="Chọn nhân viên phụ trách"
                     className="max-w-xl"
-                    {...register('listStaffID')}
+                    // {...register('listStaffID')}
                     onSelectionChange={(keys) => {
                       // const listStaffID = Array.from(keys).join(',');
                       // handleFieldChange('listStaffID', listStaffID);
-                      const listStaffID = Array.from(keys); // Store keys as an array
-                      handleFieldChange(
-                        'listStaffID',
-                        JSON.stringify(listStaffID)
-                      );
+                      const listStaffID = Array.from(keys);
+                      handleFieldChange('listStaffID', listStaffID);
                     }}
                   >
                     {staffs.map((staff) => (
                       <SelectItem key={staff.userId}>
                         {staff.fullName}
+                      </SelectItem>
+                    ))}
+                  </Select>
+                  <Select
+                    label="Chọn cơ sở"
+                    className="max-w-xl"
+                    // {...register('buildingId')}
+                    onSelectionChange={(keys) => {
+                      const newBuilding = Array.from(keys)[0];
+                      handleFieldChange('buildingId', newBuilding.toString());
+                    }}
+                  >
+                    {buildings.map((building) => (
+                      <SelectItem key={building.buildingId}>
+                        {building.buildingName}
                       </SelectItem>
                     ))}
                   </Select>

@@ -67,6 +67,7 @@ export const ConfirmBuyMemberShip: React.FC<ConfirmBuyMemberShipProps> = ({
     console.log('data', data);
 
     formData.append('membershipId', memberShip.id);
+    console.log(memberShip.id);
 
     BuyMemberShipMutation.mutate(formData, {
       onSuccess: (response) => {

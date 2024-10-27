@@ -49,17 +49,15 @@ export const schemaLogin = Yup.object().shape({
 export type SchemaLogin = Yup.InferType<typeof schemaLogin>;
 
 export const schemaAddRoom = Yup.object().shape({
-  buildingId: Yup.string().default('BD001'),
+  buildingId: Yup.string().required('Cở sở là bắt buộc'),
   roomName: Yup.string().required('Tên phòng là bắt buộc'),
   price: Yup.number()
     .positive('Giá phải là số dương')
     .required('Giá là bắt buộc'),
-  image: Yup.array()
-    .of(Yup.mixed().required('Hình ảnh là bắt buộc'))
-    .optional(),
+  image: Yup.array().optional(),
   status: Yup.string().required('Trạng thái là bắt buộc'),
   roomTypeId: Yup.string().required('Loại phòng là bắt buộc'),
-  listStaffID: Yup.array().of(Yup.string().default('')),
+  listStaffID: Yup.array().of(Yup.string().default('')).optional(),
 });
 
 export type SchemaAddRoom = Yup.InferType<typeof schemaAddRoom>;
@@ -67,11 +65,15 @@ export type SchemaAddRoom = Yup.InferType<typeof schemaAddRoom>;
 export const schemaUpdateRoom = Yup.object().shape({
   roomName: Yup.string().required('Thiếu tên phòng'),
   price: Yup.number().positive('Giá phải dương').required('Thiếu giá phòng'),
-  image: Yup.array()
-    .of(Yup.mixed().required('Hình ảnh là bắt buộc'))
-    .optional(),
+  // image: Yup.array()
+  //   .of(Yup.mixed().required('Hình ảnh là bắt buộc'))
+  //   .optional(),
   status: Yup.string().required('Thiếu trạng thái phòng'),
-  listStaffID: Yup.array().of(Yup.string().default('')),
+  // listStaffID: Yup.array().of(Yup.string().default('')).optional(),
+  listStaffID: Yup.array()
+    .of(Yup.string().required('Staff ID is required')) // Mỗi ID cần phải là một chuỗi không rỗng
+    .nullable() // Cho phép trường này có giá trị null
+    .ensure(), // Đảm bảo trường luôn là mảng, ngay cả khi không có giá trị
 });
 
 export type SchemaUpdateRoom = Yup.InferType<typeof schemaUpdateRoom>;
@@ -270,7 +272,6 @@ export const schemaCreateAccount = Yup.object().shape({
 });
 
 export type SchemaCreateAccount = Yup.InferType<typeof schemaCreateAccount>;
-
 
 export const shemaBuyMemberShip = Yup.object().shape({
   membershipId: Yup.string(),

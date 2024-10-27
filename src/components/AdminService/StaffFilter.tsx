@@ -41,6 +41,18 @@ const StaffFilter: React.FC<StaffFiltersProps> = ({
   setStatusFilter,
   setVisibleColumns,
 }) => {
+  const translateStatusToVietnamese = (status: string): string => {
+    switch (status.toLowerCase()) {
+      case 'active':
+        return 'Đang làm việc';
+      case 'inactive':
+        return 'Đã nghỉ';
+      case 'vacation':
+        return 'Đang nghỉ phép';
+      default:
+        return 'Không xác định'; // Default case for unknown status
+    }
+  };
   return (
     <div className="flex justify-between gap-3 items-end">
       <Input
@@ -64,7 +76,9 @@ const StaffFilter: React.FC<StaffFiltersProps> = ({
             onSelectionChange={setStatusFilter}
           >
             {statusOptions.map((status) => (
-              <DropdownItem key={status.uid}>{status.name}</DropdownItem>
+              <DropdownItem key={status.uid}>
+                {translateStatusToVietnamese(status.name)}
+              </DropdownItem>
             ))}
           </DropdownMenu>
         </Dropdown>

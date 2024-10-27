@@ -22,7 +22,7 @@ export const deleteRoomById = (roomId: string | undefined) =>
   http.delete(`/api/manager/delete-room/${roomId}`);
 
 //Staff
-export const getAllStaff = () => http.get('/api/auth/staffs');
+export const getAllStaff = () => http.get('/api/auth/staffs/get-staff');
 
 export const AddNewStaff = (body: {
   fullName: string;

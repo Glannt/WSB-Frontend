@@ -43,6 +43,17 @@ const RoomTable: React.FC<RoomTableProps> = ({
   onEdit,
   onDelete,
 }) => {
+  const translateStatusToVietnamese = (status: string): string => {
+    switch (status.toLowerCase()) {
+      case 'available':
+        return 'Có thể sử dụng';
+      case 'maintenance':
+        return 'Đang bảo trì';
+
+      default:
+        return 'Không xác định'; // Default case for unknown status
+    }
+  };
   const renderCell = React.useCallback((room: Room, columnKey: React.Key) => {
     const cellValue = room[columnKey as keyof Room];
     // Hàm lấy tên loại phòng từ ID
@@ -78,7 +89,7 @@ const RoomTable: React.FC<RoomTableProps> = ({
           <div className="flex flex-col">
             <p className="text-bold text-small capitalize">
               {typeof room.creationTime === 'string'
-                ? new Date(room.creationTime).toLocaleString()
+                ? room.creationTime
                 : room.creationTime}
             </p>
           </div>
@@ -86,27 +97,29 @@ const RoomTable: React.FC<RoomTableProps> = ({
       case 'staffs':
         return (
           <div className="flex flex-col">
-            <p className="text-bold text-small capitalize">
-              {room.staffAtRoom} {/* Lấy danh sách tên nhân viên */}
-            </p>
-            <p className="text-bold text-tiny capitalize text-default-400">
-              {room.staffAtRoom.length > 1
-                ? `${room.staffAtRoom.length} nhân viên phụ trách`
-                : `${room.staffAtRoom.length} nhân viên phụ trách`}
-            </p>
+            {room.staff.length > 0 ? (
+              room.staff.map((staffMember) => (
+                <p
+                  key={staffMember.userId}
+                  className="text-bold text-small capitalize"
+                >
+                  {staffMember.fullName} {/* Lấy danh sách tên nhân viên */}
+                </p>
+              ))
+            ) : (
+              <p className="text-default-400">Không có nhân viên phụ trách</p>
+            )}
           </div>
         );
       case 'status':
         return (
           <Chip
             className="capitalize"
-            color={statusColorMap[room.status]}
+            color={statusColorMap[room.status.toLowerCase()]}
             size="sm"
             variant="flat"
           >
-            {typeof cellValue === 'object'
-              ? JSON.stringify(cellValue)
-              : cellValue}
+            {translateStatusToVietnamese(room.status)}
           </Chip>
         );
       case 'actions':

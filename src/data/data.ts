@@ -12,9 +12,9 @@ const columns = [
 ];
 
 const statusOptions = [
-  { name: 'Active', uid: 'active' },
-  { name: 'Paused', uid: 'paused' },
-  { name: 'Vacation', uid: 'vacation' },
+  { name: 'Active', uid: 'ACTIVE' },
+  { name: 'Inactive', uid: 'INACTIVE' },
+  { name: 'Vacation', uid: 'VACATION' },
 ];
 export const statusOptionsBooking = [
   { name: 'Đang sử dụng', uid: 'using' },

@@ -263,6 +263,9 @@ export const BookingRoomDetailMultiple = () => {
     selectedServices.forEach((serviceId) => {
       initQuantities[serviceId] = quantities[serviceId] || 0; // Default to 0 if no quantity exists
     });
+    console.log('initQuantities', initQuantities);
+    console.log('seletedService', selectedServices);
+
     return initQuantities;
   }, [selectedServices, quantities]);
 
@@ -621,7 +624,11 @@ export const BookingRoomDetailMultiple = () => {
 
             <div className="mb-6">
               <p className="text-2xl font-bold">
-                Tổng đơn: {totalsFormatted} VNĐ
+                Tổng đơn:{' '}
+                {totalsFormatted === 'NaN'
+                  ? roomPriceFormatted
+                  : totalsFormatted}{' '}
+                VNĐ
               </p>
             </div>
 

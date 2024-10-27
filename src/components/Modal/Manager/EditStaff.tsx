@@ -33,7 +33,18 @@ const EditStaff: React.FC<StaffModalProps> = ({
   const [valueRoomType, setValueRoomType] = React.useState(
     new Set(selectedStaff?.workDays || [])
   );
-
+  const translateStatusToVietnamese = (status: string): string => {
+    switch (status) {
+      case 'MORNING':
+        return 'Sáng';
+      case 'AFTERNOON':
+        return 'Chiều';
+      case 'EVENING':
+        return 'Tối';
+      default:
+        return 'Không xác định'; // Default case for unknown status
+    }
+  };
   // Handle changes in form fields
   const handleFieldChange = (field: string, value: any) => {
     if (selectedStaff) {
@@ -44,6 +55,7 @@ const EditStaff: React.FC<StaffModalProps> = ({
           }
         : undefined;
     }
+    console.log(selectedStaff);
   };
 
   return (
@@ -87,15 +99,13 @@ const EditStaff: React.FC<StaffModalProps> = ({
                     const newStatus = Array.from(keys).join('');
                     handleFieldChange('status', newStatus);
                   }}
-                  defaultSelectedKeys={
-                    selectedStaff?.status
-                      ? new Set([selectedStaff.status])
-                      : valueStatus
-                  }
+                  defaultSelectedKeys={translateStatusToVietnamese(
+                    selectedStaff?.status!
+                  )}
                 >
-                  <SelectItem key="active">Active</SelectItem>
-                  <SelectItem key="inactive">Inactive</SelectItem>
-                  <SelectItem key="vacation">Vacation</SelectItem>
+                  <SelectItem key="ACTIVE">Đang làm việc</SelectItem>
+                  <SelectItem key="INACTIVE">Đã nghỉ</SelectItem>
+                  <SelectItem key="VACATION">Đang nghỉ phép</SelectItem>
                 </Select>
               </div>
 
@@ -108,16 +118,14 @@ const EditStaff: React.FC<StaffModalProps> = ({
                     const newWorkShift = Array.from(keys).join('');
                     handleFieldChange('workShift', newWorkShift);
                   }}
-                  defaultSelectedKeys={
-                    selectedStaff?.workShift
-                      ? new Set([selectedStaff.workShift])
-                      : undefined
-                  }
+                  defaultSelectedKeys={translateStatusToVietnamese(
+                    selectedStaff?.workShift!
+                  )}
                   //thêm register reacthookform
                 >
-                  <SelectItem key="Sáng">Sáng</SelectItem>
-                  <SelectItem key="Chiều">Chiều</SelectItem>
-                  <SelectItem key="Tối">Tối</SelectItem>
+                  <SelectItem key="MORNING">Sáng</SelectItem>
+                  <SelectItem key="AFTERNOON">Chiều</SelectItem>
+                  <SelectItem key="EVENING">Tối</SelectItem>
                 </Select>
 
                 {/* Ngày làm việc */}
@@ -126,21 +134,19 @@ const EditStaff: React.FC<StaffModalProps> = ({
                   className="max-w-xl"
                   selectionMode="multiple"
                   onSelectionChange={(keys) => {
-                    const newWorkDays = Array.from(keys);
+                    const newWorkDays = Array.from(keys).join('');
                     handleFieldChange('workDays', newWorkDays);
                   }}
-                  defaultSelectedKeys={
-                    selectedStaff?.workDays
-                      ? new Set(selectedStaff.workDays)
-                      : undefined
-                  }
+                  defaultSelectedKeys={selectedStaff?.workDays}
                   //thêm register reacthookform
                 >
-                  <SelectItem key="Monday">Monday</SelectItem>
-                  <SelectItem key="Tuesday">Tuesday</SelectItem>
-                  <SelectItem key="Wednesday">Wednesday</SelectItem>
-                  <SelectItem key="Thursday">Thursday</SelectItem>
-                  <SelectItem key="Friday">Friday</SelectItem>
+                  <SelectItem key="Monday">Thứ 2</SelectItem>
+                  <SelectItem key="Tuesday">Thứ 3</SelectItem>
+                  <SelectItem key="Wednesday">Thứ 4</SelectItem>
+                  <SelectItem key="Thursday">Thứ 5</SelectItem>
+                  <SelectItem key="Friday">Thứ 6</SelectItem>
+                  <SelectItem key="Saturday">Thứ 7</SelectItem>
+                  <SelectItem key="Sunday">Chủ nhật</SelectItem>
                 </Select>
               </div>
             </ModalBody>
