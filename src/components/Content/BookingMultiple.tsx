@@ -624,11 +624,13 @@ export const BookingRoomDetailMultiple = () => {
 
             <div className="mb-6">
               <p className="text-2xl font-bold">
+
                 Tổng đơn:{' '}
                 {totalsFormatted === 'NaN'
                   ? roomPriceFormatted
                   : totalsFormatted}{' '}
                 VNĐ
+
               </p>
             </div>
 
