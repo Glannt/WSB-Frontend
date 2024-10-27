@@ -26,13 +26,6 @@ export const DetailModal: React.FC<DetailModalProps> = ({
   selectedRoom,
 }) => {
   const [loadingImages, setLoadingImages] = React.useState<boolean[]>([]);
-  React.useEffect(() => {
-    if (selectedRoom && selectedRoom.roomImg) {
-      const loadingArray = selectedRoom.roomImg.map(() => true); // Initialize loading state for each image
-      setLoadingImages(loadingArray);
-    }
-  }, [isOpen, selectedRoom]);
-
   const handleImageLoad = (index: number) => {
     setLoadingImages((prevState) => {
       const updatedLoading = [...prevState];
@@ -49,7 +42,8 @@ export const DetailModal: React.FC<DetailModalProps> = ({
       classNames={{
         backdrop:
           'bg-gradient-to-t from-zinc-900 to-zinc-900/10 backdrop-opacity-20',
-        base: 'max-w-[1000px] h-[300px]',
+        base: 'max-w-[1000px] h-auto',
+        header: 'text-2xl',
       }}
       motionProps={{
         variants: {
@@ -79,17 +73,17 @@ export const DetailModal: React.FC<DetailModalProps> = ({
             <ModalBody>
               <div className="flex py-2 px-3 justify-evenly flex-wrap md:flex-nowrap gap-4 outline-none border-0 overflow-y-auto">
                 {' '}
-                {selectedRoom!.roomImg.length > 0 ? (
+                {selectedRoom && selectedRoom?.roomImg.length > 0 ? (
                   <ul className="flex flex-row gap-4 flex-wrap">
-                    {selectedRoom!.roomImg.map((image, index) => (
+                    {selectedRoom.roomImg.split(',').map((image, index) => (
                       <li key={index} className="flex flex-col items-center">
                         {loadingImages[index] ? (
                           <Skeleton className="mb-2 w-36 h-36 rounded-xl" />
                         ) : (
                           <Image
-                            src={image}
-                            alt={image}
-                            className="object-cover w-36 h-36 rounded-xl"
+                            src={image.trim()} // Remove any extra whitespace
+                            alt={`Room image ${index + 1}`}
+                            className="object-cover w-64 h-64 rounded-xl"
                             onLoad={() => handleImageLoad(index)} // Mark image as loaded
                           />
                         )}

@@ -11,6 +11,7 @@ import {
   Selection,
   ChipProps,
   User,
+  Button,
 } from '@nextui-org/react';
 import { Room, Column } from '@/types/room.type';
 import { EyeIcon } from '../Icons/EyeIcon';
@@ -27,6 +28,7 @@ interface RoomTableProps {
   onSortChange: (descriptor: SortDescriptor) => void;
   onEdit: (room: Room) => void;
   onDelete: (room: Room) => void;
+  openDetail: (room: Room) => void;
 }
 const statusColorMap: Record<string, ChipProps['color']> = {
   available: 'success',
@@ -42,6 +44,7 @@ const RoomTable: React.FC<RoomTableProps> = ({
   onSortChange,
   onEdit,
   onDelete,
+  openDetail,
 }) => {
   const translateStatusToVietnamese = (status: string): string => {
     switch (status.toLowerCase()) {
@@ -125,15 +128,23 @@ const RoomTable: React.FC<RoomTableProps> = ({
       case 'actions':
         return (
           <div className="relative flex justify-center gap-5">
-            <Tooltip content="Chi tiết">
+            <Button
+              content="Chi tiết"
+              color="default"
+              className="bg-violet-100"
+            >
               <span
-                // onClick={() => openDetail(room)}
+                onClick={() => openDetail(room)}
                 className="text-lg text-default-400 cursor-pointer active:opacity-50"
               >
                 <EyeIcon />
               </span>
-            </Tooltip>
-            <Tooltip content="Chỉnh sửa">
+            </Button>
+            <Button
+              content="Chỉnh sửa"
+              color="default"
+              className="bg-violet-100"
+            >
               <span
                 onClick={() => {
                   onEdit(room);
@@ -142,15 +153,15 @@ const RoomTable: React.FC<RoomTableProps> = ({
               >
                 <EditIcon />
               </span>
-            </Tooltip>
-            <Tooltip color="danger" content="Xóa">
+            </Button>
+            {/* <Tooltip color="danger" content="Xóa">
               <span
                 onClick={() => onDelete(room)}
                 className="text-lg text-danger cursor-pointer active:opacity-50"
               >
                 <DeleteIcon />
               </span>
-            </Tooltip>
+            </Tooltip> */}
           </div>
         );
       default:

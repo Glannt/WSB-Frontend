@@ -24,6 +24,15 @@ export const deleteRoomById = (roomId: string | undefined) =>
 //Staff
 export const getAllStaff = () => http.get('/api/auth/staffs/get-staff');
 
+export const updateStaff = (
+  staffId: string | undefined,
+  body: {
+    status: string;
+    workDays: string;
+    workShift: string;
+  }
+) => http.put(`/api/auth/staffs/${staffId}`, body);
+
 export const AddNewStaff = (body: {
   fullName: string;
   phoneNumber: string;

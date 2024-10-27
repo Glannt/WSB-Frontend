@@ -285,3 +285,10 @@ export const schemaUpdateBookingStatus = Yup.object().shape({
 export type SchemaUpdateBookingStatus = Yup.InferType<
   typeof schemaUpdateBookingStatus
 >;
+
+export const schemaUpdateStaff = Yup.object().shape({
+  status: Yup.string().required('Trạng thái là bắt buộc'),
+  workDays: Yup.string().required('Ngày làm việc là bắt buộc'),
+  workShift: Yup.string().required('Ca làm việc là bắt buộc'),
+});
+export type SchemaUpdateStaff = Yup.InferType<typeof schemaUpdateStaff>;

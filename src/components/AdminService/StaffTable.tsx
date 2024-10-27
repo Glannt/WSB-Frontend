@@ -71,6 +71,25 @@ const StaffTable: React.FC<RoomTableProps> = ({
         return 'Không xác định'; // Default case for unknown status
     }
   };
+  function translateDaysToVietnamese(workDays: string[]): string[] {
+    const daysMap: { [key: string]: string } = {
+      SUNDAY: 'Chủ Nhật',
+      MONDAY: 'Thứ Hai',
+      TUESDAY: 'Thứ Ba',
+      WEDNESDAY: 'Thứ Tư',
+      THURSDAY: 'Thứ Năm',
+      FRIDAY: 'Thứ Sáu',
+      SATURDAY: 'Thứ Bảy',
+      Mon: 'Thứ Hai',
+      Tue: 'Thứ Ba',
+      Wed: 'Thứ Tư',
+      Thu: 'Thứ Năm',
+      Fri: 'Thứ Sáu',
+      Sat: 'Thứ Bảy',
+    };
+
+    return workDays.map((day: string) => daysMap[day] || day); // Specify 'day' as type string
+  }
   const renderCell = React.useCallback((staff: Staff, columnKey: React.Key) => {
     const cellValue = staff[columnKey as keyof Staff];
     if (Array.isArray(cellValue)) {
@@ -125,12 +144,11 @@ const StaffTable: React.FC<RoomTableProps> = ({
         return (
           <div className="flex flex-col">
             <p className="text-bold text-small capitalize">
-              {typeof cellValue === 'object'
-                ? JSON.stringify(cellValue)
-                : cellValue}
-            </p>
-            <p className="text-bold text-tiny capitalize text-default-400">
-              {staff.workDays}
+              {translateDaysToVietnamese(
+                typeof staff.workDays === 'string'
+                  ? staff.workDays.split(',').map((day) => day.trim()) // Split string into an array and trim whitespace
+                  : staff.workDays // If already an array, just pass it
+              ).join(', ')}
             </p>
           </div>
         );
@@ -149,7 +167,7 @@ const StaffTable: React.FC<RoomTableProps> = ({
       case 'actions':
         return (
           <div className="relative flex justify-center gap-5">
-            <Button content="Chỉnh sửa nhân viên">
+            <Button content="Chỉnh sửa nhân viên" className="bg-violet-100">
               <span
                 onClick={() => {
                   onEdit(staff);
@@ -187,7 +205,10 @@ const StaffTable: React.FC<RoomTableProps> = ({
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent={'No rooms found'} items={sortedItems}>
+      <TableBody
+        emptyContent={'Không tìm thấy nhân viên nào'}
+        items={sortedItems}
+      >
         {(item) => (
           <TableRow key={item.userId}>
             {(columnKey) => (

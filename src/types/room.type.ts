@@ -44,7 +44,7 @@ export interface Room {
   roomName: string; // Name of the room
   price: number; // Price of the room
   creationTime: string; // Creation time of the room in ISO format
-  roomImg: string[]; // URL of the room image
+  roomImg: string; // URL of the room image
   status: string; // Current status of the room (e.g., 'available', 'maintenance')
   roomType: RoomType; // Details about the type of room
   staff: Staff[];
