@@ -1,4 +1,5 @@
 import path from '@/constants/path';
+import { getProfileFromLS } from '@/utils/auth';
 import { Sidebar } from 'flowbite-react';
 import {
   BadgeIcon,

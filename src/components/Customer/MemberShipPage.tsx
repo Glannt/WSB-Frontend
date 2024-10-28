@@ -87,7 +87,7 @@ export const MemberShipPage = () => {
   };
   return (
     <>
-      <section className="py-20 bg-gray-100">
+      <section className="py-10 bg-gray-100">
         <div className="container mx-auto px-4">
           <h2 className="text-4xl font-bold text-center mb-4">
             Giá cả và tiện ích hấp dẫn
