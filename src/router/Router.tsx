@@ -279,7 +279,10 @@ export const router = createBrowserRouter([
     path: path.membership,
     element: (
       <MainLayout>
-        <MemberShipPage />
+        <>
+          <ScrollToTop />
+          <MemberShipPage />
+        </>
       </MainLayout>
     ),
   },

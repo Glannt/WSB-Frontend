@@ -21,9 +21,9 @@ export const MemberShipPage = () => {
       id: 'SILVER',
       name: 'Gói thành viên bạc',
       price: 50000,
-      description: 'Perfect for individuals just starting out',
+      description: 'Hoàn hảo cho người mới',
       features: [
-        { name: 'Giảm giá 10% cho các lần đặt tiếp theo.', included: true },
+        { name: 'Giảm giá 5% cho các lần đặt tiếp theo.', included: true },
         { name: 'Miễn phí trà và cà phê khi sử dụng phòng.', included: true },
         {
           name: '3 giờ sử dụng miễn phí các thiết bị văn phòng (máy in, máy photocopy).',
@@ -53,9 +53,9 @@ export const MemberShipPage = () => {
       id: 'GOLD',
       name: 'Gói thành viên vàng',
       price: 100000,
-      description: 'Great for small businesses and growing teams',
+      description: 'Tuyệt vời cho doanh nghiệp nhỏ và các nhóm đang phát triển',
       features: [
-        { name: 'Giảm giá 20% cho các lần đặt tiếp theo.', included: true },
+        { name: 'Giảm giá 10% cho các lần đặt tiếp theo.', included: true },
         { name: 'Miễn phí trà, cà phê và đồ ăn nhẹ.', included: true },
         {
           name: 'Miễn phí sử dụng các thiết bị văn phòng không giới hạn.',
@@ -82,10 +82,12 @@ export const MemberShipPage = () => {
       buttonColor: 'bg-yellow-500 text-white hover:bg-yellow-600',
     },
   ];
-
+  const formatRoomPrice = (price: number) => {
+    return new Intl.NumberFormat('vi-VN').format(price);
+  };
   return (
     <>
-      <section className="py-20 bg-gray-100">
+      <section className="py-10 bg-gray-100">
         <div className="container mx-auto px-4">
           <h2 className="text-4xl font-bold text-center mb-4">
             Giá cả và tiện ích hấp dẫn
@@ -105,8 +107,8 @@ export const MemberShipPage = () => {
                 <div className="p-8">
                   <h3 className="text-4xl font-bold mb-2">{plan.name}</h3>
                   <p className="text-4xl font-bold mb-4">
-                    ${plan.price}
-                    <span className="text-lg font-normal">/Tháng</span>
+                    {formatRoomPrice(plan.price)}
+                    <span className="text-lg font-normal"> VNĐ/Tháng</span>
                   </p>
                   <p className="text-gray-600 mb-6">{plan.description}</p>
                   <ul className="mb-8">

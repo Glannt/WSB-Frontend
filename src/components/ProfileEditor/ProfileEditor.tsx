@@ -137,6 +137,7 @@ const ProfileEditor: React.FC = () => {
       transition: { duration: 0.5 },
     },
   };
+  console.log('customer', customer);
 
   const buttonVariants = {
     hover: { scale: 1.05 },

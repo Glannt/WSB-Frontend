@@ -83,6 +83,7 @@ export const ConfirmBuyMemberShip: React.FC<ConfirmBuyMemberShipProps> = ({
   const onSubmit = (data: SchemaBuyMemberShip) => {
     handleBuyMemberShip(data);
   };
+
   return (
     <>
       {' '}
@@ -110,7 +111,7 @@ export const ConfirmBuyMemberShip: React.FC<ConfirmBuyMemberShipProps> = ({
                   <div className="mt-4 p-4 rounded-lg shadow-inner shadow-primary-100">
                     <h3 className="text-xl font-bold">{memberShip?.name}</h3>
                     <p className="text-xl font-semibold">
-                      Giá: {memberShip?.price.toLocaleString()} VND / Tháng
+                      Giá: {memberShip?.price.toLocaleString()} VNĐ / Tháng
                     </p>
                   </div>
                   <p>
