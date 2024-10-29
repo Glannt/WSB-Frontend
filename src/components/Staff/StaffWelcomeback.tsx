@@ -1,3 +1,4 @@
+import { useStaff } from '@/context/staff.context';
 import { getProfileFromLS } from '@/utils/auth';
 import { motion } from 'framer-motion';
 import React from 'react';
@@ -12,7 +13,10 @@ export const StaffWelComeback: React.FC = () => {
       console.log(name);
     }
   }, []);
-
+  const { staff, refetch } = useStaff();
+  React.useEffect(() => {
+    refetch();
+  }, []);
   const variants = {
     visible: {
       opacity: 1,

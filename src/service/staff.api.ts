@@ -1,4 +1,5 @@
 import { BookingStatus } from '@/types/bookings';
+import { Staff } from '@/types/staff.type';
 import http from '@/utils/http';
 import { parseDate, CalendarDate } from '@internationalized/date';
 
@@ -54,3 +55,15 @@ export const updateBookingStatus = (formdata: FormData) =>
       'Content-Type': 'multipart/form-data',
     },
   });
+
+export const getProfileStaff = () => http.get('/api/auth/staffs/profile');
+
+export const updateProfileStaff = (
+  id: string,
+  body: Omit<
+    Staff,
+    'workShift' | 'workDays' | 'buildingId' | 'status' | 'userId'
+  >
+) => {
+  http.put(`/api/auth/staffs/${id}`, body);
+};

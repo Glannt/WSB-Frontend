@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 import {
   ChevronLeft,
@@ -11,6 +11,10 @@ import {
 import { SidebarStaff } from './SideBarStaff';
 import { MenuIconStaff } from './MenuIconStaff';
 import { Outlet } from 'react-router';
+import { getProfileManager } from '@/service/manager.api';
+import { setManagerToLS, setStaffToLS } from '@/utils/auth';
+import { getProfileStaff } from '@/service/staff.api';
+import { StaffProvider, useStaff } from '@/context/staff.context';
 
 export const DashboardStaff = () => {
   const [collapse, setCollapse] = useState<boolean>(true);
@@ -25,6 +29,14 @@ export const DashboardStaff = () => {
   const handleMouseLeave = () => {
     setIsHovered(false);
   };
+
+  // const getProfileStaffApi = async () => {
+  //   const response = await getProfileStaff();
+  //   console.log(response.data.data);
+  //   setStaffToLS(response.data.data);
+  //   return response.data.data;
+  // };
+
   return (
     <div
       className="dashboard flex top-0 left-0 h-screen
@@ -71,7 +83,9 @@ export const DashboardStaff = () => {
       </div>
       <div className="mainContent flex-1 m-9 bg-gray-100">
         {' '}
-        <Outlet />
+        <StaffProvider>
+          <Outlet />
+        </StaffProvider>
       </div>
     </div>
   );
