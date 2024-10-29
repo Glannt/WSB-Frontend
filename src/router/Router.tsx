@@ -66,6 +66,8 @@ import { ManagerWelComeback } from '@/components/Manager/WelcombackManager';
 import { MemberShipPage } from '@/components/Customer/MemberShipPage';
 
 import ScrollToTop from '@/components/ScrollToTop/ScrollToTop';
+import ProfileManager from '@/components/Manager/ProfileManager';
+import ProfileStaff from '@/components/Staff/ProfileStaff';
 
 // import dotenv from 'dotenv';
 
@@ -300,8 +302,16 @@ export const router = createBrowserRouter([
             element: <ManageStaff />,
           },
           {
-            path: '',
+            path: 'dashboard',
             element: <AdminDashboard />,
+          },
+          {
+            path: '',
+            element: <ManagerWelComeback />,
+          },
+          {
+            path: 'profile',
+            element: <ProfileManager />,
           },
         ],
       },
@@ -357,7 +367,7 @@ export const router = createBrowserRouter([
           },
           {
             path: path.staffProfile,
-            element: <StaffProfile />,
+            element: <ProfileStaff />,
           },
         ],
       },

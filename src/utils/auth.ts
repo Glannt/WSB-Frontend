@@ -1,4 +1,6 @@
 import { Customer } from '@/types/customer.type';
+import { Manager } from '@/types/manager.type';
+import { Staff } from '@/types/staff.type';
 import { User } from '@/types/user.type';
 
 export const saveAccessTokenToLS = (access_token: string) => {
@@ -10,6 +12,8 @@ export const clearLS = () => {
   localStorage.removeItem('profile');
   localStorage.removeItem('roleName');
   localStorage.removeItem('customer');
+  localStorage.removeItem('staff');
+  localStorage.removeItem('manager');
 };
 
 export const getAccessTokenFromLS = () => {
@@ -38,5 +42,21 @@ export const setCustomerToLS = (customer: Customer) => {
 
 export const getCustomerFromLS = () => {
   const result = localStorage.getItem('customer');
+  return result ? JSON.parse(result) : null;
+};
+
+export const setManagerToLS = (manager: Manager) => {
+  localStorage.setItem('manager', JSON.stringify(manager));
+};
+
+export const getManagerFromLS = () => {
+  const result = localStorage.getItem('manager');
+  return result ? JSON.parse(result) : null;
+};
+export const setStaffToLS = (staff: Staff) => {
+  localStorage.setItem('staff', JSON.stringify(staff));
+};
+export const getStaffToLS = () => {
+  const result = localStorage.getItem('staff');
   return result ? JSON.parse(result) : null;
 };

@@ -1,3 +1,4 @@
+import { Manager } from '@/types/manager.type';
 import { AddRoomResponse } from '@/types/room.type';
 import http from '@/utils/http';
 
@@ -72,3 +73,12 @@ export const getBookingAnalysisByWeek = () =>
 
 export const getBookingAnalysisByDate = () =>
   http.get('/api/dashboard/booking-analyst-date');
+
+export const getProfileManager = () => http.get('/api/auth/managers/profile');
+
+export const updateProfileManager = (
+  id: string,
+  body: Omit<Manager, 'roleName' | 'buildingId' | 'userId'>
+) => {
+  http.put(`/api/auth/managers/${id}`, body);
+};

@@ -4,6 +4,7 @@ import { SidebarAdmin } from './SideBarManager';
 import { ChevronLeftCircle, ChevronRightCircle } from 'lucide-react';
 import { MenuIconManager } from './MenuIconManager';
 import { Outlet } from 'react-router';
+import { ManagerProvider } from '@/context/manager.context';
 
 export const DashboardManager = () => {
   const [collapse, setCollapse] = useState<boolean>(true);
@@ -66,7 +67,9 @@ export const DashboardManager = () => {
       </div>
       <div className="mainContent flex-auto w-full max-h-screen items-stretch justify-center p-5 border-spacing-2 overflow-y-auto mt-7 ">
         {' '}
-        <Outlet />
+        <ManagerProvider>
+          <Outlet />
+        </ManagerProvider>
       </div>
     </div>
   );

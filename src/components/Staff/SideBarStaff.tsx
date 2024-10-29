@@ -18,7 +18,7 @@ import React, { useContext } from 'react';
 import { logout } from '@/service/auth.api';
 import { useMutation } from '@tanstack/react-query';
 import { AppContext } from '@/context/app.context';
-import { TimerIcon } from 'lucide-react';
+import { TimerIcon, UserRound } from 'lucide-react';
 
 export const SidebarStaff = () => {
   const { setIsAuthenticated, isAuthenticated } = useContext(AppContext);
@@ -79,7 +79,7 @@ export const SidebarStaff = () => {
               isActive={activeItem === 'Home'}
               onClick={() => {
                 setActiveItem('Home');
-                navigate(path.home);
+                navigate('');
               }}
             />
 
@@ -87,14 +87,27 @@ export const SidebarStaff = () => {
               <SidebarItem
                 title="Lịch làm việc"
                 icon={<TimerIcon />}
-                onClick={() => navigate(path.schedule)}
+                isActive={activeItem === 'Lịch làm việc'}
+                onClick={() => {
+                  navigate(path.schedule);
+                  setActiveItem('Lịch làm việc');
+                }}
               />
               <CollapseItems
                 title="Quản lý phòng"
                 icon={<BalanceIcon />}
                 items={sidebarItems}
               />
-
+              <SidebarItem
+                title="Thông tin cá nhân"
+                isActive={activeItem === 'Thông tin cá nhân'}
+                icon={<UserRound className="text-gray-300" />}
+                onClick={() => {
+                  navigate(path.staffProfile);
+                  setActiveItem('Thông tin cá nhân');
+                  // navigate(path.logout);
+                }}
+              />
               <SidebarItem
                 title="Đăng xuất"
                 icon={<SettingsIcon />}

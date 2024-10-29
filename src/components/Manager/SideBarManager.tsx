@@ -17,11 +17,12 @@ import path from '@/constants/path';
 import { useMutation } from '@tanstack/react-query';
 import { AppContext } from '@/context/app.context';
 import { logout } from '@/service/auth.api';
+import { UserRound } from 'lucide-react';
 
 export const SidebarAdmin = () => {
   const { collapsed, setCollapsed } = useSidebarContext();
   const { setIsAuthenticated, isAuthenticated } = useContext(AppContext);
-
+  const [activeItem, setActiveItem] = React.useState<string | null>('Home');
   const logoutMutation = useMutation({
     mutationFn: logout,
     onSuccess: () => {
@@ -51,27 +52,48 @@ export const SidebarAdmin = () => {
           <div className={Sidebar.Body()}>
             <SidebarItem
               title="Home"
+              isActive={activeItem === 'Home'}
               icon={<HomeIcon />}
-              onClick={() => navigate(path.home)}
+              onClick={() => navigate('')}
             />
             <SidebarMenu title="Main Menu">
               <SidebarItem
                 title="Dashboard"
+                isActive={activeItem === 'Dashboard'}
                 icon={<AccountsIcon />}
-                onClick={() => navigate(path.manager)}
+                onClick={() => {
+                  navigate(path.manager + '/dashboard');
+                  setActiveItem('Dashboard');
+                }}
               />
 
               <SidebarItem
                 title="Quản lý nhân viên"
+                isActive={activeItem === 'Quản lý nhân viên'}
                 icon={<CustomersIcon />}
-                onClick={() => navigate(path.managerStaff)}
+                onClick={() => {
+                  navigate(path.managerStaff);
+                  setActiveItem('Quản lý nhân viên');
+                }}
               />
               <SidebarItem
                 title="Quản lý phòng"
                 icon={<ProductsIcon />}
-                onClick={() => navigate(path.managerRooms)}
+                onClick={() => {
+                  navigate(path.managerRooms);
+                  setActiveItem('Quản lý phòng');
+                }}
               />
-
+              <SidebarItem
+                title="Thông tin cá nhân"
+                isActive={activeItem === 'Thông tin cá nhân'}
+                icon={<UserRound className=" text-gray-500" />}
+                onClick={() => {
+                  navigate(path.manager + '/profile');
+                  setActiveItem('Thông tin cá nhân');
+                }}
+                // onClick={() => navigate(path.logout)} // Thêm dấu '/' ở đầu để xác định đường dẫn tuyệt đối
+              />
               <SidebarItem
                 title="Đăng xuất"
                 icon={<SettingsIcon />}

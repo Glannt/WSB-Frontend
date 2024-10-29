@@ -1,3 +1,4 @@
+import { useManager } from '@/context/manager.context';
 import { getProfileFromLS } from '@/utils/auth';
 import { motion } from 'framer-motion';
 import React from 'react';
@@ -5,12 +6,14 @@ export const ManagerWelComeback: React.FC = () => {
   const currentDate = new Date().toLocaleDateString();
   const currentTime = new Date().toLocaleTimeString();
   const [name, setName] = React.useState<string>('Staff');
+  const { manager, refetch } = useManager();
   React.useEffect(() => {
     const profile = getProfileFromLS();
     if (profile && profile.roleName === 'MANAGER') {
       setName(profile.userId); // Set name only if profile exists and role is STAFF
       console.log(name);
     }
+    refetch();
   }, []);
 
   const variants = {
