@@ -7,7 +7,7 @@
 This is a template project for a [Vite](https://vitejs.dev) [React](https://react.dev) app with [TypeScript](https://www.typescriptlang.org/), [Tailwind CSS](https://tailwindcss.com/), [Storybook](https://storybook.js.org/),
 ✅ [Tailwind CSS](https://tailwindcss.com/)
 ✅ [Storybook](https://storybook.js.org/) for UI component development, testing, and documentation
-✅ [Radix UI](https://www.radix-ui.com/) with [shadcn-ui](https://ui.shadcn.com/)
+✅ [NextUI](https://nextui.org/)
 ✅ [TypeScript](https://www.typescriptlang.org/)
 ✅ [ESLint](https://eslint.org/) with [Prettier](https://prettier.io/) and [simple-import-sort](https://github.com/lydell/eslint-plugin-simple-import-sort)
 ✅ [Jest](https://jestjs.io/) for unit testing
