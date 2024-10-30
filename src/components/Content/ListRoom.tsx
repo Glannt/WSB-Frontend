@@ -42,6 +42,8 @@ export const ListRoom = () => {
 
   const getAllBuidingApi = async () => {
     const response = await getAllBuiding();
+    console.log(response.data.data);
+
     return response.data.data;
   };
 

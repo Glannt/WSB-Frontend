@@ -34,13 +34,13 @@ const Schedule = () => {
   });
 
   const days = {
-    Mon: 1, // Thứ 2
-    Tue: 2, // Thứ 3
-    Wed: 3, // Thứ 4
-    Thu: 4, // Thứ 5
-    Fri: 5, // Thứ 6
-    Sat: 6, // Thứ 7
-    Sun: 0, // Chủ nhật
+    MONDAY: 1, // Thứ 2
+    TUESDAY: 2, // Thứ 3
+    WEDNESDAY: 3, // Thứ 4
+    THURSDAY: 4, // Thứ 5
+    FRIDAY: 5, // Thứ 6
+    SATURDAY: 6, // Thứ 7
+    SUNDAY: 0, // Chủ nhật
   };
 
   const getDayIndex = (day: keyof typeof days) => {
