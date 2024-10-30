@@ -77,6 +77,13 @@ interface create {
   image: string;
 }
 
+interface Membership {
+  membershipId: string;
+  membershipName: string;
+  discount: number;
+  amount: string;
+}
+
 export const BookingRoomDetailMultiple = () => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [isSelectedDate, setIsSelectedDate] = useState<boolean>(false);
@@ -88,6 +95,7 @@ export const BookingRoomDetailMultiple = () => {
   const [showPolicyModal, setShowPolicyModal] = useState<boolean>(false);
   const [policyAgreed, setPolicyAgreed] = useState<boolean>(false);
   const [selectedBase, setSelectedBase] = useState<string>('');
+  const [membership, setMembership] = useState<Membership | null>(null);
   const { roomId, roomBuilding } = useParams<{
     roomId: string;
     roomBuilding: string;
@@ -99,6 +107,12 @@ export const BookingRoomDetailMultiple = () => {
   const [isNotEnoughMoney, setIsNotEnoughMoney] = useState<boolean>(false);
   const [isDateSelected, setIsDateSelected] = useState<boolean>(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (customer?.membership && typeof customer.membership !== 'string') {
+      setMembership(customer.membership as Membership);
+    }
+  }, [customer]);
 
   const confirmBooking = () => {
     setIsConfirmBooking(!isConfirmBooking);
@@ -291,7 +305,6 @@ export const BookingRoomDetailMultiple = () => {
       },
     },
   });
-
   const calculateTotalPrice = () => {
     const selectedSlots = getValues().slots || [];
     const { checkinDate, checkoutDate } = getValues();
@@ -310,14 +323,18 @@ export const BookingRoomDetailMultiple = () => {
       );
 
       const quantity = quantities[serviceId] || 0;
+
       return (
         total +
         (selectedService ? selectedService.price * numberOfDays * quantity : 0)
       );
     }, 0);
+    const discount = membership?.discount || 0;
     const totalPrice = roomPriceTotal + servicesTotal;
-    setTotals(totalPrice);
-    return totalPrice;
+    const totalPriceDiscount = totalPrice - totalPrice * discount;
+    setTotals(totalPriceDiscount);
+
+    return totalPriceDiscount;
   };
   if (customer?.wallet.amount === undefined) {
     navigate(path.home);
@@ -390,6 +407,8 @@ export const BookingRoomDetailMultiple = () => {
       setIsDateSelected(true);
     }
   };
+  console.log(customer.membership);
+
   // const onSubmit = (data: SchemacreateMultiBooking) => {
   //   const totalBookingMoney = calculateTotalPrice();
   //   if (
@@ -457,7 +476,18 @@ export const BookingRoomDetailMultiple = () => {
   const roomPriceFormatted = new Intl.NumberFormat('vi-VN').format(
     Number(roomPrice)
   );
-
+  function translateMembershipName(membershipName: string) {
+    switch (membershipName.toLowerCase()) {
+      case 'gold':
+        return ' Vàng';
+      case 'silver':
+        return ' Bạc';
+      case 'bronze':
+        return 'Thành viên Đồng';
+      default:
+        return 'Thành viên';
+    }
+  }
   const totalsFormatted = new Intl.NumberFormat('vi-VN').format(Number(totals));
 
   const handleSelectTimeSlot = (slot: (typeof timeSlots)[0]) => {
@@ -622,7 +652,19 @@ export const BookingRoomDetailMultiple = () => {
               handleQuantityChange={handleQuantityChange}
               calculateTotalPrice={calculateTotalPrice}
             />
-
+            <div className="mb-6">
+              <div className="flex justify-between">
+                <p className="text-2xl font-bold">
+                  Gói thành viên:{' '}
+                  {membership
+                    ? translateMembershipName(membership?.membershipName)
+                    : ''}
+                </p>
+                <p className="text-xl font-semibold">
+                  Giảm giá: {membership ? membership?.discount * 100 : 0}%
+                </p>
+              </div>
+            </div>
             <div className="mb-6">
               <p className="text-2xl font-bold">
                 Tổng đơn:{' '}

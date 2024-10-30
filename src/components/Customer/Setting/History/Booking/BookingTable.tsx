@@ -20,6 +20,7 @@ import {
 import { CustomerOrderBookingHistory } from '@/types/bookings';
 import { PlusIcon } from '@/components/Icons/PlusIcon';
 import { Column } from '@/types/room.type';
+import { CANCELLED } from 'dns';
 
 interface BookingTableProps {
   headerColumns: Column[];
@@ -34,15 +35,19 @@ interface BookingTableProps {
 }
 
 const statusColorMap: Record<string, ChipProps['color']> = {
-  using: 'success',
+  USING: 'success',
   FINISHED: 'primary',
   UPCOMING: 'warning',
+  CANCELLED: 'danger',
+  PENDING: 'warning',
 };
 const translateStatus = (status: string) => {
   const translations: Record<string, string> = {
     FINISHED: 'Hoàn thành',
     UPCOMING: 'Sắp tới',
-    using: 'Đang sử dụng',
+    USING: 'Đang sử dụng',
+    CANCELLED: 'Đã hủy',
+    PENDING: 'Đang chờ xử lý',
   };
 
   return translations[status] || status; // Fallback to the original status if not found
@@ -70,7 +75,7 @@ const BookingTable: React.FC<BookingTableProps> = ({
         case 'status':
           return (
             <Chip
-              className="capitalize"
+              className="capitalize text-lg"
               color={statusColorMap[booking.status]}
               size="sm"
               variant="flat"
@@ -83,7 +88,7 @@ const BookingTable: React.FC<BookingTableProps> = ({
           // const room = booking.room;
           return booking ? (
             <div className="flex flex-col">
-              <p className="text-bold text-sm capitalize">{booking.roomId}</p>
+              <p className="text-bold text-lg capitalize">{booking.roomId}</p>
               {/* <p className="text-bold text-sm capitalize text-default-400">
                 {booking.totalPrice} VND
               </p> */}
@@ -95,7 +100,7 @@ const BookingTable: React.FC<BookingTableProps> = ({
           // Render room information like room name
           // const room = booking.room;
           return booking ? (
-            <p className="text-bold text-sm capitalize">
+            <p className="text-bold text-lg capitalize">
               {formatRoomPrice(Number(booking.totalPrice))} VNĐ
             </p>
           ) : (
@@ -150,7 +155,10 @@ const BookingTable: React.FC<BookingTableProps> = ({
                   <DropdownItem onClick={() => openModal(booking)}>
                     Chỉnh sửa dịch vụ
                   </DropdownItem>
-                  <DropdownItem onClick={() => openCancel(booking)}>
+                  <DropdownItem
+                    isDisabled={booking.status === 'USING'}
+                    onClick={() => openCancel(booking)}
+                  >
                     Hủy dịch vụ
                   </DropdownItem>
                 </DropdownMenu>
@@ -175,6 +183,10 @@ const BookingTable: React.FC<BookingTableProps> = ({
       sortDescriptor={sortDescriptor}
       onSelectionChange={setSelectedKeys}
       onSortChange={onSortChange}
+      classNames={{
+        th: 'text-xl',
+        td: 'text-lg',
+      }}
       // disabledKeys={items
       //   .filter(
       //     (item) => item.status === 'CANCELLED' || item.status === 'FINISHED'

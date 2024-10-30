@@ -123,6 +123,7 @@ const BookingFilter: React.FC<BookingFiltersProps> = ({
               <Button
                 endContent={<ChevronDownIcon className="text-small" />}
                 variant="flat"
+                className="text-lg"
               >
                 Trạng thái
               </Button>
@@ -136,7 +137,7 @@ const BookingFilter: React.FC<BookingFiltersProps> = ({
               onSelectionChange={setStatusFilter}
             >
               {statusOptionsBooking.map((status) => (
-                <DropdownItem key={status.uid} className="capitalize">
+                <DropdownItem key={status.uid} className="capitalize text-lg">
                   {capitalize(status.name)}
                 </DropdownItem>
               ))}
@@ -147,6 +148,7 @@ const BookingFilter: React.FC<BookingFiltersProps> = ({
               <Button
                 endContent={<ChevronDownIcon className="text-small" />}
                 variant="flat"
+                className="text-lg"
               >
                 Cột hiển thị
               </Button>
@@ -169,7 +171,7 @@ const BookingFilter: React.FC<BookingFiltersProps> = ({
         </div>
       </div>
       <div className="flex justify-between items-center">
-        <span className="text-default-400 text-small">
+        <span className="text-default-400 text-md">
           Tổng {items.length} đơn
         </span>
         <label className="flex items-center text-default-400 text-small">

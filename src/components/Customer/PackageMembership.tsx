@@ -56,34 +56,34 @@ const PackageMembership: React.FC = () => {
       <>
         {membership && (
           <>
-            <h2 className="text-3xl font-bold mb-10 mt-5 text-center text-gray-800">
+            <h2 className="text-3xl font-bold mb-10 mt-5 text-center text-gray-800 p-20">
               Gói Thành Viên
             </h2>
             <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 shadow-lg">
               <div className="space-y-4">
-                <h3 className="text-xl font-semibold">Thông tin gói</h3>
+                <h3 className="text-2xl font-semibold">Thông tin gói</h3>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <p className="font-bold">Gói:</p>
+                    <p className="font-bold text-lg">Gói:</p>
                     <p className="font-medium">
                       {membership.membershipName === 'GOLD' ? 'Vàng' : 'Bạc'}
                     </p>
                   </div>
                   <div>
-                    <p className="font-bold">Trạng thái:</p>
+                    <p className="font-bold text-lg">Trạng thái:</p>
                     <p className="text-green-400 font-medium">
                       {membershipData.status === 'Active' && 'Hoạt động'}
                     </p>
                   </div>
                   <div>
-                    <p className="font-bold">Ngày hết hạn:</p>
+                    <p className="font-bold text-lg">Ngày hết hạn:</p>
                     <p className="font-medium">
                       {membershipData.expirationDate}
                     </p>
                   </div>
                   <div>
-                    <p className="font-bold">Giá:</p>
+                    <p className="font-bold text-lg">Giá:</p>
                     <p className="font-medium">
                       {formatPrice(membership.amount)} VNĐ
                     </p>
@@ -135,8 +135,8 @@ const PackageMembership: React.FC = () => {
       {/* <div className="flex items-center justify-center"> */}
 
       {/* </div> */}
+      <div className="h-[700px]"> {renderTabContent()}</div>
 
-      {renderTabContent()}
       {/* <div className="w-500px">
         <SubcriptionCard />
       </div> */}
