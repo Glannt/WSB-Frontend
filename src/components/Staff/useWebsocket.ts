@@ -1,26 +1,31 @@
 import React, { useEffect } from 'react';
 import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
+
 const useWebSocket = (refetchOrderBooking: () => void) => {
-  const [url, setUrl] = React.useState<string>('ws://localhost:8080/ws');
+  const socketUrl = 'http://localhost:8080/ws';
+
   useEffect(() => {
     const client = new Client({
-      brokerURL: url, // WebSocket server URL
+      brokerURL: socketUrl, // WebSocket server URL
       reconnectDelay: 3000, // Reconnect after 3 seconds if disconnected
       heartbeatIncoming: 12000, // Incoming heartbeat interval
       heartbeatOutgoing: 10000, // Outgoing heartbeat interval
+      // Sử dụng SockJS nếu không dùng brokerURL trực tiếp
+      webSocketFactory: () => new SockJS(socketUrl),
     });
 
-    // Connect and set up subscription
+    // Kết nối và đăng ký nhận dữ liệu
     const connectAndSubscribe = () => {
       client.onConnect = () => {
         console.log('Connected to WebSocket STOMP');
         refetchOrderBooking();
 
+        // Đăng ký nhận các cập nhật từ server
         client.subscribe('/booking/bookings/status', (message) => {
           const updatedBooking = JSON.parse(message.body);
           console.log('Updated booking:', updatedBooking);
-          // Handle the updated booking data
+          // Xử lý dữ liệu booking đã cập nhật
         });
       };
 
@@ -28,13 +33,14 @@ const useWebSocket = (refetchOrderBooking: () => void) => {
         console.error('STOMP error:', error);
       };
 
+      // Kích hoạt client để bắt đầu kết nối
       client.activate();
     };
 
-    // Start connection and subscription
+    // Bắt đầu kết nối và đăng ký
     connectAndSubscribe();
 
-    // Cleanup on component unmount
+    // Dọn dẹp khi component unmount
     return () => {
       client.deactivate();
       console.log('WebSocket connection closed');

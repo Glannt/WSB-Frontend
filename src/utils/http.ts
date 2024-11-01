@@ -67,9 +67,9 @@ class Http {
         ) {
           setCustomerToLS(response.data.data);
         }
-        toast.success(response.data.message, {
-          autoClose: 1000,
-        });
+        // toast.success(response.data.message, {
+        //   autoClose: 1000,
+        // });
         return response;
       },
       function (error) {
