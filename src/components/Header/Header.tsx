@@ -279,6 +279,7 @@ export const Header = (props: any) => {
                   <span className="text-lg font-semibold">Thiết bị</span>
                 </DropdownItem>
                 <DropdownItem
+                  isDisabled
                   showDivider
                   key="food"
                   // description="Thức ăn đi kèm"

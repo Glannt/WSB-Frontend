@@ -20,7 +20,7 @@ interface DetailModalProps {
   selectedRoom: Room | null;
 }
 
-export const DetailModal: React.FC<DetailModalProps> = ({
+const DetailModal: React.FC<DetailModalProps> = ({
   isOpen,
   onClose,
   selectedRoom,
@@ -51,7 +51,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
             y: 0,
             opacity: 1,
             transition: {
-              duration: 0.3,
+              duration: 0.2,
               ease: 'easeOut',
             },
           },
@@ -59,7 +59,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
             y: -20,
             opacity: 0,
             transition: {
-              duration: 0.2,
+              duration: 0.1,
               ease: 'easeIn',
             },
           },
@@ -84,6 +84,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                             src={image.trim()} // Remove any extra whitespace
                             alt={`Room image ${index + 1}`}
                             className="object-cover w-64 h-64 rounded-xl"
+                            loading="lazy"
                             onLoad={() => handleImageLoad(index)} // Mark image as loaded
                           />
                         )}
@@ -91,7 +92,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                     ))}
                   </ul>
                 ) : (
-                  <p>No images available</p>
+                  <p>Không có ảnh nào</p>
                 )}
               </div>
             </ModalBody>
@@ -106,3 +107,4 @@ export const DetailModal: React.FC<DetailModalProps> = ({
     </Modal>
   );
 };
+export default DetailModal;

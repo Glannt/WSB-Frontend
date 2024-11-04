@@ -3,6 +3,7 @@ import { roomTypes } from '@/data/dataRoomType';
 import { roomStatusManager } from '@/data/dataStatusRoom';
 import {
   Button,
+  CircularProgress,
   Input,
   Modal,
   ModalBody,
@@ -34,7 +35,7 @@ import { Staff } from '@/types/staff.type';
 interface RoomModalProps {
   isOpen: boolean;
   onClose: () => void;
-
+  staffs: Staff[];
   selectedRoom?: Room | null; // Selected room data for edit mode
   setSelectedRoom?: Dispatch<SetStateAction<Room | null>>; // Setter for selected room in edit mode
   refetchRooms: () => void;
@@ -46,6 +47,7 @@ const EditRoom: React.FC<RoomModalProps> = ({
   selectedRoom,
   setSelectedRoom,
   refetchRooms,
+  staffs,
 }) => {
   const [valueStatus, setValueStatus] = React.useState(new Set(['available']));
   const [valueStaffAtRoom, setValueStaffAtRoom] = React.useState(
@@ -53,19 +55,13 @@ const EditRoom: React.FC<RoomModalProps> = ({
       selectedRoom?.staff ? selectedRoom.staff.map((staff) => staff.userId) : []
     )
   );
-  const getAllStaffApi = async () => {
-    const response = await getAllStaff();
 
-    return response.data.data;
-  };
-  const {
-    data: staffs = [],
-    isLoading,
-    refetch,
-  } = useQuery<Staff[]>({
-    queryKey: ['staffs'],
-    queryFn: getAllStaffApi,
-  });
+  const defaultKeys = new Set(
+    Array.from(valueStaffAtRoom).filter((id) =>
+      staffs.some((staff) => staff.userId === id)
+    )
+  );
+
   const {
     register,
     handleSubmit,
@@ -99,7 +95,6 @@ const EditRoom: React.FC<RoomModalProps> = ({
       formData: FormData;
     }) => UpdateRoom(roomId, formData), // Use the updated function
   });
-
   // Function to handle updating an existing room
   const updateRoom = (data: SchemaUpdateRoom, roomId: string | undefined) => {
     const formData = new FormData();
@@ -165,7 +160,7 @@ const EditRoom: React.FC<RoomModalProps> = ({
       classNames={{
         backdrop:
           'bg-gradient-to-t from-zinc-900 to-zinc-900/10 backdrop-opacity-20',
-        base: 'max-w-[1000px] h-[600px]',
+        base: 'max-w-[1000px] h-[530px]',
       }}
       motionProps={{
         variants: {
@@ -262,9 +257,11 @@ const EditRoom: React.FC<RoomModalProps> = ({
                       // const listStaffID = Array.from(keys).join(',');
                       // handleFieldChange('listStaffID', listStaffID);
                       const listStaffID = Array.from(keys).join(','); // Store keys as an array
+                      console.log(keys);
+
                       handleFieldChange('listStaffID', listStaffID);
                     }}
-                    defaultSelectedKeys={valueStaffAtRoom}
+                    defaultSelectedKeys={defaultKeys}
                   >
                     {staffs.map((staff) => (
                       <SelectItem key={staff.userId}>

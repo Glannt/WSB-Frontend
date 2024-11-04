@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { Divider, Select, SelectItem, Slider } from '@nextui-org/react';
+import {
+  CircularProgress,
+  Divider,
+  Select,
+  SelectItem,
+  Slider,
+} from '@nextui-org/react';
 import { ListingCard } from './RoomCard';
 import { getAllRoom } from '@/service/room.api';
 import { useQuery } from '@tanstack/react-query';
@@ -129,81 +135,95 @@ export const ListRoom = () => {
 
   return (
     <>
-      <div className="flex-row lg:flex-row bg-white h-screen max-h-screen">
-        {/* Left Panel */}
-        <div className="flex">
-          <div className="w-1/5 mb-auto mt-10 ml-40 mr-20 ">
-            <div className="flex justify-start items-stretch lg:w-full p-6 bg-gradient-to-r via-primary-50 from-background to-primary-100 shadow-lg shadow-primary-100 bg-opacity-60 flex-col gap-y-20 border border-gray-300 rounded-xl pb-[450px]">
-              <Select
-                label="Địa điểm"
-                placeholder="Chọn địa điểm"
-                selectionMode="multiple"
-                variant="underlined"
-                className="max-w-xs mx-4"
-                onSelectionChange={handleLocationChange}
-              >
-                {buildingOptions.map((option) => (
-                  <SelectItem key={option.key}>{option.label}</SelectItem>
-                ))}
-              </Select>
+      {isLoadingBuildings ? (
+        <div className="flex justify-center mt-[450px]">
+          {' '}
+          <CircularProgress
+            className="text-violet-300"
+            classNames={{
+              base: 'text-2xl text-violet-300',
+              track: 'text-2xl',
+            }}
+            label="Đang tải...."
+          />
+        </div>
+      ) : (
+        <div className="flex-row lg:flex-row bg-white h-screen max-h-screen">
+          {/* Left Panel */}
+          <div className="flex">
+            <div className="w-1/5 mb-auto mt-10 ml-40 mr-20 ">
+              <div className="flex justify-start items-stretch lg:w-full p-6 bg-gradient-to-r via-primary-50 from-background to-primary-100 shadow-lg shadow-primary-100 bg-opacity-60 flex-col gap-y-20 border border-gray-300 rounded-xl pb-[450px]">
+                <Select
+                  label="Địa điểm"
+                  placeholder="Chọn địa điểm"
+                  selectionMode="multiple"
+                  variant="underlined"
+                  className="max-w-xs mx-4"
+                  onSelectionChange={handleLocationChange}
+                >
+                  {buildingOptions.map((option) => (
+                    <SelectItem key={option.key}>{option.label}</SelectItem>
+                  ))}
+                </Select>
 
-              <Select
-                label="Loại Phòng"
-                placeholder="Chọn loại phòng"
-                selectionMode="multiple"
-                variant="underlined"
-                className="max-w-xs mx-4 text-"
-                onSelectionChange={handleRoomTypeChange}
-              >
-                {roomTypeOptions.map((option) => (
-                  <SelectItem key={option.key}>{option.label}</SelectItem>
-                ))}
-              </Select>
+                <Select
+                  label="Loại Phòng"
+                  placeholder="Chọn loại phòng"
+                  selectionMode="multiple"
+                  variant="underlined"
+                  className="max-w-xs mx-4 text-"
+                  onSelectionChange={handleRoomTypeChange}
+                >
+                  {roomTypeOptions.map((option) => (
+                    <SelectItem key={option.key}>{option.label}</SelectItem>
+                  ))}
+                </Select>
 
-              <Slider
-                label="Giá tiền"
-                step={50000}
-                maxValue={1000000}
-                minValue={0}
-                defaultValue={priceRange}
-                onChange={handlePriceRangeChange}
-                showSteps={true}
-                showTooltip={true}
-                showOutline={true}
-                classNames={{
-                  base: 'max-w-md',
-                  thumb: 'bg-gradient-to-r from-secondary-400 to-primary-500',
-                }}
-                tooltipProps={{
-                  offset: 10,
-                  placement: 'bottom',
-                  classNames: {
-                    content:
-                      'py-2 shadow-xl text-white bg-gradient-to-r from-secondary-400 to-primary-500',
-                  },
-                }}
-              />
+                <Slider
+                  label="Giá tiền"
+                  step={50000}
+                  maxValue={1000000}
+                  minValue={0}
+                  defaultValue={priceRange}
+                  onChange={handlePriceRangeChange}
+                  showSteps={true}
+                  showTooltip={true}
+                  showOutline={true}
+                  classNames={{
+                    base: 'max-w-md',
+                    thumb: 'bg-gradient-to-r from-secondary-400 to-primary-500',
+                  }}
+                  tooltipProps={{
+                    offset: 10,
+                    placement: 'bottom',
+                    classNames: {
+                      content:
+                        'py-2 shadow-xl text-white bg-gradient-to-r from-secondary-400 to-primary-500',
+                    },
+                  }}
+                />
+              </div>
             </div>
-          </div>
-          <Divider orientation="vertical" className="py-10 h-[800px]" />
-          <div className="w-4/5 h-[900px] overflow-y-auto scrollbar-hide ml-16">
-            {/* Right Panel */}
-            <div className="lg:w-full p-4">
-              <div className="grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-                {filteredRooms.map((room) => (
-                  <div className="rounded-xl bg-white shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out transform hover:scale-105">
-                    <ListingCard
-                      key={room.roomId}
-                      images={images}
-                      room={room}
-                    />
-                  </div>
-                ))}
+            <Divider orientation="vertical" className="py-10 h-[800px]" />
+            <div className="w-4/5 h-[900px] overflow-y-auto scrollbar-hide ml-16">
+              {/* Right Panel */}
+              <div className="lg:w-full p-4">
+                <div className="grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                  {filteredRooms.map((room) => (
+                    <div className="rounded-xl bg-white shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out transform hover:scale-105">
+                      <ListingCard
+                        key={room.roomId}
+                        images={images}
+                        room={room}
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
     </>
   );
 };

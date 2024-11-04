@@ -183,7 +183,7 @@ export const VerifyBooking: React.FC<VerifyBookingProps> = ({
                         color="primary"
                         onChange={(value) => handleChangeField('date', value)}
                         defaultValue={selectedDate}
-                        label="Ngày đặt"
+                        label="Ngày đặt (mm/dd/yyyy)"
                         className="w-full mb-7"
                       />
                       <Input
@@ -201,7 +201,7 @@ export const VerifyBooking: React.FC<VerifyBookingProps> = ({
                         color="success"
                         onChange={(value) => handleChangeField('date', value)}
                         defaultValue={selectedDate}
-                        label="Ngày đặt"
+                        label="Ngày đặt (mm/dd/yyyy)"
                         className="w-full mb-7"
                       />
                       <Input

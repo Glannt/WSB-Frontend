@@ -1,19 +1,20 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, lazy, Suspense } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Room, Column, columnsRoom } from '@/types/room.type'; // Define types accordingly
 
 import RoomPagination from './RoomPagination';
-import { getAllRoom } from '@/service/manager.api';
+import { getAllRoom, getAllStaff } from '@/service/manager.api';
 import { statusOptions } from '../../data/data';
 import RoomFilters from './RoomFilter';
 import RoomTable from './RoomTable';
-import { Selection, SortDescriptor } from '@nextui-org/react';
+import { CircularProgress, Selection, SortDescriptor } from '@nextui-org/react';
 import { AddRoom } from '../Modal/Manager/AddRoom';
 import EditRoom from '../Modal/Manager/EditRoom';
 import { DeleteRoom } from '../Modal/Manager/DeleteRoom';
 import { useParams } from 'react-router';
-import { DetailModal } from './DetailModal';
-
+// import { DetailModal } from './DetailModal';
+import { Staff } from '@/types/staff.type';
+const LazyDetailModal = lazy(() => import('./DetailModal'));
 const INITIAL_VISIBLE_COLUMNS = [
   'roomName',
   'roomType',
@@ -31,11 +32,26 @@ export default function ManageRoom() {
     data: rooms = [],
     isLoading,
     refetch,
+    isFetching: isFetchingRooms,
   } = useQuery<Room[]>({
     queryKey: ['rooms'],
     queryFn: getAllRoomsApi,
   });
 
+  const getAllStaffApi = async () => {
+    const response = await getAllStaff();
+
+    return response.data.data;
+  };
+  const {
+    data: staffs = [],
+    isLoading: isLoadingStaffs,
+    refetch: isRefetchStaffs,
+    isFetching: isFetchingStaffs,
+  } = useQuery<Staff[]>({
+    queryKey: ['staffs'],
+    queryFn: getAllStaffApi,
+  });
   const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]));
   const [filterValue, setFilterValue] = useState('');
   const [statusFilter, setStatusFilter] = useState<Selection>('all');
@@ -167,19 +183,22 @@ export default function ManageRoom() {
   };
 
   const openEdit = (room: Room) => {
-    setIsOpenEdit(true);
     setSelectedRoom(room);
+    setIsOpenEdit(true);
+    console.log(isOpenEdit);
   };
   const closeEdit = () => {
     setIsOpenEdit(false);
-    refetch();
+    console.log(isOpenEdit);
+    // refetch();
   };
   const openDetail = (room: Room) => {
-    setIsDetail(true);
     setSelectedRoom(room);
+    setIsDetail(!isOpenDetail);
+    console.log(isOpenDetail);
   };
   const closeDetail = () => {
-    setIsDetail(false);
+    setIsDetail(!isOpenDetail);
   };
 
   const openDelete = (room: Room) => {
@@ -223,17 +242,25 @@ export default function ManageRoom() {
           </select>
         </label>
       </div>
-      <RoomTable
-        sortedItems={sortedItems}
-        headerColumns={headerColumns}
-        sortDescriptor={sortDescriptor}
-        selectedKeys={selectedKeys} // Handle selection logic
-        setSelectedKeys={setSelectedKeys} // Selection handler
-        onSortChange={setSortDescriptor}
-        onEdit={openEdit}
-        onDelete={openDelete}
-        openDetail={openDetail}
-      />
+      {isFetchingRooms ? (
+        <div>
+          {' '}
+          <CircularProgress label="Loading..." />
+        </div>
+      ) : (
+        <RoomTable
+          sortedItems={sortedItems}
+          headerColumns={headerColumns}
+          sortDescriptor={sortDescriptor}
+          selectedKeys={selectedKeys} // Handle selection logic
+          setSelectedKeys={setSelectedKeys} // Selection handler
+          onSortChange={setSortDescriptor}
+          onEdit={openEdit}
+          onDelete={openDelete}
+          openDetail={openDetail}
+        />
+      )}
+
       <RoomPagination
         page={page}
         pages={pages}
@@ -252,14 +279,24 @@ export default function ManageRoom() {
           selectedRoom={selectedRoom}
           setSelectedRoom={setSelectedRoom}
           refetchRooms={refetch}
+          staffs={staffs}
         />
       )}
-      {isOpenDetail && (
+      {/* {isOpenDetail && (
         <DetailModal
           isOpen={isOpenDetail}
           onClose={closeDetail}
           selectedRoom={selectedRoom}
         />
+      )} */}
+      {isOpenDetail && (
+        <Suspense fallback={<div>Loading...</div>}>
+          <LazyDetailModal
+            isOpen={isOpenDetail}
+            onClose={closeDetail}
+            selectedRoom={selectedRoom}
+          />
+        </Suspense>
       )}
       {/* {isDeleteRoom && (
         <DeleteRoom

@@ -119,13 +119,15 @@ export const CardDataStats: React.FC<CardDataStatsProps> = ({
             <span className="text-xl">{title}</span>
             {status && (
               <span className="text-lg text-gray-500 dark:text-gray-400">
-                {status}
+                {status !== undefined ? status : '0'}
               </span>
             )}
           </div>
         </div>
         <div className="flex gap-2.5 py-2 items-center">
-          <span className=" text-xl font-semibold">{total}</span>
+          <span className=" text-xl font-semibold">
+            {total != 'undefined' ? total : '0'}
+          </span>
           {rate && (
             <span
               className={`text-xs ${
