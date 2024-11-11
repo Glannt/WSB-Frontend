@@ -68,6 +68,8 @@ import { MemberShipPage } from '@/components/Customer/MemberShipPage';
 import ScrollToTop from '@/components/ScrollToTop/ScrollToTop';
 import ProfileManager from '@/components/Manager/ProfileManager';
 import ProfileStaff from '@/components/Staff/ProfileStaff';
+import ChooseBuilding from '@/components/Owner/ChooseBuilding';
+import { OwnerDashBoard } from '@/components/Owner/OwnerDashBoard';
 
 // import dotenv from 'dotenv';
 
@@ -329,6 +331,10 @@ export const router = createBrowserRouter([
         element: <DashboardOwner />,
         children: [
           {
+            path: ':buildingId',
+            element: <OwnerDashBoard />,
+          },
+          {
             path: path.manageBuilding,
             element: <ManageBuildings />,
           },
@@ -338,7 +344,7 @@ export const router = createBrowserRouter([
           },
           {
             path: '',
-            element: <AdminDashboard />,
+            element: <ChooseBuilding />,
           },
         ],
       },

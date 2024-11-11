@@ -69,7 +69,7 @@ export const DashboardOwner = () => {
           )}
         </div>
       </div>
-      <div className="mainContent flex-1 m-9 bg-gray-100">
+      <div className="mainContent flex-1 m-9 ">
         {' '}
         <Outlet />
       </div>
