@@ -129,7 +129,13 @@ const ChartOrder: React.FC<ChartBookingProps> = ({ bookingAnalysis }) => {
           </div>
         </div>
       </div>
-
+      {state.series.length === 0 && (
+        // <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-50 dark:bg-black dark:bg-opacity-50">
+        <p className="text-lg text-red-500 font-semibold dark:text-white">
+          Không có dữ liệu
+        </p>
+        // </div>
+      )}
       <div className="mb-2">
         <div id="chartRoomBooking" className="mx-auto flex justify-center">
           <ReactApexChart
@@ -139,7 +145,6 @@ const ChartOrder: React.FC<ChartBookingProps> = ({ bookingAnalysis }) => {
           />
         </div>
       </div>
-
       <div className="-mx-8 flex flex-wrap items-center justify-center gap-y-3">
         <div className="sm:w-1/2 w-full px-8">
           <div className="flex w-full items-center">
