@@ -268,7 +268,7 @@ export const schemaCreateAccount = Yup.object().shape({
   confirm_password: Yup.string()
     .required('Xác nhận mật khẩu là bắt buộc')
     .oneOf([Yup.ref('password')], 'Mật khẩu không khớp'),
-  role: Yup.string().default('MANAGER'),
+  role: Yup.string().required('Vai trò là bắt buộc'),
   buildingId: Yup.string().required('ID tòa nhà là bắt buộc'),
 });
 
