@@ -195,7 +195,7 @@ const AddManager: React.FC<RoomModalProps> = ({
         {(onClose) => (
           <>
             <ModalHeader className="flex flex-col gap-1">
-              {'Thêm quản lý'}
+              {'Tạo tài khoản'}
             </ModalHeader>
             <form onSubmit={onSubmit}>
               <ModalBody>

@@ -119,6 +119,10 @@ const BuildingTable: React.FC<RoomTableProps> = ({
       onSelectionChange={setSelectedKeys}
       onSortChange={onSortChange}
       className="h-[300px] max-h-[300px] overflow-y-auto"
+      classNames={{
+        td: 'text-lg',
+        th: 'text-xl',
+      }}
     >
       <TableHeader columns={headerColumns}>
         {(column) => (
