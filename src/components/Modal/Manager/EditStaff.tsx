@@ -130,7 +130,7 @@ const EditStaff: React.FC<StaffModalProps> = ({
       classNames={{
         backdrop:
           'bg-gradient-to-t from-zinc-900 to-zinc-900/10 backdrop-opacity-20',
-        base: 'max-w-[1000px] h-[300px]',
+        base: 'max-w-[1000px] h-auto',
       }}
     >
       <form onSubmit={onSubmit}>
@@ -169,6 +169,8 @@ const EditStaff: React.FC<StaffModalProps> = ({
                         ? new Set([selectedStaff?.status])
                         : valueStatus
                     }
+                    isInvalid={errors.status ? true : false}
+                    errorMessage={errors.status?.message}
                   >
                     <SelectItem key="ACTIVE">Đang làm việc</SelectItem>
                     <SelectItem key="INACTIVE">Đã nghỉ</SelectItem>
@@ -190,6 +192,8 @@ const EditStaff: React.FC<StaffModalProps> = ({
                       const newWorkShift = Array.from(keys).join(','); // Store keys as comma-separated values
                       handleFieldChange('workShift', newWorkShift);
                     }}
+                    isInvalid={errors.workShift ? true : false}
+                    errorMessage={errors.workShift?.message}
                   >
                     <SelectItem key="MORNING">Sáng</SelectItem>
                     <SelectItem key="AFTERNOON">Chiều</SelectItem>
@@ -212,6 +216,8 @@ const EditStaff: React.FC<StaffModalProps> = ({
                       const newWorkDays = Array.from(keys).join(','); // Convert array back to comma-separated string
                       handleFieldChange('workDays', newWorkDays); // Update `workDays` in both form and `selectedStaff`
                     }}
+                    isInvalid={errors.workDays ? true : false}
+                    errorMessage={errors.workDays?.message}
                   >
                     <SelectItem key="MONDAY">Thứ 2</SelectItem>
                     <SelectItem key="TUESDAY">Thứ 3</SelectItem>

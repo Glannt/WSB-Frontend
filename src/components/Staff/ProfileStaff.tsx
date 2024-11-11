@@ -17,6 +17,7 @@ import { parseDate, parseAbsoluteToLocal } from '@internationalized/date';
 import { getProfileStaff, updateProfileStaff } from '@/service/staff.api';
 import { Staff } from '@/types/staff.type';
 import { useStaff } from '@/context/staff.context';
+import { toast } from 'react-toastify';
 interface FormData {
   fullName: string;
   email: string;
@@ -131,14 +132,14 @@ const ProfileStaff: React.FC = () => {
     }) => {
       return updateProfileStaff(id, data);
     },
-    onSuccess: () => {
-      console.log('thay đổi thành công');
+    onSuccess: (response) => {
       setIsLoading(false);
       setIsModified(false);
+      toast.success('Thay đổi thông tin thành công');
       refetch();
     },
     onError: (error) => {
-      console.error('Error updating profile:', error);
+      console.error('Lỗi update', error);
       setIsLoading(false);
     },
   });
@@ -277,7 +278,26 @@ const ProfileStaff: React.FC = () => {
                     handleInputChange('dateOfBirth', formattedDate);
                   }}
                   isInvalid={errors.dateOfBirth?.message ? true : false}
-                  errorMessage={errors.dateOfBirth?.message}
+                  validate={(date) => {
+                    // if (!date) return true; // Cho phép giá trị rỗng nếu không bắt buộc
+                    const today = new Date();
+                    const birthDate = new Date(date.toString());
+                    let age = today.getFullYear() - birthDate.getFullYear();
+                    const monthDiff = today.getMonth() - birthDate.getMonth();
+                    if (
+                      monthDiff < 0 ||
+                      (monthDiff === 0 && today.getDate() < birthDate.getDate())
+                    ) {
+                      age--;
+                    }
+                    return age >= 13 ? true : 'Bạn phải từ 13 tuổi trở lên';
+                  }}
+                  errorMessage={(error) => {
+                    if (error) {
+                      return 'Bạn phải từ 13 tuổi trở lên';
+                    }
+                    return '';
+                  }}
                 />
               </div>
               <div className="w-full md:w-1/3 mt-6 md:mt-0">

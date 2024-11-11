@@ -185,6 +185,8 @@ export const VerifyBooking: React.FC<VerifyBookingProps> = ({
                         defaultValue={selectedDate}
                         label="Ngày đặt (mm/dd/yyyy)"
                         className="w-full mb-7"
+                        isInvalid={selectedDate ? false : true}
+                        errorMessage=" Ngày tìm bị thiếu hoặc sai"
                       />
                       <Input
                         size="lg"
@@ -193,6 +195,8 @@ export const VerifyBooking: React.FC<VerifyBookingProps> = ({
                         onValueChange={(value) =>
                           handleChangeField('phonenumber', value)
                         }
+                        isInvalid={getValues().phonenumber ? false : true}
+                        errorMessage="Thiếu số điện thoại"
                       />
                     </Tab>
                     <Tab key="email" title="Tìm theo email">
@@ -203,6 +207,8 @@ export const VerifyBooking: React.FC<VerifyBookingProps> = ({
                         defaultValue={selectedDate}
                         label="Ngày đặt (mm/dd/yyyy)"
                         className="w-full mb-7"
+                        isInvalid={selectedDate ? true : false}
+                        errorMessage=" Ngày tìm bị thiếu hoặc sai"
                       />
                       <Input
                         color="success"
@@ -211,6 +217,8 @@ export const VerifyBooking: React.FC<VerifyBookingProps> = ({
                         onValueChange={(value) =>
                           handleChangeField('email', value)
                         }
+                        isInvalid={getValues().email ? false : true}
+                        errorMessage="Thiếu email"
                       />
                     </Tab>
                   </Tabs>

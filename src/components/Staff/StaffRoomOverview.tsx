@@ -59,7 +59,6 @@ const INITIAL_VISIBLE_COLUMNS = [
   'roomId', // Room ID
   'roomStatus', // Room Status
   'roomName',
-  'actions', // Actions
 ];
 
 export default function StaffRoomOverview() {
