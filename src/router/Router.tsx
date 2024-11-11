@@ -132,7 +132,7 @@ const ProtectedRoute = ({ requiredRoles }: ProtectedRouteProps) => {
 
   // If still loading customer profile, show a loading state
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div>Đang tải...</div>;
   }
 
   // Check if the user has the required role(s)

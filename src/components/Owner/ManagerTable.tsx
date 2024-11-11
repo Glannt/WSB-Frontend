@@ -19,16 +19,17 @@ import { DeleteIcon } from '../Icons/DeleteIcon';
 import React from 'react';
 import { Building } from '@/types/building.type';
 import { Manager } from '@/types/manager.type';
+import { UserAccount } from '@/types/user.type';
 
 interface RoomTableProps {
-  sortedItems: Manager[];
+  sortedItems: UserAccount[];
   headerColumns: Column[];
   sortDescriptor: SortDescriptor;
   selectedKeys: Selection;
   setSelectedKeys: (keys: Selection) => void;
   onSortChange: (descriptor: SortDescriptor) => void;
   //   onEdit: (manager: Manager) => void;
-  onDelete: (manager: Manager) => void;
+  onDelete: (user: UserAccount) => void;
 }
 const statusColorMap: Record<string, ChipProps['color']> = {
   available: 'success',
@@ -45,11 +46,25 @@ const ManagerTable: React.FC<RoomTableProps> = ({
   //   onEdit,
   onDelete,
 }) => {
+  const translateRoleToVietnamese = (role: string) => {
+    switch (role) {
+      case 'CUSTOMER':
+        return 'Khách hàng';
+      case 'MANAGER':
+        return 'Quản lí';
+      case 'OWNER':
+        return 'Chủ sở hữu';
+      case 'STAFF':
+        return 'Nhân viên';
+      default:
+        return 'Không xác định'; // Default case for unknown status
+    }
+  };
   const renderCell = React.useCallback(
-    (manager: Manager, columnKey: React.Key) => {
-      const cellValue = manager[columnKey as keyof Manager];
+    (user: UserAccount, columnKey: React.Key) => {
+      const cellValue = user[columnKey as keyof UserAccount];
       switch (columnKey) {
-        // case 'buildingName':
+        // case 'username':
         //   return (
         //     <User
         //       // avatarProps={{ radius: 'lg', src: room.avatar }}
@@ -60,19 +75,27 @@ const ManagerTable: React.FC<RoomTableProps> = ({
         //           : cellValue
         //       }
         //     >
-        //       {manager.fullName}
+        //       {user.username}
         //     </User>
         //   );
-        // case 'location':
-        //   return (
-        //     <span
-        //     // avatarProps={{ radius: 'lg', src: room.avatar }}
-        //     // description={room.email}
-        //     >
-        //       {manager.buildingId}
-        //     </span>
-        //   );
-
+        case 'role':
+          return (
+            <span
+            // avatarProps={{ radius: 'lg', src: room.avatar }}
+            // description={room.email}
+            >
+              {translateRoleToVietnamese(user.role)}
+            </span>
+          );
+        case 'username':
+          return (
+            <span
+            // avatarProps={{ radius: 'lg', src: room.avatar }}
+            // description={room.email}
+            >
+              {user.username}
+            </span>
+          );
         case 'actions':
           return (
             <div className="relative flex justify-center gap-5">
@@ -84,7 +107,7 @@ const ManagerTable: React.FC<RoomTableProps> = ({
                   <EyeIcon />
                 </span>
               </Tooltip>
-              <Tooltip content="Chỉnh sửa">
+              {/* <Tooltip content="Chỉnh sửa">
                 <span
                   onClick={() => {
                     // onEdit(manager);
@@ -93,10 +116,10 @@ const ManagerTable: React.FC<RoomTableProps> = ({
                 >
                   <EditIcon />
                 </span>
-              </Tooltip>
+              </Tooltip> */}
               <Tooltip color="danger" content="Xóa">
                 <span
-                  onClick={() => onDelete(manager)}
+                  onClick={() => onDelete(user)}
                   className="text-lg text-danger cursor-pointer active:opacity-50"
                 >
                   <DeleteIcon />
@@ -135,9 +158,9 @@ const ManagerTable: React.FC<RoomTableProps> = ({
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent={'Không có quản lý nào'} items={sortedItems}>
+      <TableBody emptyContent={'Không có tài khoản nào'} items={sortedItems}>
         {(item) => (
-          <TableRow key={item.buildingId}>
+          <TableRow key={item.username}>
             {(columnKey) => (
               <TableCell>{renderCell(item, columnKey)} </TableCell>
             )}

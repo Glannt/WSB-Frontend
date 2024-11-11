@@ -285,16 +285,16 @@ const ProfileManager: React.FC = () => {
                   />
                 </div>
                 <div className="px-8 flex items-center justify-between my-14">
-                  <div className="flex items-center space-x-2">
+                  {/* <div className="flex items-center space-x-2">
                     <FaLock className="text-black text-lg" />
                     <span className="text-gray-700 text-lg">Mật khẩu</span>
-                  </div>
-                  <Link
+                  </div> */}
+                  {/* <Link
                     onClick={() => navigate(path.settings + '/change-password')}
                     className="cursor-pointer px-4 py-2 border border-gray-300 rounded-sm shadow-sm font-medium text-black bg-white hover:bg-gray-50 text-lg"
                   >
                     Đổi mật khẩu
-                  </Link>
+                  </Link> */}
                 </div>
               </div>
             </div>

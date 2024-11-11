@@ -46,6 +46,12 @@ export const createAccount = (formdata: FormData) =>
 export const deleteManager = (id: string) =>
   http.put(`/api/auth/managers/delete/${id}`);
 
+
+export const getAllManagers = () => http.get(`/api/owner/all-user`);
+
+export const deleteUser = (username: string) =>
+  http.put(`/api/owner/delete-user/${username}`);
+
 export const getAllManagers = () => http.get(`/api/auth/managers`);
 
 export const getTotalBookingInDate = (buildingId: string) =>
@@ -65,3 +71,4 @@ export const getRoomTypeAnalysisByMonth = (buildingId: string) =>
 
 export const getBookingAnalysisByMonth = (buildingId: string) =>
   http.get(`/api/dashboard/owner/booking-analyst-month/${buildingId}`);
+

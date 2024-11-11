@@ -99,6 +99,16 @@ const AddManager: React.FC<RoomModalProps> = ({
     label: building.buildingName,
     value: building.buildingId,
   }));
+  const optionsRole = [
+    {
+      label: 'Quản lí',
+      value: 'MANAGER',
+    },
+    {
+      label: 'Nhân viên',
+      value: 'STAFF',
+    },
+  ];
 
   // Function to handle updating an existing room
   const UpdateBuilding = (data: SchemaCreateAccount) => {
@@ -107,7 +117,7 @@ const AddManager: React.FC<RoomModalProps> = ({
     formData.append('buildingId', data.buildingId);
     formData.append('password', data.password);
     formData.append('confirm_password', data.confirm_password);
-    formData.append('role', 'MANAGER');
+    formData.append('role', data.role);
     CreateMutation.mutate(
       formData,
       //   { formData }, // Pass an object with roomId and formData
@@ -297,6 +307,23 @@ const AddManager: React.FC<RoomModalProps> = ({
                   >
                     {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
                   </button>
+                </div>
+                <div className="relative flex flex-wrap py-2 px-3 md:flex-nowrap gap-4 w-[960px] justify-evenly">
+                  <Select
+                    size="lg"
+                    label="Chọn vai trò"
+                    className="max-w-xl"
+                    {...register('role')}
+                    onSelectionChange={(keys) => {
+                      const newRole = Array.from(keys).join('');
+                      handleFieldChange('role', newRole);
+                    }}
+                    // defaultSelectedKeys={valueStatus}
+                  >
+                    {optionsRole.map((option) => (
+                      <SelectItem key={option.value}>{option.label}</SelectItem>
+                    ))}
+                  </Select>
                 </div>
               </ModalBody>
 
