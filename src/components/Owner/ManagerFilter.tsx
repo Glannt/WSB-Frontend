@@ -69,7 +69,7 @@ const ManagerFilter: React.FC<RoomFiltersProps> = ({
           endContent={<PlusIcon />}
           onClick={onAddManager}
         >
-          Thêm quản lý
+          Tạo tài khoản
         </Button>
       </div>
     </div>

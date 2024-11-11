@@ -195,7 +195,7 @@ const AddManager: React.FC<RoomModalProps> = ({
         {(onClose) => (
           <>
             <ModalHeader className="flex flex-col gap-1">
-              {'Thêm quản lý'}
+              {'Tạo tài khoản'}
             </ModalHeader>
             <form onSubmit={onSubmit}>
               <ModalBody>
@@ -219,6 +219,8 @@ const AddManager: React.FC<RoomModalProps> = ({
                     onChange={(e) =>
                       handleFieldChange('userName', e.target.value)
                     }
+                    isInvalid={errors.userName ? true : false}
+                    errorMessage={errors.userName?.message}
                   />
                   {/* <Input
                     label="Cơ sở"
@@ -246,6 +248,8 @@ const AddManager: React.FC<RoomModalProps> = ({
                       handleFieldChange('buildingId', newBuilding);
                     }}
                     // defaultSelectedKeys={valueStatus}
+                    isInvalid={errors.buildingId ? true : false}
+                    errorMessage={errors.buildingId?.message}
                   >
                     {options.map((option) => (
                       <SelectItem key={option.value}>{option.label}</SelectItem>
@@ -271,6 +275,8 @@ const AddManager: React.FC<RoomModalProps> = ({
                     onChange={(e) =>
                       handleFieldChange('password', e.target.value)
                     }
+                    isInvalid={errors.password ? true : false}
+                    errorMessage={errors.password?.message}
                   />
                   <button
                     type="button"
@@ -299,6 +305,8 @@ const AddManager: React.FC<RoomModalProps> = ({
                     onChange={(e) =>
                       handleFieldChange('confirm_password', e.target.value)
                     }
+                    isInvalid={errors.confirm_password ? true : false}
+                    errorMessage={errors.confirm_password?.message}
                   />
                   <button
                     type="button"
@@ -319,6 +327,8 @@ const AddManager: React.FC<RoomModalProps> = ({
                       handleFieldChange('role', newRole);
                     }}
                     // defaultSelectedKeys={valueStatus}
+                    isInvalid={errors.role ? true : false}
+                    errorMessage={errors.role?.message}
                   >
                     {optionsRole.map((option) => (
                       <SelectItem key={option.value}>{option.label}</SelectItem>

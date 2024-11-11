@@ -155,7 +155,7 @@ export const AddRoom: React.FC<RoomModalProps> = ({
       classNames={{
         backdrop:
           'bg-gradient-to-t from-zinc-900 to-zinc-900/10 backdrop-opacity-20',
-        base: 'max-w-[1000px] h-[600px]',
+        base: 'max-w-[1000px] h-auto',
       }}
       motionProps={{
         variants: {
@@ -231,6 +231,8 @@ export const AddRoom: React.FC<RoomModalProps> = ({
                       const newStatus = keys;
                       handleFieldChange('status', newStatus.toString());
                     }}
+                    isInvalid={errors.status ? true : false}
+                    errorMessage={errors.status?.message}
                   >
                     {roomStatusManager.map((roomStatuses) => (
                       <SelectItem key={roomStatuses.key}>
@@ -248,6 +250,8 @@ export const AddRoom: React.FC<RoomModalProps> = ({
                       // setValue('roomTypeId', newRoomTypeId.toString());
                       handleFieldChange('roomTypeId', newRoomTypeId.toString());
                     }}
+                    isInvalid={errors.roomTypeId ? true : false}
+                    errorMessage={errors.roomTypeId?.message}
                   >
                     {roomTypes.map((roomType) => (
                       <SelectItem key={roomType.key}>
@@ -286,6 +290,8 @@ export const AddRoom: React.FC<RoomModalProps> = ({
                       const newBuilding = Array.from(keys)[0];
                       handleFieldChange('buildingId', newBuilding.toString());
                     }}
+                    isInvalid={errors.buildingId ? true : false}
+                    errorMessage={errors.buildingId?.message}
                   >
                     {buildings.map((building) => (
                       <SelectItem key={building.buildingId}>

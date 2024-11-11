@@ -160,6 +160,8 @@ const AddBuilding: React.FC<RoomModalProps> = ({
                     onChange={(e) =>
                       handleFieldChange('buildingName', e.target.value)
                     }
+                    isInvalid={errors.buildingName ? true : false}
+                    errorMessage={errors.buildingName?.message}
                   />
                   <Input
                     label="Địa chỉ"
@@ -177,6 +179,8 @@ const AddBuilding: React.FC<RoomModalProps> = ({
                     onChange={(e) =>
                       handleFieldChange('buildingLocation', e.target.value)
                     }
+                    isInvalid={errors.buildingLocation ? true : false}
+                    errorMessage={errors.buildingLocation?.message}
                   />
                 </div>
                 <div className="flex flex-wrap py-2 px-3 md:flex-nowrap gap-4 w-[960px] justify-evenly">
@@ -196,6 +200,8 @@ const AddBuilding: React.FC<RoomModalProps> = ({
                     onChange={(e) =>
                       handleFieldChange('phoneContact', e.target.value)
                     }
+                    isInvalid={errors.phoneContact ? true : false}
+                    errorMessage={errors.phoneContact?.message}
                   />
                 </div>
               </ModalBody>
