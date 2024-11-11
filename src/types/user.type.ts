@@ -8,3 +8,9 @@ export type User = {
   createAt: string;
   roleName: Role;
 };
+
+export type UserAccount = {
+  username: string;
+  password: string;
+  role: string;
+};

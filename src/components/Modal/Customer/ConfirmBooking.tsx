@@ -164,7 +164,7 @@ export const ConfirmBooking: React.FC<ConfirmBookingProps> = ({
     queryFn: getServiceApi,
   });
   if (isLoadingServices) {
-    return <div className="">Loading....</div>;
+    return <div className="">Đang tải...</div>;
   }
 
   return (

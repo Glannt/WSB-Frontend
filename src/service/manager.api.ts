@@ -82,3 +82,4 @@ export const updateProfileManager = (
 ) => {
   http.put(`/api/auth/managers/${id}`, body);
 };
+export const getRevenueByMonth = () => http.get(`/api/dashboard/revenue`);

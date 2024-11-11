@@ -16,6 +16,7 @@ import { MdMeetingRoom } from 'react-icons/md';
 import { useQuery } from '@tanstack/react-query';
 import {
   getBookingAnalysisByMonth,
+  getRevenueByMonth,
   getRoomTypeAnalysisByDate,
   getRoomTypeAnalysisByMonth,
   getTotalBookingInDate,
@@ -67,7 +68,6 @@ export const AdminDashboard: React.FC = () => {
     queryKey: ['bookingInDate'],
     queryFn: getTotalBookingInDateApi,
   });
-  console.log(bookingInDate);
 
   const getTotalTotalSpaceApi = async () => {
     const response = await getTotalSpace();
@@ -107,7 +107,17 @@ export const AdminDashboard: React.FC = () => {
     queryKey: ['BookingAnalysisByMonth'],
     queryFn: getBookingAnalysisByMonthApi,
   });
-  console.log('RoomTypeAnalysisByMonth', BookingAnalysisByMonth);
+
+  // const getRevenueApi = async () => {
+  //   const response = await getRevenueByMonth();
+  //   console.log('revenue', response.data.data);
+
+  //   return response.data.data;
+  // };
+  // const { data: revenue } = useQuery<TotalBooking>({
+  //   queryKey: ['revenue'],
+  //   queryFn: getRevenueApi,
+  // });
 
   const dataStats = [
     {

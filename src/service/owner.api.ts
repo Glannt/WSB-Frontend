@@ -46,4 +46,7 @@ export const createAccount = (formdata: FormData) =>
 export const deleteManager = (id: string) =>
   http.put(`/api/auth/managers/delete/${id}`);
 
-export const getAllManagers = () => http.get(`/api/auth/managers`);
+export const getAllManagers = () => http.get(`/api/owner/all-user`);
+
+export const deleteUser = (username: string) =>
+  http.put(`/api/owner/delete-user/${username}`);
