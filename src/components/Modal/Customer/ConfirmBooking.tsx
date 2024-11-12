@@ -12,6 +12,7 @@ import {
 } from '@/types/bookings';
 import {
   Button,
+  CircularProgress,
   Modal,
   ModalBody,
   ModalContent,
@@ -23,6 +24,8 @@ import { SchemacreateMultiBooking } from '@/utils/rules';
 import { UseFormHandleSubmit } from 'react-hook-form';
 import { Wallet } from '@/types/customer.type';
 import { getProfileFromLS } from '@/utils/auth';
+import { toast } from 'react-toastify';
+import React from 'react';
 
 interface ConfirmBookingProps {
   totals: number;
@@ -60,10 +63,18 @@ export const ConfirmBooking: React.FC<ConfirmBookingProps> = ({
     queryKey: ['wallet'],
     queryFn: getWalletByUserIdApi,
   });
+  const [isLoadingMutationCreateBooking, setIsLoadingMutationCreateBooking] =
+    React.useState<boolean>(false);
   // console.log('chi tiếttttt' + details);
   console.log(initialQuantities);
   const CreateBookingMutation = useMutation({
     mutationFn: (formData: FormData) => createBooking(formData),
+    onMutate: () => {
+      setIsLoadingMutationCreateBooking(true); // Set loading state to true before the mutation
+    },
+    onSettled: () => {
+      setIsLoadingMutationCreateBooking(false); // Reset loading state when mutation is settled
+    },
   });
 
   const handleCreateBooking = (
@@ -94,15 +105,15 @@ export const ConfirmBooking: React.FC<ConfirmBookingProps> = ({
     Object.entries(initialQuantities).forEach(([serviceId, quantity]) => {
       formData.append(`items[${serviceId}]`, quantity.toString()); // This creates items[serviceId]=quantity
     });
-
     CreateBookingMutation.mutate(formData, {
       onSuccess: (response) => {
-        console.log('Booking created successfully');
+        toast.success('Đặt phòng thành công');
         refetch();
         refetchCreateBooking();
         refetchRoomType();
         refetchServices();
         refetchSlots();
+        toggleConfirmModal();
       },
       onError: (error) => {
         console.error('Error creating booking:', error);
@@ -120,9 +131,12 @@ export const ConfirmBooking: React.FC<ConfirmBookingProps> = ({
       // return;
     } else {
       handleCreateBooking(data, refetch);
-      window.location.reload();
+      // window.location.reload();
     }
   };
+  // if (isLoadingMutationCreateBooking)
+  //   return <CircularProgress label="Đang xử lý..." />;
+
   const formatted = new Intl.NumberFormat('vi-VN').format(Number(totals));
   const formattedCurrent = new Intl.NumberFormat('vi-VN').format(
     Number(wallet?.amount)
@@ -245,6 +259,8 @@ export const ConfirmBooking: React.FC<ConfirmBookingProps> = ({
                       className="w-40"
                       color="primary"
                       // onClick={toggleConfirmModal}
+                      isLoading={isLoadingMutationCreateBooking}
+                      isDisabled={isLoadingMutationCreateBooking}
                     >
                       Xác nhận
                     </Button>

@@ -429,6 +429,14 @@ export const BookingRoomDetailMultiple = () => {
   ) => {
     setValue(field, value);
   };
+  React.useEffect(() => {
+    // setValue('slots', []);
+    reset({
+      ...getValues(),
+      slots: [], // Reset slots field to an empty array
+    });
+    console.log('useeffect', getValues().slots);
+  }, [getValues().checkinDate, getValues().checkoutDate, setValue]);
   const handleQuantityChange = (id: string, newQuantity: number) => {
     setQuantities((prevQuantities) => ({
       ...prevQuantities,
@@ -462,7 +470,7 @@ export const BookingRoomDetailMultiple = () => {
   const handleImageClick = (index: number) => {
     setSelectedImage(index);
   };
-
+  const slotsArray = Array.isArray(slots) ? slots : [];
   const amenities = [
     { icon: <FaWifi />, name: 'Wi-Fi miễn phí' },
     { icon: <FaParking />, name: 'Bãi đỗ xe' },
@@ -571,10 +579,11 @@ export const BookingRoomDetailMultiple = () => {
                   handleChangeDatePicker(range);
                   setIsSelectedDate(true);
                   calculateTotalPrice();
+                  setValue('slots', []);
                 }}
                 className="w-full"
                 errorMessage={
-                  errors.checkinDate?.message ? '' : 'lỗi pick date'
+                  errors.checkinDate?.message ? '' : 'lỗi chọn ngày'
                 }
               />
             </div>
@@ -597,8 +606,13 @@ export const BookingRoomDetailMultiple = () => {
                         handleFieldChange('slots', newTimeSlot); // Send the array of numbers
                         calculateTotalPrice();
                       }}
+                      defaultSelectedKeys={
+                        slots && Array.isArray(slots) && slots.length > 0
+                          ? new Set(slots.map(String))
+                          : undefined
+                      }
                       errorMessage={
-                        errors.slots?.message ? '' : 'Lỗi select slot'
+                        errors.slots?.message ? '' : 'Lỗi chọn time slot'
                       }
                       isInvalid={errors.slots?.message ? true : false}
                       key="default"
