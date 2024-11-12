@@ -20,6 +20,7 @@ import {
   Avatar,
   Divider,
   DropdownSection,
+  User,
 } from '@nextui-org/react';
 import { useNavigate } from 'react-router';
 import path from '@/constants/path';
@@ -386,14 +387,14 @@ export const Header = (props: any) => {
             <NavbarContent as="div" justify="end" className="mr-10">
               <Dropdown placement="bottom-start">
                 <DropdownTrigger>
-                  <Avatar
-                    isBordered
+                  <User
+                    // isBordered
                     as="button"
                     className="transition-transform"
-                    color="secondary"
-                    name="Jason Hughes"
-                    size="lg"
-                    src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+                    // color="secondary"
+                    name={customer?.fullName}
+                    // size="lg"
+                    // src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
                   />
                 </DropdownTrigger>
                 <DropdownMenu

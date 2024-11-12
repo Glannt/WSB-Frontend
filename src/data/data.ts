@@ -17,10 +17,10 @@ const statusOptions = [
   { name: 'Vacation', uid: 'VACATION' },
 ];
 export const statusOptionsBooking = [
-  { name: 'Đang sử dụng', uid: 'using' },
-  { name: 'Hoàn thành', uid: 'finished' },
-  { name: 'Sắp tới', uid: 'upcoming' },
-  { name: 'Đã hủy', uid: 'cancelled' },
+  { name: 'Đang sử dụng', uid: 'USING' },
+  { name: 'Hoàn thành', uid: 'FINISHED' },
+  { name: 'Sắp tới', uid: 'UPCOMING' },
+  { name: 'Đã hủy', uid: 'CANCELLED' },
 ];
 
 export const statusOptionsTransaction = [

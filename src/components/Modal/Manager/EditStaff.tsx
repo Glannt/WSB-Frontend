@@ -196,7 +196,7 @@ const EditStaff: React.FC<StaffModalProps> = ({
                     errorMessage={errors.workShift?.message}
                   >
                     <SelectItem key="MORNING">Sáng</SelectItem>
-                    <SelectItem key="AFTERNOON">Chiều</SelectItem>
+                    <SelectItem key="FULL_TIME">Cả ngày</SelectItem>
                     <SelectItem key="EVENING">Tối</SelectItem>
                   </Select>
 

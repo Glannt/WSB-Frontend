@@ -32,6 +32,7 @@ interface RoomTableProps {
   //   columnKey: React.Key
   // ) => string | number | JSX.Element;
   onEdit: (staff: Staff) => void;
+  statusFilter: Selection;
 }
 const statusColorMap: Record<string, ChipProps['color']> = {
   active: 'success',
@@ -46,6 +47,7 @@ const StaffTable: React.FC<RoomTableProps> = ({
   setSelectedKeys,
   onSortChange,
   onEdit,
+  statusFilter,
 }) => {
   const translateStatusToVietnamese = (status: string): string => {
     switch (status.toLowerCase()) {
@@ -63,8 +65,8 @@ const StaffTable: React.FC<RoomTableProps> = ({
     switch (status) {
       case 'MORNING':
         return 'Sáng';
-      case 'AFTERNOON':
-        return 'Chiều';
+      case 'FULL_TIME':
+        return 'Cả ngày';
       case 'EVENING':
         return 'Tối';
       default:

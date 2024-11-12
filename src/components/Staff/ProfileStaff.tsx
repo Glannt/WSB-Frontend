@@ -278,26 +278,6 @@ const ProfileStaff: React.FC = () => {
                     handleInputChange('dateOfBirth', formattedDate);
                   }}
                   isInvalid={errors.dateOfBirth?.message ? true : false}
-                  validate={(date) => {
-                    // if (!date) return true; // Cho phép giá trị rỗng nếu không bắt buộc
-                    const today = new Date();
-                    const birthDate = new Date(date.toString());
-                    let age = today.getFullYear() - birthDate.getFullYear();
-                    const monthDiff = today.getMonth() - birthDate.getMonth();
-                    if (
-                      monthDiff < 0 ||
-                      (monthDiff === 0 && today.getDate() < birthDate.getDate())
-                    ) {
-                      age--;
-                    }
-                    return age >= 13 ? true : 'Bạn phải từ 13 tuổi trở lên';
-                  }}
-                  errorMessage={(error) => {
-                    if (error) {
-                      return 'Bạn phải từ 13 tuổi trở lên';
-                    }
-                    return '';
-                  }}
                 />
               </div>
               <div className="w-full md:w-1/3 mt-6 md:mt-0">

@@ -154,7 +154,7 @@ export default function BookingHistory() {
       Array.from(statusFilter).length !== statusOptionsBooking.length
     ) {
       filteredBookings = filteredBookings.filter((x) =>
-        Array.from(statusFilter).includes(x.status.toLowerCase())
+        Array.from(statusFilter).includes(x.status)
       );
     }
     // filteredBookings = filteredBookings.sort((a, b) => {

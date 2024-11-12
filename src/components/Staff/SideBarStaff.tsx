@@ -74,7 +74,7 @@ export const SidebarStaff = () => {
         <div className="flex flex-col justify-between h-full">
           <div className={Sidebar.Body()}>
             <SidebarItem
-              title="Home"
+              title="Trang chủ"
               icon={<HomeIcon />}
               isActive={activeItem === 'Home'}
               onClick={() => {
