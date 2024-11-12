@@ -13,6 +13,7 @@ import { ListRooms } from '@/types/roomOverview';
 import { useNavigate } from 'react-router';
 import { buildingCustomer } from '@/types/building.type';
 import { getAllBuiding } from '@/service/customer.api';
+import { omit } from 'lodash';
 
 export const ListRoom = () => {
   const getAllRoomApi = async () => {
@@ -214,7 +215,7 @@ export const ListRoom = () => {
                       <ListingCard
                         key={room.roomId}
                         images={images}
-                        room={room}
+                        room={omit(room, 'image', 'description')}
                       />
                     </div>
                   ))}

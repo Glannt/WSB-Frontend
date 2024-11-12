@@ -60,16 +60,16 @@ export const columnsBooking = [
 ];
 
 export const statusOptionsBooking = [
-  { name: 'đang tới', uid: 'UPCOMING' },
-  { name: 'sử dụng xong', uid: 'FINISHED' },
-  { name: 'đã hủy', uid: 'CANCELLED' },
-  { name: 'đang sử dụng', uid: 'USING' },
+  { name: 'Sắp diễn ra', uid: 'UPCOMING' },
+  { name: 'Hoàn thành', uid: 'FINISHED' },
+  { name: 'Đã hủy', uid: 'CANCELLED' },
+  { name: 'Đang sử dụng', uid: 'USING' },
 ];
 
 export const BookingStatus = {
   USING: 'Đang sử dụng',
   FINISHED: 'Hoàn thành',
-  UPCOMING: 'Đang tới',
+  UPCOMING: 'Sắp diễn ra',
   CANCELLED: 'Đã hủy',
 };
 

@@ -48,6 +48,7 @@ import { EditBooking } from '../Modal/Staff/EditBooking';
 import { VerifyBooking } from './VerifyBooking';
 import { io } from 'socket.io-client';
 import { Client } from '@stomp/stompjs';
+import useWebSocket from './useWebsocket';
 // import useWebSocket from './useWebsocket';
 const statusColorMap: Record<string, ChipProps['color']> = {
   available: 'success',
@@ -111,7 +112,7 @@ export default function StaffBookings() {
     queryKey: ['orderBookings'],
     queryFn: getStaffBookingApi,
   });
-  // useWebSocket(refetchOrderBooking);
+  useWebSocket(refetchOrderBooking);
   //filter
   const [filterValue, setFilterValue] = React.useState('');
   const hasSearchFilter = Boolean(filterValue);

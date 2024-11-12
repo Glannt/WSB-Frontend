@@ -26,6 +26,8 @@ import { Wallet } from '@/types/customer.type';
 import { getProfileFromLS } from '@/utils/auth';
 import { toast } from 'react-toastify';
 import React from 'react';
+import { useNavigate } from 'react-router';
+import path from '@/constants/path';
 
 interface ConfirmBookingProps {
   totals: number;
@@ -76,7 +78,7 @@ export const ConfirmBooking: React.FC<ConfirmBookingProps> = ({
       setIsLoadingMutationCreateBooking(false); // Reset loading state when mutation is settled
     },
   });
-
+  const navigate = useNavigate();
   const handleCreateBooking = (
     data: SchemacreateMultiBooking,
     refetchCreateBooking: () => void
@@ -114,6 +116,7 @@ export const ConfirmBooking: React.FC<ConfirmBookingProps> = ({
         refetchServices();
         refetchSlots();
         toggleConfirmModal();
+        navigate(path.settings + '/booking-history');
       },
       onError: (error) => {
         console.error('Error creating booking:', error);
@@ -270,8 +273,11 @@ export const ConfirmBooking: React.FC<ConfirmBookingProps> = ({
                       color="danger"
                       onClick={() => {
                         toggleConfirmModal();
+
                         // window.location.reload();
                       }}
+                      isLoading={isLoadingMutationCreateBooking}
+                      isDisabled={isLoadingMutationCreateBooking}
                     >
                       Đóng
                     </Button>

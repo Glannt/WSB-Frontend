@@ -30,6 +30,7 @@ import {
   ModalHeader,
   RangeValue,
   Select,
+  Selection,
   SelectItem,
   Tab,
   Tabs,
@@ -106,6 +107,9 @@ export const BookingRoomDetailMultiple = () => {
   const { customer, refetch } = useCustomer();
   const [isNotEnoughMoney, setIsNotEnoughMoney] = useState<boolean>(false);
   const [isDateSelected, setIsDateSelected] = useState<boolean>(false);
+  const [selectedOptions, setSelectedOptions] = useState<Selection>(
+    new Set([])
+  );
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -447,7 +451,7 @@ export const BookingRoomDetailMultiple = () => {
   const handleTimeSlotChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedTimeSlot(e.target.value);
   };
-
+  console.log('Selected timeslot', selectedTimeSlot);
   const toggleServiceModal = () => {
     setShowServiceModal(!showServiceModal);
   };
@@ -579,7 +583,9 @@ export const BookingRoomDetailMultiple = () => {
                   handleChangeDatePicker(range);
                   setIsSelectedDate(true);
                   calculateTotalPrice();
+                  setSelectedTimeSlot('');
                   setValue('slots', []);
+                  setSelectedOptions(new Set([]));
                 }}
                 className="w-full"
                 errorMessage={
@@ -598,6 +604,7 @@ export const BookingRoomDetailMultiple = () => {
                       value={selectedTimeSlot}
                       onChange={handleTimeSlotChange}
                       onSelectionChange={(keys) => {
+                        setSelectedOptions(keys);
                         // const newTimeSlot = Array.from(keys);
                         // handleFieldChange('slots', newTimeSlot.map(Number));
                         const newTimeSlot = Array.from(keys).map((key) =>
@@ -606,15 +613,16 @@ export const BookingRoomDetailMultiple = () => {
                         handleFieldChange('slots', newTimeSlot); // Send the array of numbers
                         calculateTotalPrice();
                       }}
-                      defaultSelectedKeys={
-                        slots && Array.isArray(slots) && slots.length > 0
-                          ? new Set(slots.map(String))
-                          : undefined
-                      }
+                      // defaultSelectedKeys={
+                      //   slots && Array.isArray(slots) && slots.length > 0
+                      //     ? new Set(slots.map(String))
+                      //     : undefined
+                      // }
+                      selectedKeys={selectedOptions}
                       errorMessage={
                         errors.slots?.message ? '' : 'Lỗi chọn time slot'
                       }
-                      isInvalid={errors.slots?.message ? true : false}
+                      // isInvalid={errors.slots?.message ? true : false}
                       key="default"
                       color="primary"
                       label="Thời gian"
