@@ -211,7 +211,11 @@ function RequireCaptcha() {
 export const router = createBrowserRouter([
   {
     path: '/',
-    element: <RequireCaptcha />,
+    element: (
+      <MainLayout>
+        <HomePage />
+      </MainLayout>
+    ),
   },
   // {
   //   path: '/',
