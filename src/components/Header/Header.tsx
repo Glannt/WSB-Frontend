@@ -445,9 +445,9 @@ export const Header = (props: any) => {
                       color="danger"
                       startContent={<span className="text-lg">Đăng xuất</span>}
                     ></DropdownItem>
-                    <DropdownItem closeOnSelect={false} className="pt-3 pb-3">
+                    {/* <DropdownItem closeOnSelect={false} className="pt-3 pb-3">
                       <ThemeSwitcher />
-                    </DropdownItem>
+                    </DropdownItem> */}
                   </DropdownSection>
                 </DropdownMenu>
               </Dropdown>

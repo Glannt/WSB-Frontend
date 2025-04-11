@@ -1,31 +1,31 @@
-'use client';
-
 import { useTheme } from 'next-themes';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Switch } from '@nextui-org/react';
 import { SunIcon } from '../Icons/theme/SunIcon';
 import { MoonIcon } from '../Icons/theme/MoonIcon';
 
 export default function ThemeSwitcher() {
+  const mountedRef = useRef(false); // Use useRef to persist mounted state
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
 
-  // Ensure component is mounted before rendering (for SSR support)
   useEffect(() => {
-    setMounted(true);
+    if (!mountedRef.current) {
+      setMounted(true);
+      mountedRef.current = true; // Set ref to true after mounting
+    }
   }, []);
 
   if (!mounted) return null;
 
-  // Determine if current theme is dark
   const isDarkMode = theme === 'dark';
 
   return (
     <Switch
-      checked={isDarkMode} // Check if dark mode is enabled
+      checked={isDarkMode}
       size="lg"
       color="secondary"
-      onChange={() => setTheme(isDarkMode ? 'light' : 'dark')} // Toggle theme on change
+      onChange={() => setTheme(isDarkMode ? 'light' : 'dark')}
       thumbIcon={({ isSelected, className }) =>
         isSelected ? (
           <SunIcon className={className} />
