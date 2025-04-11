@@ -234,7 +234,8 @@ export type SchemacreateMultiBooking = Yup.InferType<
 export const schemaTopUp = Yup.object().shape({
   amount: Yup.number()
     .required('Số tiền là bắt buộc')
-    .min(10000, 'Số tiền phải ít nhất là 10,000 VNĐ'),
+    .min(10000, 'Số tiền phải ít nhất là 10,000 VNĐ')
+    .max(10000000, 'Số tiền nạp phải nhỏ hơn bằng 10.000.000 VNĐ'),
 });
 export type SchemaTopUp = Yup.InferType<typeof schemaTopUp>;
 

@@ -129,31 +129,33 @@ const RoomTable: React.FC<RoomTableProps> = ({
         return (
           <div className="relative flex justify-center gap-5">
             <Button
+              endContent={
+                <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
+                  <EyeIcon />
+                </span>
+              }
               content="Chi tiết"
               color="default"
               className="bg-violet-100"
-            >
-              <span
-                onClick={() => openDetail(room)}
-                className="text-lg text-default-400 cursor-pointer active:opacity-50"
-              >
-                <EyeIcon />
-              </span>
-            </Button>
+              onClick={() => openDetail(room)}
+            ></Button>
+
             <Button
+              endContent={
+                <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
+                  <EditIcon />
+                </span>
+              }
               content="Chỉnh sửa"
               color="default"
               className="bg-violet-100"
+              onClick={() => {
+                onEdit(room);
+              }}
             >
-              <span
-                onClick={() => {
-                  onEdit(room);
-                }}
-                className="text-lg text-default-400 cursor-pointer active:opacity-50"
-              >
-                <EditIcon />
-              </span>
+              {/* <span className="text-lg text-default-400 cursor-pointer active:opacity-50"></span> */}
             </Button>
+
             {/* <Tooltip color="danger" content="Xóa">
               <span
                 onClick={() => onDelete(room)}
@@ -183,7 +185,11 @@ const RoomTable: React.FC<RoomTableProps> = ({
       sortDescriptor={sortDescriptor}
       onSelectionChange={setSelectedKeys}
       onSortChange={onSortChange}
-      className="h-[300px] max-h-[300px] overflow-y-auto"
+      className="h-[320px] max-h-[320px] overflow-y-auto"
+      classNames={{
+        th: 'bg-violet-100 text-lg text-default-400',
+        td: 'text-lg',
+      }}
     >
       <TableHeader columns={headerColumns}>
         {(column) => (

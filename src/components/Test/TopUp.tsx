@@ -131,7 +131,17 @@ const TopUpPage = () => {
     // setMoney(numericAmount);
     // setValue('amount', numericAmount);
     setMoney(value);
+
     const numericAmount = Number(value.replace(/\./g, ''));
+
+    if (numericAmount > 10000000) {
+      setError('amount', {
+        type: 'manual',
+        message: 'Something went wrong. Please try again.',
+      });
+      return;
+    }
+
     setValue('amount', numericAmount);
     setLoading(true);
     setTimeout(() => {

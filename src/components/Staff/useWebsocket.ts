@@ -1,45 +1,51 @@
-import React, { useEffect } from 'react';
-import { Client } from '@stomp/stompjs';
-import SockJS from 'sockjs-client';
-const useWebSocket = (refetchOrderBooking: () => void) => {
-  const [url, setUrl] = React.useState<string>('ws://localhost:8080/ws');
-  useEffect(() => {
-    const client = new Client({
-      brokerURL: url, // WebSocket server URL
-      reconnectDelay: 3000, // Reconnect after 3 seconds if disconnected
-      heartbeatIncoming: 12000, // Incoming heartbeat interval
-      heartbeatOutgoing: 10000, // Outgoing heartbeat interval
-    });
+// import React, { useEffect } from 'react';
+// import { Client } from '@stomp/stompjs';
+// import SockJS from 'sockjs-client';
 
-    // Connect and set up subscription
-    const connectAndSubscribe = () => {
-      client.onConnect = () => {
-        console.log('Connected to WebSocket STOMP');
-        refetchOrderBooking();
+// const useWebSocket = (refetchOrderBooking: () => void) => {
+//   const socketUrl = 'http://localhost:8080/ws';
 
-        client.subscribe('/booking/bookings/status', (message) => {
-          const updatedBooking = JSON.parse(message.body);
-          console.log('Updated booking:', updatedBooking);
-          // Handle the updated booking data
-        });
-      };
+//   useEffect(() => {
+//     const client = new Client({
+//       brokerURL: socketUrl, // WebSocket server URL
+//       reconnectDelay: 3000, // Reconnect after 3 seconds if disconnected
+//       heartbeatIncoming: 12000, // Incoming heartbeat interval
+//       heartbeatOutgoing: 10000, // Outgoing heartbeat interval
+//       // Sử dụng SockJS nếu không dùng brokerURL trực tiếp
+//       webSocketFactory: () => new SockJS(socketUrl),
+//     });
 
-      client.onStompError = (error) => {
-        console.error('STOMP error:', error);
-      };
+//     // Kết nối và đăng ký nhận dữ liệu
+//     const connectAndSubscribe = () => {
+//       client.onConnect = () => {
+//         console.log('Connected to WebSocket STOMP');
+//         refetchOrderBooking();
 
-      client.activate();
-    };
+//         // Đăng ký nhận các cập nhật từ server
+//         client.subscribe('/booking/bookings/status', (message) => {
+//           const updatedBooking = JSON.parse(message.body);
+//           console.log('Updated booking:', updatedBooking);
+//           // Xử lý dữ liệu booking đã cập nhật
+//         });
+//       };
 
-    // Start connection and subscription
-    connectAndSubscribe();
+//       client.onStompError = (error) => {
+//         console.error('STOMP error:', error);
+//       };
 
-    // Cleanup on component unmount
-    return () => {
-      client.deactivate();
-      console.log('WebSocket connection closed');
-    };
-  }, [refetchOrderBooking]);
-};
+//       // Kích hoạt client để bắt đầu kết nối
+//       client.activate();
+//     };
 
-export default useWebSocket;
+//     // Bắt đầu kết nối và đăng ký
+//     connectAndSubscribe();
+
+//     // Dọn dẹp khi component unmount
+//     return () => {
+//       client.deactivate();
+//       console.log('WebSocket connection closed');
+//     };
+//   }, [refetchOrderBooking]);
+// };
+
+// export default useWebSocket;

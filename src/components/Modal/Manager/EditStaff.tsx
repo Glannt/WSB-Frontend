@@ -107,7 +107,7 @@ const EditStaff: React.FC<StaffModalProps> = ({
       {
         onSuccess: () => {
           console.log('Update success');
-          // refetchStaff(); // Replace with refetchStaff if fetching updated staff list
+          refetchStaff(); // Replace with refetchStaff if fetching updated staff list
           onClose(); // Close the modal or perform any action on success
         },
         onError: (error) => {

@@ -143,7 +143,13 @@ const ChartRoomBooking: React.FC<ChartRoomBookingProps> = ({
           </div>
         </div>
       </div>
-
+      {state.series.length === 0 && (
+        // <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-50 dark:bg-black dark:bg-opacity-50">
+        <p className="text-lg font-semibold text-red-500 dark:text-white">
+          Không có dữ liệu
+        </p>
+        // </div>
+      )}
       <div className="mb-2">
         <div id="chartRoomBooking" className="mx-auto flex justify-center">
           <ReactApexChart
@@ -157,7 +163,6 @@ const ChartRoomBooking: React.FC<ChartRoomBookingProps> = ({
       <div className="-mx-8 flex flex-wrap items-center justify-center gap-y-3">
         <div className="sm:w-1/2 w-full px-8">
           <div className="flex w-full items-center">
-
             <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-orange-200 "></span>
 
             <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
@@ -174,7 +179,6 @@ const ChartRoomBooking: React.FC<ChartRoomBookingProps> = ({
                         state.series.reduce((a, b) => a + b, 0)) *
                       100
                     ).toFixed(2)}
-
                 %{' '}
               </span>
             </p>
@@ -184,7 +188,6 @@ const ChartRoomBooking: React.FC<ChartRoomBookingProps> = ({
           <div className="flex w-full items-center">
             <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-green-200"></span>
             <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
-
               <span> Phòng học 5 người </span>
               <span>
                 {' '}

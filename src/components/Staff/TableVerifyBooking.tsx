@@ -99,6 +99,7 @@ const statusColorMap: Record<string, ChipProps['color']> = {
   finished: 'default', // FINISHED
   upcoming: 'warning', // UPCOMING
   cancelled: 'danger', // CANCELLED
+  pending: 'warning',
 };
 
 export const TableVerifyBooking: React.FC<BookingData> = ({
@@ -116,6 +117,8 @@ export const TableVerifyBooking: React.FC<BookingData> = ({
         return 'Sắp diễn ra';
       case 'cancelled':
         return 'Đã hủy';
+      case 'pending':
+        return 'Chờ xác nhận';
       default:
         return 'Không xác định'; // Default case for unknown status
     }

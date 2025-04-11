@@ -251,7 +251,7 @@ const ProfileStaff: React.FC = () => {
                 <DatePicker
                   className="w-full"
                   size="lg"
-                  label="Ngày sinh"
+                  label="Ngày sinh (mm/dd/yyyy)"
                   defaultValue={
                     staff?.dateOfBirth
                       ? parseDate(

@@ -91,6 +91,7 @@ export default function BookingHistory() {
     queryKey: ['bookings'],
     queryFn: getHistoryBookingApi,
   });
+  console.log('bookings', bookings);
 
   const [filterValue, setFilterValue] = React.useState('');
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
@@ -141,12 +142,12 @@ export default function BookingHistory() {
   const filteredItems = React.useMemo(() => {
     let filteredBookings = [...bookings];
 
-    if (hasSearchFilter) {
-      filteredBookings = filteredBookings.filter((booking) =>
-        booking.totalPrice.toLowerCase().includes(filterValue.toLowerCase())
-      );
-    }
-    console.log('statusFilter', statusFilter);
+    // if (hasSearchFilter) {
+    //   filteredBookings = filteredBookings.filter((booking) =>
+    //     booking.totalPrice.toLowerCase().includes(filterValue.toLowerCase())
+    //   );
+    // }
+    // console.log('statusFilter', statusFilter);
 
     if (
       statusFilter !== 'all' &&
@@ -156,6 +157,11 @@ export default function BookingHistory() {
         Array.from(statusFilter).includes(x.status.toLowerCase())
       );
     }
+    // filteredBookings = filteredBookings.sort((a, b) => {
+    //   const firstCreationTime = new Date(a.checkinDate).getTime();
+    //   const secondCreationTime = new Date(b.checkinDate).getTime();
+    //   return secondCreationTime - firstCreationTime; // Mới nhất trước
+    // });
     return filteredBookings;
   }, [bookings, filterValue, statusFilter]);
 
@@ -168,27 +174,28 @@ export default function BookingHistory() {
     return filteredItems.slice(start, end);
   }, [page, filteredItems, rowsPerPage]);
 
-  const sortedItems = React.useMemo(() => {
-    return [...items].sort((a, b) => {
-      // Compare checkinDate
-      const firstCheckInDate = new Date(a.checkinDate).getTime();
-      const secondCheckInDate = new Date(b.checkinDate).getTime();
+  // const sortedItems = React.useMemo(() => {
+  //   return [...items].sort((a, b) => {
+  //     // Compare checkinDate
+  //     const firstCheckInDate = new Date(a.checkinDate).getTime();
+  //     const secondCheckInDate = new Date(b.checkinDate).getTime();
 
-      if (firstCheckInDate !== secondCheckInDate) {
-        return sortDescriptor.direction === 'ascending'
-          ? secondCheckInDate - firstCheckInDate // Ascending order
-          : firstCheckInDate - secondCheckInDate; // Descending order
-      }
+  //     if (firstCheckInDate !== secondCheckInDate) {
+  //       return sortDescriptor.direction === 'ascending'
+  //         ? secondCheckInDate - firstCheckInDate // Ascending order
+  //         : firstCheckInDate - secondCheckInDate; // Descending order
+  //     }
 
-      // If checkinDate is the same, compare roomName
-      const firstRoomName = a.roomId || '';
-      const secondRoomName = b.roomId || '';
+  //     // If checkinDate is the same, compare roomName
+  //     const firstRoomName = a.roomId || '';
+  //     const secondRoomName = b.roomId || '';
 
-      return sortDescriptor.direction === 'ascending'
-        ? firstRoomName.localeCompare(secondRoomName)
-        : secondRoomName.localeCompare(firstRoomName);
-    });
-  }, [sortDescriptor, items]);
+  //     return sortDescriptor.direction === 'descending'
+  //       ? firstRoomName.localeCompare(secondRoomName)
+  //       : secondRoomName.localeCompare(firstRoomName);
+  //   });
+  // }, [sortDescriptor, items]);
+  // console.log('sortedItems', sortedItems);
 
   const onNextPage = React.useCallback(() => {
     if (page < pages) {
@@ -225,7 +232,7 @@ export default function BookingHistory() {
       <BookingTable
         headerColumns={headerColumns}
         items={items}
-        sortedItems={sortedItems}
+        sortedItems={items}
         selectedKeys={selectedKeys}
         sortDescriptor={sortDescriptor}
         setSelectedKeys={setSelectedKeys}

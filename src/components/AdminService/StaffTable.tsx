@@ -167,16 +167,18 @@ const StaffTable: React.FC<RoomTableProps> = ({
       case 'actions':
         return (
           <div className="relative flex justify-center gap-5">
-            <Button content="Chỉnh sửa nhân viên" className="bg-violet-100">
-              <span
-                onClick={() => {
-                  onEdit(staff);
-                }}
-                className="text-lg text-default-400 cursor-pointer active:opacity-50"
-              >
-                <EditIcon />
-              </span>
-            </Button>
+            <Button
+              content="Chỉnh sửa nhân viên"
+              className="bg-violet-100 cursor-pointer"
+              onClick={() => {
+                onEdit(staff);
+              }}
+              endContent={
+                <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
+                  <EditIcon />
+                </span>
+              }
+            ></Button>
           </div>
         );
       default:
@@ -193,6 +195,10 @@ const StaffTable: React.FC<RoomTableProps> = ({
       onSelectionChange={setSelectedKeys}
       onSortChange={onSortChange}
       className="h-[300px] max-h-[300px] overflow-y-auto"
+      classNames={{
+        th: 'text-xl',
+        td: 'text-lg',
+      }}
     >
       <TableHeader columns={headerColumns}>
         {(column) => (
