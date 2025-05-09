@@ -145,7 +145,7 @@ const EquipmentList: React.FC = () => {
     };
 
     if (isLoadingServices) {
-      return <p>Loading...</p>;
+      return <p>Đang tải...</p>;
     }
 
     return (

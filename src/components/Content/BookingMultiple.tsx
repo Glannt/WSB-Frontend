@@ -30,6 +30,7 @@ import {
   ModalHeader,
   RangeValue,
   Select,
+  Selection,
   SelectItem,
   Tab,
   Tabs,
@@ -106,6 +107,9 @@ export const BookingRoomDetailMultiple = () => {
   const { customer, refetch } = useCustomer();
   const [isNotEnoughMoney, setIsNotEnoughMoney] = useState<boolean>(false);
   const [isDateSelected, setIsDateSelected] = useState<boolean>(false);
+  const [selectedOptions, setSelectedOptions] = useState<Selection>(
+    new Set([])
+  );
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -429,6 +433,14 @@ export const BookingRoomDetailMultiple = () => {
   ) => {
     setValue(field, value);
   };
+  React.useEffect(() => {
+    // setValue('slots', []);
+    reset({
+      ...getValues(),
+      slots: [], // Reset slots field to an empty array
+    });
+    console.log('useeffect', getValues().slots);
+  }, [getValues().checkinDate, getValues().checkoutDate, setValue]);
   const handleQuantityChange = (id: string, newQuantity: number) => {
     setQuantities((prevQuantities) => ({
       ...prevQuantities,
@@ -439,7 +451,7 @@ export const BookingRoomDetailMultiple = () => {
   const handleTimeSlotChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedTimeSlot(e.target.value);
   };
-
+  console.log('Selected timeslot', selectedTimeSlot);
   const toggleServiceModal = () => {
     setShowServiceModal(!showServiceModal);
   };
@@ -462,7 +474,7 @@ export const BookingRoomDetailMultiple = () => {
   const handleImageClick = (index: number) => {
     setSelectedImage(index);
   };
-
+  const slotsArray = Array.isArray(slots) ? slots : [];
   const amenities = [
     { icon: <FaWifi />, name: 'Wi-Fi miễn phí' },
     { icon: <FaParking />, name: 'Bãi đỗ xe' },
@@ -571,10 +583,13 @@ export const BookingRoomDetailMultiple = () => {
                   handleChangeDatePicker(range);
                   setIsSelectedDate(true);
                   calculateTotalPrice();
+                  setSelectedTimeSlot('');
+                  setValue('slots', []);
+                  setSelectedOptions(new Set([]));
                 }}
                 className="w-full"
                 errorMessage={
-                  errors.checkinDate?.message ? '' : 'lỗi pick date'
+                  errors.checkinDate?.message ? '' : 'lỗi chọn ngày'
                 }
               />
             </div>
@@ -589,6 +604,7 @@ export const BookingRoomDetailMultiple = () => {
                       value={selectedTimeSlot}
                       onChange={handleTimeSlotChange}
                       onSelectionChange={(keys) => {
+                        setSelectedOptions(keys);
                         // const newTimeSlot = Array.from(keys);
                         // handleFieldChange('slots', newTimeSlot.map(Number));
                         const newTimeSlot = Array.from(keys).map((key) =>
@@ -597,10 +613,16 @@ export const BookingRoomDetailMultiple = () => {
                         handleFieldChange('slots', newTimeSlot); // Send the array of numbers
                         calculateTotalPrice();
                       }}
+                      // defaultSelectedKeys={
+                      //   slots && Array.isArray(slots) && slots.length > 0
+                      //     ? new Set(slots.map(String))
+                      //     : undefined
+                      // }
+                      selectedKeys={selectedOptions}
                       errorMessage={
-                        errors.slots?.message ? '' : 'Lỗi select slot'
+                        errors.slots?.message ? '' : 'Lỗi chọn time slot'
                       }
-                      isInvalid={errors.slots?.message ? true : false}
+                      // isInvalid={errors.slots?.message ? true : false}
                       key="default"
                       color="primary"
                       label="Thời gian"

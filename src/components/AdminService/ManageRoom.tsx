@@ -245,7 +245,7 @@ export default function ManageRoom() {
       {isFetchingRooms ? (
         <div>
           {' '}
-          <CircularProgress label="Loading..." />
+          <CircularProgress label="Đang tải..." className="mx-auto my-auto" />
         </div>
       ) : (
         <RoomTable

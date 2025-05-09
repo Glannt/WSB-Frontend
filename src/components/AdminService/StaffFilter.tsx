@@ -57,7 +57,7 @@ const StaffFilter: React.FC<StaffFiltersProps> = ({
     <div className="flex justify-between gap-3 items-end">
       <Input
         isClearable
-        placeholder="Search by name..."
+        placeholder="Tìm kiếm..."
         variant="bordered"
         startContent={<SearchIcon />}
         value={filterValue}

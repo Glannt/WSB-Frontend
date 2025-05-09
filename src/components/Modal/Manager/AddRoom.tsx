@@ -2,9 +2,14 @@ import { UploadImage } from '@/components/AdminService/UploadImage';
 import { roomTypes } from '@/data/dataRoomType';
 import { roomStatusManager } from '@/data/dataStatusRoom';
 
-import { AddNewRoom, getAllStaff } from '@/service/manager.api';
+import {
+  AddNewRoom,
+  getAllStaff,
+  getProfileManager,
+} from '@/service/manager.api';
 import { getAllBuilding } from '@/service/owner.api';
 import { Building } from '@/types/building.type';
+import { Manager } from '@/types/manager.type';
 import { AddRoomResponse } from '@/types/room.type';
 import { Staff } from '@/types/staff.type';
 import { getAccessTokenFromLS } from '@/utils/auth';
@@ -48,7 +53,20 @@ export const AddRoom: React.FC<RoomModalProps> = ({
     const response = await getAllBuilding();
     return response.data.data;
   };
+  const getProfileManagerApi = async () => {
+    const response = await getProfileManager();
+    console.log(response.data.data);
 
+    return response.data.data;
+  };
+  const {
+    data: manager,
+    isLoading: isLoadingProfileManager,
+    refetch: isRefetchProfileManager,
+  } = useQuery<Manager>({
+    queryKey: ['manager'],
+    queryFn: getProfileManagerApi,
+  });
   const {
     data: buildings = [],
     isLoading: isLoadingBuildings,
@@ -155,7 +173,7 @@ export const AddRoom: React.FC<RoomModalProps> = ({
       classNames={{
         backdrop:
           'bg-gradient-to-t from-zinc-900 to-zinc-900/10 backdrop-opacity-20',
-        base: 'max-w-[1000px] h-[600px]',
+        base: 'max-w-[1000px] h-auto',
       }}
       motionProps={{
         variants: {
@@ -231,6 +249,8 @@ export const AddRoom: React.FC<RoomModalProps> = ({
                       const newStatus = keys;
                       handleFieldChange('status', newStatus.toString());
                     }}
+                    isInvalid={errors.status ? true : false}
+                    errorMessage={errors.status?.message}
                   >
                     {roomStatusManager.map((roomStatuses) => (
                       <SelectItem key={roomStatuses.key}>
@@ -248,6 +268,8 @@ export const AddRoom: React.FC<RoomModalProps> = ({
                       // setValue('roomTypeId', newRoomTypeId.toString());
                       handleFieldChange('roomTypeId', newRoomTypeId.toString());
                     }}
+                    isInvalid={errors.roomTypeId ? true : false}
+                    errorMessage={errors.roomTypeId?.message}
                   >
                     {roomTypes.map((roomType) => (
                       <SelectItem key={roomType.key}>
@@ -286,9 +308,14 @@ export const AddRoom: React.FC<RoomModalProps> = ({
                       const newBuilding = Array.from(keys)[0];
                       handleFieldChange('buildingId', newBuilding.toString());
                     }}
+                    isInvalid={errors.buildingId ? true : false}
+                    errorMessage={errors.buildingId?.message}
                   >
                     {buildings.map((building) => (
-                      <SelectItem key={building.buildingId}>
+                      <SelectItem
+                        key={building.buildingId}
+                        isDisabled={manager?.buildingId != building.buildingId}
+                      >
                         {building.buildingName}
                       </SelectItem>
                     ))}

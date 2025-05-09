@@ -81,7 +81,7 @@ const StaffRoomTable: React.FC<RoomTableProps> = ({
         case 'actions':
           return (
             <div className="relative flex justify-center gap-5">
-              <Tooltip content="Chi tiết">
+              {/* <Tooltip content="Chi tiết">
                 <span
                   // onClick={() => openDetail(room)}
                   className="text-lg text-default-400 cursor-pointer active:opacity-50"
@@ -106,7 +106,7 @@ const StaffRoomTable: React.FC<RoomTableProps> = ({
                 >
                   <DeleteIcon />
                 </span>
-              </Tooltip>
+              </Tooltip> */}
             </div>
           );
         default:
@@ -131,6 +131,10 @@ const StaffRoomTable: React.FC<RoomTableProps> = ({
       onSelectionChange={setSelectedKeys}
       onSortChange={onSortChange}
       className="h-[300px] max-h-[300px] overflow-y-auto"
+      classNames={{
+        th: 'text-xl',
+        td: 'text-lg',
+      }}
     >
       <TableHeader columns={headerColumns}>
         {(column) => (

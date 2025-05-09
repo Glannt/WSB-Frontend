@@ -16,3 +16,11 @@ export interface ListRooms {
   building: string;
   roomType: string; // Type of room
 }
+
+export interface ListRooms2 {
+  roomId: string; // Unique identifier for the room
+  roomName: string; // Name of the room
+  price: number;
+  building: string;
+  roomType: string; // Type of room
+}

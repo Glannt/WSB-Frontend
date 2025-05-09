@@ -56,18 +56,26 @@ export const PolicyBooking: React.FC = () => {
               Chỉ chấp nhận thanh toán qua hình thức thanh toán trực tuyến.
             </li>
             <li>
-              Đối với hóa đơn trên 5 triệu đồng, hệ thống sẽ yêu cầu xác nhận
-              trước khi thanh toán.
+              Đối với hóa đơn trên 5 triệu đồng, phải chờ hệ thống xử lý yêu cầu
+              xác nhận trước khi thanh toán.
             </li>
             <li>
-              Sau khi đặt cọc, trước ngày nhận phòng làm việc 24h chỉ hoàn 50%
-              số tiền trên tổng hóa đơn nếu hủy đặt phòng.
+              Sau khi đặt cọc, nếu hủy phòng trước 24 tiếng sẽ hoàn 100% số tiền
+              trên tổng hóa đơn nếu hủy đặt phòng.
             </li>
             <li>
-              Sau khi đặt cọc, trước ngày nhận phòng làm việc 6h sẽ không hoàn
-              tiền nếu hủy đặt phòng.
+              Sau khi đặt cọc, nếu hủy phòng trong khoảng 24 tiếng tới 6 tiếng
+              trước thời gian nhận phòng làm việc chỉ hoàn 50% số tiền trên tổng
+              hóa đơn nếu hủy đặt phòng.
+            </li>
+            <li>
+              Trường hợp còn lại nếu hủy phòng thì sẽ không hoàn trả tiền.
             </li>
             <li>Thời gian đặt phòng tối thiểu là 1 slot (3 tiếng).</li>
+            <li>
+              <strong className="text-red-400 font-bold">Lưu ý:</strong> Mọi
+              giao dịch đều thông qua ví điện tử.
+            </li>
           </ul>
         </li>
 

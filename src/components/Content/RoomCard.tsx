@@ -3,10 +3,10 @@ import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { Button, Select, SelectItem, Slider } from '@nextui-org/react';
 import { useNavigate } from 'react-router';
 import { Carousel } from './Carousel';
-import { ListRooms } from '@/types/roomOverview';
+import { ListRooms, ListRooms2 } from '@/types/roomOverview';
 
 interface ListingCardProps {
-  room: ListRooms;
+  room: ListRooms2;
   images: string[];
 }
 

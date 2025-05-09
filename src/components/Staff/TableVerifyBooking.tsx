@@ -284,9 +284,9 @@ export const TableVerifyBooking: React.FC<BookingData> = ({
     <Table
       aria-label="Booking details table"
       classNames={{
-        th: 'text-lg',
+        th: 'text-xl',
         tr: 'text-xl',
-        td: 'text-xl',
+        td: 'text-lg',
         tbody: 'text-lg',
       }}
     >

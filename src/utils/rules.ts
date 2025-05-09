@@ -268,7 +268,7 @@ export const schemaCreateAccount = Yup.object().shape({
   confirm_password: Yup.string()
     .required('Xác nhận mật khẩu là bắt buộc')
     .oneOf([Yup.ref('password')], 'Mật khẩu không khớp'),
-  role: Yup.string().default('MANAGER'),
+  role: Yup.string().required('Vai trò là bắt buộc'),
   buildingId: Yup.string().required('ID tòa nhà là bắt buộc'),
 });
 
@@ -293,3 +293,27 @@ export const schemaUpdateStaff = Yup.object().shape({
   workShift: Yup.string().required('Ca làm việc là bắt buộc'),
 });
 export type SchemaUpdateStaff = Yup.InferType<typeof schemaUpdateStaff>;
+
+// const today = new Date();
+const minDateOfBirth = new Date(
+  today.getFullYear() - 13,
+  today.getMonth(),
+  today.getDate()
+);
+
+export const managerSchema = Yup.object().shape({
+  userId: Yup.string(),
+  email: Yup.string().email('Sai email').required('Email là bắt buộc'),
+  fullName: Yup.string().optional(),
+  phoneNumber: Yup.string().optional(),
+  dateOfBirth: Yup.string(),
+  // .required('Date of birth is required')
+  // .transform((value: string, originalValue: string) => {
+  //   // Parse the string into a Date object
+  //   const parsedDate = new Date(originalValue);
+  //   // Check if the date is valid (not NaN)
+  //   return isNaN(parsedDate.getTime()) ? new Date('') : parsedDate;
+  // }),
+  buildingId: Yup.string().required('Cơ sở là bắt buộc'),
+});
+export type SchemaManager = Yup.InferType<typeof managerSchema>;

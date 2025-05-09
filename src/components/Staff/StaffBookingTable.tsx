@@ -186,7 +186,10 @@ const StaffBookingTable: React.FC<RoomTableProps> = ({
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent={'No rooms found'} items={sortedItems}>
+      <TableBody
+        emptyContent={'Không có đơn đặt phòng nào'}
+        items={sortedItems}
+      >
         {(item) => (
           <TableRow key={item.bookingId}>
             {(columnKey) => (

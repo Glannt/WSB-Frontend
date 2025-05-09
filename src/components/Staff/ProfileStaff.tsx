@@ -17,6 +17,7 @@ import { parseDate, parseAbsoluteToLocal } from '@internationalized/date';
 import { getProfileStaff, updateProfileStaff } from '@/service/staff.api';
 import { Staff } from '@/types/staff.type';
 import { useStaff } from '@/context/staff.context';
+import { toast } from 'react-toastify';
 interface FormData {
   fullName: string;
   email: string;
@@ -131,14 +132,14 @@ const ProfileStaff: React.FC = () => {
     }) => {
       return updateProfileStaff(id, data);
     },
-    onSuccess: () => {
-      console.log('thay đổi thành công');
+    onSuccess: (response) => {
       setIsLoading(false);
       setIsModified(false);
+      toast.success('Thay đổi thông tin thành công');
       refetch();
     },
     onError: (error) => {
-      console.error('Error updating profile:', error);
+      console.error('Lỗi update', error);
       setIsLoading(false);
     },
   });
@@ -277,7 +278,6 @@ const ProfileStaff: React.FC = () => {
                     handleInputChange('dateOfBirth', formattedDate);
                   }}
                   isInvalid={errors.dateOfBirth?.message ? true : false}
-                  errorMessage={errors.dateOfBirth?.message}
                 />
               </div>
               <div className="w-full md:w-1/3 mt-6 md:mt-0">

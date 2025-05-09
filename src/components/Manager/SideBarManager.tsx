@@ -51,14 +51,14 @@ export const SidebarAdmin = () => {
         <div className="flex flex-col justify-between h-full">
           <div className={Sidebar.Body()}>
             <SidebarItem
-              title="Home"
+              title="Trang chủ"
               isActive={activeItem === 'Home'}
               icon={<HomeIcon />}
               onClick={() => navigate('')}
             />
             <SidebarMenu title="Main Menu">
               <SidebarItem
-                title="Dashboard"
+                title="Trang thống kê"
                 isActive={activeItem === 'Dashboard'}
                 icon={<AccountsIcon />}
                 onClick={() => {

@@ -21,39 +21,33 @@ import ManagerTable from './ManagerTable';
 import ManagerPagination from './ManagerPagination';
 import { DeleteManager } from './DeleteManager';
 import AddManager from './AddManager';
+import { UserAccount } from '@/types/user.type';
 
 export const columnsBuilding = [
-  { name: 'ID', uid: 'userId', sortable: true },
-  { name: 'Tên quản lý', uid: 'fullName', sortable: true },
-  { name: 'Email', uid: 'email', sortable: true },
-  { name: 'Số điện thoại', uid: 'phoneNumber', sortable: true },
-  { name: 'Ngày sinh', uid: 'dateOfBirth', sortable: true },
-  { name: 'Cơ sở', uid: 'buildingId', sortable: true },
-  { name: 'Actions', uid: 'actions' },
+  { name: 'Tên tài khoản', uid: 'username', sortable: true },
+  // { name: 'Mật khẩu', uid: 'password', sortable: true },
+  { name: 'Vai trò', uid: 'role', sortable: true },
+  { name: 'Hành động', uid: 'actions' },
 ];
 
-const INITIAL_VISIBLE_COLUMNS = [
-  'fullName',
-  'email',
-  'phoneNumber',
-  'buildingId',
-  'actions',
-];
+const INITIAL_VISIBLE_COLUMNS = ['username', 'role', 'actions'];
 export default function ManageManager() {
   const getAllManagersApi = async () => {
     const response = await getAllManagers();
+    console.log(response);
+
     return response.data.data;
   };
 
   const {
-    data: managers = [],
+    data: users = [],
     isLoading,
     refetch,
-  } = useQuery<Manager[]>({
-    queryKey: ['managers'],
+  } = useQuery<UserAccount[]>({
+    queryKey: ['users'],
     queryFn: getAllManagersApi,
   });
-  console.log(managers);
+  console.log(users);
 
   const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]));
   const [filterValue, setFilterValue] = useState('');
@@ -64,13 +58,13 @@ export default function ManageManager() {
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
-    column: 'fullName',
+    column: 'username',
     direction: 'ascending',
   });
   const [isOpenAdd, setIsOpenAdd] = useState<boolean>(false);
   const [isOpenEdit, setIsOpenEdit] = useState<boolean>(false);
   const [isDeleteRoom, setIsDeleteRoom] = useState<boolean>(false);
-  const [selectedRoom, setSelectedRoom] = useState<Manager | null>(null);
+  const [selectedRoom, setSelectedRoom] = useState<UserAccount | null>(null);
   const headerColumns = React.useMemo(() => {
     if (visibleColumns === 'all') return columnsBuilding;
     return columnsBuilding.filter((column) =>
@@ -78,10 +72,10 @@ export default function ManageManager() {
     );
   }, [visibleColumns]);
   const filteredRooms = useMemo(() => {
-    let filteredRooms = managers;
+    let filteredRooms = users;
 
     return filteredRooms;
-  }, [filterValue, managers, statusFilter]);
+  }, [filterValue, users, statusFilter]);
 
   const paginatedRooms = useMemo(() => {
     const start = (page - 1) * rowsPerPage;
@@ -113,8 +107,8 @@ export default function ManageManager() {
 
   const sortedItems = useMemo(() => {
     return [...paginatedRooms].sort((a, b) => {
-      const first = a[sortDescriptor.column as keyof Manager];
-      const second = b[sortDescriptor.column as keyof Manager];
+      const first = a[sortDescriptor.column as keyof UserAccount];
+      const second = b[sortDescriptor.column as keyof UserAccount];
 
       // Đảm bảo các giá trị so sánh là chuỗi hoặc số
       if (typeof first === 'string' && typeof second === 'string') {
@@ -162,9 +156,9 @@ export default function ManageManager() {
     refetch();
   };
 
-  const openDelete = (manager: Manager) => {
+  const openDelete = (user: UserAccount) => {
     setIsDeleteRoom(true);
-    setSelectedRoom(manager);
+    setSelectedRoom(user);
   };
   const closeDelete = () => {
     setIsDeleteRoom(false);
@@ -188,7 +182,7 @@ export default function ManageManager() {
       />
       <div className="flex justify-between items-center mt-5 mb-5">
         <span className="text-default-400 text-small">
-          Tổng {managers?.length} quản lý
+          Tổng {users?.length} quản lý
         </span>
         <label className="flex items-center text-default-400 text-small">
           Số hàng
@@ -204,7 +198,7 @@ export default function ManageManager() {
         </label>
       </div>
       <ManagerTable
-        sortedItems={sortedItems}
+        sortedItems={paginatedRooms}
         headerColumns={headerColumns}
         sortDescriptor={sortDescriptor}
         selectedKeys={selectedKeys} // Handle selection logic
@@ -241,8 +235,8 @@ export default function ManageManager() {
         <DeleteManager
           isOpen={isDeleteRoom}
           onClose={closeDelete}
-          selectedDeleteBuilding={selectedRoom}
-          setSelectedDeleteBuilding={setSelectedRoom}
+          selectedDeleteUser={selectedRoom}
+          setSelectedDeleteUser={setSelectedRoom}
           refetchBuildings={refetch}
         />
       )}

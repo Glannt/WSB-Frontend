@@ -160,7 +160,7 @@ const EditRoom: React.FC<RoomModalProps> = ({
       classNames={{
         backdrop:
           'bg-gradient-to-t from-zinc-900 to-zinc-900/10 backdrop-opacity-20',
-        base: 'max-w-[1000px] h-[530px]',
+        base: 'max-w-[1000px] h-auto',
       }}
       motionProps={{
         variants: {
@@ -208,6 +208,8 @@ const EditRoom: React.FC<RoomModalProps> = ({
                     onChange={(e) =>
                       handleFieldChange('roomName', e.target.value)
                     }
+                    isInvalid={errors.roomName ? true : false}
+                    errorMessage={errors.roomName?.message}
                   />
                   <Input
                     label="Giá"
@@ -223,6 +225,8 @@ const EditRoom: React.FC<RoomModalProps> = ({
                     }
                     {...register('price')}
                     onChange={(e) => handleFieldChange('price', e.target.value)}
+                    isInvalid={errors.price ? true : false}
+                    errorMessage={errors.price?.message}
                   />
                 </div>
                 <div className="flex flex-wrap py-2 px-3 md:flex-nowrap gap-4 w-[960px] justify-evenly">
@@ -239,6 +243,8 @@ const EditRoom: React.FC<RoomModalProps> = ({
                         ? new Set([selectedRoom?.status])
                         : valueStatus
                     }
+                    isInvalid={errors.status ? true : false}
+                    errorMessage={errors.status?.message}
                   >
                     {roomStatusManager.map((roomStatuses) => (
                       <SelectItem key={roomStatuses.key}>

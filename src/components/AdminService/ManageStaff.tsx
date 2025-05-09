@@ -209,6 +209,7 @@ export default function ManageStaff() {
           setSelectedKeys={setSelectedKeys} // Selection handler
           onSortChange={setSortDescriptor}
           onEdit={openEdit}
+          statusFilter={statusFilter}
         />
       )}
 

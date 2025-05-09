@@ -55,19 +55,19 @@ const AboutUs = () => {
   const teamMembers = [
     {
       name: 'Minh Nguyen',
-      role: 'Founder & CEO',
+      role: 'Front-End Developer',
       image:
         'https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=256&q=80',
     },
     {
       name: 'Do Tong',
-      role: 'COO',
+      role: 'Front-End Developer',
       image:
         'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=256&q=80',
     },
     {
       name: 'Bao Ho',
-      role: 'Head of Operations',
+      role: 'Back-End Developer',
       image:
         'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=256&q=80',
     },
@@ -114,7 +114,7 @@ const AboutUs = () => {
               <h3 className="text-2xl font-semibold mb-4">Giá trị mang lại</h3>
               <ul className="list-disc list-inside text-gray-700">
                 <li>Đổi mới và sáng tạo</li>
-                <li>ợp tác và cộng đồng</li>
+                <li>Hợp tác và cộng đồng</li>
                 <li>Linh hoạt và thích ứng</li>
                 <li>Bền vững và thân thiện với môi trường</li>
               </ul>

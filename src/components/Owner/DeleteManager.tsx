@@ -1,6 +1,7 @@
-import { deleteBuilding, deleteManager } from '@/service/owner.api';
+import { deleteBuilding, deleteManager, deleteUser } from '@/service/owner.api';
 import { Building } from '@/types/building.type';
 import { Manager } from '@/types/manager.type';
+import { UserAccount } from '@/types/user.type';
 import {
   Button,
   Modal,
@@ -14,27 +15,27 @@ import { Dispatch, SetStateAction } from 'react';
 interface DeleteRoomProps {
   isOpen: boolean;
   onClose: () => void;
-  selectedDeleteBuilding?: Manager | null;
-  setSelectedDeleteBuilding?: Dispatch<SetStateAction<Manager | null>>;
+  selectedDeleteUser?: UserAccount | null;
+  setSelectedDeleteUser?: Dispatch<SetStateAction<UserAccount | null>>;
   refetchBuildings: () => void;
 }
 
 export const DeleteManager: React.FC<DeleteRoomProps> = ({
   isOpen,
   onClose,
-  selectedDeleteBuilding,
-  setSelectedDeleteBuilding,
+  selectedDeleteUser,
+  setSelectedDeleteUser,
   refetchBuildings,
 }) => {
   const deleteManagerMutation = useMutation({
-    mutationFn: ({ buildingId }: { buildingId: string | undefined }) => {
-      if (!buildingId) {
-        throw new Error('Building ID is undefined');
+    mutationFn: ({ username }: { username: string | undefined }) => {
+      if (!username) {
+        throw new Error('Tên tài khoản không tồn tại ');
       }
-      return deleteManager(buildingId);
+      return deleteUser(username);
     },
     onSuccess: () => {
-      setSelectedDeleteBuilding?.(null);
+      setSelectedDeleteUser?.(null);
       refetchBuildings();
       onClose(); // Close the modal after successful deletion
     },
@@ -43,10 +44,10 @@ export const DeleteManager: React.FC<DeleteRoomProps> = ({
     },
   });
 
-  const buildingId = selectedDeleteBuilding?.userId;
+  const username = selectedDeleteUser?.username;
 
   const handleDeleteRoom = () => {
-    deleteManagerMutation.mutate({ buildingId });
+    deleteManagerMutation.mutate({ username });
   };
 
   return (
