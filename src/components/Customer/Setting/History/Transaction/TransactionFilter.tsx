@@ -6,7 +6,7 @@ import {
   DropdownMenu,
   DropdownItem,
   Selection,
-} from '@nextui-org/react';
+} from "@heroui/react";
 import { Column, Room, StatusOption } from '@/types/room.type';
 import { ChevronDownIcon } from '@/components/Icons/ChevronDownIcon';
 import { capitalize } from '@/components/Customer/utils';

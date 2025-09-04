@@ -1,6 +1,6 @@
 import { getAllBuilding } from '@/service/owner.api';
 import { Building } from '@/types/building.type';
-import { CircularProgress } from '@nextui-org/react';
+import { CircularProgress } from "@heroui/react";
 import { useQuery } from '@tanstack/react-query';
 import React, { useCallback } from 'react';
 import { useNavigate } from 'react-router';

@@ -27,7 +27,7 @@ import {
   Select,
   SelectItem,
   Tooltip,
-} from '@nextui-org/react';
+} from "@heroui/react";
 import { PlusIcon } from '../Icons/PlusIcon';
 import { VerticalDotsIcon } from '../Icons/VerticalDotsIcon';
 import { ChevronDownIcon } from '../Icons/ChevronDownIcon';

@@ -72,7 +72,7 @@ import 'swiper/css/pagination';
 
 import { useNavigate } from 'react-router-dom';
 import { TypeRoomCard } from '../HomepageContent/TypeRoomCard';
-import { Button } from '@nextui-org/react';
+import { Button } from "@heroui/react";
 
 const RoomTypeSlider = () => {
   const navigate = useNavigate();

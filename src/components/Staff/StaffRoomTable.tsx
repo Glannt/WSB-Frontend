@@ -11,7 +11,7 @@ import {
   Selection,
   ChipProps,
   User,
-} from '@nextui-org/react';
+} from "@heroui/react";
 import { Room, Column, RoomOverView } from '@/types/room.type';
 import { EyeIcon } from '../Icons/EyeIcon';
 import { EditIcon } from '../Icons/EditIcon';

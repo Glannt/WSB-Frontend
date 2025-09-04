@@ -18,7 +18,7 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-} from '@nextui-org/react';
+} from "@heroui/react";
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { SchemacreateMultiBooking } from '@/utils/rules';
 import { UseFormHandleSubmit } from 'react-hook-form';

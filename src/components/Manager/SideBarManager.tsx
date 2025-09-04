@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 
-import { Avatar, Tooltip } from '@nextui-org/react';
+import { Avatar, Tooltip } from "@heroui/react";
 import { useSidebarContext } from '@/layouts/layout-context';
 import { HomeIcon } from '../Icons/sidebar/home-icon';
 import { AccountsIcon } from '../Icons/sidebar/accounts-icon';

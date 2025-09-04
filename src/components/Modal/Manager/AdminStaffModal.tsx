@@ -10,7 +10,7 @@ import {
   ModalHeader,
   Select,
   SelectItem,
-} from '@nextui-org/react';
+} from "@heroui/react";
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 

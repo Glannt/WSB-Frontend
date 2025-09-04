@@ -16,7 +16,7 @@ import {
   DropdownMenu,
   DropdownItem,
   ChipProps,
-} from '@nextui-org/react';
+} from "@heroui/react";
 import { CustomerOrderBookingHistory } from '@/types/bookings';
 import { PlusIcon } from '@/components/Icons/PlusIcon';
 import { Column } from '@/types/room.type';

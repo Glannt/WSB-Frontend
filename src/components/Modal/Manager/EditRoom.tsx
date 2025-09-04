@@ -13,7 +13,7 @@ import {
   Select,
   SelectItem,
   Selection,
-} from '@nextui-org/react';
+} from "@heroui/react";
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { UploadImage } from '../../AdminService/UploadImage';
 import { SubmitHandler, useForm } from 'react-hook-form';

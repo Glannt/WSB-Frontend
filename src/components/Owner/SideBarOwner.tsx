@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 
-import { Avatar, Tooltip } from '@nextui-org/react';
+import { Avatar, Tooltip } from '@heroui/react';
 import { useSidebarContext } from '@/layouts/layout-context';
 import { HomeIcon } from '../Icons/sidebar/home-icon';
 import { AccountsIcon } from '../Icons/sidebar/accounts-icon';
@@ -17,10 +17,10 @@ import path from '@/constants/path';
 import { useMutation } from '@tanstack/react-query';
 import { AppContext } from '@/context/app.context';
 import { logout } from '@/service/auth.api';
-import { DashboardIcon } from '@radix-ui/react-icons';
 import {
   Building2Icon,
   BuildingIcon,
+  LayoutDashboardIcon,
   LogOutIcon,
   PersonStandingIcon,
 } from 'lucide-react';
@@ -64,7 +64,7 @@ export const SideBarOwner = () => {
             <SidebarMenu title="Main Menu">
               <SidebarItem
                 title="Dashboard"
-                icon={<DashboardIcon />}
+                icon={<LayoutDashboardIcon />}
                 onClick={() => navigate(path.owner)}
               />
 

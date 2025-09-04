@@ -1,7 +1,7 @@
 // import React from 'react';
 // import { format, addHours, startOfDay } from 'date-fns';
 // import { Room, Bookings } from './types';
-// import { Table, Card, CardBody } from '@nextui-org/react';
+// import { Table, Card, CardBody } from '@heroui/react';
 
 // interface TimeGridProps {
 //   rooms: Room[];
@@ -72,7 +72,7 @@
 //   TableRow,
 //   TableCell,
 //   Tooltip,
-// } from '@nextui-org/react';
+// } from '@heroui/react';
 // import { Room, Bookings } from './types';
 
 // interface TimeGridProps {
@@ -148,7 +148,7 @@ import {
   TableCell,
   Tooltip,
   Image,
-} from '@nextui-org/react';
+} from "@heroui/react";
 import { Room, Bookings } from './types';
 import { ListRooms } from '@/types/roomOverview';
 import { RoomList } from './RoomList';

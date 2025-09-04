@@ -1,4 +1,4 @@
-import { Table } from '@nextui-org/react';
+import { Table } from "@heroui/react";
 import React, { useState } from 'react';
 
 // Sample data types

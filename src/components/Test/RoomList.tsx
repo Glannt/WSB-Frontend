@@ -10,7 +10,7 @@ import {
   Tooltip,
   Image,
   Skeleton,
-} from '@nextui-org/react';
+} from "@heroui/react";
 import { Room, Bookings } from './types';
 import { ListRooms } from '@/types/roomOverview';
 

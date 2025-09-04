@@ -1,5 +1,5 @@
 import { Services } from '@/types/service.type';
-import { Card, CardBody, Input } from '@nextui-org/react';
+import { Card, CardBody, Input } from "@heroui/react";
 import React from 'react';
 
 interface ServiceListProps {

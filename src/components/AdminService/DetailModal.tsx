@@ -11,7 +11,7 @@ import {
   Skeleton,
   Table,
   TableBody,
-} from '@nextui-org/react';
+} from "@heroui/react";
 import React from 'react';
 
 interface DetailModalProps {

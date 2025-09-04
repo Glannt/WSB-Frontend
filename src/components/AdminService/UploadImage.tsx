@@ -1,4 +1,4 @@
-// import { Image, Input, Skeleton } from '@nextui-org/react';
+// import { Image, Input, Skeleton } from '@heroui/react';
 // import React from 'react';
 // import imageCompression from 'browser-image-compression';
 // import { debounce } from 'lodash';
@@ -88,7 +88,7 @@
 //   );
 // };
 
-import { Image, Input, Skeleton } from '@nextui-org/react';
+import { Image, Input, Skeleton } from "@heroui/react";
 import React from 'react';
 import imageCompression from 'browser-image-compression';
 import { debounce } from 'lodash';

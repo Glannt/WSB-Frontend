@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { SidebarAdmin } from './SidebarCustomer';
+import { SidebarCustomer } from './SidebarCustomer';
 
 import { ChevronLeftCircle, ChevronRightCircle } from 'lucide-react';
 import { MenuIconManager } from './MenuIconManager';
@@ -48,7 +48,7 @@ export const Settings = () => {
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
-          <SidebarAdmin collapse={collapse} hover={isHovered} />
+          <SidebarCustomer collapse={collapse} hover={isHovered} />
 
           {/* <button
             className={`absolute top-4 text-black p-2 rounded-full z-20 transition-all duration-300 ease-in-out ${
@@ -67,7 +67,7 @@ export const Settings = () => {
             <>
               {!isHovered && (
                 <div
-                  className="absolute pt-16 top-0 left-16 w-16 h-full flex flex-col items-center bg-gray-50 text-black"
+                  className="absolute pt-16 top-0 left-16 bottom-16 w-16 h-full flex flex-col items-center justify-start bg-background border border-l-0 border-gray-200 rounded-l-md shadow-lg/20 cursor-pointer text-foreground "
                   onMouseEnter={handleMouseEnter}
                   onMouseLeave={handleMouseLeave}
                   aria-hidden={collapse}

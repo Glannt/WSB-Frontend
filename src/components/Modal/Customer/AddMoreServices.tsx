@@ -12,7 +12,7 @@ import {
   ModalHeader,
   Tab,
   Tabs,
-} from '@nextui-org/react';
+} from "@heroui/react";
 import { useMutation, useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { getService, updateServiceBooking } from '@/service/customer.api';

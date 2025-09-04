@@ -384,6 +384,46 @@ export const router = createBrowserRouter([
   },
 
   {
+    path: path.settings,
+    element: (
+      <MainLayout>
+        <Settings />
+      </MainLayout>
+    ),
+    children: [
+      {
+        path: 'edit-profile',
+        element: (
+          // <MainLayout>
+          <ProfileEditor />
+          // </MainLayout>
+        ),
+      },
+      {
+        path: 'change-password',
+        element: (
+          // <MainLayout>
+          <ChangePassword />
+          // </MainLayout>
+        ),
+      },
+
+      {
+        path: 'booking-history',
+        element: <BookingHistory />,
+      },
+      {
+        path: 'transaction-history',
+        element: <MyWallet />,
+        children: [],
+      },
+      {
+        path: 'package-membership',
+        element: <PackageMembership />,
+      },
+    ],
+  },
+  {
     path: path.aboutUs,
     element: (
       <MainLayout>

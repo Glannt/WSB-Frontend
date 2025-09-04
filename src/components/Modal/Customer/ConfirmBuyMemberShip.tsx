@@ -17,7 +17,7 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-} from '@nextui-org/react';
+} from "@heroui/react";
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   SchemaBuyMemberShip,

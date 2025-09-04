@@ -10,7 +10,7 @@ import {
   FaLinkedin,
 } from 'react-icons/fa';
 import { motion } from 'framer-motion';
-import { Button, Divider, Input, Link, Textarea } from '@nextui-org/react';
+import { Button, Divider, Input, Link, Textarea } from "@heroui/react";
 const Contact: React.FC = () => {
   const [formData, setFormData] = useState({
     name: '',

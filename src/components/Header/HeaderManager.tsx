@@ -18,7 +18,7 @@ import {
   NavbarContent,
   NavbarItem,
   Avatar,
-} from '@nextui-org/react';
+} from "@heroui/react";
 import { useNavigate } from 'react-router';
 import path from '@/constants/path';
 import { getRoleName } from '@/utils/auth';

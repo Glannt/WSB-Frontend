@@ -5,7 +5,7 @@ import RoomPagination from './RoomPagination';
 import { getAllStaff } from '@/service/manager.api';
 import { statusOptions } from '../../data/data';
 
-import { CircularProgress, Selection, SortDescriptor } from '@nextui-org/react';
+import { CircularProgress, Selection, SortDescriptor } from "@heroui/react";
 
 import { columnsStaff, Staff } from '@/types/staff.type';
 import StaffFilter from './StaffFilter';

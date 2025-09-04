@@ -1,6 +1,5 @@
 import path from '@/constants/path';
 import { getProfileFromLS } from '@/utils/auth';
-import { Sidebar } from 'flowbite-react';
 import {
   BadgeIcon,
   EditIcon,
@@ -11,16 +10,9 @@ import {
   UserIcon,
   WalletIcon,
 } from 'lucide-react';
-import {
-  HiArrowSmRight,
-  HiChartPie,
-  HiInbox,
-  HiShoppingBag,
-  HiTable,
-  HiUser,
-  HiViewBoards,
-} from 'react-icons/hi';
+
 import { useNavigate } from 'react-router';
+import { Sidebar } from '../sidebar';
 
 interface SidebarProps {
   children?: React.ReactNode;
@@ -28,7 +20,7 @@ interface SidebarProps {
   hover: boolean;
 }
 
-export function SidebarAdmin({ children, collapse, hover }: SidebarProps) {
+export function SidebarCustomer({ children, collapse, hover }: SidebarProps) {
   const navigate = useNavigate();
 
   return (
@@ -60,63 +52,100 @@ export function SidebarAdmin({ children, collapse, hover }: SidebarProps) {
         </Sidebar>
       )} */}
       {!collapse && hover && (
-        <Sidebar aria-label="Default sidebar example">
-          <span className="font-bold text-black m-8 text-2xl">
-            Cài đặt chung
-          </span>
-          <div className="h-3"></div>
-          {/* <Sidebar.Logo href="#" img="/favicon.svg" imgAlt="Flowbite logo">
-            Flowbite
-          </Sidebar.Logo> */}
-          <Sidebar.Items>
-            <Sidebar.ItemGroup>
+        // <Sidebar aria-label="Default sidebar example">
+        //   <span className="font-bold text-black m-8 text-2xl">
+        //     Cài đặt chung
+        //   </span>
+        //   <div className="h-3"></div>
+        //   {/* <Sidebar.Logo href="#" img="/favicon.svg" imgAlt="Flowbite logo">
+        //     Flowbite
+        //   </Sidebar.Logo> */}
+        //   <Sidebar.Items>
+        //     <Sidebar.ItemGroup>
+        //       <Sidebar.Item
+        //         className="cursor-pointer"
+        //         onClick={() => navigate(path.settings + '/edit-profile')}
+        //         icon={EditIcon}
+        //       >
+        //         Chỉnh sửa thông tin
+        //       </Sidebar.Item>
+        //       <Sidebar.Item
+        //         className="cursor-pointer"
+        //         onClick={() => navigate(path.settings + '/booking-history')}
+        //         icon={HistoryIcon}
+        //         // label="3"
+        //         // label="Pro"
+        //         // labelColor="dark"
+        //       >
+        //         Phòng đã đặt
+        //       </Sidebar.Item>
+        //       <Sidebar.Item
+        //         icon={WalletIcon}
+        //         className="cursor-pointer"
+        //         onClick={() => navigate(path.settings + '/transaction-history')}
+        //       >
+        //         Ví của tôi
+        //       </Sidebar.Item>
+        //       <Sidebar.Item
+        //         className="cursor-pointer"
+        //         onClick={() => navigate(path.settings + '/package-membership')}
+        //         icon={UserIcon}
+        //       >
+        //         Gói thành viên
+        //       </Sidebar.Item>
+        //       {/* <Sidebar.Item href="#" icon={HiInbox}>
+        //         Gói thành viên
+        //       </Sidebar.Item> */}
+
+        //       {/* <Sidebar.Item href="#" icon={HiShoppingBag}>
+        //         Products
+        //       </Sidebar.Item>
+        //       <Sidebar.Item href="#" icon={HiArrowSmRight}>
+        //         Sign In
+        //       </Sidebar.Item>
+        //       <Sidebar.Item href="#" icon={HiTable}>
+        //         Sign Up
+        //       </Sidebar.Item> */}
+        //     </Sidebar.ItemGroup>
+        //   </Sidebar.Items>
+        // </Sidebar>
+        <div className="flex min-h-screen border-r border-gray-200 rounded-r-md shadow-lg/20">
+          <Sidebar>
+            <span className="font-bold m-6 text-2xl text-foreground">
+              Cài đặt chung
+            </span>
+
+            <Sidebar.Group>
               <Sidebar.Item
-                className="cursor-pointer"
+                icon="lucide:edit"
                 onClick={() => navigate(path.settings + '/edit-profile')}
-                icon={EditIcon}
               >
                 Chỉnh sửa thông tin
               </Sidebar.Item>
+
               <Sidebar.Item
-                className="cursor-pointer"
+                icon="lucide:history"
                 onClick={() => navigate(path.settings + '/booking-history')}
-                icon={HistoryIcon}
-                // label="3"
-                // label="Pro"
-                // labelColor="dark"
               >
                 Phòng đã đặt
               </Sidebar.Item>
+
               <Sidebar.Item
-                icon={WalletIcon}
-                className="cursor-pointer"
+                icon="lucide:wallet"
                 onClick={() => navigate(path.settings + '/transaction-history')}
               >
                 Ví của tôi
               </Sidebar.Item>
+
               <Sidebar.Item
-                className="cursor-pointer"
+                icon="lucide:user"
                 onClick={() => navigate(path.settings + '/package-membership')}
-                icon={UserIcon}
               >
                 Gói thành viên
               </Sidebar.Item>
-              {/* <Sidebar.Item href="#" icon={HiInbox}>
-                Gói thành viên
-              </Sidebar.Item> */}
-
-              {/* <Sidebar.Item href="#" icon={HiShoppingBag}>
-                Products
-              </Sidebar.Item>
-              <Sidebar.Item href="#" icon={HiArrowSmRight}>
-                Sign In
-              </Sidebar.Item>
-              <Sidebar.Item href="#" icon={HiTable}>
-                Sign Up
-              </Sidebar.Item> */}
-            </Sidebar.ItemGroup>
-          </Sidebar.Items>
-        </Sidebar>
+            </Sidebar.Group>
+          </Sidebar>
+        </div>
       )}
     </>
   );

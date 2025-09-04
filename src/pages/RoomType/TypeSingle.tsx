@@ -1,7 +1,7 @@
 import React from 'react';
 import { DescriptionSingleType } from './Description/DescriptionSingleType';
 import { TitleOverview } from './Overview/TitleOverview';
-import { Button } from '@nextui-org/react';
+import { Button } from "@heroui/react";
 import UtilitySingleModal from './Amenities/UtilitySingleModal';
 import RoomTypeSlider from '@/components/Slider/RoomTypeSlider';
 import BuildingDescription from './Description/BuildingDescription';

@@ -1,8 +1,4 @@
-// import * as Avatar from '@radix-ui/react-avatar';
-import * as NavigationMenu from '@radix-ui/react-navigation-menu';
-import { CaretDownIcon, ChevronDownIcon } from '@radix-ui/react-icons';
 import React, { forwardRef, useContext, useEffect, useState } from 'react';
-import classNames from 'classnames';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { logout } from '@/service/auth.api';
 import { AppContext } from '@/context/app.context';
@@ -21,22 +17,18 @@ import {
   Divider,
   DropdownSection,
   User,
-} from '@nextui-org/react';
+  CircularProgress,
+} from '@heroui/react';
 import { useNavigate } from 'react-router';
 import path from '@/constants/path';
 import { getProfileFromLS, getRoleName } from '@/utils/auth';
 import { useCustomer } from '@/context/customer.context';
-import { FaWallet, FaPlus } from 'react-icons/fa';
-import { SidebarMenu } from '../sidebar/sidebar-menu';
-import { CollapseItems } from '../sidebar/collapse-items';
-import { BalanceIcon } from '../Icons/sidebar/balance-icon';
-import { SidebarItem } from '../sidebar/sidebar-item';
-import { SettingsIcon } from '../Icons/sidebar/settings-icon';
 import { AccountsIcon } from '../Icons/sidebar/accounts-icon';
-import { CollapseDropdownItems } from '../sidebar/collapse-dropdown-items';
 import ThemeSwitcher from '../ModeToggle/SwitchTheme';
 import { getWalletByUserId } from '@/service/customer.api';
 import { Wallet } from '@/types/customer.type';
+import { ChevronDownIcon } from 'lucide-react';
+import { Icon } from '@iconify/react';
 export const Header = (props: any) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate();
@@ -134,12 +126,16 @@ export const Header = (props: any) => {
     <>
       {isLoading && (
         <>
-          <div>Loadings</div>
+          <CircularProgress
+            className="flex justify-center items-center"
+            title="Đang tải"
+            size="lg"
+          />
         </>
       )}
       <div className="mx-auto flex justify-between items-center shadow-lg shadow-gray-300">
         <Navbar
-          className="h-24"
+          className="h-24 shadow-md transition-colors duration-300 text-foreground bg-background dark:bg-white light:bg-black"
           maxWidth="full"
           isBordered
           classNames={{
@@ -157,6 +153,7 @@ export const Header = (props: any) => {
               'data-[active=true]:after:rounded-[2px]',
               'data-[active=true]:after:bg-primary',
             ],
+            wrapper: 'max-w-full px-4',
           }}
         >
           <NavbarBrand>
@@ -204,7 +201,7 @@ export const Header = (props: any) => {
               </NavbarItem>
               <DropdownMenu
                 aria-label="ACME features"
-                className="w-[240px]"
+                className="w-3xs dark:bg-white light:bg-dark shadow-lg shadow-lg/20 shadow-gray-300"
                 itemClasses={{
                   base: 'gap-4',
                 }}
@@ -249,7 +246,7 @@ export const Header = (props: any) => {
               </NavbarItem>
               <DropdownMenu
                 aria-label="ACME features"
-                className="w-[340px]"
+                className="w-3xs dark:bg-white light:bg-dark shadow-lg shadow-lg/20 shadow-gray-300"
                 itemClasses={{
                   base: 'gap-4',
                 }}
@@ -258,12 +255,11 @@ export const Header = (props: any) => {
                   showDivider
                   key="workspaces"
                   // description="Nơi làm việc"
-                  className="cursor-pointer text-[30px] font-semibold pt-2 pb-3"
+                  className="cursor-pointer font-semibold pt-2 pb-3"
                   onClick={() => navigate(path.rooms)}
                   // startContent={icons.scale}
                   // title="Phòng làm việc"
                   classNames={{
-                    title: 'text-[50px] pt-2 pb-2',
                     base: 'pt-3 pb-3',
                   }}
                 >
@@ -316,49 +312,6 @@ export const Header = (props: any) => {
                 Liên hệ
               </Link>
             </NavbarItem>
-            {/* Manager */}
-            {/* {roleNameRemoveQuotes.toUpperCase() === 'MANAGER' && (
-              <NavbarItem
-                isActive={window.location.pathname === path.manager}
-                className="mx-10"
-              >
-                <Link
-                  color="foreground"
-                  className="cursor-pointer text-start hover:text-violet11 hover:bg-violet3 focus:shadow-violet7 block select-none rounded-[4px] px-4 py-2 text-[15px] font-medium leading-none no-underline outline-none"
-                  onClick={() => navigate(path.manager)}
-                >
-                  Trang quản lý
-                </Link>
-              </NavbarItem>
-            )}
-            {roleNameRemoveQuotes === 'STAFF' && (
-              <NavbarItem
-                isActive={window.location.pathname === path.staff}
-                className="mx-10"
-              >
-                <Link
-                  color="foreground"
-                  className="cursor-pointer text-start hover:text-violet11 hover:bg-violet3 focus:shadow-violet7 block select-none rounded-[4px] px-4 py-2 text-[15px] font-medium leading-none no-underline outline-none"
-                  onClick={() => navigate(path.staff)}
-                >
-                  Trang nhân viên
-                </Link>
-              </NavbarItem>
-            )}
-            {roleNameRemoveQuotes === 'OWNER' && (
-              <NavbarItem
-                isActive={window.location.pathname === path.owner}
-                className="mx-10"
-              >
-                <Link
-                  color="foreground"
-                  className="cursor-pointer text-start hover:text-violet11 hover:bg-violet3 focus:shadow-violet7 block select-none rounded-[4px] px-4 py-2 text-[15px] font-medium leading-none no-underline outline-none"
-                  onClick={() => navigate(path.owner)}
-                >
-                  Trang chủ sở hữu
-                </Link>
-              </NavbarItem>
-            )} */}
           </NavbarContent>
           {!isAuthenticated && (
             <NavbarContent justify="end" className="mr-10">
@@ -383,23 +336,26 @@ export const Header = (props: any) => {
               </NavbarItem>
             </NavbarContent>
           )}
-          {isAuthenticated && (
+          {/* {isAuthenticated && (
             <NavbarContent as="div" justify="end" className="mr-10">
               <Dropdown placement="bottom-start">
                 <DropdownTrigger>
-                  <User
-                    // isBordered
-                    as="button"
-                    className="transition-transform"
-                    // color="secondary"
-                    name={customer?.fullName}
-                    // size="lg"
-                    // src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
-                  />
+                  <div className="flex gap-3 items-center">
+                    <Avatar src="https://i.pravatar.cc/150?u=a042581f4e29026024d" />
+                    <User
+                      // isBordered
+                      as="button"
+                      className="transition-transform"
+                      // color="secondary"
+                      name={customer?.fullName}
+                      // size="lg"
+                      // src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+                    />
+                  </div>
                 </DropdownTrigger>
                 <DropdownMenu
                   aria-label="Profile Actions"
-                  variant="flat"
+                  variant="shadow"
                   className="p-4"
                 >
                   <DropdownSection showDivider>
@@ -445,7 +401,116 @@ export const Header = (props: any) => {
                       color="danger"
                       startContent={<span className="text-lg">Đăng xuất</span>}
                     ></DropdownItem>
-                    <DropdownItem closeOnSelect={false} className="pt-3 pb-3">
+                    <DropdownItem
+                      key="theme-switcher"
+                      closeOnSelect={false}
+                      className="pt-3 pb-3"
+                    >
+                      <ThemeSwitcher />
+                    </DropdownItem>
+                  </DropdownSection>
+                </DropdownMenu>
+              </Dropdown>
+            </NavbarContent>
+          )} */}
+
+          {isAuthenticated && (
+            <NavbarContent as="div" justify="end" className="mr-10">
+              <Dropdown placement="bottom-end">
+                {' '}
+                // Changed to bottom-end for better positioning
+                <DropdownTrigger>
+                  <div className="flex gap-3 items-center cursor-pointer">
+                    {' '}
+                    // Added cursor-pointer
+                    <Avatar
+                      src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
+                      className="transition-transform"
+                    />
+                    <User
+                      as="button"
+                      className="transition-transform"
+                      name={customer?.fullName}
+                    />
+                  </div>
+                </DropdownTrigger>
+                <DropdownMenu
+                  aria-label="Profile Actions"
+                  variant="shadow"
+                  className="p-4 w-72" // Added width for consistent sizing
+                >
+                  <DropdownSection showDivider>
+                    <DropdownItem
+                      showDivider
+                      key="wallet"
+                      className="cursor-pointer py-3" // Simplified padding
+                      startContent={
+                        <Icon icon="lucide:wallet" className="text-lg" />
+                      } // Replaced FaWallet with Iconify
+                      endContent={
+                        <span
+                          onClick={() =>
+                            navigate(path.settings + '/transaction-history')
+                          }
+                          className="text-primary font-semibold text-lg"
+                        >
+                          {wallet} VNĐ
+                        </span>
+                      }
+                    >
+                      <span className="text-lg">Ví:</span>
+                    </DropdownItem>
+                    <DropdownItem
+                      key="edit-profile"
+                      className="cursor-pointer py-2"
+                      startContent={
+                        <Icon icon="lucide:user" className="text-lg" />
+                      }
+                      onClick={() => navigate(path.settings + '/edit-profile')}
+                    >
+                      <span className="text-medium">Chỉnh sửa thông tin</span>
+                    </DropdownItem>
+                    <DropdownItem
+                      key="booking-history"
+                      className="cursor-pointer py-2"
+                      startContent={
+                        <Icon icon="lucide:history" className="text-lg" />
+                      }
+                      onClick={() =>
+                        navigate(path.settings + '/booking-history')
+                      }
+                    >
+                      <span className="text-medium">Phòng đã đặt</span>
+                    </DropdownItem>
+                    <DropdownItem
+                      key="package-membership"
+                      className="cursor-pointer py-2"
+                      startContent={
+                        <Icon icon="lucide:package" className="text-lg" />
+                      }
+                      onClick={() =>
+                        navigate(path.settings + '/package-membership')
+                      }
+                    >
+                      <span className="text-medium">Gói thành viên</span>
+                    </DropdownItem>
+                    <DropdownItem
+                      showDivider
+                      key="logout"
+                      className="cursor-pointer py-3 mt-2"
+                      onClick={handleLogout}
+                      color="danger"
+                      startContent={
+                        <Icon icon="lucide:log-out" className="text-lg" />
+                      }
+                    >
+                      <span className="text-medium">Đăng xuất</span>
+                    </DropdownItem>
+                    <DropdownItem
+                      key="theme-switcher"
+                      closeOnSelect={false}
+                      className="py-3"
+                    >
                       <ThemeSwitcher />
                     </DropdownItem>
                   </DropdownSection>

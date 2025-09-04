@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import { getAllRoom } from '@/service/manager.api';
 import { statusOptions } from '../../data/data';
-import { Selection, SortDescriptor } from '@nextui-org/react';
+import { Selection, SortDescriptor } from "@heroui/react";
 import { AddRoom } from '../Modal/Manager/AddRoom';
 import EditRoom from '../Modal/Manager/EditRoom';
 import { useParams } from 'react-router';

@@ -5,7 +5,7 @@ import {
   Select,
   SelectItem,
   Slider,
-} from '@nextui-org/react';
+} from "@heroui/react";
 import { ListingCard } from './RoomCard';
 import { getAllRoom } from '@/service/room.api';
 import { useQuery } from '@tanstack/react-query';

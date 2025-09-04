@@ -1,6 +1,6 @@
 import React from 'react';
 import { Sidebar } from './sidebar.styles';
-import { Avatar, Tooltip } from '@nextui-org/react';
+import { Avatar, Tooltip } from "@heroui/react";
 import { CompaniesDropdown } from './companies-dropdown';
 import { useSidebarContext } from '@/layouts/layout-context';
 import { SidebarItem } from './sidebar-item';

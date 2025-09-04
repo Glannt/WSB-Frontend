@@ -20,7 +20,7 @@ import {
   DropdownItem,
   SortDescriptor,
   Divider,
-} from '@nextui-org/react';
+} from "@heroui/react";
 import { SearchIcon } from '../Icons/SearchIcon';
 import { PlusIcon } from '../Icons/PlusIcon';
 import { EyeIcon } from '../Icons/EyeIcon';

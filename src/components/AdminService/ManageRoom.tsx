@@ -7,7 +7,7 @@ import { getAllRoom, getAllStaff } from '@/service/manager.api';
 import { statusOptions } from '../../data/data';
 import RoomFilters from './RoomFilter';
 import RoomTable from './RoomTable';
-import { CircularProgress, Selection, SortDescriptor } from '@nextui-org/react';
+import { CircularProgress, Selection, SortDescriptor } from "@heroui/react";
 import { AddRoom } from '../Modal/Manager/AddRoom';
 import EditRoom from '../Modal/Manager/EditRoom';
 import { DeleteRoom } from '../Modal/Manager/DeleteRoom';

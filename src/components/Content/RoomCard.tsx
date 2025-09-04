@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
-import { Button, Select, SelectItem, Slider } from '@nextui-org/react';
+import { Button, Select, SelectItem, Slider } from "@heroui/react";
 import { useNavigate } from 'react-router';
 import { Carousel } from './Carousel';
 import { ListRooms, ListRooms2 } from '@/types/roomOverview';

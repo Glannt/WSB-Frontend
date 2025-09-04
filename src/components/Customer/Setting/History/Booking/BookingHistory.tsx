@@ -26,7 +26,7 @@ import {
   ModalFooter,
   Select,
   SelectItem,
-} from '@nextui-org/react';
+} from "@heroui/react";
 import BookingFilter from './BookingFilter';
 import { statusOptionsBooking } from '@/data/data';
 import BookingTable from './BookingTable';

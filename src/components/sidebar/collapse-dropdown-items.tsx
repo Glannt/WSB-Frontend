@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { Accordion, AccordionItem } from '@nextui-org/react';
+import { Accordion, AccordionItem } from "@heroui/react";
 import { ChevronDownIcon } from '../Icons/sidebar/chevron-down-icon';
 import { SidebarItem } from './sidebar-item';
 import { DropdownItems } from './dropdown-item';

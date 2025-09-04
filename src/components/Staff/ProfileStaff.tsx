@@ -7,7 +7,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { changeProfile } from '@/service/customer.api';
 import { Customer, phoneCodes } from '@/types/customer.type';
-import { DatePicker, Image, Input, Link } from '@nextui-org/react';
+import { DatePicker, Image, Input, Link } from "@heroui/react";
 import { useCustomer } from '@/context/customer.context';
 import { getProfileFromLS } from '@/utils/auth';
 import path from '@/constants/path';

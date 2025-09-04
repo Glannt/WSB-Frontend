@@ -13,7 +13,7 @@ import {
   ModalHeader,
   Select,
   SelectItem,
-} from '@nextui-org/react';
+} from "@heroui/react";
 import { useMutation } from '@tanstack/react-query';
 import React, { Dispatch, SetStateAction } from 'react';
 import { useForm } from 'react-hook-form';

@@ -34,7 +34,7 @@ import {
   Tab,
   Tabs,
   useDisclosure,
-} from '@nextui-org/react';
+} from "@heroui/react";
 import { toInteger } from 'lodash';
 import {
   createBooking,

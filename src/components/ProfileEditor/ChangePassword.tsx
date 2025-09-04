@@ -9,7 +9,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { getProfileFromLS } from '@/utils/auth';
 import { changePassword } from '@/service/customer.api';
 import { useMutation } from '@tanstack/react-query';
-import { Input } from '@nextui-org/react';
+import { Input } from "@heroui/react";
 import { EyeSlashFilledIcon } from '../Icons/EyeSlashFilledIcon';
 import { EyeFilledIcon } from '../Icons/EyeFilledIcon';
 import { motion } from 'framer-motion';

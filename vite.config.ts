@@ -4,6 +4,8 @@ import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import vercel from 'vite-plugin-vercel';
 import { codecovVitePlugin } from '@codecov/vite-plugin';
+import tailwindcss from '@tailwindcss/vite';
+import tsconfigPaths from 'vite-tsconfig-paths';
 // import dotenv from 'dotenv';
 // https://vitejs.dev/config/
 // export default defineConfig({
@@ -19,6 +21,8 @@ import { codecovVitePlugin } from '@codecov/vite-plugin';
 export default defineConfig({
   plugins: [
     react(),
+    tailwindcss(),
+    tsconfigPaths(),
     vercel(),
     codecovVitePlugin({
       enableBundleAnalysis: process.env.CODECOV_TOKEN !== undefined,

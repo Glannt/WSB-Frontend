@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pagination, Button } from '@nextui-org/react';
+import { Pagination, Button } from "@heroui/react";
 
 interface BookingPaginationProps {
   page: number;

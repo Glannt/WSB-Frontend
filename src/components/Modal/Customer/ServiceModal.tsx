@@ -11,7 +11,7 @@ import {
   ModalHeader,
   Tab,
   Tabs,
-} from '@nextui-org/react';
+} from "@heroui/react";
 import React from 'react';
 
 interface ServiceModalProps {

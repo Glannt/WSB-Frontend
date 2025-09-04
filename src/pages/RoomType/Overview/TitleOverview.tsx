@@ -1,4 +1,4 @@
-import { Button, Image } from '@nextui-org/react';
+import { Button, Image } from "@heroui/react";
 import React from 'react';
 import { useNavigate } from 'react-router';
 import path from '@/constants/path';

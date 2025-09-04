@@ -4,7 +4,7 @@ import 'swiper/css'; // Import Swiper styles
 import 'swiper/css/effect-coverflow';
 import 'swiper/css/pagination';
 import 'swiper/swiper-bundle.css'; // Import Swiper styles
-import { Button, Image } from '@nextui-org/react'; // Assuming you're using NextUI for the Button component
+import { Button, Image } from "@heroui/react"; // Assuming you're using NextUI for the Button component
 // import TypeRoomCard from './TypeRoomCard'; // Adjust the import based on your file structure
 import { ListRooms } from '@/types/roomOverview';
 import { useNavigate } from 'react-router';

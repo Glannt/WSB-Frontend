@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FaWallet, FaPlus } from 'react-icons/fa';
 // import TransactionHistory from './Setting/History/Transaction/TransactionHistory';
 
-import { Button } from '@nextui-org/react';
+import { Button } from "@heroui/react";
 import { useNavigate } from 'react-router';
 import path from '@/constants/path';
 

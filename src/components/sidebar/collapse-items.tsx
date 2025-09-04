@@ -1,6 +1,6 @@
 // 'use client';
 // import React, { useState } from 'react';
-// import { Accordion, AccordionItem } from '@nextui-org/react';
+// import { Accordion, AccordionItem } from '@heroui/react';
 // import clsx from 'clsx';
 // import { ChevronDownIcon } from '../Icons/sidebar/chevron-down-icon';
 // import { SidebarItem } from './sidebar-item';
@@ -97,10 +97,10 @@
 //         }
 //         //   css={{
 //         //     width: "100%",
-//         //     "& .nextui-collapse-view": {
+//         //     "& .heroui-collapse-view": {
 //         //       p: "0",
 //         //     },
-//         //     "& .nextui-collapse-content": {
+//         //     "& .heroui-collapse-content": {
 //         //       marginTop: "$1",
 //         //       padding: "0px",
 //         //     },
@@ -141,7 +141,7 @@
 
 'use client';
 import React, { useState } from 'react';
-import { Accordion, AccordionItem } from '@nextui-org/react';
+import { Accordion, AccordionItem } from "@heroui/react";
 import { ChevronDownIcon } from '../Icons/sidebar/chevron-down-icon';
 import { SidebarItem } from './sidebar-item';
 

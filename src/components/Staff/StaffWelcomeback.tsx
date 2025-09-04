@@ -58,7 +58,7 @@ export const StaffWelComeback: React.FC = () => {
 };
 
 // import { motion } from 'framer-motion';
-// import { Card } from '@nextui-org/react';
+// import { Card } from '@heroui/react';
 
 // const StaffWelComeback = () => {
 //   // Assuming you have currentDate and currentTime defined

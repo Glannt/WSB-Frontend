@@ -35,7 +35,7 @@ import {
   Tab,
   Tabs,
   useDisclosure,
-} from '@nextui-org/react';
+} from "@heroui/react";
 import { toInteger } from 'lodash';
 import {
   createBooking,
@@ -538,7 +538,7 @@ export const BookingRoomDetailMultiple = () => {
                 />
               ))
             ) : (
-              <p>No images available</p> // Fallback if roomImg is undefined or empty
+              (<p>No images available</p>) // Fallback if roomImg is undefined or empty
             )}
           </div>
         </div>

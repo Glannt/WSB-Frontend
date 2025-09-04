@@ -87,7 +87,7 @@
 // export default CardDataStats;
 
 import React, { ReactNode } from 'react';
-import { Card, CardBody } from '@nextui-org/react';
+import { Card, CardBody } from "@heroui/react";
 
 interface CardDataStatsProps {
   title: string;

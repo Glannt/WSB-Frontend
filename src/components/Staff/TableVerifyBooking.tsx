@@ -6,7 +6,7 @@
 //   TableBody,
 //   TableRow,
 //   TableCell,
-// } from '@nextui-org/react';
+// } from '@heroui/react';
 // import React from 'react';
 
 // interface BookingData {
@@ -63,7 +63,7 @@ import {
   ChipProps,
   Chip,
   Tooltip,
-} from '@nextui-org/react';
+} from "@heroui/react";
 import React from 'react';
 import { EditIcon } from '../Icons/EditIcon';
 import { Check } from 'lucide-react';

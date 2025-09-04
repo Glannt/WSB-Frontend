@@ -9,7 +9,7 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-} from '@nextui-org/react';
+} from "@heroui/react";
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 

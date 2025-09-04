@@ -10,7 +10,7 @@ import {
   Select,
   SelectItem,
   Selection,
-} from '@nextui-org/react';
+} from "@heroui/react";
 import {
   FaUser,
   FaEnvelope,

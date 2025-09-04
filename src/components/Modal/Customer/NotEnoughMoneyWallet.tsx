@@ -5,7 +5,7 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-} from '@nextui-org/react';
+} from "@heroui/react";
 import { useNavigate } from 'react-router';
 interface ConfirmBookingProps {
   showConfirmModal: boolean;

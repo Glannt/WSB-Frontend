@@ -6,7 +6,7 @@ import {
   ModalBody,
   ModalFooter,
   ModalContent,
-} from '@nextui-org/react';
+} from "@heroui/react";
 import {
   FaUsers,
   FaCoffee,
